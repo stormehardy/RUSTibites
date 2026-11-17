@@ -1,4 +1,5 @@
-//! The port's own line on the title screen: "RUSTibites Faithful by Storme".
+//! The port's own line on the title screen: "<edition's name> by Storme" ("RUSTibites Improved by Storme" on the `improved` branch, "RUSTibites
+//! Faithful by Storme" on `main`; the name is `crate::edition::PRODUCT_NAME`).
 //!
 //! A title card in the top left corner, made of what the title screen itself uses: `Boston Black SDF` in the Bold style the version label
 //! takes (TMP's synthetic bold, see `text_sdf`), in the white of the version label and the Patreon text. It is not part of the game's
@@ -10,7 +11,7 @@ use crate::text_sdf::SdfFonts;
 use crate::ui::{FontRole, Rgba, UiDraw, UiFrame};
 
 /// The first line, large.
-const NAME: &str = "RUSTibites Faithful";
+const NAME: &str = crate::edition::PRODUCT_NAME;
 /// The second line, smaller, under the first.
 const AUTHOR: &str = "by Storme";
 /// `Boston Black SDF` in the Bold style (the version label's face).
@@ -73,7 +74,7 @@ mod tests {
         add(&mut frame, None, 1920.0, 1080.0);
         let lines = texts(&frame);
         assert_eq!(lines.len(), 2);
-        assert_eq!(lines[0].0, "RUSTibites Faithful");
+        assert_eq!(lines[0].0, crate::edition::PRODUCT_NAME);
         assert_eq!(lines[1].0, "by Storme");
         for (_, pos, _, font) in &lines {
             assert_eq!(font.as_deref(), Some("Boston Black SDF +bold"));

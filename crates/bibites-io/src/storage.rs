@@ -149,6 +149,13 @@ impl StoragePaths {
         self.state.join("achievements.json")
     }
 
+    #[must_use]
+    /// `<state>/improved_features.json` (RUSTibites Improved: which of its simulation switches are on, see `bibites_core::improved`; nothing the
+    /// original game has, so never part of a save).
+    pub fn improved_features_path(&self) -> PathBuf {
+        self.state.join("improved_features.json")
+    }
+
     /// Creates the save/auto-save/scenario/template directories if missing.
     pub fn ensure_layout(&self) -> Result<()> {
         for dir in [
@@ -1778,6 +1785,35 @@ pub fn write_achievements(paths: &StoragePaths, file: &AchievementsFile) -> Resu
     ensure_parent(&path)?;
     let text = serde_json::to_string_pretty(file)
         .map_err(|error| Error::invalid_data(error.to_string()))?;
+    let tmp = path.with_extension("json.tmp");
+    std::fs::write(&tmp, text)?;
+    std::fs::rename(&tmp, &path)?;
+    Ok(())
+}
+
+/// What `improved_features.json` stores: the keys of the simulation switches that are on (`bibites_core::improved::Feature::key`).
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ImprovedFeaturesFile {
+    /// The keys of the switches that are on. A key this version does not know is kept by the reader's caller to report, never silently dropped.
+    #[serde(default)]
+    pub enabled: Vec<String>,
+}
+
+/// Reads `improved_features.json` (nothing stored yet: every switch off).
+pub fn read_improved_features(paths: &StoragePaths) -> Result<ImprovedFeaturesFile> {
+    match std::fs::read_to_string(paths.improved_features_path()) {
+        Ok(text) => serde_json::from_str(&text)
+            .map_err(|error| Error::invalid_data(format!("invalid improved_features.json: {error}"))),
+        Err(error) if error.kind() == io::ErrorKind::NotFound => Ok(ImprovedFeaturesFile::default()),
+        Err(error) => Err(Error::from(error)),
+    }
+}
+
+/// Writes `improved_features.json` (through a temporary file, so a crash leaves the old one).
+pub fn write_improved_features(paths: &StoragePaths, file: &ImprovedFeaturesFile) -> Result<()> {
+    let path = paths.improved_features_path();
+    ensure_parent(&path)?;
+    let text = serde_json::to_string_pretty(file).map_err(|error| Error::invalid_data(error.to_string()))?;
     let tmp = path.with_extension("json.tmp");
     std::fs::write(&tmp, text)?;
     std::fs::rename(&tmp, &path)?;

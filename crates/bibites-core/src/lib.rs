@@ -51,6 +51,7 @@ pub mod genes_log;
 pub mod error;
 pub mod format;
 pub mod ids;
+pub mod improved;
 pub mod math;
 pub mod rng;
 

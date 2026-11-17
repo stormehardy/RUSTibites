@@ -1590,6 +1590,8 @@ pub struct App {
     joined_ticks: u32,
     /// The simulation thread, when `--sim-thread` asked for one (see [`crate::sim_thread`]).
     pub sim: Option<crate::sim_thread::SimThread>,
+    /// RUSTibites Improved's simulation switches for this run (see [`crate::improved_switches`]). Whatever world the app holds gets them before it ticks.
+    pub improved: bibites_core::improved::ImprovedFeatures,
     /// The real world is on the simulation thread; `world` holds a husk with its settings.
     world_away: bool,
     /// Frames in a row that only watched (could have gone on without the world).
@@ -2161,6 +2163,7 @@ impl App {
             frame_started: None,
             joined_ticks: 0,
             sim: None,
+            improved: crate::improved_switches::configured(),
             world_away: false,
             light_streak: 0,
             snapshot: None,
@@ -2764,7 +2767,7 @@ impl App {
         }
         if input.step {
             self.paused = true;
-            self.world.tick();
+            self.tick_world();
             self.step_tails();
             self.sim_ticks += 1;
             self.accumulator = 0.0;
@@ -3412,7 +3415,7 @@ impl App {
                 }
                 UiAction::Step => {
                     self.paused = true;
-                    self.world.tick();
+                    self.tick_world();
                     self.step_tails();
                     self.sim_ticks += 1;
                     self.accumulator = 0.0;
@@ -3832,7 +3835,7 @@ impl App {
             }
             ControlCommand::Step => {
                 self.paused = true;
-                self.world.tick();
+                self.tick_world();
                 self.sim_ticks += 1;
                 self.accumulator = 0.0;
             }
@@ -6918,8 +6921,16 @@ impl App {
         }
     }
 
+    /// Runs one tick of the world the app holds, with the run's simulation switches on it (a world that was loaded, restored or made a moment ago
+    /// has the default, every switch off, until it is given them here; every in-process tick goes through this).
+    fn tick_world(&mut self) {
+        self.world.improved = self.improved;
+        self.world.tick();
+    }
+
     /// Hands the world to the simulation thread; `world` becomes a husk with its settings.
     fn send_world_away(&mut self) {
+        self.world.improved = self.improved;
         let husk = crate::sim_thread::husk_like(&self.world);
         let world = std::mem::replace(&mut self.world, husk);
         self.accumulator = 0.0;
@@ -9566,7 +9577,7 @@ impl App {
                     break;
                 }
                 let started = std::time::Instant::now();
-                self.world.tick();
+                self.tick_world();
                 self.step_autopan(self.world.settings.fixed_dt());
                 self.accumulator -= fixed;
                 self.sim_ticks += 1;
@@ -15698,6 +15709,27 @@ mod sprite_renderer_tests {
         assert_eq!(app.world.pellets.rot_amount(plant), Some(0.0));
         app.apply_ui_actions(&[UiAction::MaterialToggle(0)]);
         assert!(!app.world.pellets.is_decaying(plant));
+    }
+
+    #[test]
+    fn the_apps_simulation_switches_reach_whatever_world_it_holds_before_it_ticks() {
+        use bibites_core::improved::{Feature, ImprovedFeatures};
+        let mut app = App::new(synthetic(143, 4), Vec2::new(1280.0, 800.0), None);
+        assert!(app.improved.is_faithful() && app.world.improved.is_faithful(), "nothing chosen: the Faithful simulation");
+        let on = ImprovedFeatures::FAITHFUL.with(Feature::SwitchProbe, true);
+        app.improved = on;
+        assert!(app.world.improved.is_faithful(), "the world has them only once it ticks");
+        app.tick_world();
+        assert_eq!(app.world.improved, on);
+        // A world that replaces it (a load, a restore, a new game) starts with every switch off, and gets them with its first tick.
+        app.world = synthetic(144, 4).world;
+        assert!(app.world.improved.is_faithful());
+        app.tick_world();
+        assert_eq!(app.world.improved, on);
+        // Switched off again: off again.
+        app.improved = ImprovedFeatures::FAITHFUL;
+        app.tick_world();
+        assert!(app.world.improved.is_faithful());
     }
 
     #[test]

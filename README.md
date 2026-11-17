@@ -2,6 +2,9 @@
 
 ![RUSTibites icon](assets/icon/rustibites_256.png)
 
+> **This is the `improved` branch: RUSTibites Improved.** The Faithful edition (the game, reproduced as exactly as the port can) is the `main` branch; this one adds
+> features on top of it. How the two relate, and the rules that keep Faithful unchanged, are in [docs/IMPROVED.md](docs/IMPROVED.md).
+
 An open-source, readable, **high-speed** reimplementation of
 [The Bibites](https://thebibites.com/) — the artificial-life evolution
 simulator — written in Rust.

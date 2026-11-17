@@ -871,3 +871,27 @@ fn the_achievements_file_keeps_what_was_unlocked_and_the_counters() {
     assert!(bibites_io::storage::read_achievements(&paths).is_err());
     let _ = std::fs::remove_dir_all(state);
 }
+
+
+#[test]
+fn the_improved_features_file_keeps_the_switches_that_are_on() {
+    let state = temp_root("improved_features");
+    let paths = StoragePaths::new(&state);
+    assert_eq!(paths.improved_features_path(), state.join("improved_features.json"));
+    // Nothing stored yet: every switch off, and no file is made by asking.
+    let empty = bibites_io::storage::read_improved_features(&paths).unwrap();
+    assert!(empty.enabled.is_empty());
+    assert!(!state.join("improved_features.json").exists());
+    let file = bibites_io::storage::ImprovedFeaturesFile { enabled: vec!["switch_probe".to_owned()] };
+    bibites_io::storage::write_improved_features(&paths, &file).unwrap();
+    assert!(state.join("improved_features.json").is_file());
+    assert!(!state.join("improved_features.json.tmp").exists());
+    assert_eq!(bibites_io::storage::read_improved_features(&paths).unwrap(), file);
+    // A file with a field this version does not know, or without the list, still reads.
+    std::fs::write(state.join("improved_features.json"), r#"{"comment": "x"}"#).unwrap();
+    assert!(bibites_io::storage::read_improved_features(&paths).unwrap().enabled.is_empty());
+    // A file that is not JSON is an error the caller can report, not a silent reset.
+    std::fs::write(state.join("improved_features.json"), "not json").unwrap();
+    assert!(bibites_io::storage::read_improved_features(&paths).is_err());
+    let _ = std::fs::remove_dir_all(&state);
+}

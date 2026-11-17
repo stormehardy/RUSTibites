@@ -67,11 +67,13 @@ mod challenge_run;
 mod challenge_tracker;
 mod dropdown;
 mod dyn_panel;
+mod edition;
 mod expanded_brain;
 mod expanded_brain_ui;
 mod gene_analysis;
 mod gene_info_data;
 mod hud;
+mod improved_switches;
 mod information_panel;
 mod internals;
 mod internals_shaders;
@@ -558,6 +560,8 @@ fn run() -> Result<(), String> {
     bibites_io::prefs::GamePrefs::prefetch();
     // The title menu's gallery shows the unlocks of this port too.
     achievements::publish_stored(&bibites_io::storage::StoragePaths::default_content());
+    // RUSTibites Improved: which simulation switches are on for this run (all off = the Faithful simulation).
+    eprintln!("{}", improved_switches::configure(&bibites_io::storage::StoragePaths::default_content()));
     let mut args = parse_args(std::env::args().skip(1))?;
     if args.screenshot.is_none() && !args.size_given {
         // The game's UI is authored for 16:9; the 1280x800 default letterboxes it.
@@ -1574,9 +1578,9 @@ fn run_window(
 ) {
     let mut conf = Conf {
         window_title: if menu.is_some() {
-            "RUSTibites".to_owned()
+            edition::PRODUCT_NAME.to_owned()
         } else {
-            format!("RUSTibites viewer - {}", loaded.label)
+            edition::world_window_title(&loaded.label)
         },
         window_width: args.width as i32,
         window_height: args.height as i32,
@@ -3509,7 +3513,7 @@ fn draw_overlay(app: &App) {
         // Top-left: world + playback HUD.
         draw_rectangle(12.0, 12.0, 740.0, 152.0, panel);
         draw_text(
-            format!("RUSTibites viewer - {}", app.label),
+            edition::world_window_title(&app.label),
             24.0,
             38.0,
             22.0,
@@ -5720,7 +5724,7 @@ fn parse_center(value: &str) -> Result<Vec2, String> {
 
 fn print_usage() {
     println!(
-        "RUSTibites viewer (alpha)\n\
+        "RUSTibites Improved viewer (alpha)\n\
          \n\
          USAGE:\n\
          \x20   rustibites-view [PATH] [options]\n\

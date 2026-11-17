@@ -2678,6 +2678,9 @@ pub struct World {
     pub rng: Rng,
     /// Material decay period in ticks (`decayTPS`).
     pub decay_tps: u32,
+    /// Which of RUSTibites Improved's changes to the simulation are on (see [`crate::improved`]). All off = the Faithful simulation. Not part of a
+    /// save and not part of the state fingerprint: the switches belong to the run.
+    pub improved: crate::improved::ImprovedFeatures,
     /// Statistics collector (parity §6.1 schema).
     pub(crate) stats: SimStats,
     /// Multi-resolution biomass/count history for the Graphs panel
@@ -2803,6 +2806,7 @@ impl World {
             parallel_gates: crate::sim::ParallelGates::default(),
             active_gates: crate::sim::ParallelGates::default(),
             pool_tuner: PoolTuner::new(crate::sim::ParallelGates::default().pool_prior()),
+            improved: crate::improved::ImprovedFeatures::default(),
             sensing_worker_scratch: Vec::new(),
             sensing_chunks: Vec::new(),
             sensing_due_ids: Vec::new(),

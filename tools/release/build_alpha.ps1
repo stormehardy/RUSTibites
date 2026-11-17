@@ -17,7 +17,7 @@ Push-Location $repo
 try {
     $commit = (git rev-parse --short HEAD 2>$null); if (-not $commit) { $commit = 'unknown' }
     $date = Get-Date -Format 'yyyy-MM-dd'
-    if (-not $Name) { $Name = "RUSTibites-alpha-$date-$commit" }
+    if (-not $Name) { $Name = "RUSTibites-Improved-alpha-$date-$commit" }   # Faithful (main): "RUSTibites-alpha-..."
     if (-not $Exe) {
         # Optimised, and with the C runtime inside the exe so a clean machine needs no Visual C++ redistributable.
         Write-Host '==> building the viewer (perf profile, static CRT) ...'
