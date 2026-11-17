@@ -1,0 +1,14 @@
+[
+ "default_world_biology",
+ "default_world_brain",
+ "default_world_genes",
+ "default_world_inspector",
+ "main_world_dynamic_parameters",
+ "main_world_information",
+ "main_world_lineage",
+ "main_world_settings_panel",
+ "main_world_tool_placer",
+ "main_world_tool_user_actions",
+ "main_world_tool_view",
+ "main_world_toolbar"
+]

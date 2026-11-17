@@ -1,0 +1,43 @@
+{
+ "name": "bloodParticles",
+ "shader": "Particles/Standard Unlit",
+ "colors": {
+  "_CameraFadeParams": null,
+  "_Color": null,
+  "_ColorAddSubDiff": null,
+  "_EmissionColor": null,
+  "_RendererColor": null,
+  "_SoftParticleFadeParams": null
+ },
+ "floats": {
+  "_BlendOp": 0.0,
+  "_BumpScale": 1.0,
+  "_CameraFadingEnabled": 0.0,
+  "_CameraFarFadeDistance": 2.0,
+  "_CameraNearFadeDistance": 1.0,
+  "_ColorMode": 4.0,
+  "_Cull": 2.0,
+  "_Cutoff": 0.5,
+  "_DistortionBlend": 0.5,
+  "_DistortionEnabled": 0.0,
+  "_DistortionStrength": 1.0,
+  "_DistortionStrengthScaled": 0.0,
+  "_DstBlend": 10.0,
+  "_EmissionEnabled": 0.0,
+  "_EnableExternalAlpha": 0.0,
+  "_FlipbookMode": 0.0,
+  "_LightingEnabled": 0.0,
+  "_Mode": 2.0,
+  "_SoftParticlesEnabled": 0.0,
+  "_SoftParticlesFarFadeDistance": 1.0,
+  "_SoftParticlesNearFadeDistance": 0.0,
+  "_SrcBlend": 5.0,
+  "_ZWrite": 0.0
+ },
+ "textures": {
+  "_BumpMap": "UnityTexEnv(m_Offset=Vector2f(0.0, 0.0), m_Scale=Vector2f(1.0, 1.0), m_Texture=PPtr(m_FileID=0, m_PathID=0, assetsfile=<SerializedFile>))",
+  "_EmissionMap": "UnityTexEnv(m_Offset=Vector2f(0.0, 0.0), m_Scale=Vector2f(1.0, 1.0), m_Texture=PPtr(m_FileID=0, m_PathID=0, assetsfile=<SerializedFile>))",
+  "_MainTex": "UnityTexEnv(m_Offset=Vector2f(0.0, 0.0), m_Scale=Vector2f(1.0, 1.0), m_Texture=PPtr(m_FileID=0, m_PathID=57, assetsfile=<SerializedFile>))"
+ },
+ "source_asset": "sharedassets2.assets"
+}

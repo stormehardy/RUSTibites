@@ -1,0 +1,116 @@
+{
+  "schema": "rustibites.assets.digestion_acid_brain.v1",
+  "capture": {
+    "save": "Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip",
+    "seed": 12345,
+    "ticks": 600,
+    "samples": 1
+  },
+  "last": {
+    "tick": 601,
+    "simTime": 20.033335242420435,
+    "bibites": [
+      {
+        "id": -1500978837,
+        "acidLevel": 0,
+        "digestionOutput": 0.11235629,
+        "nContent": 0,
+        "totalContent": 0,
+        "digestionEffectiveness": 0,
+        "acidRatio": 0
+      },
+      {
+        "id": 9,
+        "acidLevel": 0,
+        "digestionOutput": 0.7734683,
+        "nContent": 0,
+        "totalContent": 0,
+        "digestionEffectiveness": 0,
+        "acidRatio": 0
+      },
+      {
+        "id": 8,
+        "acidLevel": 0,
+        "digestionOutput": 0.7734683,
+        "nContent": 0,
+        "totalContent": 0,
+        "digestionEffectiveness": 0,
+        "acidRatio": 0
+      },
+      {
+        "id": 7,
+        "acidLevel": 0,
+        "digestionOutput": 0.7734683,
+        "nContent": 0,
+        "totalContent": 0,
+        "digestionEffectiveness": 0,
+        "acidRatio": 0
+      },
+      {
+        "id": 6,
+        "acidLevel": 0,
+        "digestionOutput": 0.7734683,
+        "nContent": 0,
+        "totalContent": 0,
+        "digestionEffectiveness": 0,
+        "acidRatio": 0
+      },
+      {
+        "id": 5,
+        "acidLevel": 0.7734683,
+        "digestionOutput": 0.7734683,
+        "nContent": 1,
+        "totalContent": 5.147818,
+        "digestionEffectiveness": 1.64560378,
+        "acidRatio": 6.049123
+      },
+      {
+        "id": 4,
+        "acidLevel": 0,
+        "digestionOutput": 0.7734683,
+        "nContent": 0,
+        "totalContent": 0,
+        "digestionEffectiveness": 0,
+        "acidRatio": 0
+      },
+      {
+        "id": 3,
+        "acidLevel": 0,
+        "digestionOutput": 0.7734683,
+        "nContent": 0,
+        "totalContent": 0,
+        "digestionEffectiveness": 0,
+        "acidRatio": 0
+      },
+      {
+        "id": 2,
+        "acidLevel": 0.7734683,
+        "digestionOutput": 0.7734683,
+        "nContent": 1,
+        "totalContent": 5.72699261,
+        "digestionEffectiveness": 1.63140631,
+        "acidRatio": 5.44458437
+      },
+      {
+        "id": 1,
+        "acidLevel": 0,
+        "digestionOutput": 0.7734683,
+        "nContent": 0,
+        "totalContent": 0,
+        "digestionEffectiveness": 0,
+        "acidRatio": 0
+      },
+      {
+        "id": -354862062,
+        "acidLevel": 0.7734683,
+        "digestionOutput": 0.7734683,
+        "nContent": 1,
+        "totalContent": 5.29053545,
+        "digestionEffectiveness": 1.6423372,
+        "acidRatio": 5.89843559
+      }
+    ]
+  },
+  "raw": "testdata/parity/digestion/acid_brain/samples.jsonl",
+  "note": "Game acidLevel paired with the brain Digestion output for each bibite at each sample; use contents.amount/digestionRate for stock, acidLevel to explain conversion-rate delta."
+}

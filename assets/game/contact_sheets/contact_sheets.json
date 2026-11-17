@@ -1,0 +1,18 @@
+{
+  "sheets": [
+    {
+      "file": "assets/game/contact_sheets/inworld_sprites.png",
+      "items": 107
+    },
+    {
+      "file": "assets/game/contact_sheets/sheets.png",
+      "items": 131
+    },
+    {
+      "file": "assets/game/contact_sheets/ui_sprites.png",
+      "items": 235
+    }
+  ],
+  "missing_sprite_pngs": 0,
+  "missing_examples": []
+}

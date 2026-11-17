@@ -1,0 +1,105 @@
+{
+ "window": "600-27000, in-zone only",
+ "game": {
+  "n": 3726,
+  "plant_rate": 22.37,
+  "n_in_mouth": 0.573,
+  "stomach": 10.188,
+  "active_frac": 0.618
+ },
+ "rust": {
+  "n": 46019,
+  "plant_rate": 15.14,
+  "n_targets": 0.575,
+  "n_plant_targets": 0.509,
+  "stomach": 10.673,
+  "active_frac": 0.528
+ },
+ "by_radius_band": {
+  "game": {
+   "0-500": {
+    "n": 1338,
+    "plant_rate": 27.06,
+    "n_in_mouth": 0.707,
+    "n_stomach": 0.971,
+    "stomach": 10.049,
+    "active_frac": 0.736
+   },
+   "500-1000": {
+    "n": 1338,
+    "plant_rate": 23.41,
+    "n_in_mouth": 0.592,
+    "n_stomach": 0.904,
+    "stomach": 10.427,
+    "active_frac": 0.647
+   },
+   "1000-1500": {
+    "n": 645,
+    "plant_rate": 17.81,
+    "n_in_mouth": 0.447,
+    "n_stomach": 0.884,
+    "stomach": 11.231,
+    "active_frac": 0.513
+   },
+   "1500-2000": {
+    "n": 405,
+    "plant_rate": 10.55,
+    "n_in_mouth": 0.272,
+    "n_stomach": 0.696,
+    "stomach": 8.2,
+    "active_frac": 0.299
+   }
+  },
+  "rust": {
+   "0-500": {
+    "n": 9581,
+    "plant_rate": 19.06,
+    "n_targets": 0.669,
+    "n_plant_targets": 0.642,
+    "stomach": 11.342,
+    "active_frac": 0.662
+   },
+   "500-1000": {
+    "n": 16725,
+    "plant_rate": 16.13,
+    "n_targets": 0.644,
+    "n_plant_targets": 0.543,
+    "stomach": 11.611,
+    "active_frac": 0.563
+   },
+   "1000-1500": {
+    "n": 13075,
+    "plant_rate": 14.33,
+    "n_targets": 0.532,
+    "n_plant_targets": 0.482,
+    "stomach": 10.814,
+    "active_frac": 0.501
+   },
+   "1500-2000": {
+    "n": 6638,
+    "plant_rate": 8.59,
+    "n_targets": 0.353,
+    "n_plant_targets": 0.287,
+    "stomach": 7.065,
+    "active_frac": 0.3
+   }
+  }
+ },
+ "per_seed_inzone_rate": {
+  "1": 16.71,
+  "2": 14.92,
+  "3": 14.44,
+  "4": 17.54,
+  "12345": 11.5,
+  "67890": 13.96
+ },
+ "note": "Game n_in_mouth includes any target; Rust n_plant_targets is plant-specific. Rates are per simulated second.",
+ "body_feeding_report": {
+  "per_contact_ingestion_e_per_contact_tick": {
+   "rust": 0.268,
+   "game": 0.186
+  },
+  "source": "body-dev feeding residual analysis (per-contact ingestion higher in Rust)",
+  "interpretation": "Rust converts each contact more efficiently, but has fewer contact-tick exposures; target counts and stomach content match, so the gross feeding gap is contact exposure/turnover and population/lineage weighting, not a matched-occupancy acquisition deficit."
+ }
+}

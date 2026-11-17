@@ -1,0 +1,912 @@
+{
+  "schema": "rustibites.ui.native_runtime_manifest.v1",
+  "sessions": 60,
+  "screen": {
+    "width": 1920,
+    "height": 1080,
+    "dpi": 96,
+    "fullscreen": true
+  },
+  "refs": {
+    "main_menu": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/main_menu_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 424071,
+      "nonblack_bbox": [
+        25,
+        76,
+        1869,
+        1054
+      ]
+    },
+    "main_menu_title": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/main_menu_title_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 424071,
+      "nonblack_bbox": [
+        25,
+        76,
+        1869,
+        1054
+      ]
+    },
+    "main_menu_functional_title": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/main_menu_functional_title_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 424071,
+      "nonblack_bbox": [
+        25,
+        76,
+        1869,
+        1054
+      ]
+    },
+    "main_menu_load_game": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/main_menu_load_game_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 2072189,
+      "nonblack_bbox": [
+        0,
+        0,
+        1919,
+        1079
+      ]
+    },
+    "main_menu_new_game": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/main_menu_new_game_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 2073600,
+      "nonblack_bbox": [
+        0,
+        0,
+        1919,
+        1079
+      ]
+    },
+    "main_menu_bibite_library": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/main_menu_bibite_library_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 2073600,
+      "nonblack_bbox": [
+        0,
+        0,
+        1919,
+        1079
+      ]
+    },
+    "main_menu_achievements": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/main_menu_achievements_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 2049865,
+      "nonblack_bbox": [
+        0,
+        0,
+        1919,
+        1076
+      ]
+    },
+    "main_menu_additional_tools": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/main_menu_additional_tools_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 1101653,
+      "nonblack_bbox": [
+        25,
+        10,
+        1909,
+        1069
+      ]
+    },
+    "main_menu_credits": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/main_menu_credits_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 1052893,
+      "nonblack_bbox": [
+        25,
+        10,
+        1909,
+        1069
+      ]
+    },
+    "main_menu_new_panel": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/main_menu_new_panel_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 2073600,
+      "nonblack_bbox": [
+        0,
+        0,
+        1919,
+        1079
+      ]
+    },
+    "main_menu_workshop": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/main_menu_workshop_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 2073600,
+      "nonblack_bbox": [
+        0,
+        0,
+        1919,
+        1079
+      ]
+    },
+    "main_menu_scenario_editor": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/main_menu_scenario_editor_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 2073600,
+      "nonblack_bbox": [
+        0,
+        0,
+        1919,
+        1079
+      ]
+    },
+    "main_menu_settings": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/main_menu_settings_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 2062999,
+      "nonblack_bbox": [
+        0,
+        0,
+        1919,
+        1079
+      ]
+    },
+    "main_menu_settings_graphics": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/main_menu_settings_graphics_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 2062999,
+      "nonblack_bbox": [
+        0,
+        0,
+        1919,
+        1079
+      ]
+    },
+    "main_menu_settings_gameplay": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/main_menu_settings_gameplay_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 2071436,
+      "nonblack_bbox": [
+        0,
+        0,
+        1919,
+        1079
+      ]
+    },
+    "main_menu_settings_hotkeys": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/main_menu_settings_hotkeys_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 2072384,
+      "nonblack_bbox": [
+        0,
+        0,
+        1919,
+        1079
+      ]
+    },
+    "settings_page_graphics_controls": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/settings_page_graphics_controls_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 2072384,
+      "nonblack_bbox": [
+        0,
+        0,
+        1919,
+        1079
+      ]
+    },
+    "settings_page_gameplay_controls": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/settings_page_gameplay_controls_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 2072384,
+      "nonblack_bbox": [
+        0,
+        0,
+        1919,
+        1079
+      ]
+    },
+    "settings_page_hotkeys_controls": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/settings_page_hotkeys_controls_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 2072384,
+      "nonblack_bbox": [
+        0,
+        0,
+        1919,
+        1079
+      ]
+    },
+    "main_menu_bibite_editor_genes": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/main_menu_bibite_editor_genes_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 424071,
+      "nonblack_bbox": [
+        25,
+        76,
+        1869,
+        1054
+      ]
+    },
+    "main_menu_bibite_editor_brain": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/main_menu_bibite_editor_brain_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 424071,
+      "nonblack_bbox": [
+        25,
+        76,
+        1869,
+        1054
+      ]
+    },
+    "library_selector_flow": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/library_selector_flow_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 2073481,
+      "nonblack_bbox": [
+        0,
+        0,
+        1919,
+        1079
+      ]
+    },
+    "library_create_new": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/library_create_new_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 2073481,
+      "nonblack_bbox": [
+        0,
+        0,
+        1919,
+        1079
+      ]
+    },
+    "library_editor_genes_flow": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/library_editor_genes_flow_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 424071,
+      "nonblack_bbox": [
+        25,
+        76,
+        1869,
+        1054
+      ]
+    },
+    "library_editor_brain_flow": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/library_editor_brain_flow_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 424071,
+      "nonblack_bbox": [
+        25,
+        76,
+        1869,
+        1054
+      ]
+    },
+    "library_editor_brain_after_add": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/library_editor_brain_after_add_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 424071,
+      "nonblack_bbox": [
+        25,
+        76,
+        1869,
+        1054
+      ]
+    },
+    "newgame_scenario_options": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/newgame_scenario_options_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 2073600,
+      "nonblack_bbox": [
+        0,
+        0,
+        1919,
+        1079
+      ]
+    },
+    "newgame_new_scenario_button": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/newgame_new_scenario_button_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 2073600,
+      "nonblack_bbox": [
+        0,
+        0,
+        1919,
+        1079
+      ]
+    },
+    "newgame_new_challenge_button": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/newgame_new_challenge_button_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 2073600,
+      "nonblack_bbox": [
+        0,
+        0,
+        1919,
+        1079
+      ]
+    },
+    "scenario_editor_flow": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/scenario_editor_flow_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 2073600,
+      "nonblack_bbox": [
+        0,
+        0,
+        1919,
+        1079
+      ]
+    },
+    "scenario_editor_zones": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/scenario_editor_zones_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 2071674,
+      "nonblack_bbox": [
+        0,
+        0,
+        1919,
+        1079
+      ]
+    },
+    "scenario_editor_ChallengeOptions": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/scenario_editor_ChallengeOptions_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 2073600,
+      "nonblack_bbox": [
+        0,
+        0,
+        1919,
+        1079
+      ]
+    },
+    "scenario_editor_sim": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/scenario_editor_sim_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 2073600,
+      "nonblack_bbox": [
+        0,
+        0,
+        1919,
+        1079
+      ]
+    },
+    "challenge_selector": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/challenge_selector_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 2073600,
+      "nonblack_bbox": [
+        0,
+        0,
+        1919,
+        1079
+      ]
+    },
+    "challenge_scenario_panel": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/challenge_scenario_panel_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 2073600,
+      "nonblack_bbox": [
+        0,
+        0,
+        1919,
+        1079
+      ]
+    },
+    "challenge_champion_selection": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/challenge_champion_selection_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 424071,
+      "nonblack_bbox": [
+        25,
+        76,
+        1869,
+        1054
+      ]
+    },
+    "challenge_parameters_editor": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/challenge_parameters_editor_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 424071,
+      "nonblack_bbox": [
+        25,
+        76,
+        1869,
+        1054
+      ]
+    },
+    "workshop_panel": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/workshop_panel_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 2073600,
+      "nonblack_bbox": [
+        0,
+        0,
+        1919,
+        1079
+      ]
+    },
+    "workshop_edit_shared": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/workshop_edit_shared_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 424071,
+      "nonblack_bbox": [
+        25,
+        76,
+        1869,
+        1054
+      ]
+    },
+    "default_world_newgame": {
+      "file": "assets/game/reference/functional_ui_native/in_world/default_world_newgame_native_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 0.021199363425925925,
+      "nonblack_pixels": 42490,
+      "nonblack_bbox": [
+        10,
+        10,
+        1909,
+        1069
+      ]
+    },
+    "default_world": {
+      "file": "assets/game/reference/functional_ui_native/in_world/default_world_native_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 0.021199363425925925,
+      "nonblack_pixels": 42490,
+      "nonblack_bbox": [
+        10,
+        10,
+        1909,
+        1069
+      ]
+    },
+    "default_world_inspector": {
+      "file": "assets/game/reference/functional_ui_native/in_world/default_world_inspector_native_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 0.14546923225308642,
+      "nonblack_pixels": 292647,
+      "nonblack_bbox": [
+        10,
+        10,
+        1909,
+        1069
+      ]
+    },
+    "default_world_genes": {
+      "file": "assets/game/reference/functional_ui_native/in_world/default_world_genes_native_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 0.21967447916666666,
+      "nonblack_pixels": 450999,
+      "nonblack_bbox": [
+        10,
+        10,
+        1909,
+        1069
+      ]
+    },
+    "default_world_biology": {
+      "file": "assets/game/reference/functional_ui_native/in_world/default_world_biology_native_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 0.12069299768518518,
+      "nonblack_pixels": 245928,
+      "nonblack_bbox": [
+        10,
+        10,
+        1909,
+        1069
+      ]
+    },
+    "default_world_brain": {
+      "file": "assets/game/reference/functional_ui_native/in_world/default_world_brain_native_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 0.1937885802469136,
+      "nonblack_pixels": 398804,
+      "nonblack_bbox": [
+        10,
+        10,
+        1909,
+        1069
+      ]
+    },
+    "main_world_toolbar": {
+      "file": "assets/game/reference/functional_ui_native/in_world/main_world_toolbar_native_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 0.1937885802469136,
+      "nonblack_pixels": 398804,
+      "nonblack_bbox": [
+        10,
+        10,
+        1909,
+        1069
+      ]
+    },
+    "main_world_tool_placer": {
+      "file": "assets/game/reference/functional_ui_native/in_world/main_world_tool_placer_native_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 0.1976369598765432,
+      "nonblack_pixels": 406784,
+      "nonblack_bbox": [
+        10,
+        10,
+        1909,
+        1069
+      ]
+    },
+    "main_world_tool_user_actions": {
+      "file": "assets/game/reference/functional_ui_native/in_world/main_world_tool_user_actions_native_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 0.19917631172839506,
+      "nonblack_pixels": 409976,
+      "nonblack_bbox": [
+        10,
+        10,
+        1909,
+        1069
+      ]
+    },
+    "main_world_tool_view": {
+      "file": "assets/game/reference/functional_ui_native/in_world/main_world_tool_view_native_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 0.22985146604938272,
+      "nonblack_pixels": 473584,
+      "nonblack_bbox": [
+        10,
+        10,
+        1909,
+        1069
+      ]
+    },
+    "main_world_dynamic_parameters": {
+      "file": "assets/game/reference/functional_ui_native/in_world/main_world_dynamic_parameters_native_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 0.694605999228395,
+      "nonblack_pixels": 1437121,
+      "nonblack_bbox": [
+        10,
+        10,
+        1919,
+        1079
+      ]
+    },
+    "main_world_lineage": {
+      "file": "assets/game/reference/functional_ui_native/in_world/main_world_lineage_native_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 0.2750487075617284,
+      "nonblack_pixels": 565265,
+      "nonblack_bbox": [
+        10,
+        10,
+        1909,
+        1069
+      ]
+    },
+    "main_world_information": {
+      "file": "assets/game/reference/functional_ui_native/in_world/main_world_information_native_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 2030500,
+      "nonblack_bbox": [
+        0,
+        0,
+        1919,
+        1079
+      ]
+    },
+    "main_world_settings_panel": {
+      "file": "assets/game/reference/functional_ui_native/in_world/main_world_settings_panel_native_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_pixels": 2030500,
+      "nonblack_bbox": [
+        0,
+        0,
+        1919,
+        1079
+      ]
+    },
+    "world_dynamic_parameters_controls": {
+      "file": "assets/game/reference/functional_ui_native/in_world/world_dynamic_parameters_controls_native_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 0.7137789351851852,
+      "nonblack_pixels": 1474838,
+      "nonblack_bbox": [
+        10,
+        10,
+        1919,
+        1079
+      ]
+    },
+    "world_settings_controls": {
+      "file": "assets/game/reference/functional_ui_native/in_world/world_settings_controls_native_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 0.7137789351851852,
+      "nonblack_pixels": 1474838,
+      "nonblack_bbox": [
+        10,
+        10,
+        1919,
+        1079
+      ]
+    },
+    "lineage_species_panel": {
+      "file": "assets/game/reference/functional_ui_native/in_world/lineage_species_panel_native_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 0.2750487075617284,
+      "nonblack_pixels": 565265,
+      "nonblack_bbox": [
+        10,
+        10,
+        1909,
+        1069
+      ]
+    },
+    "lineage_species_tabs": {
+      "file": "assets/game/reference/functional_ui_native/in_world/lineage_species_tabs_native_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 0.2750487075617284,
+      "nonblack_pixels": 565265,
+      "nonblack_bbox": [
+        10,
+        10,
+        1909,
+        1069
+      ]
+    },
+    "lineage_species_info": {
+      "file": "assets/game/reference/functional_ui_native/in_world/lineage_species_info_native_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 0.2750487075617284,
+      "nonblack_pixels": 565265,
+      "nonblack_bbox": [
+        10,
+        10,
+        1909,
+        1069
+      ]
+    },
+    "lineage_species_genes": {
+      "file": "assets/game/reference/functional_ui_native/in_world/lineage_species_genes_native_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 0.2750487075617284,
+      "nonblack_pixels": 565265,
+      "nonblack_bbox": [
+        10,
+        10,
+        1909,
+        1069
+      ]
+    },
+    "lineage_species_brain": {
+      "file": "assets/game/reference/functional_ui_native/in_world/lineage_species_brain_native_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 0.2750487075617284,
+      "nonblack_pixels": 565265,
+      "nonblack_bbox": [
+        10,
+        10,
+        1909,
+        1069
+      ]
+    }
+  }
+}

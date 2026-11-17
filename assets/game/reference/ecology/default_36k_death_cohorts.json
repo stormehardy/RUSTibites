@@ -1,0 +1,69 @@
+{
+ "window_s": 60.0,
+ "game": {
+  "dead_n": 16,
+  "live_cohort_n": 16,
+  "dead": {
+   "energy_slope": -0.404,
+   "plant_rate": 0.279,
+   "mouth_rate": 1.711,
+   "stomach_frac": 0.063,
+   "stomach_mean": 0.143,
+   "energy_mean": 7.554,
+   "energy_max": 21.803
+  },
+  "live": {
+   "energy_slope": -0.068,
+   "plant_rate": 15.617,
+   "mouth_rate": 17.809,
+   "stomach_frac": 0.722,
+   "stomach_mean": 7.178,
+   "energy_mean": 71.305,
+   "energy_max": 78.113
+  }
+ },
+ "seed12345": {
+  "dead_n": 24,
+  "live_cohort_n": 24,
+  "dead": {
+   "energy_slope": -0.415,
+   "plant_rate": 0.0,
+   "mouth_rate": 3.662,
+   "stomach_frac": 0.122,
+   "stomach_mean": 0.001,
+   "energy_mean": 8.12,
+   "energy_max": 24.879
+  },
+  "live": {
+   "energy_slope": -0.299,
+   "plant_rate": 9.087,
+   "mouth_rate": 13.653,
+   "stomach_frac": 0.636,
+   "stomach_mean": 5.805,
+   "energy_mean": 74.883,
+   "energy_max": 88.073
+  }
+ },
+ "seed67890": {
+  "dead_n": 21,
+  "live_cohort_n": 21,
+  "dead": {
+   "energy_slope": -0.376,
+   "plant_rate": 0.936,
+   "mouth_rate": 1.472,
+   "stomach_frac": 0.075,
+   "stomach_mean": 0.112,
+   "energy_mean": 7.328,
+   "energy_max": 22.062
+  },
+  "live": {
+   "energy_slope": -0.072,
+   "plant_rate": 13.655,
+   "mouth_rate": 14.103,
+   "stomach_frac": 0.755,
+   "stomach_mean": 9.76,
+   "energy_mean": 87.276,
+   "energy_max": 96.191
+  }
+ }
+}

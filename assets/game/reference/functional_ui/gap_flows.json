@@ -1,0 +1,2588 @@
+{
+  "schema": "rustibites.assets.functional_ui.gap_flows.v1",
+  "steps": [
+    {
+      "step": "library_editor_by_path",
+      "editor": {
+        "ok": true,
+        "pressed": "Editor",
+        "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Editor"
+      },
+      "create_new": {
+        "ok": true,
+        "pressed": "CreateNew",
+        "path": "UI/BibiteSelector/SelectionPanel/Holder/Panels/LeftSide Buttons/CreateNew"
+      },
+      "ui": {
+        "texts": [
+          "The Bibites: Digital Life",
+          "Omnia Studios",
+          "the studio Leo Caussan ended up founding",
+          "This is all possible thanks to the amazing patrons supporting the project on Patreon\n\nHelp propel the creation of a new form of life!",
+          "The Bibites",
+          "Continue",
+          "New",
+          "Load",
+          "Bibite Library",
+          "Settings\n",
+          "Achievements",
+          "Additional Tools",
+          "Credits\n",
+          "Quit\n",
+          "The Bibites 0.6.3.1",
+          "Create New",
+          "Template Bibites",
+          "Accept",
+          "0.6.3.1",
+          "Arborea Magna",
+          "0.6.3.1",
+          "Arrietty 5",
+          "0.6.3.1",
+          "Arrietty 6 ",
+          "0.6.3.1",
+          "Arrietty 6",
+          "0.6.3.1",
+          "Arrietty 7",
+          "0.6.3.1",
+          "Arrietty 7",
+          "0.6.3.1",
+          "Arrietty 7",
+          "0.6.3.1",
+          "Avarus Nyx",
+          "0.6.3.1",
+          "Avarus Sumo",
+          "0.6.3.1",
+          "Backy food",
+          "0.6.3.1",
+          "Basic bibite",
+          "0.6.0",
+          "Basic knowsonionus",
+          "0.6.3.1",
+          "Basic knowsonionus",
+          "0.6.3.1",
+          "Fixture Sample",
+          "0.6.3.1",
+          "Basicad bibite",
+          "0.6.3.1",
+          "Battery",
+          "0.6.3.1",
+          "Bibitus Basicus (R-Selection)",
+          "0.6.3.1",
+          "Bibitus Basicus (R-Selection)",
+          "0.6.3.1",
+          "Bibitus basicus 2",
+          "0.6.3.1",
+          "Bibitus basicus",
+          "0.6.3.1",
+          "Bibitus basicus",
+          "0.6.3.1",
+          "Bibitus basicus3",
+          "0.6.3.1",
+          "Bibitus basicus",
+          "0.6.3.1",
+          "Bibitus clonicus",
+          "0.6.3.1",
+          "Bibitus Ultimus",
+          "0.6.3.1",
+          "Bibitus Ultimus",
+          "0.6.3.1",
+          "Big Brain",
+          "0.6.3.1",
+          "Big Brain",
+          "0.6.3.1",
+          "Big emberus ",
+          "0.6.3.1",
+          "Big Turn",
+          "0.6.3.1",
+          "Big Turn",
+          "0.6.3.1",
+          "Big Turn2",
+          "0.6.3.1",
+          "Big Turn3",
+          "0.6.3.1",
+          "Big Turn4",
+          "0.6.3.1",
+          "Big Turn5",
+          "0.6.3.1",
+          "Bluey",
+          "0.6.3.1",
+          "Brainless",
+          "0.6.3.1",
+          "BTest",
+          "0.6.3.1",
+          "C-Cannon Growth 1",
+          "0.6.3.1",
+          "C1A",
+          "0.6.3.1",
+          "C1B",
+          "0.6.3.1",
+          "C1C",
+          "0.6.3.1",
+          "C2A",
+          "0.6.3.1",
+          "C2B",
+          "0.6.3.1",
+          "C2C",
+          "0.6.3.1",
+          "Camel",
+          "0.6.0",
+          "Carnivore 2",
+          "0.6.3.1",
+          "Carnivore 3",
+          "0.6.3.1",
+          "Carnivore",
+          "0.6.3.1",
+          "Cautious Grazer",
+          "0.6.3.1",
+          "Cerebrus-120",
+          "0.6.3.1",
+          "Cisternina Gigantus",
+          "0.6.3.1",
+          "Cisternina",
+          "0.6.3.1",
+          "Clawde 1.1",
+          "0.6.3.1",
+          "Clawde 1.2",
+          "0.6.3.1",
+          "Congregans camelum",
+          "0.6.3.1",
+          "Dante's Demon",
+          "0.6.3.1",
+          "Dante's Demon",
+          "0.6.3.1",
+          "Darth bibitus",
+          "0.6.1a4",
+          "Darth bibitus3",
+          "0.6.3.1",
+          "Darwin's Demon",
+          "0.6.3.1",
+          "Darwin's Demon",
+          "0.6.3.1",
+          "Darwin's Demon",
+          "0.6.3.1",
+          "DeepBasic 1.1",
+          "0.6.3.1",
+          "DeepBasic 1.1",
+          "0.6.3.1",
+          "DeepBasic 2",
+          "0.6.3.1",
+          "DeepBasic 3",
+          "0.6.3.1",
+          "Deepbasic heavy 1.1",
+          "0.6.3.1",
+          "DeepBasic Heavy 1",
+          "0.6.3.1",
+          "DeepBasic High 1",
+          "0.6.3.1",
+          "DeepBasic Lean",
+          "0.6.3.1",
+          "DeepBasic",
+          "0.6.3.1",
+          "DeepBasic",
+          "0.6.3.1",
+          "Dense Forager 7x7",
+          "0.6.3.1",
+          "Dense Forager 7x7",
+          "0.6.3.1",
+          "Dragonfly fix",
+          "0.6.3.1",
+          "Dragonfly fix",
+          "0.6.3.1",
+          "Easy herbivore",
+          "0.6.0",
+          "Easyherbivore Test",
+          "0.6.3.1",
+          "Easyherbivore Test",
+          "0.6.3.1",
+          "Easyherbivore Test",
+          "0.6.3.1",
+          "Edit Test",
+          "0.6.3.1",
+          "Emerald Grazer",
+          "0.6.3.1",
+          "Experiment 2",
+          "0.6.3.1",
+          "Explanatory Bibite Basic",
+          "0.6.3.1",
+          "Explanatory Bibite Max",
+          "0.6.3.1",
+          "Explanatory Bibite Min",
+          "0.6.3.1",
+          "Explanatory Bibite",
+          "0.6.3.1",
+          "FatGate Forager",
+          "0.6.3.1",
+          "FatGate_Forager_tanh",
+          "0.6.3.1",
+          "Fibonacci turner"
+        ],
+        "buttons": [
+          {
+            "path": "UI/WelcomeScreen/Patreon Holder/Button",
+            "name": "Button",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Continue",
+            "name": "Continue",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/NewSim",
+            "name": "NewSim",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/LoadSim",
+            "name": "LoadSim",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Editor",
+            "name": "Editor",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Settings",
+            "name": "Settings",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Achievements",
+            "name": "Achievements",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/More",
+            "name": "More",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Credits",
+            "name": "Credits",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Quit",
+            "name": "Quit",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/SelectionPanel/Holder/Panels/LeftSide Buttons/Templates",
+            "name": "Templates",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/SelectionPanel/Holder/Panels/LeftSide Buttons/Saved",
+            "name": "Saved",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/SelectionPanel/Holder/Panels/LeftSide Buttons/OpenFolder",
+            "name": "OpenFolder",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/SelectionPanel/Holder/Panels/LeftSide Buttons/Reload ",
+            "name": "Reload ",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/SelectionPanel/Holder/Panels/LeftSide Buttons/CreateNew",
+            "name": "CreateNew",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/SelectionPanel/Holder/Preview/Right Side Buttons/Edit Button",
+            "name": "Edit Button",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/SelectionPanel/Holder/Preview/Right Side Buttons/Delete Button",
+            "name": "Delete Button",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/SelectionPanel/Holder/Preview/Right Side Buttons/BackButton",
+            "name": "BackButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/SelectionPanel/Holder/Preview/Previewer/BibitePreview/Bottom/Button",
+            "name": "Button",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Buttons/GenesButton",
+            "name": "GenesButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Buttons/brainButton",
+            "name": "brainButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Buttons/SaveSprite",
+            "name": "SaveSprite",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Buttons/SaveAndContinue",
+            "name": "SaveAndContinue",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Buttons/BackButton",
+            "name": "BackButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "0.100"
+            ]
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "0.100"
+            ]
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "0.100"
+            ]
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "0.50"
+            ]
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "0.20"
+            ]
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "1.00"
+            ]
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "0.75 SPD"
+            ]
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "2.0"
+            ]
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "5.00%"
+            ]
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "1.0"
+            ]
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "10.00%"
+            ]
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "15.0 s"
+            ]
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "20.0 s"
+            ]
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "10.0 s"
+            ]
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "180.0 u"
+            ]
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "75 \u00b0"
+            ]
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "1.00 s"
+            ]
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "150 u"
+            ]
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "1.00"
+            ]
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "1.50"
+            ]
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "0.75"
+            ]
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "0.25"
+            ]
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "35.0 u"
+            ]
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "0.150"
+            ]
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "2.00"
+            ]
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "1.00"
+            ]
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "1.000"
+            ]
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "2.000"
+            ]
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "1.000"
+            ]
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "1.000"
+            ]
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "0.150"
+            ]
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "1.000"
+            ]
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "1.000"
+            ]
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "0.500"
+            ]
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "0.250"
+            ]
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Previewer/BibitePreview/Top/InfoButton",
+            "name": "InfoButton",
+            "enabled": true,
+            "labels": []
+          }
+        ],
+        "panels": [
+          "UI/WelcomeScreen/Main Holder/ButtonsPanel",
+          "UI/WelcomeScreen/Main Holder/ButtonsPanel/Editor",
+          "UI/BibiteSelector",
+          "UI/BibiteSelector/SelectionPanel",
+          "UI/BibiteSelector/BibiteEditor",
+          "UI/BibiteSelector/BibiteEditor/Panel",
+          "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel",
+          "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel",
+          "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel",
+          "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel",
+          "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel",
+          "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel",
+          "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel",
+          "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel",
+          "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel",
+          "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel",
+          "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel",
+          "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel",
+          "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel",
+          "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel",
+          "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel",
+          "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel",
+          "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel",
+          "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel",
+          "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel",
+          "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel",
+          "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel",
+          "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel",
+          "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel",
+          "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel",
+          "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel",
+          "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel",
+          "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel",
+          "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel",
+          "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel",
+          "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel",
+          "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel",
+          "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel",
+          "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel",
+          "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel",
+          "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel"
+        ]
+      }
+    },
+    {
+      "step": "editor_genes_edit_accept",
+      "edit": {
+        "ok": true,
+        "pressed": "Edit Button",
+        "path": "UI/BibiteSelector/SelectionPanel/Holder/Preview/Right Side Buttons/Edit Button"
+      },
+      "slider_changes": [
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "old": 0.264459223,
+          "new": 0.25,
+          "hit": {
+            "ok": true,
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+            "kind": "Slider"
+          }
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "old": 0.5,
+          "new": 0.25,
+          "hit": {
+            "ok": true,
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+            "kind": "Slider"
+          }
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "old": 1.08553529,
+          "new": 0.25,
+          "hit": {
+            "ok": true,
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+            "kind": "Slider"
+          }
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "old": 0.8851896,
+          "new": 0.25,
+          "hit": {
+            "ok": true,
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+            "kind": "Slider"
+          }
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "old": 0.0668449253,
+          "new": 0.75,
+          "hit": {
+            "ok": true,
+            "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+            "kind": "Slider"
+          }
+        }
+      ],
+      "before_controls": [
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.264459223,
+          "minValue": 0,
+          "maxValue": 0.5,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.5,
+          "minValue": 0,
+          "maxValue": 1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 1.08553529,
+          "minValue": -1,
+          "maxValue": 9,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.8851896,
+          "minValue": -1,
+          "maxValue": 9,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.0668449253,
+          "minValue": -1,
+          "maxValue": 9,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 2.5,
+          "minValue": -1,
+          "maxValue": 9,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 2.5,
+          "minValue": -1,
+          "maxValue": 9,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 5,
+          "minValue": -1,
+          "maxValue": 9,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.6550802,
+          "minValue": -1,
+          "maxValue": 9,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 1.07198763,
+          "minValue": 0,
+          "maxValue": 10,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 2,
+          "minValue": 0,
+          "maxValue": 10,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.35,
+          "minValue": 0,
+          "maxValue": 2,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 35,
+          "minValue": 0,
+          "maxValue": 100,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.336821854,
+          "minValue": 0,
+          "maxValue": 1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.9196292,
+          "minValue": 0,
+          "maxValue": 4,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 1.43998468,
+          "minValue": 0,
+          "maxValue": 4,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.955669463,
+          "minValue": 0,
+          "maxValue": 4,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 154.415314,
+          "minValue": 0,
+          "maxValue": 500,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 1,
+          "minValue": 0.1,
+          "maxValue": 10.1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 176.36795,
+          "minValue": 0,
+          "maxValue": 360,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 75,
+          "minValue": 0,
+          "maxValue": 200,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 10,
+          "minValue": 1,
+          "maxValue": 101,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 20,
+          "minValue": 1,
+          "maxValue": 101,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 15,
+          "minValue": 1,
+          "maxValue": 51,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.1,
+          "minValue": 0,
+          "maxValue": 0.25,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 2.09962988,
+          "minValue": 0,
+          "maxValue": 10,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.025,
+          "minValue": 0,
+          "maxValue": 0.25,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 4.592907,
+          "minValue": 0,
+          "maxValue": 30,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 1,
+          "minValue": 1e-06,
+          "maxValue": 2.5,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.862713337,
+          "minValue": 0.05,
+          "maxValue": 2.55,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.3,
+          "minValue": 0,
+          "maxValue": 1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.567172348,
+          "minValue": 0,
+          "maxValue": 1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.1,
+          "minValue": 0,
+          "maxValue": 1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.119786374,
+          "minValue": 0,
+          "maxValue": 1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.1042535,
+          "minValue": 0,
+          "maxValue": 1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Input",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Previewer/BibitePreview/Body/line/Name Field/Edit Section/renameField",
+          "name": "renameField",
+          "text": "Accept",
+          "labels": []
+        },
+        {
+          "kind": "Input",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Previewer/BibitePreview/Body/Description Field/Edit Section/renameField",
+          "name": "renameField",
+          "text": "",
+          "labels": []
+        }
+      ],
+      "after_controls": [
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.5,
+          "minValue": 0,
+          "maxValue": 0.5,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.5,
+          "minValue": 0,
+          "maxValue": 1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 1.08553529,
+          "minValue": -1,
+          "maxValue": 9,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.8851896,
+          "minValue": -1,
+          "maxValue": 9,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.0668449253,
+          "minValue": -1,
+          "maxValue": 9,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 2.5,
+          "minValue": -1,
+          "maxValue": 9,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 2.5,
+          "minValue": -1,
+          "maxValue": 9,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 5,
+          "minValue": -1,
+          "maxValue": 9,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.6550802,
+          "minValue": -1,
+          "maxValue": 9,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 1.07198763,
+          "minValue": 0,
+          "maxValue": 10,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 2,
+          "minValue": 0,
+          "maxValue": 10,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.35,
+          "minValue": 0,
+          "maxValue": 2,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 35,
+          "minValue": 0,
+          "maxValue": 100,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.336821854,
+          "minValue": 0,
+          "maxValue": 1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.9196292,
+          "minValue": 0,
+          "maxValue": 4,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 1.43998468,
+          "minValue": 0,
+          "maxValue": 4,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.955669463,
+          "minValue": 0,
+          "maxValue": 4,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 154.415314,
+          "minValue": 0,
+          "maxValue": 500,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 1,
+          "minValue": 0.1,
+          "maxValue": 10.1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 176.36795,
+          "minValue": 0,
+          "maxValue": 360,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 75,
+          "minValue": 0,
+          "maxValue": 200,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 10,
+          "minValue": 1,
+          "maxValue": 101,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 20,
+          "minValue": 1,
+          "maxValue": 101,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 15,
+          "minValue": 1,
+          "maxValue": 51,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.1,
+          "minValue": 0,
+          "maxValue": 0.25,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 2.09962988,
+          "minValue": 0,
+          "maxValue": 10,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.025,
+          "minValue": 0,
+          "maxValue": 0.25,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 4.592907,
+          "minValue": 0,
+          "maxValue": 30,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 1,
+          "minValue": 1e-06,
+          "maxValue": 2.5,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.862713337,
+          "minValue": 0.05,
+          "maxValue": 2.55,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.3,
+          "minValue": 0,
+          "maxValue": 1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.567172348,
+          "minValue": 0,
+          "maxValue": 1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.1,
+          "minValue": 0,
+          "maxValue": 1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.119786374,
+          "minValue": 0,
+          "maxValue": 1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.1042535,
+          "minValue": 0,
+          "maxValue": 1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Input",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Previewer/BibitePreview/Body/line/Name Field/Edit Section/renameField",
+          "name": "renameField",
+          "text": "Accept",
+          "labels": []
+        },
+        {
+          "kind": "Input",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Previewer/BibitePreview/Body/Description Field/Edit Section/renameField",
+          "name": "renameField",
+          "text": "",
+          "labels": []
+        }
+      ],
+      "save_continue": {
+        "ok": true,
+        "pressed": "SaveAndContinue",
+        "path": "UI/BibiteSelector/BibiteEditor/Panel/Buttons/SaveAndContinue"
+      },
+      "submit": {
+        "ok": true,
+        "pressed": "Submit",
+        "path": "UI/BibiteSelector/BibiteEditor/Panel/Buttons/Submit"
+      },
+      "ui": {
+        "texts": [
+          "The Bibites: Digital Life",
+          "Omnia Studios",
+          "the studio Leo Caussan ended up founding",
+          "This is all possible thanks to the amazing patrons supporting the project on Patreon\n\nHelp propel the creation of a new form of life!",
+          "The Bibites",
+          "Continue",
+          "New",
+          "Load",
+          "Bibite Library",
+          "Settings\n",
+          "Achievements",
+          "Additional Tools",
+          "Credits\n",
+          "Quit\n",
+          "The Bibites 0.6.3.1",
+          "Create New",
+          "Template Bibites",
+          "Accept",
+          "0.6.3.1",
+          "Arborea Magna",
+          "0.6.3.1",
+          "Arrietty 5",
+          "0.6.3.1",
+          "Arrietty 6 ",
+          "0.6.3.1",
+          "Arrietty 6",
+          "0.6.3.1",
+          "Arrietty 7",
+          "0.6.3.1",
+          "Arrietty 7",
+          "0.6.3.1",
+          "Arrietty 7",
+          "0.6.3.1",
+          "Avarus Nyx",
+          "0.6.3.1",
+          "Avarus Sumo",
+          "0.6.3.1",
+          "Backy food",
+          "0.6.3.1",
+          "Basic bibite",
+          "0.6.0",
+          "Basic knowsonionus",
+          "0.6.3.1",
+          "Basic knowsonionus",
+          "0.6.3.1",
+          "Fixture Sample",
+          "0.6.3.1",
+          "Basicad bibite",
+          "0.6.3.1",
+          "Battery",
+          "0.6.3.1",
+          "Bibitus Basicus (R-Selection)",
+          "0.6.3.1",
+          "Bibitus Basicus (R-Selection)",
+          "0.6.3.1",
+          "Bibitus basicus 2",
+          "0.6.3.1",
+          "Bibitus basicus",
+          "0.6.3.1",
+          "Bibitus basicus",
+          "0.6.3.1",
+          "Bibitus basicus3",
+          "0.6.3.1",
+          "Bibitus basicus",
+          "0.6.3.1",
+          "Bibitus clonicus",
+          "0.6.3.1",
+          "Bibitus Ultimus",
+          "0.6.3.1",
+          "Bibitus Ultimus",
+          "0.6.3.1",
+          "Big Brain",
+          "0.6.3.1",
+          "Big Brain",
+          "0.6.3.1",
+          "Big emberus ",
+          "0.6.3.1",
+          "Big Turn",
+          "0.6.3.1",
+          "Big Turn",
+          "0.6.3.1",
+          "Big Turn2",
+          "0.6.3.1",
+          "Big Turn3",
+          "0.6.3.1",
+          "Big Turn4",
+          "0.6.3.1",
+          "Big Turn5",
+          "0.6.3.1",
+          "Bluey",
+          "0.6.3.1",
+          "Brainless",
+          "0.6.3.1",
+          "BTest",
+          "0.6.3.1",
+          "C-Cannon Growth 1",
+          "0.6.3.1",
+          "C1A",
+          "0.6.3.1",
+          "C1B",
+          "0.6.3.1",
+          "C1C",
+          "0.6.3.1",
+          "C2A",
+          "0.6.3.1",
+          "C2B",
+          "0.6.3.1",
+          "C2C",
+          "0.6.3.1",
+          "Camel",
+          "0.6.0",
+          "Carnivore 2",
+          "0.6.3.1",
+          "Carnivore 3",
+          "0.6.3.1",
+          "Carnivore",
+          "0.6.3.1",
+          "Cautious Grazer",
+          "0.6.3.1",
+          "Cerebrus-120",
+          "0.6.3.1",
+          "Cisternina Gigantus",
+          "0.6.3.1",
+          "Cisternina",
+          "0.6.3.1",
+          "Clawde 1.1",
+          "0.6.3.1",
+          "Clawde 1.2",
+          "0.6.3.1",
+          "Congregans camelum",
+          "0.6.3.1",
+          "Dante's Demon",
+          "0.6.3.1",
+          "Dante's Demon",
+          "0.6.3.1",
+          "Darth bibitus",
+          "0.6.1a4",
+          "Darth bibitus3",
+          "0.6.3.1",
+          "Darwin's Demon",
+          "0.6.3.1",
+          "Darwin's Demon",
+          "0.6.3.1",
+          "Darwin's Demon",
+          "0.6.3.1",
+          "DeepBasic 1.1",
+          "0.6.3.1",
+          "DeepBasic 1.1",
+          "0.6.3.1",
+          "DeepBasic 2",
+          "0.6.3.1",
+          "DeepBasic 3",
+          "0.6.3.1",
+          "Deepbasic heavy 1.1",
+          "0.6.3.1",
+          "DeepBasic Heavy 1",
+          "0.6.3.1",
+          "DeepBasic High 1",
+          "0.6.3.1",
+          "DeepBasic Lean",
+          "0.6.3.1",
+          "DeepBasic",
+          "0.6.3.1",
+          "DeepBasic",
+          "0.6.3.1",
+          "Dense Forager 7x7",
+          "0.6.3.1",
+          "Dense Forager 7x7",
+          "0.6.3.1",
+          "Dragonfly fix",
+          "0.6.3.1",
+          "Dragonfly fix",
+          "0.6.3.1",
+          "Easy herbivore",
+          "0.6.0",
+          "Easyherbivore Test",
+          "0.6.3.1",
+          "Easyherbivore Test",
+          "0.6.3.1",
+          "Easyherbivore Test",
+          "0.6.3.1",
+          "Edit Test",
+          "0.6.3.1",
+          "Emerald Grazer",
+          "0.6.3.1",
+          "Experiment 2",
+          "0.6.3.1",
+          "Explanatory Bibite Basic",
+          "0.6.3.1",
+          "Explanatory Bibite Max",
+          "0.6.3.1",
+          "Explanatory Bibite Min",
+          "0.6.3.1",
+          "Explanatory Bibite",
+          "0.6.3.1",
+          "FatGate Forager",
+          "0.6.3.1",
+          "FatGate_Forager_tanh",
+          "0.6.3.1",
+          "Fibonacci turner"
+        ],
+        "buttons": [
+          {
+            "path": "UI/WelcomeScreen/Patreon Holder/Button",
+            "name": "Button",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Continue",
+            "name": "Continue",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/NewSim",
+            "name": "NewSim",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/LoadSim",
+            "name": "LoadSim",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Editor",
+            "name": "Editor",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Settings",
+            "name": "Settings",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Achievements",
+            "name": "Achievements",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/More",
+            "name": "More",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Credits",
+            "name": "Credits",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Quit",
+            "name": "Quit",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/SelectionPanel/Holder/Panels/LeftSide Buttons/Templates",
+            "name": "Templates",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/SelectionPanel/Holder/Panels/LeftSide Buttons/Saved",
+            "name": "Saved",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/SelectionPanel/Holder/Panels/LeftSide Buttons/OpenFolder",
+            "name": "OpenFolder",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/SelectionPanel/Holder/Panels/LeftSide Buttons/Reload ",
+            "name": "Reload ",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/SelectionPanel/Holder/Panels/LeftSide Buttons/CreateNew",
+            "name": "CreateNew",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/SelectionPanel/Holder/Preview/Right Side Buttons/Edit Button",
+            "name": "Edit Button",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/SelectionPanel/Holder/Preview/Right Side Buttons/Delete Button",
+            "name": "Delete Button",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/SelectionPanel/Holder/Preview/Right Side Buttons/BackButton",
+            "name": "BackButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/BibiteSelector/SelectionPanel/Holder/Preview/Previewer/BibitePreview/Bottom/Button",
+            "name": "Button",
+            "enabled": true,
+            "labels": []
+          }
+        ],
+        "panels": [
+          "UI/WelcomeScreen/Main Holder/ButtonsPanel",
+          "UI/WelcomeScreen/Main Holder/ButtonsPanel/Editor",
+          "UI/BibiteSelector",
+          "UI/BibiteSelector/SelectionPanel"
+        ]
+      }
+    },
+    {
+      "step": "save_create_load_browser",
+      "controls": [
+        {
+          "kind": "Toggle",
+          "path": "UICanvas/MainUI/TopLayer/LoadGamePanel/LoadList/Scroll View/Viewport/Content/SettingToggle/Toggle",
+          "name": "Toggle",
+          "is_on": true,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0,
+          "minValue": -1.43067658,
+          "maxValue": 2.86135316,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Input",
+          "path": "UICanvas/MainUI/TopLayer/Save Game Panel/SelectedPanel/SaveInfo/List/Name line/InputField (TMP)",
+          "name": "InputField (TMP)",
+          "text": "",
+          "labels": []
+        }
+      ],
+      "input_set": {
+        "ok": true,
+        "path": "UICanvas/MainUI/TopLayer/Save Game Panel/SelectedPanel/SaveInfo/List/Name line/InputField (TMP)",
+        "kind": "Input"
+      },
+      "save_press": {
+        "ok": true,
+        "pressed": "SaveButton",
+        "path": "UICanvas/MainUI/TopLayer/Save Game Panel/SelectedPanel/SaveInfo/Save Button Holder/SaveButton"
+      },
+      "save_ui": {
+        "texts": [
+          "Include autosaves",
+          "New Game",
+          "Version: ",
+          "0.4.4a6",
+          "Last edit:",
+          "2012-19-09 19:00",
+          "Informations",
+          "Sim Time:",
+          "100h 34m 01s",
+          "Sim Size:",
+          "0u",
+          "Number of Bibites: ",
+          "300",
+          "Number of Pellets: ",
+          "10000",
+          "Load",
+          "Time: 00:00:20\n0 fps   /  0 tps\nsim/real: x0.00",
+          "X 0.00",
+          "100u",
+          "Info",
+          "+"
+        ],
+        "buttons": [
+          {
+            "path": "UICanvas/MainUI/TopLayer/LoadGamePanel/LoadList/Scroll View/Viewport/Content/SettingToggle/Button",
+            "name": "Button",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/TopLayer/LoadGamePanel/SelectedPanel/SaveInfo/DeleteButton",
+            "name": "DeleteButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/TopLayer/LoadGamePanel/SelectedPanel/SaveInfo/CloseButton",
+            "name": "CloseButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/TopLayer/LoadGamePanel/SelectedPanel/SaveInfo/ButtonHolder/LoadButton",
+            "name": "LoadButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/PlacerButton",
+            "name": "PlacerButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/UserActions",
+            "name": "UserActions",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton",
+            "name": "ViewButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/InformationPanelButton",
+            "name": "InformationPanelButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/DynamicParametersButton",
+            "name": "DynamicParametersButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/AncestralLineageButton",
+            "name": "AncestralLineageButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/SettingsButton",
+            "name": "SettingsButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/PauseButton",
+            "name": "PauseButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/PlayButton",
+            "name": "PlayButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "X 0.00"
+            ]
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/QuickStatsHolder/OpenButtons/OpenQuickStats",
+            "name": "OpenQuickStats",
+            "enabled": true,
+            "labels": []
+          }
+        ],
+        "panels": [
+          "UICanvas/MainUI/TopLayer/LoadGamePanel",
+          "UICanvas/MainUI/TopLayer/LoadGamePanel/SelectedPanel",
+          "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+          "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel"
+        ]
+      },
+      "load_ui": {
+        "texts": [
+          "Include autosaves",
+          "New Game",
+          "Version: ",
+          "0.4.4a6",
+          "Last edit:",
+          "2012-19-09 19:00",
+          "Informations",
+          "Sim Time:",
+          "100h 34m 01s",
+          "Sim Size:",
+          "0u",
+          "Number of Bibites: ",
+          "300",
+          "Number of Pellets: ",
+          "10000",
+          "Load",
+          "Time: 00:00:20\n0 fps   /  0 tps\nsim/real: x0.00",
+          "X 0.00",
+          "100u",
+          "Info",
+          "+"
+        ],
+        "buttons": [
+          {
+            "path": "UICanvas/MainUI/TopLayer/LoadGamePanel/LoadList/Scroll View/Viewport/Content/SettingToggle/Button",
+            "name": "Button",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/TopLayer/LoadGamePanel/SelectedPanel/SaveInfo/DeleteButton",
+            "name": "DeleteButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/TopLayer/LoadGamePanel/SelectedPanel/SaveInfo/CloseButton",
+            "name": "CloseButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/TopLayer/LoadGamePanel/SelectedPanel/SaveInfo/ButtonHolder/LoadButton",
+            "name": "LoadButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/PlacerButton",
+            "name": "PlacerButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/UserActions",
+            "name": "UserActions",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton",
+            "name": "ViewButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/InformationPanelButton",
+            "name": "InformationPanelButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/DynamicParametersButton",
+            "name": "DynamicParametersButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/AncestralLineageButton",
+            "name": "AncestralLineageButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/SettingsButton",
+            "name": "SettingsButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/PauseButton",
+            "name": "PauseButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/PlayButton",
+            "name": "PlayButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "X 0.00"
+            ]
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/QuickStatsHolder/OpenButtons/OpenQuickStats",
+            "name": "OpenQuickStats",
+            "enabled": true,
+            "labels": []
+          }
+        ],
+        "panels": [
+          "UICanvas/MainUI/TopLayer/LoadGamePanel",
+          "UICanvas/MainUI/TopLayer/LoadGamePanel/SelectedPanel",
+          "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+          "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel"
+        ]
+      },
+      "load_controls": [
+        {
+          "kind": "Toggle",
+          "path": "UICanvas/MainUI/TopLayer/LoadGamePanel/LoadList/Scroll View/Viewport/Content/SettingToggle/Toggle",
+          "name": "Toggle",
+          "is_on": true,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0,
+          "minValue": -1.43067658,
+          "maxValue": 2.86135316,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        }
+      ]
+    },
+    {
+      "step": "newgame_dropdowns",
+      "before": [
+        {
+          "kind": "Toggle",
+          "path": "UICanvas/MainUI/TopLayer/LoadGamePanel/LoadList/Scroll View/Viewport/Content/SettingToggle/Toggle",
+          "name": "Toggle",
+          "is_on": true,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0,
+          "minValue": -1.43067658,
+          "maxValue": 2.86135316,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        }
+      ],
+      "changes": [],
+      "after": [
+        {
+          "kind": "Toggle",
+          "path": "UICanvas/MainUI/TopLayer/LoadGamePanel/LoadList/Scroll View/Viewport/Content/SettingToggle/Toggle",
+          "name": "Toggle",
+          "is_on": true,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Slider",
+          "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0,
+          "minValue": -1.43067658,
+          "maxValue": 2.86135316,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": []
+        }
+      ],
+      "ui": {
+        "texts": [
+          "Include autosaves",
+          "New Game",
+          "Version: ",
+          "0.4.4a6",
+          "Last edit:",
+          "2012-19-09 19:00",
+          "Informations",
+          "Sim Time:",
+          "100h 34m 01s",
+          "Sim Size:",
+          "0u",
+          "Number of Bibites: ",
+          "300",
+          "Number of Pellets: ",
+          "10000",
+          "Load",
+          "Time: 00:00:20\n0 fps   /  0 tps\nsim/real: x0.00",
+          "X 0.00",
+          "100u",
+          "Info",
+          "+"
+        ],
+        "buttons": [
+          {
+            "path": "UICanvas/MainUI/TopLayer/LoadGamePanel/LoadList/Scroll View/Viewport/Content/SettingToggle/Button",
+            "name": "Button",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/TopLayer/LoadGamePanel/SelectedPanel/SaveInfo/DeleteButton",
+            "name": "DeleteButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/TopLayer/LoadGamePanel/SelectedPanel/SaveInfo/CloseButton",
+            "name": "CloseButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/TopLayer/LoadGamePanel/SelectedPanel/SaveInfo/ButtonHolder/LoadButton",
+            "name": "LoadButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/PlacerButton",
+            "name": "PlacerButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/UserActions",
+            "name": "UserActions",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton",
+            "name": "ViewButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/InformationPanelButton",
+            "name": "InformationPanelButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/DynamicParametersButton",
+            "name": "DynamicParametersButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/AncestralLineageButton",
+            "name": "AncestralLineageButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/SettingsButton",
+            "name": "SettingsButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/PauseButton",
+            "name": "PauseButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/PlayButton",
+            "name": "PlayButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "X 0.00"
+            ]
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/QuickStatsHolder/OpenButtons/OpenQuickStats",
+            "name": "OpenQuickStats",
+            "enabled": true,
+            "labels": []
+          }
+        ],
+        "panels": [
+          "UICanvas/MainUI/TopLayer/LoadGamePanel",
+          "UICanvas/MainUI/TopLayer/LoadGamePanel/SelectedPanel",
+          "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+          "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel"
+        ]
+      }
+    }
+  ]
+}

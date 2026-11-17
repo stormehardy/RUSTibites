@@ -1,0 +1,217 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://rustibites.invalid/parity/capture-v1.schema.json",
+  "title": "RUSTibites parity capture v1",
+  "description": "Schema of the files written by tools/parity/capture.py (game) and expected from bibites-cli (rust). Documentation: docs/PARITY.md. Numeric values are f32 values widened to JSON doubles. Digests are sha256(bytes).hexdigest()[:16] over little-endian raw f32/i32 bits (see docs/PARITY.md 6.3).",
+  "definitions": {
+    "nonNegativeInt": { "type": "integer", "minimum": 0 },
+    "tick": { "type": "integer", "minimum": 0, "description": "absolute simulation tick since the base save state (tick 0 = base state)" },
+    "digest": { "type": "string", "pattern": "^[0-9a-f]{16}$" },
+    "f32Array35": { "type": "array", "minItems": 35, "maxItems": 35, "items": { "type": "number" } },
+    "counts": {
+      "type": "object", "required": ["bibites", "eggs", "corpses"], "additionalProperties": false,
+      "properties": {
+        "bibites": { "$ref": "#/definitions/nonNegativeInt" },
+        "eggs": { "$ref": "#/definitions/nonNegativeInt" },
+        "corpses": { "$ref": "#/definitions/nonNegativeInt" }
+      }
+    },
+    "entity": {
+      "type": "object",
+      "required": ["kind", "id", "x", "y", "vx", "vy", "rot", "nodes", "synapses"],
+      "additionalProperties": true,
+      "properties": {
+        "kind": { "enum": ["bibite", "egg"] },
+        "id": { "type": ["integer", "null"], "description": "save body id; eggs have no stable id" },
+        "species": { "type": ["integer", "null"] },
+        "generation": { "type": "integer" },
+        "tag": { "type": "string" },
+        "x": { "type": "number" }, "y": { "type": "number" },
+        "vx": { "type": "number" }, "vy": { "type": "number" },
+        "rot": { "type": "number" },
+        "energy": { "type": "number" }, "max_energy": { "type": "number" },
+        "health": { "type": "number" }, "max_health": { "type": "number" },
+        "age_s": { "type": ["number", "null"] }, "size": { "type": ["number", "null"] },
+        "nodes": { "$ref": "#/definitions/nonNegativeInt" },
+        "synapses": { "$ref": "#/definitions/nonNegativeInt" },
+        "genes_digest": { "oneOf": [{ "$ref": "#/definitions/digest" }, { "type": "null" }] },
+        "sense_digest": { "$ref": "#/definitions/digest" },
+        "output_digest": { "$ref": "#/definitions/digest" },
+        "brain_digest": { "$ref": "#/definitions/digest" },
+        "genes": { "$ref": "#/definitions/f32Array35" }
+      }
+    },
+    "tickRecord": {
+      "type": "object",
+      "required": ["schema", "source", "tick", "t", "sim_tps", "brain_tps", "settings_hash"],
+      "additionalProperties": true,
+      "properties": {
+        "schema": { "const": "rustibites.parity.tick.v1" },
+        "source": { "enum": ["game", "rust"] },
+        "tick": { "$ref": "#/definitions/tick" },
+        "t": { "type": "number", "description": "simulated time in seconds" },
+        "sim_tps": { "$ref": "#/definitions/nonNegativeInt" },
+        "brain_tps": { "$ref": "#/definitions/nonNegativeInt" },
+        "settings_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "partial": { "type": "boolean", "description": "true on the start snapshot (entities/counts only)" },
+        "counts": { "$ref": "#/definitions/counts" },
+        "pellets": {
+          "type": "object",
+          "properties": {
+            "plant_n": { "type": "integer" }, "plant_biomass": { "type": "number" },
+            "meat_n": { "type": "integer" }, "meat_biomass": { "type": "number" },
+            "free_biomass": { "type": "number" }, "bibite_biomass": { "type": "number" }
+          }
+        },
+        "vitals": {
+          "type": "object",
+          "properties": {
+            "energy_mean": { "type": "number" }, "health_mean": { "type": "number" },
+            "age_mean": { "type": "number" }, "age_max": { "type": "number" }
+          }
+        },
+        "generation": {
+          "type": "object",
+          "properties": { "gen_max": { "type": "integer" }, "gen_mean": { "type": "number" } }
+        },
+        "species": {
+          "type": "object",
+          "properties": {
+            "n": { "type": "integer" },
+            "counts": { "type": "object", "additionalProperties": { "type": "integer" } }
+          }
+        },
+        "brain": {
+          "type": "object",
+          "properties": {
+            "nodes_mean": { "type": "number" }, "nodes_max": { "type": "integer" },
+            "syn_mean": { "type": "number" }, "syn_max": { "type": "integer" }
+          }
+        },
+        "genes": {
+          "type": "object",
+          "required": ["mean"],
+          "properties": {
+            "mean": { "$ref": "#/definitions/f32Array35" },
+            "std": { "$ref": "#/definitions/f32Array35" }
+          }
+        },
+        "lifecycle": {
+          "type": "object",
+          "properties": { "births": { "type": "integer" }, "deaths": { "type": "integer" } }
+        },
+        "behavior": {
+          "type": "object",
+          "properties": {
+            "speed_mean": { "type": "number" }, "speed_max": { "type": "number" },
+            "moving_frac": { "type": "number" }, "travel_rate_mean": { "type": "number" },
+            "bite_rate_mean": { "type": "number" }, "damage_dealt_rate_mean": { "type": "number" },
+            "egg_rate_mean": { "type": "number" },
+            "outputs": { "type": "object", "additionalProperties": { "type": "number" } }
+          }
+        },
+        "body": {
+          "type": "object",
+          "properties": {
+            "size_mean": { "type": "number" }, "area_mean": { "type": "number" },
+            "mass_mean": { "type": "number" }, "max_energy_mean": { "type": "number" },
+            "max_health_mean": { "type": "number" }, "metabolism_mean": { "type": "number" }
+          }
+        },
+        "tags": { "type": "object", "additionalProperties": { "type": "object" } },
+        "metrics": { "type": "object", "additionalProperties": { "type": "number" } },
+        "entities": { "type": "array", "items": { "$ref": "#/definitions/entity" } }
+      }
+    },
+    "eventRecord": {
+      "type": "object",
+      "required": ["schema", "tick", "kind", "id"],
+      "additionalProperties": true,
+      "properties": {
+        "schema": { "const": "rustibites.parity.event.v1" },
+        "tick": { "$ref": "#/definitions/tick" },
+        "t": { "type": "number" },
+        "kind": { "enum": ["initial", "birth", "death"] },
+        "id": { "type": "integer" },
+        "species": { "type": "integer" },
+        "tag": { "type": "string" },
+        "generation": { "type": "integer" },
+        "p1": { "type": "integer" }, "p2": { "type": "integer" },
+        "x": { "type": "number" }, "y": { "type": "number" },
+        "age_s": { "type": "number" }, "bornAt": { "type": "number" },
+        "energy": { "type": "number" }, "health": { "type": "number" },
+        "cause": { "type": "string" }
+      }
+    },
+    "manifest": {
+      "type": "object",
+      "required": ["schema", "kind", "source", "engine", "gene_names", "settings", "settings_hash", "sim"],
+      "additionalProperties": true,
+      "properties": {
+        "schema": { "const": "rustibites.parity.capture.v1" },
+        "kind": { "const": "capture" },
+        "source": { "enum": ["game", "rust"] },
+        "capture": { "type": "string" },
+        "pass": { "type": "integer" },
+        "created_at": { "type": "string" },
+        "engine": {
+          "type": "object",
+          "required": ["name"],
+          "properties": {
+            "name": { "type": "string" },
+            "game_version": { "type": ["string", "null"] },
+            "bridge_version": { "type": ["string", "null"] },
+            "unity_version": { "type": ["string", "null"] },
+            "version": { "type": ["string", "null"] },
+            "git_commit": { "type": ["string", "null"] }
+          }
+        },
+        "gene_names": { "type": "array", "minItems": 35, "maxItems": 35, "items": { "type": "string" } },
+        "inputs": {
+          "type": "object",
+          "properties": {
+            "scenario": { "type": ["object", "null"] },
+            "base": { "type": ["object", "null"] },
+            "save": { "type": ["object", "null"] },
+            "seed": { "type": ["integer", "null"] },
+            "seeded_parts": { "type": "array", "items": { "type": "string" } },
+            "settings_requested": { "type": "object" },
+            "independents_in_save": { "type": ["object", "null"] }
+          }
+        },
+        "settings": {
+          "type": "object",
+          "required": ["scenario", "independent"],
+          "properties": { "scenario": { "type": "object" }, "independent": { "type": "object" } }
+        },
+        "settings_hash": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "sim": {
+          "type": "object",
+          "required": ["sim_tps", "brain_tps", "dt", "start_tick", "end_tick"],
+          "properties": {
+            "sim_tps": { "$ref": "#/definitions/nonNegativeInt" },
+            "brain_tps": { "$ref": "#/definitions/nonNegativeInt" },
+            "dt": { "type": "number" },
+            "base_time": { "type": ["number", "null"] },
+            "start_t": { "type": "number" },
+            "start_tick": { "type": "integer" },
+            "end_tick": { "type": "integer" },
+            "ticks": { "type": "integer" },
+            "wall_s": { "type": "number" },
+            "achieved_ticks_per_s": { "type": "number" },
+            "achieved_speed": { "type": "number" },
+            "segments": { "type": "array" },
+            "overshoot_ticks": { "type": "array", "items": { "type": "integer" } }
+          }
+        },
+        "taint": { "type": "array", "items": { "type": "string" } },
+        "files": { "type": "object" }
+      }
+    }
+  },
+  "oneOf": [
+    { "$ref": "#/definitions/tickRecord" },
+    { "$ref": "#/definitions/eventRecord" },
+    { "$ref": "#/definitions/manifest" }
+  ]
+}

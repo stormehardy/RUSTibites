@@ -1,0 +1,507 @@
+{
+  "schema": "rustibites.assets.closeup_layers.v1",
+  "capture": {
+    "method": "single hidden load, paused t=20 s; /d/bibite_layers, exact closeup camera, all-renderers-off then one layer on at a time; restore at end",
+    "save": "Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip",
+    "paused": true,
+    "counts": {
+      "bibites": 11,
+      "corpses": 0,
+      "eggs": 0
+    },
+    "camera": {
+      "ok": true,
+      "x": -5.360003,
+      "y": 831.0031,
+      "size": 12.0,
+      "worldHalfSize": 2000.0,
+      "aspect": 1.77777779,
+      "orthographic": true
+    },
+    "screen": [
+      1280,
+      720
+    ],
+    "pixels_per_world_unit": 30.0,
+    "pixel_formula": "x_px = 640 + (x-cam.x)*30; y_px_up = 360 + (y-cam.y)*30; image_y = 720 - y_px_up"
+  },
+  "selected_id": 1641996722,
+  "selected_body_position": {
+    "x": -5.360003,
+    "y": 831.0031,
+    "z": -0.01
+  },
+  "selected_composited_bbox_world": {
+    "x0": -13.0169477,
+    "y0": 817.535767,
+    "x1": 7.893971,
+    "y1": 838.7312,
+    "w": 20.91092,
+    "h": 21.1954346,
+    "cx": -2.56148839,
+    "cy": 828.1335
+  },
+  "full_visible_alpha_bbox_pixels": [
+    459,
+    177,
+    900,
+    662
+  ],
+  "full_visible_alpha_pixels": 115365,
+  "all_off_png": "assets/game/reference/default_save/closeup_single/lyr_all_off.png",
+  "base_png": "assets/game/reference/default_save/closeup_single/lyr_base.png",
+  "base_sha256": "9216cdc9c3fa06019906d604fd8d738be9cf912569877c2a5e8df650b75ce1f9",
+  "layers": [
+    {
+      "index": 0,
+      "path": "BibiteHolder/bibite(Clone)/Eyes",
+      "name": "Eyes",
+      "sprite": "normal_eyes_21",
+      "sorting_order": 0,
+      "enabled": true,
+      "image": "assets/game/reference/default_save/closeup_single/layers/Eyes_0.png",
+      "alpha_image": "assets/game/reference/default_save/closeup_single/layers/Eyes_0_alpha.png",
+      "visible_alpha_bbox_pixels": [
+        503,
+        230,
+        732,
+        438
+      ],
+      "visible_alpha_pixels": 9511,
+      "only_response": {
+        "ok": true,
+        "action": "only",
+        "id": 1641996722,
+        "renderers": [
+          {
+            "path": "BibiteHolder/bibite(Clone)/Left Arm",
+            "enabled": false,
+            "active": true,
+            "name": "Left Arm"
+          },
+          {
+            "path": "BibiteHolder/bibite(Clone)/RightArm",
+            "enabled": false,
+            "active": true,
+            "name": "RightArm"
+          },
+          {
+            "path": "BibiteHolder/bibite(Clone)/Mouth",
+            "enabled": false,
+            "active": true,
+            "name": "Mouth"
+          },
+          {
+            "path": "BibiteHolder/bibite(Clone)/Body",
+            "enabled": false,
+            "active": true,
+            "name": "Body"
+          },
+          {
+            "path": "BibiteHolder/bibite(Clone)/Exoskelton",
+            "enabled": false,
+            "active": true,
+            "name": "Exoskelton"
+          },
+          {
+            "path": "BibiteHolder/bibite(Clone)/Eyes",
+            "enabled": true,
+            "active": true,
+            "name": "Eyes"
+          }
+        ],
+        "renderer_count": 6
+      }
+    },
+    {
+      "index": 1,
+      "path": "BibiteHolder/bibite(Clone)/Exoskelton",
+      "name": "Exoskelton",
+      "sprite": "normal_exoskeleton_00",
+      "sorting_order": 0,
+      "enabled": true,
+      "image": "assets/game/reference/default_save/closeup_single/layers/Exoskelton_1.png",
+      "alpha_image": "assets/game/reference/default_save/closeup_single/layers/Exoskelton_1_alpha.png",
+      "visible_alpha_bbox_pixels": null,
+      "visible_alpha_pixels": 0,
+      "only_response": {
+        "ok": true,
+        "action": "only",
+        "id": 1641996722,
+        "renderers": [
+          {
+            "path": "BibiteHolder/bibite(Clone)/Left Arm",
+            "enabled": false,
+            "active": true,
+            "name": "Left Arm"
+          },
+          {
+            "path": "BibiteHolder/bibite(Clone)/RightArm",
+            "enabled": false,
+            "active": true,
+            "name": "RightArm"
+          },
+          {
+            "path": "BibiteHolder/bibite(Clone)/Mouth",
+            "enabled": false,
+            "active": true,
+            "name": "Mouth"
+          },
+          {
+            "path": "BibiteHolder/bibite(Clone)/Body",
+            "enabled": false,
+            "active": true,
+            "name": "Body"
+          },
+          {
+            "path": "BibiteHolder/bibite(Clone)/Exoskelton",
+            "enabled": true,
+            "active": true,
+            "name": "Exoskelton"
+          },
+          {
+            "path": "BibiteHolder/bibite(Clone)/Eyes",
+            "enabled": false,
+            "active": true,
+            "name": "Eyes"
+          }
+        ],
+        "renderer_count": 6
+      }
+    },
+    {
+      "index": 2,
+      "path": "BibiteHolder/bibite(Clone)/Body",
+      "name": "Body",
+      "sprite": "normal_body_00",
+      "sorting_order": 0,
+      "enabled": true,
+      "image": "assets/game/reference/default_save/closeup_single/layers/Body_2.png",
+      "alpha_image": "assets/game/reference/default_save/closeup_single/layers/Body_2_alpha.png",
+      "visible_alpha_bbox_pixels": [
+        521,
+        261,
+        897,
+        662
+      ],
+      "visible_alpha_pixels": 77307,
+      "only_response": {
+        "ok": true,
+        "action": "only",
+        "id": 1641996722,
+        "renderers": [
+          {
+            "path": "BibiteHolder/bibite(Clone)/Left Arm",
+            "enabled": false,
+            "active": true,
+            "name": "Left Arm"
+          },
+          {
+            "path": "BibiteHolder/bibite(Clone)/RightArm",
+            "enabled": false,
+            "active": true,
+            "name": "RightArm"
+          },
+          {
+            "path": "BibiteHolder/bibite(Clone)/Mouth",
+            "enabled": false,
+            "active": true,
+            "name": "Mouth"
+          },
+          {
+            "path": "BibiteHolder/bibite(Clone)/Body",
+            "enabled": true,
+            "active": true,
+            "name": "Body"
+          },
+          {
+            "path": "BibiteHolder/bibite(Clone)/Exoskelton",
+            "enabled": false,
+            "active": true,
+            "name": "Exoskelton"
+          },
+          {
+            "path": "BibiteHolder/bibite(Clone)/Eyes",
+            "enabled": false,
+            "active": true,
+            "name": "Eyes"
+          }
+        ],
+        "renderer_count": 6
+      }
+    },
+    {
+      "index": 3,
+      "path": "BibiteHolder/bibite(Clone)/Mouth",
+      "name": "Mouth",
+      "sprite": "normal_mouth_00",
+      "sorting_order": 0,
+      "enabled": true,
+      "image": "assets/game/reference/default_save/closeup_single/layers/Mouth_3.png",
+      "alpha_image": "assets/game/reference/default_save/closeup_single/layers/Mouth_3_alpha.png",
+      "visible_alpha_bbox_pixels": [
+        459,
+        177,
+        759,
+        459
+      ],
+      "visible_alpha_pixels": 28546,
+      "only_response": {
+        "ok": true,
+        "action": "only",
+        "id": 1641996722,
+        "renderers": [
+          {
+            "path": "BibiteHolder/bibite(Clone)/Left Arm",
+            "enabled": false,
+            "active": true,
+            "name": "Left Arm"
+          },
+          {
+            "path": "BibiteHolder/bibite(Clone)/RightArm",
+            "enabled": false,
+            "active": true,
+            "name": "RightArm"
+          },
+          {
+            "path": "BibiteHolder/bibite(Clone)/Mouth",
+            "enabled": true,
+            "active": true,
+            "name": "Mouth"
+          },
+          {
+            "path": "BibiteHolder/bibite(Clone)/Body",
+            "enabled": false,
+            "active": true,
+            "name": "Body"
+          },
+          {
+            "path": "BibiteHolder/bibite(Clone)/Exoskelton",
+            "enabled": false,
+            "active": true,
+            "name": "Exoskelton"
+          },
+          {
+            "path": "BibiteHolder/bibite(Clone)/Eyes",
+            "enabled": false,
+            "active": true,
+            "name": "Eyes"
+          }
+        ],
+        "renderer_count": 6
+      }
+    },
+    {
+      "index": 4,
+      "path": "BibiteHolder/bibite(Clone)/RightArm",
+      "name": "RightArm",
+      "sprite": "normal_arms_10",
+      "sorting_order": 0,
+      "enabled": true,
+      "image": "assets/game/reference/default_save/closeup_single/layers/RightArm_4.png",
+      "alpha_image": "assets/game/reference/default_save/closeup_single/layers/RightArm_4_alpha.png",
+      "visible_alpha_bbox_pixels": [
+        759,
+        238,
+        900,
+        343
+      ],
+      "visible_alpha_pixels": 4755,
+      "only_response": {
+        "ok": true,
+        "action": "only",
+        "id": 1641996722,
+        "renderers": [
+          {
+            "path": "BibiteHolder/bibite(Clone)/Left Arm",
+            "enabled": false,
+            "active": true,
+            "name": "Left Arm"
+          },
+          {
+            "path": "BibiteHolder/bibite(Clone)/RightArm",
+            "enabled": true,
+            "active": true,
+            "name": "RightArm"
+          },
+          {
+            "path": "BibiteHolder/bibite(Clone)/Mouth",
+            "enabled": false,
+            "active": true,
+            "name": "Mouth"
+          },
+          {
+            "path": "BibiteHolder/bibite(Clone)/Body",
+            "enabled": false,
+            "active": true,
+            "name": "Body"
+          },
+          {
+            "path": "BibiteHolder/bibite(Clone)/Exoskelton",
+            "enabled": false,
+            "active": true,
+            "name": "Exoskelton"
+          },
+          {
+            "path": "BibiteHolder/bibite(Clone)/Eyes",
+            "enabled": false,
+            "active": true,
+            "name": "Eyes"
+          }
+        ],
+        "renderer_count": 6
+      }
+    },
+    {
+      "index": 5,
+      "path": "BibiteHolder/bibite(Clone)/Left Arm",
+      "name": "Left Arm",
+      "sprite": "normal_arms_10",
+      "sorting_order": 0,
+      "enabled": true,
+      "image": "assets/game/reference/default_save/closeup_single/layers/Left_Arm_5.png",
+      "alpha_image": "assets/game/reference/default_save/closeup_single/layers/Left_Arm_5_alpha.png",
+      "visible_alpha_bbox_pixels": [
+        495,
+        460,
+        583,
+        609
+      ],
+      "visible_alpha_pixels": 4757,
+      "only_response": {
+        "ok": true,
+        "action": "only",
+        "id": 1641996722,
+        "renderers": [
+          {
+            "path": "BibiteHolder/bibite(Clone)/Left Arm",
+            "enabled": true,
+            "active": true,
+            "name": "Left Arm"
+          },
+          {
+            "path": "BibiteHolder/bibite(Clone)/RightArm",
+            "enabled": false,
+            "active": true,
+            "name": "RightArm"
+          },
+          {
+            "path": "BibiteHolder/bibite(Clone)/Mouth",
+            "enabled": false,
+            "active": true,
+            "name": "Mouth"
+          },
+          {
+            "path": "BibiteHolder/bibite(Clone)/Body",
+            "enabled": false,
+            "active": true,
+            "name": "Body"
+          },
+          {
+            "path": "BibiteHolder/bibite(Clone)/Exoskelton",
+            "enabled": false,
+            "active": true,
+            "name": "Exoskelton"
+          },
+          {
+            "path": "BibiteHolder/bibite(Clone)/Eyes",
+            "enabled": false,
+            "active": true,
+            "name": "Eyes"
+          }
+        ],
+        "renderer_count": 6
+      }
+    }
+  ],
+  "each_layer_images": "layers/<name>_<i>.png (target-only frame) and *_alpha.png (visible alpha mask)",
+  "renderer_off_response": {
+    "ok": true,
+    "action": "off",
+    "id": 1641996722,
+    "renderers": [
+      {
+        "path": "BibiteHolder/bibite(Clone)/Left Arm",
+        "enabled": false,
+        "active": true,
+        "name": "Left Arm"
+      },
+      {
+        "path": "BibiteHolder/bibite(Clone)/RightArm",
+        "enabled": false,
+        "active": true,
+        "name": "RightArm"
+      },
+      {
+        "path": "BibiteHolder/bibite(Clone)/Mouth",
+        "enabled": false,
+        "active": true,
+        "name": "Mouth"
+      },
+      {
+        "path": "BibiteHolder/bibite(Clone)/Body",
+        "enabled": false,
+        "active": true,
+        "name": "Body"
+      },
+      {
+        "path": "BibiteHolder/bibite(Clone)/Exoskelton",
+        "enabled": false,
+        "active": true,
+        "name": "Exoskelton"
+      },
+      {
+        "path": "BibiteHolder/bibite(Clone)/Eyes",
+        "enabled": false,
+        "active": true,
+        "name": "Eyes"
+      }
+    ],
+    "renderer_count": 6
+  },
+  "renderer_restore_response": {
+    "ok": true,
+    "action": "restore",
+    "id": 1641996722,
+    "renderers": [
+      {
+        "path": "BibiteHolder/bibite(Clone)/Left Arm",
+        "enabled": true,
+        "active": true
+      },
+      {
+        "path": "BibiteHolder/bibite(Clone)/RightArm",
+        "enabled": true,
+        "active": true
+      },
+      {
+        "path": "BibiteHolder/bibite(Clone)/Mouth",
+        "enabled": true,
+        "active": true
+      },
+      {
+        "path": "BibiteHolder/bibite(Clone)/Body",
+        "enabled": true,
+        "active": true
+      },
+      {
+        "path": "BibiteHolder/bibite(Clone)/Exoskelton",
+        "enabled": true,
+        "active": true
+      },
+      {
+        "path": "BibiteHolder/bibite(Clone)/Eyes",
+        "enabled": true,
+        "active": true
+      }
+    ],
+    "renderer_count": 6
+  },
+  "verification_restore": {
+    "diff_bbox_pixels": null,
+    "diff_pixels": 0,
+    "note": "after restore the frame matches the base; empty bbox means exact restoration"
+  },
+  "spawner_caveat": "Save carries 10 bibites; game load adds one fresh-spawner bibite (11 live ids). Selected id is the saved entity nearest the canonical closeup camera; runtime ids vary per load.",
+  "bottom_hint": "Find the layer whose visible_alpha_bbox_pixels bottom (y1) is nearest the full bbox bottom (the 56-61 px gap candidate); exo may be blank, Body/arms/eyes/mouth are measured separately."
+}

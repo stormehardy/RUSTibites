@@ -1,0 +1,151 @@
+{
+ "schema": "rustibites.assets.ecology_36k_pellets_compare.v1",
+ "game": {
+  "early": {
+   "tick": 6,
+   "count": 443,
+   "outside_r2000": 0,
+   "r_p50": 833.4,
+   "r_p90": 1487.0,
+   "r_max": 1922.3
+  },
+  "late": {
+   "tick_label": 27000,
+   "actual_tick": 35991,
+   "count": 646,
+   "outside_r2000": 10,
+   "r_p50": 878.9,
+   "r_p90": 1542.6,
+   "r_max": 3769.0
+  },
+  "pellet_radius_note": "capture radius sqrt(amount/20); physical collider is 2.5x this (NormalRadiusAtScale1=2.5), so game p50 1.35 maps to 3.38, matching Rust analytic sqrt(amount/pi)=3.49"
+ },
+ "rust": {
+  "early_tick6": {
+   "count": 440,
+   "outside_r2000": 0,
+   "r_p50": 909.9,
+   "r_p90": 1553.1,
+   "r_max": 1945.9
+  },
+  "tick600": {
+   "count": 447,
+   "outside_r2000": 0,
+   "r_p50": 912.7,
+   "r_p90": 1551.6,
+   "r_max": 1945.9
+  },
+  "tick27000": {
+   "count": 600,
+   "outside_r2000": 0,
+   "r_p50": 877.5,
+   "r_p90": 1521.2,
+   "r_max": 1963.3
+  },
+  "tick36000": {
+   "count": 610,
+   "outside_r2000": 0,
+   "r_p50": 882.0,
+   "r_p90": 1521.2,
+   "r_max": 1908.0
+  },
+  "pellet_radius_p50": 3.49,
+  "pellet_radius_p90": 4.59
+ },
+ "distribution_formula": {
+  "game": "Zone.InsideUnitCircleWarped: r = 1-(1-|u|)^power; CentricGradual power=0.5",
+  "rust": "zone.rs warped_disc_point(0.5): r = 1-(1-|u|)^0.5; same formula",
+  "verdict": "CentricGradual formula and radial distributions match; no pellet-distribution fix indicated"
+ },
+ "occupancy": {
+  "pellet_radial_p50_game_vs_rust": [
+   878.9,
+   882.0
+  ],
+  "bibite_inzone_radius_p50_p90": {
+   "game": [
+    672.1,
+    1530.2
+   ],
+   "rust_seed12345": [
+    1380.7,
+    1752.6
+   ],
+   "rust_seed67890": [
+    857.2,
+    1590.8
+   ]
+  },
+  "bibite_inzone_nearest_pellet_p50_p90": {
+   "game": [
+    6.5,
+    102.2
+   ],
+   "rust_seed12345": [
+    25.2,
+    212.2
+   ],
+   "rust_seed67890": [
+    9.4,
+    118.5
+   ]
+  },
+  "verdict": "same pellet field, different within-zone occupancy: game bibites are much more central; seed12345 is the outlier, seed67890 close to game. Remaining discriminator is within-zone foraging/occupancy (brain/steering/energy feedback), not pellet distribution or body force."
+ },
+ "amount_distribution": {
+  "game_late_snapshot": {
+   "count": 628,
+   "amount_p50": 36.98,
+   "amount_p90": 64.14,
+   "amount_sum": 25101.6,
+   "mean_amount": 39.97
+  },
+  "game_final_summary": {
+   "count": 646,
+   "amount_sum": 25479.9,
+   "mean_amount": 39.44,
+   "pellet_radius_p50_unscaled": 1.35,
+   "pellet_radius_p90_unscaled": 1.78
+  },
+  "rust_36k": {
+   "count": 610,
+   "plant_biomass_e": 125186.2,
+   "amount_sum": 25037.2,
+   "mean_amount": 41.04,
+   "amount_p50_from_radius": 38.27,
+   "amount_p90_from_radius": 66.2
+  },
+  "verdict": "Biomass/stock matches; game pellets are ~4% smaller on average, so the same biomass yields ~6% more pellets (650 vs610). pelletMerge=false in both. This is a pellet amount/spawn/bite-chunk distribution difference, not occupancy; owner world/body."
+ },
+ "occupancy_normalized_contact": {
+  "game_all": 18.04,
+  "game_inzone": 22.36,
+  "rust_ensemble_all": 12.5,
+  "rust_ensemble_inzone": 15.14,
+  "nearest_0_5": {
+   "game": 39.22,
+   "rust": 29.76
+  },
+  "nearest_5_10": {
+   "game": 30.05,
+   "rust": 20.1
+  },
+  "radius_0_500": {
+   "game": 27.06,
+   "rust": 19.06
+  },
+  "radius_500_1000": {
+   "game": 23.41,
+   "rust": 16.13
+  },
+  "radius_1000_1500": {
+   "game": 17.81,
+   "rust": 14.33
+  },
+  "radius_1500_2000": {
+   "game": 10.52,
+   "rust": 8.59
+  },
+  "verdict": "Plant-contact gap persists at matched nearest-plant distance and matched in-zone radius; occupancy/plant distribution does not explain it. This is body contact/eating (task-119), not C19 occupancy."
+ }
+}

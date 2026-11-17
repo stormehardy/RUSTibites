@@ -1,0 +1,367 @@
+{
+  "schema": "rustibites.assets.functional_ui.save_dialogs.v1",
+  "savefile": "C:\\Users\\Storme\\AppData\\LocalLow\\The Bibites\\The Bibites\\Savefiles\\parity_ui_test.zip",
+  "steps": [
+    {
+      "step": "load_panel_slot_list",
+      "ui": {
+        "texts": [
+          "The Bibites: Digital Life",
+          "Omnia Studios",
+          "the studio Leo Caussan ended up founding",
+          "This is all possible thanks to the amazing patrons supporting the project on Patreon\n\nHelp propel the creation of a new form of life!",
+          "The Bibites",
+          "Continue",
+          "New",
+          "Load",
+          "Bibite Library",
+          "Settings\n",
+          "Achievements",
+          "Additional Tools",
+          "Credits\n",
+          "Quit\n",
+          "The Bibites 0.6.3.1",
+          "Include autosaves",
+          "New Game",
+          "Version: ",
+          "0.4.4a6",
+          "Last edit:",
+          "2012-19-09 19:00",
+          "Informations",
+          "Sim Time:",
+          "100h 34m 01s",
+          "Sim Size:",
+          "0u",
+          "Number of Bibites: ",
+          "300",
+          "Number of Pellets: ",
+          "10000",
+          "Load"
+        ],
+        "buttons": [
+          {
+            "path": "UI/WelcomeScreen/Patreon Holder/Button",
+            "name": "Button",
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Continue",
+            "name": "Continue",
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/NewSim",
+            "name": "NewSim",
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/LoadSim",
+            "name": "LoadSim",
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Editor",
+            "name": "Editor",
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Settings",
+            "name": "Settings",
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Achievements",
+            "name": "Achievements",
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/More",
+            "name": "More",
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Credits",
+            "name": "Credits",
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Quit",
+            "name": "Quit",
+            "labels": []
+          },
+          {
+            "path": "UI/LoadGamePanel/LoadList/Scroll View/Viewport/Content/SettingToggle/Button",
+            "name": "Button",
+            "labels": []
+          },
+          {
+            "path": "UI/LoadGamePanel/SelectedPanel/SaveInfo/DeleteButton",
+            "name": "DeleteButton",
+            "labels": []
+          },
+          {
+            "path": "UI/LoadGamePanel/SelectedPanel/SaveInfo/CloseButton",
+            "name": "CloseButton",
+            "labels": []
+          },
+          {
+            "path": "UI/LoadGamePanel/SelectedPanel/SaveInfo/ButtonHolder/LoadButton",
+            "name": "LoadButton",
+            "labels": []
+          }
+        ]
+      },
+      "controls": [
+        {
+          "kind": "Toggle",
+          "path": "UI/LoadGamePanel/LoadList/Scroll View/Viewport/Content/SettingToggle/Toggle",
+          "name": "Toggle",
+          "is_on": true,
+          "interactable": true,
+          "labels": []
+        }
+      ]
+    },
+    {
+      "step": "load_delete_dialog",
+      "hit": {
+        "ok": false,
+        "error": "TargetInvocationException: Exception has been thrown by the target of an invocation."
+      },
+      "ui": {
+        "texts": [
+          "The Bibites: Digital Life",
+          "Omnia Studios",
+          "the studio Leo Caussan ended up founding",
+          "This is all possible thanks to the amazing patrons supporting the project on Patreon\n\nHelp propel the creation of a new form of life!",
+          "The Bibites",
+          "Continue",
+          "New",
+          "Load",
+          "Bibite Library",
+          "Settings\n",
+          "Achievements",
+          "Additional Tools",
+          "Credits\n",
+          "Quit\n",
+          "The Bibites 0.6.3.1",
+          "Include autosaves",
+          "New Game",
+          "Version: ",
+          "0.4.4a6",
+          "Last edit:",
+          "2012-19-09 19:00",
+          "Informations",
+          "Sim Time:",
+          "100h 34m 01s",
+          "Sim Size:",
+          "0u",
+          "Number of Bibites: ",
+          "300",
+          "Number of Pellets: ",
+          "10000",
+          "Load"
+        ],
+        "buttons": [
+          {
+            "path": "UI/WelcomeScreen/Patreon Holder/Button",
+            "name": "Button",
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Continue",
+            "name": "Continue",
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/NewSim",
+            "name": "NewSim",
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/LoadSim",
+            "name": "LoadSim",
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Editor",
+            "name": "Editor",
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Settings",
+            "name": "Settings",
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Achievements",
+            "name": "Achievements",
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/More",
+            "name": "More",
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Credits",
+            "name": "Credits",
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Quit",
+            "name": "Quit",
+            "labels": []
+          },
+          {
+            "path": "UI/LoadGamePanel/LoadList/Scroll View/Viewport/Content/SettingToggle/Button",
+            "name": "Button",
+            "labels": []
+          },
+          {
+            "path": "UI/LoadGamePanel/SelectedPanel/SaveInfo/DeleteButton",
+            "name": "DeleteButton",
+            "labels": []
+          },
+          {
+            "path": "UI/LoadGamePanel/SelectedPanel/SaveInfo/CloseButton",
+            "name": "CloseButton",
+            "labels": []
+          },
+          {
+            "path": "UI/LoadGamePanel/SelectedPanel/SaveInfo/ButtonHolder/LoadButton",
+            "name": "LoadButton",
+            "labels": []
+          }
+        ]
+      }
+    },
+    {
+      "step": "save_overwrite_attempt",
+      "input_set": null,
+      "save": {
+        "ok": false,
+        "error": "button not found",
+        "name": "SaveButton",
+        "path": null
+      },
+      "ui": {
+        "texts": [
+          "The Bibites: Digital Life",
+          "Omnia Studios",
+          "the studio Leo Caussan ended up founding",
+          "This is all possible thanks to the amazing patrons supporting the project on Patreon\n\nHelp propel the creation of a new form of life!",
+          "The Bibites",
+          "Continue",
+          "New",
+          "Load",
+          "Bibite Library",
+          "Settings\n",
+          "Achievements",
+          "Additional Tools",
+          "Credits\n",
+          "Quit\n",
+          "The Bibites 0.6.3.1",
+          "Include autosaves",
+          "New Game",
+          "Version: ",
+          "0.4.4a6",
+          "Last edit:",
+          "2012-19-09 19:00",
+          "Informations",
+          "Sim Time:",
+          "100h 34m 01s",
+          "Sim Size:",
+          "0u",
+          "Number of Bibites: ",
+          "300",
+          "Number of Pellets: ",
+          "10000",
+          "Load"
+        ],
+        "buttons": [
+          {
+            "path": "UI/WelcomeScreen/Patreon Holder/Button",
+            "name": "Button",
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Continue",
+            "name": "Continue",
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/NewSim",
+            "name": "NewSim",
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/LoadSim",
+            "name": "LoadSim",
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Editor",
+            "name": "Editor",
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Settings",
+            "name": "Settings",
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Achievements",
+            "name": "Achievements",
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/More",
+            "name": "More",
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Credits",
+            "name": "Credits",
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Quit",
+            "name": "Quit",
+            "labels": []
+          },
+          {
+            "path": "UI/LoadGamePanel/LoadList/Scroll View/Viewport/Content/SettingToggle/Button",
+            "name": "Button",
+            "labels": []
+          },
+          {
+            "path": "UI/LoadGamePanel/SelectedPanel/SaveInfo/DeleteButton",
+            "name": "DeleteButton",
+            "labels": []
+          },
+          {
+            "path": "UI/LoadGamePanel/SelectedPanel/SaveInfo/CloseButton",
+            "name": "CloseButton",
+            "labels": []
+          },
+          {
+            "path": "UI/LoadGamePanel/SelectedPanel/SaveInfo/ButtonHolder/LoadButton",
+            "name": "LoadButton",
+            "labels": []
+          }
+        ]
+      },
+      "controls": [
+        {
+          "kind": "Toggle",
+          "path": "UI/LoadGamePanel/LoadList/Scroll View/Viewport/Content/SettingToggle/Toggle",
+          "name": "Toggle",
+          "is_on": true,
+          "interactable": true,
+          "labels": []
+        }
+      ]
+    }
+  ]
+}

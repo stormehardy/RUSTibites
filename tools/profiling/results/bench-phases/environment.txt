@@ -1,0 +1,55 @@
+# RUSTibites benchmark environment
+
+Captured (UTC):        2026-10-30T07:49:22.5122765Z
+Host:                  DESKTOP
+OS:                    Microsoft Windows 10 Home | version=10.0.19045
+CPU:                   AMD Ryzen 5 3600 6-Core Processor | physical=6 logical=12 | max_clock_mhz=3593
+Memory:                16.0 GB total, 5.23 GB free at capture
+CPU load at capture:   94.0 %
+PowerShell:            5.1.19041.6456
+rustc:                 1.99.1 (58cf8f9c3 2026-10-13) (release 1.99.1, x86_64-pc-windows-msvc)
+cargo:                 1.99.1 (5f94df478 2026-08-27)
+Git HEAD:              7bd1e208128126a85fe602dcc19059f4a5f9b495 (main) 2026-10-30T03:48:59-04:00
+Git subject:           Viewer polish + game-faithful sprite renderer foundation
+Git dirty:             True (27 changed paths)
+Git status:
+   M README.md
+   M docs/DEVIATIONS.md
+   M docs/spec/03-world-ecology.md
+   M tools/bench/README.md
+   M tools/bench/bench_common.ps1
+   D tools/bench/results/_smoke/config.json
+   D tools/bench/results/_smoke/environment.json
+   D tools/bench/results/_smoke/environment.txt
+   D tools/bench/results/_smoke/matrix.json
+   D tools/bench/results/_smoke/matrix.md
+   D tools/bench/results/_smoke/runs.csv
+   D tools/bench/results/_smoke/summary.csv
+   D tools/bench/results/full/config.json
+   D tools/bench/results/full/environment.json
+   D tools/bench/results/full/environment.txt
+   M tools/bench/results/quick/matrix.json
+   M tools/bench/results/quick/matrix.md
+   M tools/bench/run_matrix.ps1
+   M tools/bench/run_phases.ps1
+   M tools/parity_round2/capture_scenario.py
+  ?? assets/game/
+  ?? docs/BENCHMARKS.md
+  ?? tools/assets/
+  ?? tools/bench/results/phases/
+  ?? tools/compat/
+  ?? tools/experiments/
+  ?? tools/profiling/
+Release profile:
+  opt-level = 3
+  lto = "fat"
+  codegen-units = 1
+  panic = "abort"
+  strip = "debuginfo"
+Benchmark binary:      Z:\RUSTibites\target\release\rustibites.exe
+  sha256:              BE9AA6158F2524F2E4BE09F3D867F097BC275AD49A91CD2BDE3332C5F2545D59
+  size:                1881088 bytes
+  mtime (UTC):         2026-10-30T07:47:44.4467989Z
+  stable copy:         C:\Users\Storme\AppData\Local\Temp\rustibites-bench\bin\rustibites-BE9AA6158F2524F2.exe
+Simulator:             30 TPS (fixed_dt = 1/30 s)
+Seed:                  seed = 0x5255535400000000 xor repetition_index (repetition starts at 0)

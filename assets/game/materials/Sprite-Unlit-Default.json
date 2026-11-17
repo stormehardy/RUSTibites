@@ -1,0 +1,18 @@
+{
+ "name": "Sprite-Unlit-Default",
+ "shader": "Universal Render Pipeline/2D/Sprite-Unlit-Default",
+ "colors": {
+  "_Color": null,
+  "_Flip": null,
+  "_RendererColor": null
+ },
+ "floats": {
+  "PixelSnap": 0.0,
+  "_EnableExternalAlpha": 0.0
+ },
+ "textures": {
+  "_AlphaTex": "UnityTexEnv(m_Offset=Vector2f(0.0, 0.0), m_Scale=Vector2f(1.0, 1.0), m_Texture=PPtr(m_FileID=0, m_PathID=0, assetsfile=<SerializedFile>))",
+  "_MainTex": "UnityTexEnv(m_Offset=Vector2f(0.0, 0.0), m_Scale=Vector2f(1.0, 1.0), m_Texture=PPtr(m_FileID=0, m_PathID=0, assetsfile=<SerializedFile>))"
+ },
+ "source_asset": "sharedassets1.assets"
+}

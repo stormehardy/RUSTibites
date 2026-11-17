@@ -1,0 +1,5711 @@
+{
+  "schema": "rustibites.assets.functional_ui.library_newgame.v1",
+  "sessions": [
+    "library_selector_flow",
+    "library_create_new",
+    "library_editor_genes_flow",
+    "library_editor_brain_flow",
+    "library_editor_brain_after_add",
+    "newgame_scenario_options",
+    "newgame_new_scenario_button",
+    "newgame_new_challenge_button",
+    "scenario_editor_flow",
+    "scenario_editor_zones",
+    "scenario_editor_ChallengeOptions",
+    "scenario_editor_sim"
+  ],
+  "actions": [
+    {
+      "step": "library_open",
+      "hit": {
+        "ok": true,
+        "pressed": "Editor",
+        "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Editor"
+      },
+      "active_buttons": [
+        {
+          "path": "UI/WelcomeScreen/Patreon Holder/Button",
+          "name": "Button",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "This is all possible thanks to the amazing patrons supporting the project on Patreon\n\nHelp propel the creation of a new form of life!",
+            "Naotagrey",
+            "The Bibites",
+            "Continue",
+            "New",
+            "Load",
+            "Bibite Library",
+            "Settings\n",
+            "Achievements",
+            "Additional Tools"
+          ]
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Continue",
+          "name": "Continue",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Continue",
+            "New",
+            "Load",
+            "Bibite Library",
+            "Settings\n",
+            "Achievements",
+            "Additional Tools",
+            "Credits\n",
+            "Quit\n",
+            "The Bibites"
+          ]
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/NewSim",
+          "name": "NewSim",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "New",
+            "Continue",
+            "Load",
+            "Bibite Library",
+            "Settings\n",
+            "Achievements",
+            "Additional Tools",
+            "Credits\n",
+            "Quit\n",
+            "The Bibites"
+          ]
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/LoadSim",
+          "name": "LoadSim",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Load",
+            "Continue",
+            "New",
+            "Bibite Library",
+            "Settings\n",
+            "Achievements",
+            "Additional Tools",
+            "Credits\n",
+            "Quit\n",
+            "The Bibites"
+          ]
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Editor",
+          "name": "Editor",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Bibite Library",
+            "Continue",
+            "New",
+            "Load",
+            "Settings\n",
+            "Achievements",
+            "Additional Tools",
+            "Credits\n",
+            "Quit\n",
+            "The Bibites"
+          ]
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Settings",
+          "name": "Settings",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Settings\n",
+            "Continue",
+            "New",
+            "Load",
+            "Bibite Library",
+            "Achievements",
+            "Additional Tools",
+            "Credits\n",
+            "Quit\n",
+            "The Bibites"
+          ]
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Achievements",
+          "name": "Achievements",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Achievements",
+            "Additional Tools",
+            "Credits\n",
+            "Continue",
+            "New",
+            "Load",
+            "Bibite Library",
+            "Settings\n",
+            "Quit\n",
+            "The Bibites"
+          ]
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/More",
+          "name": "More",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Additional Tools",
+            "Achievements",
+            "Credits\n",
+            "Continue",
+            "New",
+            "Load",
+            "Bibite Library",
+            "Settings\n",
+            "Quit\n",
+            "The Bibites"
+          ]
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Credits",
+          "name": "Credits",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Credits\n",
+            "Achievements",
+            "Additional Tools",
+            "Continue",
+            "New",
+            "Load",
+            "Bibite Library",
+            "Settings\n",
+            "Quit\n",
+            "The Bibites"
+          ]
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Quit",
+          "name": "Quit",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Quit\n",
+            "Continue",
+            "New",
+            "Load",
+            "Bibite Library",
+            "Settings\n",
+            "Achievements",
+            "Additional Tools",
+            "Credits\n",
+            "The Bibites"
+          ]
+        },
+        {
+          "path": "UI/BibiteSelector/SelectionPanel/Holder/Panels/LeftSide Buttons/Templates",
+          "name": "Templates",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Create New",
+            "Template Bibites",
+            "Accept",
+            "0.6.3.1",
+            "Arborea Magna",
+            "Arrietty 5",
+            "Arrietty 6 ",
+            "Arrietty 6",
+            "This is all possible thanks to the amazing patrons supporting the project on Patreon\n\nHelp propel the creation of a new form of life!",
+            "Naotagrey"
+          ]
+        },
+        {
+          "path": "UI/BibiteSelector/SelectionPanel/Holder/Panels/LeftSide Buttons/Saved",
+          "name": "Saved",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Create New",
+            "Template Bibites",
+            "Accept",
+            "0.6.3.1",
+            "Arborea Magna",
+            "Arrietty 5",
+            "Arrietty 6 ",
+            "Arrietty 6",
+            "This is all possible thanks to the amazing patrons supporting the project on Patreon\n\nHelp propel the creation of a new form of life!",
+            "Naotagrey"
+          ]
+        },
+        {
+          "path": "UI/BibiteSelector/SelectionPanel/Holder/Panels/LeftSide Buttons/OpenFolder",
+          "name": "OpenFolder",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Create New",
+            "Template Bibites",
+            "Accept",
+            "0.6.3.1",
+            "Arborea Magna",
+            "Arrietty 5",
+            "Arrietty 6 ",
+            "Arrietty 6",
+            "This is all possible thanks to the amazing patrons supporting the project on Patreon\n\nHelp propel the creation of a new form of life!",
+            "Naotagrey"
+          ]
+        },
+        {
+          "path": "UI/BibiteSelector/SelectionPanel/Holder/Panels/LeftSide Buttons/Reload ",
+          "name": "Reload ",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Create New",
+            "Template Bibites",
+            "Accept",
+            "0.6.3.1",
+            "Arborea Magna",
+            "Arrietty 5",
+            "Arrietty 6 ",
+            "Arrietty 6",
+            "This is all possible thanks to the amazing patrons supporting the project on Patreon\n\nHelp propel the creation of a new form of life!",
+            "Naotagrey"
+          ]
+        },
+        {
+          "path": "UI/BibiteSelector/SelectionPanel/Holder/Panels/LeftSide Buttons/CreateNew",
+          "name": "CreateNew",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Create New",
+            "Template Bibites",
+            "Accept",
+            "0.6.3.1",
+            "Arborea Magna",
+            "Arrietty 5",
+            "Arrietty 6 ",
+            "Arrietty 6",
+            "This is all possible thanks to the amazing patrons supporting the project on Patreon\n\nHelp propel the creation of a new form of life!",
+            "Naotagrey"
+          ]
+        },
+        {
+          "path": "UI/BibiteSelector/SelectionPanel/Holder/Preview/Right Side Buttons/Edit Button",
+          "name": "Edit Button",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Accept",
+            "Number of Hidden Nodes:",
+            "0",
+            "Number of Synapses:",
+            "4",
+            "Edit Bibite",
+            "Create New",
+            "Template Bibites",
+            "0.6.3.1",
+            "Arborea Magna"
+          ]
+        },
+        {
+          "path": "UI/BibiteSelector/SelectionPanel/Holder/Preview/Right Side Buttons/Delete Button",
+          "name": "Delete Button",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Accept",
+            "Number of Hidden Nodes:",
+            "0",
+            "Number of Synapses:",
+            "4",
+            "Edit Bibite",
+            "Create New",
+            "Template Bibites",
+            "0.6.3.1",
+            "Arborea Magna"
+          ]
+        },
+        {
+          "path": "UI/BibiteSelector/SelectionPanel/Holder/Preview/Right Side Buttons/BackButton",
+          "name": "BackButton",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Accept",
+            "Number of Hidden Nodes:",
+            "0",
+            "Number of Synapses:",
+            "4",
+            "Edit Bibite",
+            "Create New",
+            "Template Bibites",
+            "0.6.3.1",
+            "Arborea Magna"
+          ]
+        },
+        {
+          "path": "UI/BibiteSelector/SelectionPanel/Holder/Preview/Previewer/BibitePreview/Bottom/Button",
+          "name": "Button",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Edit Bibite",
+            "Accept",
+            "Number of Hidden Nodes:",
+            "0",
+            "Number of Synapses:",
+            "4",
+            "Create New",
+            "Template Bibites",
+            "0.6.3.1",
+            "Arborea Magna"
+          ]
+        }
+      ]
+    },
+    {
+      "step": "library:Create New",
+      "hit": {
+        "ok": false,
+        "label": "Create New",
+        "hits": [],
+        "count": 0
+      },
+      "new_panels": []
+    },
+    {
+      "step": "editor_genes",
+      "before": [
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.264459223,
+          "minValue": 0,
+          "maxValue": 0.5,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.5,
+          "minValue": 0,
+          "maxValue": 1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 1.08553529,
+          "minValue": -1,
+          "maxValue": 9,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.8851896,
+          "minValue": -1,
+          "maxValue": 9,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.0668449253,
+          "minValue": -1,
+          "maxValue": 9,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 2.5,
+          "minValue": -1,
+          "maxValue": 9,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 2.5,
+          "minValue": -1,
+          "maxValue": 9,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 5,
+          "minValue": -1,
+          "maxValue": 9,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.6550802,
+          "minValue": -1,
+          "maxValue": 9,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 1.07198763,
+          "minValue": 0,
+          "maxValue": 10,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 2,
+          "minValue": 0,
+          "maxValue": 10,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.35,
+          "minValue": 0,
+          "maxValue": 2,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 35,
+          "minValue": 0,
+          "maxValue": 100,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.336821854,
+          "minValue": 0,
+          "maxValue": 1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.9196292,
+          "minValue": 0,
+          "maxValue": 4,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 1.43998468,
+          "minValue": 0,
+          "maxValue": 4,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.955669463,
+          "minValue": 0,
+          "maxValue": 4,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 154.415314,
+          "minValue": 0,
+          "maxValue": 500,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 1,
+          "minValue": 0.1,
+          "maxValue": 10.1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 176.36795,
+          "minValue": 0,
+          "maxValue": 360,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 75,
+          "minValue": 0,
+          "maxValue": 200,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 10,
+          "minValue": 1,
+          "maxValue": 101,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 20,
+          "minValue": 1,
+          "maxValue": 101,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 15,
+          "minValue": 1,
+          "maxValue": 51,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.1,
+          "minValue": 0,
+          "maxValue": 0.25,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 2.09962988,
+          "minValue": 0,
+          "maxValue": 10,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.025,
+          "minValue": 0,
+          "maxValue": 0.25,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 4.592907,
+          "minValue": 0,
+          "maxValue": 30,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 1,
+          "minValue": 1e-06,
+          "maxValue": 2.5,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.862713337,
+          "minValue": 0.05,
+          "maxValue": 2.55,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.3,
+          "minValue": 0,
+          "maxValue": 1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.567172348,
+          "minValue": 0,
+          "maxValue": 1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.1,
+          "minValue": 0,
+          "maxValue": 1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.119786374,
+          "minValue": 0,
+          "maxValue": 1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.1042535,
+          "minValue": 0,
+          "maxValue": 1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Input",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Previewer/BibitePreview/Body/line/Name Field/Edit Section/renameField",
+          "name": "renameField",
+          "text": "Accept",
+          "labels": [],
+          "label_context": [
+            "Enter text...",
+            "\u200b",
+            "Accept\u200b",
+            "Name:",
+            "Name: ",
+            "Description:",
+            "A small reliable edite\u200b",
+            "Bibite Growth Curve",
+            " (",
+            "u\u00b2/s"
+          ]
+        },
+        {
+          "kind": "Input",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Previewer/BibitePreview/Body/Description Field/Edit Section/renameField",
+          "name": "renameField",
+          "text": "",
+          "labels": [],
+          "label_context": [
+            "Enter text...",
+            "A small reliable edite\u200b",
+            "\u200b",
+            "Description:",
+            "Description: ",
+            "Name:",
+            "Bibite Growth Curve",
+            " (",
+            "u\u00b2/s",
+            ")"
+          ]
+        }
+      ],
+      "after": [
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.264459223,
+          "minValue": 0,
+          "maxValue": 0.5,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.5,
+          "minValue": 0,
+          "maxValue": 1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 1.08553529,
+          "minValue": -1,
+          "maxValue": 9,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.8851896,
+          "minValue": -1,
+          "maxValue": 9,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.0668449253,
+          "minValue": -1,
+          "maxValue": 9,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 2.5,
+          "minValue": -1,
+          "maxValue": 9,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 2.5,
+          "minValue": -1,
+          "maxValue": 9,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 5,
+          "minValue": -1,
+          "maxValue": 9,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.6550802,
+          "minValue": -1,
+          "maxValue": 9,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 1.07198763,
+          "minValue": 0,
+          "maxValue": 10,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 2,
+          "minValue": 0,
+          "maxValue": 10,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.35,
+          "minValue": 0,
+          "maxValue": 2,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 35,
+          "minValue": 0,
+          "maxValue": 100,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.336821854,
+          "minValue": 0,
+          "maxValue": 1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.9196292,
+          "minValue": 0,
+          "maxValue": 4,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 1.43998468,
+          "minValue": 0,
+          "maxValue": 4,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.955669463,
+          "minValue": 0,
+          "maxValue": 4,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 154.415314,
+          "minValue": 0,
+          "maxValue": 500,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 1,
+          "minValue": 0.1,
+          "maxValue": 10.1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 176.36795,
+          "minValue": 0,
+          "maxValue": 360,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 75,
+          "minValue": 0,
+          "maxValue": 200,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 10,
+          "minValue": 1,
+          "maxValue": 101,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 20,
+          "minValue": 1,
+          "maxValue": 101,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 15,
+          "minValue": 1,
+          "maxValue": 51,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.1,
+          "minValue": 0,
+          "maxValue": 0.25,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 2.09962988,
+          "minValue": 0,
+          "maxValue": 10,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.025,
+          "minValue": 0,
+          "maxValue": 0.25,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 4.592907,
+          "minValue": 0,
+          "maxValue": 30,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 1,
+          "minValue": 1e-06,
+          "maxValue": 2.5,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.862713337,
+          "minValue": 0.05,
+          "maxValue": 2.55,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.3,
+          "minValue": 0,
+          "maxValue": 1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.567172348,
+          "minValue": 0,
+          "maxValue": 1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.1,
+          "minValue": 0,
+          "maxValue": 1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.119786374,
+          "minValue": 0,
+          "maxValue": 1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/GenesTab/Scroll View/Viewport/Content/List/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.1042535,
+          "minValue": 0,
+          "maxValue": 1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Red Color",
+            "0.104",
+            "Enter value...",
+            "0\u200b",
+            "Green Color",
+            "0.120",
+            "Blue Color",
+            "0.100",
+            "Weigth",
+            "-1,56"
+          ]
+        },
+        {
+          "kind": "Input",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Previewer/BibitePreview/Body/line/Name Field/Edit Section/renameField",
+          "name": "renameField",
+          "text": "Accept",
+          "labels": [],
+          "label_context": [
+            "Enter text...",
+            "\u200b",
+            "Accept\u200b",
+            "Name:",
+            "Name: ",
+            "Description:",
+            "A small reliable edite\u200b",
+            "Bibite Growth Curve",
+            " (",
+            "u\u00b2/s"
+          ]
+        },
+        {
+          "kind": "Input",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Previewer/BibitePreview/Body/Description Field/Edit Section/renameField",
+          "name": "renameField",
+          "text": "",
+          "labels": [],
+          "label_context": [
+            "Enter text...",
+            "A small reliable edite\u200b",
+            "\u200b",
+            "Description:",
+            "Description: ",
+            "Name:",
+            "Bibite Growth Curve",
+            " (",
+            "u\u00b2/s",
+            ")"
+          ]
+        }
+      ],
+      "randomize": []
+    },
+    {
+      "step": "editor_brain",
+      "buttons_before": [
+        {
+          "path": "UI/WelcomeScreen/Patreon Holder/Button",
+          "name": "Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Continue",
+          "name": "Continue",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/NewSim",
+          "name": "NewSim",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/LoadSim",
+          "name": "LoadSim",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Editor",
+          "name": "Editor",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Settings",
+          "name": "Settings",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Achievements",
+          "name": "Achievements",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/More",
+          "name": "More",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Credits",
+          "name": "Credits",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Quit",
+          "name": "Quit",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/SelectionPanel/Holder/Panels/LeftSide Buttons/Templates",
+          "name": "Templates",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/SelectionPanel/Holder/Panels/LeftSide Buttons/Saved",
+          "name": "Saved",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/SelectionPanel/Holder/Panels/LeftSide Buttons/OpenFolder",
+          "name": "OpenFolder",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/SelectionPanel/Holder/Panels/LeftSide Buttons/Reload ",
+          "name": "Reload ",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/SelectionPanel/Holder/Panels/LeftSide Buttons/CreateNew",
+          "name": "CreateNew",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/SelectionPanel/Holder/Preview/Right Side Buttons/Edit Button",
+          "name": "Edit Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/SelectionPanel/Holder/Preview/Right Side Buttons/Delete Button",
+          "name": "Delete Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/SelectionPanel/Holder/Preview/Right Side Buttons/BackButton",
+          "name": "BackButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/SelectionPanel/Holder/Preview/Previewer/BibitePreview/Bottom/Button",
+          "name": "Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Buttons/GenesButton",
+          "name": "GenesButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Buttons/brainButton",
+          "name": "brainButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Buttons/SaveSprite",
+          "name": "SaveSprite",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Buttons/SaveAndContinue",
+          "name": "SaveAndContinue",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Buttons/Submit",
+          "name": "Submit",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Buttons/BackButton",
+          "name": "BackButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/BrainTab/BrainToolbar/SimButtons/StepButton",
+          "name": "StepButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/BrainTab/BrainToolbar/SimButtons/PlayButton",
+          "name": "PlayButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/BrainTab/BrainToolbar/UtilityButtons/SaveAnchors",
+          "name": "SaveAnchors",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/BrainTab/BrainToolbar/UtilityButtons/ResortButton",
+          "name": "ResortButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/BrainTab/BrainToolbar/UtilityButtons/InfoButton",
+          "name": "InfoButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Previewer/BibitePreview/Top/InfoButton",
+          "name": "InfoButton",
+          "enabled": true,
+          "labels": []
+        }
+      ],
+      "clicks": [],
+      "controls_after": [
+        {
+          "kind": "Toggle",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/BrainTab/BrainToolbar/UtilityButtons/Visibility/Toggle",
+          "name": "Toggle",
+          "is_on": true,
+          "interactable": true,
+          "labels": []
+        },
+        {
+          "kind": "Input",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Previewer/BibitePreview/Body/line/Name Field/Edit Section/renameField",
+          "name": "renameField",
+          "text": "Accept",
+          "labels": []
+        },
+        {
+          "kind": "Input",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Previewer/BibitePreview/Body/Description Field/Edit Section/renameField",
+          "name": "renameField",
+          "text": "",
+          "labels": []
+        }
+      ]
+    },
+    {
+      "step": "newgame_options",
+      "controls": [
+        {
+          "kind": "Toggle",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/BrainTab/BrainToolbar/UtilityButtons/Visibility/Toggle",
+          "name": "Toggle",
+          "is_on": true,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Weigth",
+            "-1,56",
+            "Enter value...",
+            "0\u200b",
+            "Enabled",
+            "Filter...",
+            "want2\u200b",
+            "7",
+            "input nodes",
+            "output nodes"
+          ]
+        },
+        {
+          "kind": "Dropdown",
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ParametersPanel/Content/Options/right options/basicDropdown (4)/Dropdown",
+          "name": "Dropdown",
+          "value": 4,
+          "options": [
+            "Fifty",
+            "One Hundred",
+            "Two Hundred",
+            "Five Hundred",
+            "No"
+          ],
+          "labels": [],
+          "label_context": [
+            "No",
+            "Option A",
+            "Info : Sample Text",
+            "Free Tip: You can click on the button to head to the wiki page",
+            "Limit Bibites",
+            "Radioactivity",
+            "Normal",
+            "Info : \nDefines the size of the simulation. From the center, the simulation expends in every cardinal direction by this length. A bibite is usually approximately 10u long.",
+            "Size of the Simulation Area",
+            "Info : \nDefines the default amount of biomass per unit of fertile area. Biomass is used to spawn pellets and a high biomass density usually means a high number of max plant pellets."
+          ]
+        },
+        {
+          "kind": "Dropdown",
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ParametersPanel/Content/Options/right options/basicDropdown (3)/Dropdown",
+          "name": "Dropdown",
+          "value": 3,
+          "options": [
+            "None",
+            "Lower",
+            "Low",
+            "Normal",
+            "Severe",
+            "Extreme"
+          ],
+          "labels": [],
+          "label_context": [
+            "Normal",
+            "Option A",
+            "Info : Sample Text",
+            "Free Tip: You can click on the button to head to the wiki page",
+            "Radioactivity",
+            "Limit Bibites",
+            "No",
+            "Info : \nDefines the size of the simulation. From the center, the simulation expends in every cardinal direction by this length. A bibite is usually approximately 10u long.",
+            "Size of the Simulation Area",
+            "Info : \nDefines the default amount of biomass per unit of fertile area. Biomass is used to spawn pellets and a high biomass density usually means a high number of max plant pellets."
+          ]
+        },
+        {
+          "kind": "Dropdown",
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ParametersPanel/Content/Options/left options/basicDropdown (1)/Dropdown",
+          "name": "Dropdown",
+          "value": 4,
+          "options": [
+            "Barren",
+            "Sparser",
+            "Sparse",
+            "Low",
+            "Normal",
+            "High",
+            "Dense",
+            "Denser",
+            "Packed"
+          ],
+          "labels": [],
+          "label_context": [
+            "Normal",
+            "Option A",
+            "Info : \nDefines the default amount of biomass per unit of fertile area. Biomass is used to spawn pellets and a high biomass density usually means a high number of max plant pellets.",
+            "Free Tip: You can click on the button to head to the wiki page",
+            "Global Biomass Density",
+            "Info : \nDefines the size of the simulation. From the center, the simulation expends in every cardinal direction by this length. A bibite is usually approximately 10u long.",
+            "Size of the Simulation Area",
+            "Info : \nDefines the amount of energy that gets spawned each seconds per unit of fertile area. Correlated with how many bibites the simulation can sustain simultaneously.",
+            "Scenario Modifiers",
+            "TPS settings"
+          ]
+        },
+        {
+          "kind": "Dropdown",
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ParametersPanel/Content/Options/left options/basicDropdown (2)/Dropdown",
+          "name": "Dropdown",
+          "value": 3,
+          "options": [
+            "Sterile",
+            "Arid",
+            "Low",
+            "Normal",
+            "High",
+            "Lush",
+            "Overgrown"
+          ],
+          "labels": [],
+          "label_context": [
+            "Normal",
+            "Option A",
+            "Info : \nDefines the amount of energy that gets spawned each seconds per unit of fertile area. Correlated with how many bibites the simulation can sustain simultaneously.",
+            "Free Tip: You can click on the button to head to the wiki page",
+            "Global Fertility",
+            "Info : \nDefines the size of the simulation. From the center, the simulation expends in every cardinal direction by this length. A bibite is usually approximately 10u long.",
+            "Size of the Simulation Area",
+            "Info : \nDefines the default amount of biomass per unit of fertile area. Biomass is used to spawn pellets and a high biomass density usually means a high number of max plant pellets.",
+            "Global Biomass Density",
+            "Scenario Modifiers"
+          ]
+        },
+        {
+          "kind": "Dropdown",
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ParametersPanel/Content/Options/left options/basicDropdown/Dropdown",
+          "name": "Dropdown",
+          "value": 2,
+          "options": [
+            "Smallest",
+            "Small",
+            "Normal",
+            "Bigger",
+            "Large",
+            "Larger",
+            "Enormous",
+            "Gigantic"
+          ],
+          "labels": [],
+          "label_context": [
+            "Normal",
+            "Option A",
+            "Info : \nDefines the size of the simulation. From the center, the simulation expends in every cardinal direction by this length. A bibite is usually approximately 10u long.",
+            "Free Tip: You can click on the button to head to the wiki page",
+            "Size of the Simulation Area",
+            "Info : \nDefines the default amount of biomass per unit of fertile area. Biomass is used to spawn pellets and a high biomass density usually means a high number of max plant pellets.",
+            "Global Biomass Density",
+            "Info : \nDefines the amount of energy that gets spawned each seconds per unit of fertile area. Correlated with how many bibites the simulation can sustain simultaneously.",
+            "Scenario Modifiers",
+            "TPS settings"
+          ]
+        },
+        {
+          "kind": "Input",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Previewer/BibitePreview/Body/line/Name Field/Edit Section/renameField",
+          "name": "renameField",
+          "text": "Accept",
+          "labels": [],
+          "label_context": [
+            "Enter text...",
+            "\u200b",
+            "Accept\u200b",
+            "Name:",
+            "Name: ",
+            "Description:",
+            "A small reliable edite\u200b",
+            "Bibite Growth Curve",
+            " (",
+            "u\u00b2/s"
+          ]
+        },
+        {
+          "kind": "Input",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Previewer/BibitePreview/Body/Description Field/Edit Section/renameField",
+          "name": "renameField",
+          "text": "",
+          "labels": [],
+          "label_context": [
+            "Enter text...",
+            "A small reliable edite\u200b",
+            "\u200b",
+            "Description:",
+            "Description: ",
+            "Name:",
+            "Bibite Growth Curve",
+            " (",
+            "u\u00b2/s",
+            ")"
+          ]
+        }
+      ],
+      "active_buttons": [
+        {
+          "path": "UI/WelcomeScreen/Patreon Holder/Button",
+          "name": "Button",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "This is all possible thanks to the amazing patrons supporting the project on Patreon\n\nHelp propel the creation of a new form of life!",
+            "Naotagrey",
+            "The Bibites",
+            "Continue",
+            "New",
+            "Load",
+            "Bibite Library",
+            "Settings\n",
+            "Achievements",
+            "Additional Tools"
+          ]
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Continue",
+          "name": "Continue",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Continue",
+            "New",
+            "Load",
+            "Bibite Library",
+            "Settings\n",
+            "Achievements",
+            "Additional Tools",
+            "Credits\n",
+            "Quit\n",
+            "The Bibites"
+          ]
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/NewSim",
+          "name": "NewSim",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "New",
+            "Continue",
+            "Load",
+            "Bibite Library",
+            "Settings\n",
+            "Achievements",
+            "Additional Tools",
+            "Credits\n",
+            "Quit\n",
+            "The Bibites"
+          ]
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/LoadSim",
+          "name": "LoadSim",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Load",
+            "Continue",
+            "New",
+            "Bibite Library",
+            "Settings\n",
+            "Achievements",
+            "Additional Tools",
+            "Credits\n",
+            "Quit\n",
+            "The Bibites"
+          ]
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Editor",
+          "name": "Editor",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Bibite Library",
+            "Continue",
+            "New",
+            "Load",
+            "Settings\n",
+            "Achievements",
+            "Additional Tools",
+            "Credits\n",
+            "Quit\n",
+            "The Bibites"
+          ]
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Settings",
+          "name": "Settings",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Settings\n",
+            "Continue",
+            "New",
+            "Load",
+            "Bibite Library",
+            "Achievements",
+            "Additional Tools",
+            "Credits\n",
+            "Quit\n",
+            "The Bibites"
+          ]
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Achievements",
+          "name": "Achievements",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Achievements",
+            "Additional Tools",
+            "Credits\n",
+            "Continue",
+            "New",
+            "Load",
+            "Bibite Library",
+            "Settings\n",
+            "Quit\n",
+            "The Bibites"
+          ]
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/More",
+          "name": "More",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Additional Tools",
+            "Achievements",
+            "Credits\n",
+            "Continue",
+            "New",
+            "Load",
+            "Bibite Library",
+            "Settings\n",
+            "Quit\n",
+            "The Bibites"
+          ]
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Credits",
+          "name": "Credits",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Credits\n",
+            "Achievements",
+            "Additional Tools",
+            "Continue",
+            "New",
+            "Load",
+            "Bibite Library",
+            "Settings\n",
+            "Quit\n",
+            "The Bibites"
+          ]
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Quit",
+          "name": "Quit",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Quit\n",
+            "Continue",
+            "New",
+            "Load",
+            "Bibite Library",
+            "Settings\n",
+            "Achievements",
+            "Additional Tools",
+            "Credits\n",
+            "The Bibites"
+          ]
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Top/Return",
+          "name": "Return",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Return to Menu",
+            "Scenarios",
+            "No Preview Image \nCould Be Found",
+            "Add a file called \"img.png\" \nto the scenario .zip folder \nto add a preview image",
+            "Full-World",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sit amet dolor congue, Integer sit amet dolor congue, venenatis sem a, egestas ante. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sit amet dolor congue, venenatis sem a, egestas ante. ",
+            "In less than an hour",
+            "Highscore:",
+            "188555",
+            "With Champion:"
+          ]
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/Scenario Panel/Button holder/Challenges Buttons",
+          "name": "Challenges Buttons",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "No Preview Image \nCould Be Found",
+            "Add a file called \"img.png\" \nto the scenario .zip folder \nto add a preview image",
+            "Full-World",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sit amet dolor congue, Integer sit amet dolor congue, venenatis sem a, egestas ante. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sit amet dolor congue, venenatis sem a, egestas ante. ",
+            "In less than an hour",
+            "Highscore:",
+            "188555",
+            "With Champion:",
+            "Basic Bibite",
+            "Scenario Modifiers"
+          ]
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/Scenario Panel/Button holder/New Scenario Button",
+          "name": "New Scenario Button",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "No Preview Image \nCould Be Found",
+            "Add a file called \"img.png\" \nto the scenario .zip folder \nto add a preview image",
+            "Full-World",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sit amet dolor congue, Integer sit amet dolor congue, venenatis sem a, egestas ante. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sit amet dolor congue, venenatis sem a, egestas ante. ",
+            "In less than an hour",
+            "Highscore:",
+            "188555",
+            "With Champion:",
+            "Basic Bibite",
+            "Scenario Modifiers"
+          ]
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/Scenario Panel/Button holder/Open Folder Button",
+          "name": "Open Folder Button",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "No Preview Image \nCould Be Found",
+            "Add a file called \"img.png\" \nto the scenario .zip folder \nto add a preview image",
+            "Full-World",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sit amet dolor congue, Integer sit amet dolor congue, venenatis sem a, egestas ante. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sit amet dolor congue, venenatis sem a, egestas ante. ",
+            "In less than an hour",
+            "Highscore:",
+            "188555",
+            "With Champion:",
+            "Basic Bibite",
+            "Scenario Modifiers"
+          ]
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/top/Button holder (1)/EditChallengeButton",
+          "name": "EditChallengeButton",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "No Preview Image \nCould Be Found",
+            "Add a file called \"img.png\" \nto the scenario .zip folder \nto add a preview image",
+            "Full-World",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sit amet dolor congue, Integer sit amet dolor congue, venenatis sem a, egestas ante. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sit amet dolor congue, venenatis sem a, egestas ante. ",
+            "In less than an hour",
+            "Highscore:",
+            "188555",
+            "With Champion:",
+            "Basic Bibite",
+            "Scenario Modifiers"
+          ]
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/SelectedPanel/ScenarioInfo/Details/Name Line/Edit Button",
+          "name": "Edit Button",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Full-World",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sit amet dolor congue, Integer sit amet dolor congue, venenatis sem a, egestas ante. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sit amet dolor congue, venenatis sem a, egestas ante. ",
+            "In less than an hour",
+            "Highscore:",
+            "188555",
+            "With Champion:",
+            "Basic Bibite",
+            "No Preview Image \nCould Be Found",
+            "Add a file called \"img.png\" \nto the scenario .zip folder \nto add a preview image",
+            "Scenario Modifiers"
+          ]
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ParametersPanel/Content/TopLine/ Performance",
+          "name": " Performance",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "TPS settings",
+            "Scenario Modifiers",
+            "Info : \nDefines the size of the simulation. From the center, the simulation expends in every cardinal direction by this length. A bibite is usually approximately 10u long.",
+            "Free Tip: You can click on the button to head to the wiki page",
+            "Size of the Simulation Area",
+            "Normal",
+            "Option A",
+            "Info : \nDefines the default amount of biomass per unit of fertile area. Biomass is used to spawn pellets and a high biomass density usually means a high number of max plant pellets.",
+            "Global Biomass Density",
+            "No Preview Image \nCould Be Found"
+          ]
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ParametersPanel/Content/Bottom/StartButton",
+          "name": "StartButton",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Start Simulation",
+            "Scenario Modifiers",
+            "TPS settings",
+            "Info : \nDefines the size of the simulation. From the center, the simulation expends in every cardinal direction by this length. A bibite is usually approximately 10u long.",
+            "Free Tip: You can click on the button to head to the wiki page",
+            "Size of the Simulation Area",
+            "Normal",
+            "Option A",
+            "Info : \nDefines the default amount of biomass per unit of fertile area. Biomass is used to spawn pellets and a high biomass density usually means a high number of max plant pellets.",
+            "Global Biomass Density"
+          ]
+        },
+        {
+          "path": "UI/BibiteSelector/SelectionPanel/Holder/Panels/LeftSide Buttons/Templates",
+          "name": "Templates",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Create New",
+            "Template Bibites",
+            "Accept",
+            "0.6.3.1",
+            "Arborea Magna",
+            "Arrietty 5",
+            "Arrietty 6 ",
+            "Arrietty 6",
+            "This is all possible thanks to the amazing patrons supporting the project on Patreon\n\nHelp propel the creation of a new form of life!",
+            "Naotagrey"
+          ]
+        },
+        {
+          "path": "UI/BibiteSelector/SelectionPanel/Holder/Panels/LeftSide Buttons/Saved",
+          "name": "Saved",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Create New",
+            "Template Bibites",
+            "Accept",
+            "0.6.3.1",
+            "Arborea Magna",
+            "Arrietty 5",
+            "Arrietty 6 ",
+            "Arrietty 6",
+            "This is all possible thanks to the amazing patrons supporting the project on Patreon\n\nHelp propel the creation of a new form of life!",
+            "Naotagrey"
+          ]
+        },
+        {
+          "path": "UI/BibiteSelector/SelectionPanel/Holder/Panels/LeftSide Buttons/OpenFolder",
+          "name": "OpenFolder",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Create New",
+            "Template Bibites",
+            "Accept",
+            "0.6.3.1",
+            "Arborea Magna",
+            "Arrietty 5",
+            "Arrietty 6 ",
+            "Arrietty 6",
+            "This is all possible thanks to the amazing patrons supporting the project on Patreon\n\nHelp propel the creation of a new form of life!",
+            "Naotagrey"
+          ]
+        },
+        {
+          "path": "UI/BibiteSelector/SelectionPanel/Holder/Panels/LeftSide Buttons/Reload ",
+          "name": "Reload ",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Create New",
+            "Template Bibites",
+            "Accept",
+            "0.6.3.1",
+            "Arborea Magna",
+            "Arrietty 5",
+            "Arrietty 6 ",
+            "Arrietty 6",
+            "This is all possible thanks to the amazing patrons supporting the project on Patreon\n\nHelp propel the creation of a new form of life!",
+            "Naotagrey"
+          ]
+        },
+        {
+          "path": "UI/BibiteSelector/SelectionPanel/Holder/Panels/LeftSide Buttons/CreateNew",
+          "name": "CreateNew",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Create New",
+            "Template Bibites",
+            "Accept",
+            "0.6.3.1",
+            "Arborea Magna",
+            "Arrietty 5",
+            "Arrietty 6 ",
+            "Arrietty 6",
+            "This is all possible thanks to the amazing patrons supporting the project on Patreon\n\nHelp propel the creation of a new form of life!",
+            "Naotagrey"
+          ]
+        },
+        {
+          "path": "UI/BibiteSelector/SelectionPanel/Holder/Preview/Right Side Buttons/Edit Button",
+          "name": "Edit Button",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Accept",
+            "Number of Hidden Nodes:",
+            "0",
+            "Number of Synapses:",
+            "4",
+            "Edit Bibite",
+            "Create New",
+            "Template Bibites",
+            "0.6.3.1",
+            "Arborea Magna"
+          ]
+        },
+        {
+          "path": "UI/BibiteSelector/SelectionPanel/Holder/Preview/Right Side Buttons/Delete Button",
+          "name": "Delete Button",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Accept",
+            "Number of Hidden Nodes:",
+            "0",
+            "Number of Synapses:",
+            "4",
+            "Edit Bibite",
+            "Create New",
+            "Template Bibites",
+            "0.6.3.1",
+            "Arborea Magna"
+          ]
+        },
+        {
+          "path": "UI/BibiteSelector/SelectionPanel/Holder/Preview/Right Side Buttons/BackButton",
+          "name": "BackButton",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Accept",
+            "Number of Hidden Nodes:",
+            "0",
+            "Number of Synapses:",
+            "4",
+            "Edit Bibite",
+            "Create New",
+            "Template Bibites",
+            "0.6.3.1",
+            "Arborea Magna"
+          ]
+        },
+        {
+          "path": "UI/BibiteSelector/SelectionPanel/Holder/Preview/Previewer/BibitePreview/Bottom/Button",
+          "name": "Button",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Edit Bibite",
+            "Accept",
+            "Number of Hidden Nodes:",
+            "0",
+            "Number of Synapses:",
+            "4",
+            "Create New",
+            "Template Bibites",
+            "0.6.3.1",
+            "Arborea Magna"
+          ]
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Buttons/GenesButton",
+          "name": "GenesButton",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Bibite Editor\n",
+            "Weigth",
+            "-1,56",
+            "Enter value...",
+            "0\u200b",
+            "Enabled",
+            "Filter...",
+            "want2\u200b",
+            "7",
+            "input nodes"
+          ]
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Buttons/brainButton",
+          "name": "brainButton",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Bibite Editor\n",
+            "Weigth",
+            "-1,56",
+            "Enter value...",
+            "0\u200b",
+            "Enabled",
+            "Filter...",
+            "want2\u200b",
+            "7",
+            "input nodes"
+          ]
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Buttons/SaveSprite",
+          "name": "SaveSprite",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Bibite Editor\n",
+            "Weigth",
+            "-1,56",
+            "Enter value...",
+            "0\u200b",
+            "Enabled",
+            "Filter...",
+            "want2\u200b",
+            "7",
+            "input nodes"
+          ]
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Buttons/SaveAndContinue",
+          "name": "SaveAndContinue",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Bibite Editor\n",
+            "Weigth",
+            "-1,56",
+            "Enter value...",
+            "0\u200b",
+            "Enabled",
+            "Filter...",
+            "want2\u200b",
+            "7",
+            "input nodes"
+          ]
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Buttons/Submit",
+          "name": "Submit",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Bibite Editor\n",
+            "Weigth",
+            "-1,56",
+            "Enter value...",
+            "0\u200b",
+            "Enabled",
+            "Filter...",
+            "want2\u200b",
+            "7",
+            "input nodes"
+          ]
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Buttons/BackButton",
+          "name": "BackButton",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Bibite Editor\n",
+            "Weigth",
+            "-1,56",
+            "Enter value...",
+            "0\u200b",
+            "Enabled",
+            "Filter...",
+            "want2\u200b",
+            "7",
+            "input nodes"
+          ]
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/BrainTab/BrainToolbar/SimButtons/StepButton",
+          "name": "StepButton",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Weigth",
+            "-1,56",
+            "Enter value...",
+            "0\u200b",
+            "Enabled",
+            "Filter...",
+            "want2\u200b",
+            "7",
+            "input nodes",
+            "output nodes"
+          ]
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/BrainTab/BrainToolbar/SimButtons/PlayButton",
+          "name": "PlayButton",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Weigth",
+            "-1,56",
+            "Enter value...",
+            "0\u200b",
+            "Enabled",
+            "Filter...",
+            "want2\u200b",
+            "7",
+            "input nodes",
+            "output nodes"
+          ]
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/BrainTab/BrainToolbar/UtilityButtons/SaveAnchors",
+          "name": "SaveAnchors",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Weigth",
+            "-1,56",
+            "Enter value...",
+            "0\u200b",
+            "Enabled",
+            "Filter...",
+            "want2\u200b",
+            "7",
+            "input nodes",
+            "output nodes"
+          ]
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/BrainTab/BrainToolbar/UtilityButtons/ResortButton",
+          "name": "ResortButton",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Weigth",
+            "-1,56",
+            "Enter value...",
+            "0\u200b",
+            "Enabled",
+            "Filter...",
+            "want2\u200b",
+            "7",
+            "input nodes",
+            "output nodes"
+          ]
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/BrainTab/BrainToolbar/UtilityButtons/InfoButton",
+          "name": "InfoButton",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Weigth",
+            "-1,56",
+            "Enter value...",
+            "0\u200b",
+            "Enabled",
+            "Filter...",
+            "want2\u200b",
+            "7",
+            "input nodes",
+            "output nodes"
+          ]
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Previewer/BibitePreview/Top/InfoButton",
+          "name": "InfoButton",
+          "enabled": true,
+          "labels": [],
+          "label_context": [
+            "Name:",
+            "Enter text...",
+            "\u200b",
+            "Description:",
+            "A small reliable edite\u200b",
+            "Bibite Growth Curve",
+            " (",
+            "u\u00b2/s",
+            ")",
+            "0,88"
+          ]
+        }
+      ]
+    },
+    {
+      "step": "newgame:New Scenario Button",
+      "hit": {
+        "ok": true,
+        "label": "New Scenario Button",
+        "hits": [
+          {
+            "path": "UI/NewGameScenarios/ScenarioSelector/Holder/Scenario Panel/Button holder/New Scenario Button",
+            "name": "New Scenario Button",
+            "label": "New Scenario Button",
+            "clicked": true
+          }
+        ],
+        "count": 1
+      },
+      "active_panels": [
+        "Title Screen",
+        "Title Screen/Title",
+        "Title Screen/Title (1)",
+        "Title Screen/Title (1)/Title (2)",
+        "BackGround",
+        "BackGround/background",
+        "BackGround/Video Player",
+        "BackGround/VideoTexture",
+        "BackGround/Global Volume",
+        "UI/Popuholder",
+        "UI",
+        "UI/WelcomeScreen",
+        "UI/WelcomeScreen/Patreon Holder",
+        "UI/WelcomeScreen/Patreon Holder/Button",
+        "UI/WelcomeScreen/Patreon Holder/Button/Image",
+        "UI/WelcomeScreen/Patreon Holder/Button/Text (TMP)",
+        "UI/WelcomeScreen/Main Holder",
+        "UI/WelcomeScreen/Main Holder/Title",
+        "UI/WelcomeScreen/Main Holder/Title/Text (TMP)",
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel",
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel/Continue",
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel/Continue/Text (TMP)",
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel/NewSim",
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel/NewSim/Text (TMP)",
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel/LoadSim",
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel/LoadSim/Text (TMP)",
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel/Editor",
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel/Editor/Text (TMP)",
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel/Settings",
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel/Settings/Text (TMP)"
+      ]
+    },
+    {
+      "step": "newgame:New Challenge Button",
+      "hit": {
+        "ok": false,
+        "label": "New Challenge Button",
+        "hits": [],
+        "count": 0
+      },
+      "active_panels": [
+        "Title Screen",
+        "Title Screen/Title",
+        "Title Screen/Title (1)",
+        "Title Screen/Title (1)/Title (2)",
+        "BackGround",
+        "BackGround/background",
+        "BackGround/Video Player",
+        "BackGround/VideoTexture",
+        "BackGround/Global Volume",
+        "UI/Popuholder",
+        "UI",
+        "UI/WelcomeScreen",
+        "UI/WelcomeScreen/Patreon Holder",
+        "UI/WelcomeScreen/Patreon Holder/Button",
+        "UI/WelcomeScreen/Patreon Holder/Button/Image",
+        "UI/WelcomeScreen/Patreon Holder/Button/Text (TMP)",
+        "UI/WelcomeScreen/Main Holder",
+        "UI/WelcomeScreen/Main Holder/Title",
+        "UI/WelcomeScreen/Main Holder/Title/Text (TMP)",
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel",
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel/Continue",
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel/Continue/Text (TMP)",
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel/NewSim",
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel/NewSim/Text (TMP)",
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel/LoadSim",
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel/LoadSim/Text (TMP)",
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel/Editor",
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel/Editor/Text (TMP)",
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel/Settings",
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel/Settings/Text (TMP)"
+      ]
+    },
+    {
+      "step": "scenario_editor",
+      "controls": [
+        {
+          "kind": "Toggle",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+          "name": "Toggle",
+          "is_on": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Corpses",
+            "Prevent Mutations",
+            "Egg Collision",
+            "Disable Herding",
+            "Prevent Red Pheromones Production",
+            "Prevent Green Pheromones Production",
+            "Prevent Blue Pheromones Production",
+            "Disable Drag On Held Pellet",
+            "Pellet Collision",
+            "Pellet Options"
+          ]
+        },
+        {
+          "kind": "Toggle",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/Toggle",
+          "name": "Toggle",
+          "is_on": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Pellet Collision",
+            "Add Shaded Bounds",
+            "The Red Death Bloom",
+            "Void-No-Mo'",
+            "Pellet Options",
+            "Pellet Rotation",
+            "Pellet Merge",
+            "Shade Effect",
+            "Bibites Fear Shade",
+            "World Wraps Behind Shade"
+          ]
+        },
+        {
+          "kind": "Toggle",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+          "name": "Toggle",
+          "is_on": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Corpses",
+            "Prevent Mutations",
+            "Egg Collision",
+            "Disable Herding",
+            "Prevent Red Pheromones Production",
+            "Prevent Green Pheromones Production",
+            "Prevent Blue Pheromones Production",
+            "Disable Drag On Held Pellet",
+            "Pellet Collision",
+            "Pellet Options"
+          ]
+        },
+        {
+          "kind": "Toggle",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+          "name": "Toggle",
+          "is_on": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Corpses",
+            "Prevent Mutations",
+            "Egg Collision",
+            "Disable Herding",
+            "Prevent Red Pheromones Production",
+            "Prevent Green Pheromones Production",
+            "Prevent Blue Pheromones Production",
+            "Disable Drag On Held Pellet",
+            "Pellet Collision",
+            "Pellet Options"
+          ]
+        },
+        {
+          "kind": "Toggle",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+          "name": "Toggle",
+          "is_on": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Corpses",
+            "Prevent Mutations",
+            "Egg Collision",
+            "Disable Herding",
+            "Prevent Red Pheromones Production",
+            "Prevent Green Pheromones Production",
+            "Prevent Blue Pheromones Production",
+            "Disable Drag On Held Pellet",
+            "Pellet Collision",
+            "Pellet Options"
+          ]
+        },
+        {
+          "kind": "Toggle",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/Toggle",
+          "name": "Toggle",
+          "is_on": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Pellet Collision",
+            "Add Shaded Bounds",
+            "The Red Death Bloom",
+            "Void-No-Mo'",
+            "Pellet Options",
+            "Pellet Rotation",
+            "Pellet Merge",
+            "Shade Effect",
+            "Bibites Fear Shade",
+            "World Wraps Behind Shade"
+          ]
+        },
+        {
+          "kind": "Toggle",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/Toggle",
+          "name": "Toggle",
+          "is_on": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Pellet Collision",
+            "Add Shaded Bounds",
+            "The Red Death Bloom",
+            "Void-No-Mo'",
+            "Pellet Options",
+            "Pellet Rotation",
+            "Pellet Merge",
+            "Shade Effect",
+            "Bibites Fear Shade",
+            "World Wraps Behind Shade"
+          ]
+        },
+        {
+          "kind": "Toggle",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+          "name": "Toggle",
+          "is_on": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Corpses",
+            "Prevent Mutations",
+            "Egg Collision",
+            "Disable Herding",
+            "Prevent Red Pheromones Production",
+            "Prevent Green Pheromones Production",
+            "Prevent Blue Pheromones Production",
+            "Disable Drag On Held Pellet",
+            "Pellet Collision",
+            "Pellet Options"
+          ]
+        },
+        {
+          "kind": "Toggle",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+          "name": "Toggle",
+          "is_on": true,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Corpses",
+            "Prevent Mutations",
+            "Egg Collision",
+            "Disable Herding",
+            "Prevent Red Pheromones Production",
+            "Prevent Green Pheromones Production",
+            "Prevent Blue Pheromones Production",
+            "Disable Drag On Held Pellet",
+            "Pellet Collision",
+            "Pellet Options"
+          ]
+        },
+        {
+          "kind": "Toggle",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/Toggle",
+          "name": "Toggle",
+          "is_on": true,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Pellet Collision",
+            "Add Shaded Bounds",
+            "The Red Death Bloom",
+            "Void-No-Mo'",
+            "Pellet Options",
+            "Pellet Rotation",
+            "Pellet Merge",
+            "Shade Effect",
+            "Bibites Fear Shade",
+            "World Wraps Behind Shade"
+          ]
+        },
+        {
+          "kind": "Toggle",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+          "name": "Toggle",
+          "is_on": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Corpses",
+            "Prevent Mutations",
+            "Egg Collision",
+            "Disable Herding",
+            "Prevent Red Pheromones Production",
+            "Prevent Green Pheromones Production",
+            "Prevent Blue Pheromones Production",
+            "Disable Drag On Held Pellet",
+            "Pellet Collision",
+            "Pellet Options"
+          ]
+        },
+        {
+          "kind": "Toggle",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+          "name": "Toggle",
+          "is_on": true,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Corpses",
+            "Prevent Mutations",
+            "Egg Collision",
+            "Disable Herding",
+            "Prevent Red Pheromones Production",
+            "Prevent Green Pheromones Production",
+            "Prevent Blue Pheromones Production",
+            "Disable Drag On Held Pellet",
+            "Pellet Collision",
+            "Pellet Options"
+          ]
+        },
+        {
+          "kind": "Toggle",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/BrainTab/BrainToolbar/UtilityButtons/Visibility/Toggle",
+          "name": "Toggle",
+          "is_on": true,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Weigth",
+            "-1,56",
+            "Enter value...",
+            "0\u200b",
+            "Enabled",
+            "Filter...",
+            "want2\u200b",
+            "7",
+            "input nodes",
+            "output nodes"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 50,
+          "minValue": 0,
+          "maxValue": 200,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.1,
+          "minValue": 0,
+          "maxValue": 2,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 5,
+          "minValue": 0,
+          "maxValue": 20,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.25,
+          "minValue": 0,
+          "maxValue": 1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.25,
+          "minValue": 0,
+          "maxValue": 1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 1,
+          "minValue": 0,
+          "maxValue": 10,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 2,
+          "minValue": 0,
+          "maxValue": 3,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 80,
+          "minValue": 1,
+          "maxValue": 500,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 1,
+          "minValue": 0,
+          "maxValue": 2,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.025,
+          "minValue": 0.001,
+          "maxValue": 0.25,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.5,
+          "minValue": 0,
+          "maxValue": 1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 3,
+          "minValue": 0,
+          "maxValue": 4,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 1.5,
+          "minValue": 0,
+          "maxValue": 2.5,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 50,
+          "minValue": 1,
+          "maxValue": 1000,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 5,
+          "minValue": 0,
+          "maxValue": 25,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": -2,
+          "minValue": -2,
+          "maxValue": 2,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 5,
+          "minValue": 1,
+          "maxValue": 50,
+          "wholeNumbers": true,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 10,
+          "minValue": 1,
+          "maxValue": 100,
+          "wholeNumbers": true,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 2,
+          "minValue": 1,
+          "maxValue": 100,
+          "wholeNumbers": true,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 2,
+          "minValue": 1,
+          "maxValue": 100,
+          "wholeNumbers": true,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 30,
+          "minValue": 5,
+          "maxValue": 100,
+          "wholeNumbers": true,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Input",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Previewer/BibitePreview/Body/line/Name Field/Edit Section/renameField",
+          "name": "renameField",
+          "text": "Accept",
+          "labels": [],
+          "label_context": [
+            "Enter text...",
+            "\u200b",
+            "Accept\u200b",
+            "Name:",
+            "Name: ",
+            "Description:",
+            "A small reliable edite\u200b",
+            "Bibite Growth Curve",
+            " (",
+            "u\u00b2/s"
+          ]
+        },
+        {
+          "kind": "Input",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Previewer/BibitePreview/Body/Description Field/Edit Section/renameField",
+          "name": "renameField",
+          "text": "",
+          "labels": [],
+          "label_context": [
+            "Enter text...",
+            "A small reliable edite\u200b",
+            "\u200b",
+            "Description:",
+            "Description: ",
+            "Name:",
+            "Bibite Growth Curve",
+            " (",
+            "u\u00b2/s",
+            ")"
+          ]
+        }
+      ],
+      "buttons": [
+        {
+          "path": "UI/WelcomeScreen/Patreon Holder/Button",
+          "name": "Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Continue",
+          "name": "Continue",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/NewSim",
+          "name": "NewSim",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/LoadSim",
+          "name": "LoadSim",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Editor",
+          "name": "Editor",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Settings",
+          "name": "Settings",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Achievements",
+          "name": "Achievements",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/More",
+          "name": "More",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Credits",
+          "name": "Credits",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Quit",
+          "name": "Quit",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Right Side Buttons/StartButton",
+          "name": "StartButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Right Side Buttons/BackButton",
+          "name": "BackButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Right Side Buttons/SaveScenario",
+          "name": "SaveScenario",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/LeftSide Buttons/sim",
+          "name": "sim",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/LeftSide Buttons/zones",
+          "name": "zones",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/LeftSide Buttons/energy",
+          "name": "energy",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/LeftSide Buttons/bibites",
+          "name": "bibites",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/LeftSide Buttons/anims",
+          "name": "anims",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/LeftSide Buttons/ChallengeOptions",
+          "name": "ChallengeOptions",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/GroupEdit",
+          "name": "GroupEdit",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/GroupEdit",
+          "name": "GroupEdit",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/GroupEdit",
+          "name": "GroupEdit",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/GroupEdit",
+          "name": "GroupEdit",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+          "name": "FloatInfoText",
+          "enabled": true,
+          "labels": [
+            "30 tps"
+          ]
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "name": "ResetButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+          "name": "FloatInfoText",
+          "enabled": true,
+          "labels": [
+            "2 X"
+          ]
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "name": "ResetButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+          "name": "FloatInfoText",
+          "enabled": true,
+          "labels": [
+            "2 X"
+          ]
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "name": "ResetButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+          "name": "FloatInfoText",
+          "enabled": true,
+          "labels": [
+            "10 X"
+          ]
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "name": "ResetButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+          "name": "FloatInfoText",
+          "enabled": true,
+          "labels": [
+            "5 X"
+          ]
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "name": "ResetButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+          "name": "FloatInfoText",
+          "enabled": true,
+          "labels": [
+            "0.00 u\u00b2"
+          ]
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "name": "ResetButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+          "name": "FloatInfoText",
+          "enabled": true,
+          "labels": [
+            "5.00 Nu/s"
+          ]
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "name": "ResetButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+          "name": "FloatInfoText",
+          "enabled": true,
+          "labels": [
+            "50.0 N/u"
+          ]
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "name": "ResetButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+          "name": "FloatInfoText",
+          "enabled": true,
+          "labels": [
+            "1.5"
+          ]
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "name": "ResetButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+          "name": "FloatInfoText",
+          "enabled": true,
+          "labels": [
+            "3.0"
+          ]
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "name": "ResetButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+          "name": "FloatInfoText",
+          "enabled": true,
+          "labels": [
+            "50%"
+          ]
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "name": "ResetButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+          "name": "FloatInfoText",
+          "enabled": true,
+          "labels": [
+            "25.00 mg/u\u00b2"
+          ]
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "name": "ResetButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+          "name": "FloatInfoText",
+          "enabled": true,
+          "labels": [
+            "100%"
+          ]
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "name": "ResetButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+          "name": "FloatInfoText",
+          "enabled": true,
+          "labels": [
+            "80 N/u"
+          ]
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "name": "ResetButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+          "name": "FloatInfoText",
+          "enabled": true,
+          "labels": [
+            "2.0 "
+          ]
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "name": "ResetButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+          "name": "FloatInfoText",
+          "enabled": true,
+          "labels": [
+            "1.0X"
+          ]
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "name": "ResetButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+          "name": "FloatInfoText",
+          "enabled": true,
+          "labels": [
+            "25%"
+          ]
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "name": "ResetButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+          "name": "FloatInfoText",
+          "enabled": true,
+          "labels": [
+            "25%"
+          ]
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "name": "ResetButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+          "name": "FloatInfoText",
+          "enabled": true,
+          "labels": [
+            "500%"
+          ]
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "name": "ResetButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+          "name": "FloatInfoText",
+          "enabled": true,
+          "labels": [
+            "0.10 Dmg/(u/s)"
+          ]
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "name": "ResetButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+          "name": "FloatInfoText",
+          "enabled": true,
+          "labels": [
+            "50 u/s"
+          ]
+        },
+        {
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "name": "ResetButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/SelectionPanel/Holder/Panels/LeftSide Buttons/Templates",
+          "name": "Templates",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/SelectionPanel/Holder/Panels/LeftSide Buttons/Saved",
+          "name": "Saved",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/SelectionPanel/Holder/Panels/LeftSide Buttons/OpenFolder",
+          "name": "OpenFolder",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/SelectionPanel/Holder/Panels/LeftSide Buttons/Reload ",
+          "name": "Reload ",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/SelectionPanel/Holder/Panels/LeftSide Buttons/CreateNew",
+          "name": "CreateNew",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/SelectionPanel/Holder/Preview/Right Side Buttons/Edit Button",
+          "name": "Edit Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/SelectionPanel/Holder/Preview/Right Side Buttons/Delete Button",
+          "name": "Delete Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/SelectionPanel/Holder/Preview/Right Side Buttons/BackButton",
+          "name": "BackButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/SelectionPanel/Holder/Preview/Previewer/BibitePreview/Bottom/Button",
+          "name": "Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Buttons/GenesButton",
+          "name": "GenesButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Buttons/brainButton",
+          "name": "brainButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Buttons/SaveSprite",
+          "name": "SaveSprite",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Buttons/SaveAndContinue",
+          "name": "SaveAndContinue",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Buttons/Submit",
+          "name": "Submit",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Buttons/BackButton",
+          "name": "BackButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/BrainTab/BrainToolbar/SimButtons/StepButton",
+          "name": "StepButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/BrainTab/BrainToolbar/SimButtons/PlayButton",
+          "name": "PlayButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/BrainTab/BrainToolbar/UtilityButtons/SaveAnchors",
+          "name": "SaveAnchors",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/BrainTab/BrainToolbar/UtilityButtons/ResortButton",
+          "name": "ResortButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/BrainTab/BrainToolbar/UtilityButtons/InfoButton",
+          "name": "InfoButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Previewer/BibitePreview/Top/InfoButton",
+          "name": "InfoButton",
+          "enabled": true,
+          "labels": []
+        }
+      ]
+    },
+    {
+      "step": "scenario:zones",
+      "hit": {
+        "ok": true,
+        "pressed": "zones",
+        "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/LeftSide Buttons/zones"
+      },
+      "controls": [
+        {
+          "kind": "Toggle",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/BrainTab/BrainToolbar/UtilityButtons/Visibility/Toggle",
+          "name": "Toggle",
+          "is_on": true,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Weigth",
+            "-1,56",
+            "Enter value...",
+            "0\u200b",
+            "Enabled",
+            "Filter...",
+            "want2\u200b",
+            "7",
+            "input nodes",
+            "output nodes"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/ZoneEditorPanel/Scroll View/Viewport/Content/World Parameters/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0,
+          "minValue": -1.30103,
+          "maxValue": 1.39794,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Size of the Simulation Area",
+            "2.00 ku",
+            "Enter value...",
+            "0\u200b",
+            "Global Biomass Density",
+            "7.5 mE/u\u00b2",
+            "Initial Seeding",
+            "75.0%",
+            "World Parameters",
+            "Simulation Options"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/ZoneEditorPanel/Scroll View/Viewport/Content/World Parameters/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0,
+          "minValue": -4,
+          "maxValue": 2,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Size of the Simulation Area",
+            "2.00 ku",
+            "Enter value...",
+            "0\u200b",
+            "Global Biomass Density",
+            "7.5 mE/u\u00b2",
+            "Initial Seeding",
+            "75.0%",
+            "World Parameters",
+            "Simulation Options"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/ZoneEditorPanel/Scroll View/Viewport/Content/World Parameters/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0,
+          "minValue": -1.80102992,
+          "maxValue": 1.69897008,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Size of the Simulation Area",
+            "2.00 ku",
+            "Enter value...",
+            "0\u200b",
+            "Global Biomass Density",
+            "7.5 mE/u\u00b2",
+            "Initial Seeding",
+            "75.0%",
+            "World Parameters",
+            "Simulation Options"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/ZoneEditorPanel/Scroll View/Viewport/Content/World Parameters/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.75,
+          "minValue": 0,
+          "maxValue": 1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Size of the Simulation Area",
+            "2.00 ku",
+            "Enter value...",
+            "0\u200b",
+            "Global Biomass Density",
+            "7.5 mE/u\u00b2",
+            "Initial Seeding",
+            "75.0%",
+            "World Parameters",
+            "Simulation Options"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/ZoneEditorPanel/Scroll View/Viewport/Content/World Parameters/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0,
+          "minValue": -1.37506127,
+          "maxValue": 2.12493873,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Size of the Simulation Area",
+            "2.00 ku",
+            "Enter value...",
+            "0\u200b",
+            "Global Biomass Density",
+            "7.5 mE/u\u00b2",
+            "Initial Seeding",
+            "75.0%",
+            "World Parameters",
+            "Simulation Options"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/ZoneEditorPanel/Scroll View/Viewport/Content/World Parameters/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0,
+          "minValue": -1.30103,
+          "maxValue": 1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Size of the Simulation Area",
+            "2.00 ku",
+            "Enter value...",
+            "0\u200b",
+            "Global Biomass Density",
+            "7.5 mE/u\u00b2",
+            "Initial Seeding",
+            "75.0%",
+            "World Parameters",
+            "Simulation Options"
+          ]
+        },
+        {
+          "kind": "Input",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Previewer/BibitePreview/Body/line/Name Field/Edit Section/renameField",
+          "name": "renameField",
+          "text": "Accept",
+          "labels": [],
+          "label_context": [
+            "Enter text...",
+            "\u200b",
+            "Accept\u200b",
+            "Name:",
+            "Name: ",
+            "Description:",
+            "A small reliable edite\u200b",
+            "Bibite Growth Curve",
+            " (",
+            "u\u00b2/s"
+          ]
+        },
+        {
+          "kind": "Input",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Previewer/BibitePreview/Body/Description Field/Edit Section/renameField",
+          "name": "renameField",
+          "text": "",
+          "labels": [],
+          "label_context": [
+            "Enter text...",
+            "A small reliable edite\u200b",
+            "\u200b",
+            "Description:",
+            "Description: ",
+            "Name:",
+            "Bibite Growth Curve",
+            " (",
+            "u\u00b2/s",
+            ")"
+          ]
+        }
+      ]
+    },
+    {
+      "step": "scenario:ChallengeOptions",
+      "hit": {
+        "ok": true,
+        "pressed": "ChallengeOptions",
+        "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/LeftSide Buttons/ChallengeOptions"
+      },
+      "controls": [
+        {
+          "kind": "Toggle",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/BrainTab/BrainToolbar/UtilityButtons/Visibility/Toggle",
+          "name": "Toggle",
+          "is_on": true,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Weigth",
+            "-1,56",
+            "Enter value...",
+            "0\u200b",
+            "Enabled",
+            "Filter...",
+            "want2\u200b",
+            "7",
+            "input nodes",
+            "output nodes"
+          ]
+        },
+        {
+          "kind": "Input",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Previewer/BibitePreview/Body/line/Name Field/Edit Section/renameField",
+          "name": "renameField",
+          "text": "Accept",
+          "labels": [],
+          "label_context": [
+            "Enter text...",
+            "\u200b",
+            "Accept\u200b",
+            "Name:",
+            "Name: ",
+            "Description:",
+            "A small reliable edite\u200b",
+            "Bibite Growth Curve",
+            " (",
+            "u\u00b2/s"
+          ]
+        },
+        {
+          "kind": "Input",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Previewer/BibitePreview/Body/Description Field/Edit Section/renameField",
+          "name": "renameField",
+          "text": "",
+          "labels": [],
+          "label_context": [
+            "Enter text...",
+            "A small reliable edite\u200b",
+            "\u200b",
+            "Description:",
+            "Description: ",
+            "Name:",
+            "Bibite Growth Curve",
+            " (",
+            "u\u00b2/s",
+            ")"
+          ]
+        }
+      ]
+    },
+    {
+      "step": "scenario:sim",
+      "hit": {
+        "ok": true,
+        "pressed": "sim",
+        "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/LeftSide Buttons/sim"
+      },
+      "controls": [
+        {
+          "kind": "Toggle",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+          "name": "Toggle",
+          "is_on": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Corpses",
+            "Prevent Mutations",
+            "Egg Collision",
+            "Disable Herding",
+            "Prevent Red Pheromones Production",
+            "Prevent Green Pheromones Production",
+            "Prevent Blue Pheromones Production",
+            "Disable Drag On Held Pellet",
+            "Pellet Collision",
+            "Pellet Options"
+          ]
+        },
+        {
+          "kind": "Toggle",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/Toggle",
+          "name": "Toggle",
+          "is_on": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Pellet Collision",
+            "Add Shaded Bounds",
+            "The Red Death Bloom",
+            "Void-No-Mo'",
+            "Pellet Options",
+            "Pellet Rotation",
+            "Pellet Merge",
+            "Shade Effect",
+            "Bibites Fear Shade",
+            "World Wraps Behind Shade"
+          ]
+        },
+        {
+          "kind": "Toggle",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+          "name": "Toggle",
+          "is_on": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Corpses",
+            "Prevent Mutations",
+            "Egg Collision",
+            "Disable Herding",
+            "Prevent Red Pheromones Production",
+            "Prevent Green Pheromones Production",
+            "Prevent Blue Pheromones Production",
+            "Disable Drag On Held Pellet",
+            "Pellet Collision",
+            "Pellet Options"
+          ]
+        },
+        {
+          "kind": "Toggle",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+          "name": "Toggle",
+          "is_on": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Corpses",
+            "Prevent Mutations",
+            "Egg Collision",
+            "Disable Herding",
+            "Prevent Red Pheromones Production",
+            "Prevent Green Pheromones Production",
+            "Prevent Blue Pheromones Production",
+            "Disable Drag On Held Pellet",
+            "Pellet Collision",
+            "Pellet Options"
+          ]
+        },
+        {
+          "kind": "Toggle",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+          "name": "Toggle",
+          "is_on": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Corpses",
+            "Prevent Mutations",
+            "Egg Collision",
+            "Disable Herding",
+            "Prevent Red Pheromones Production",
+            "Prevent Green Pheromones Production",
+            "Prevent Blue Pheromones Production",
+            "Disable Drag On Held Pellet",
+            "Pellet Collision",
+            "Pellet Options"
+          ]
+        },
+        {
+          "kind": "Toggle",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/Toggle",
+          "name": "Toggle",
+          "is_on": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Pellet Collision",
+            "Add Shaded Bounds",
+            "The Red Death Bloom",
+            "Void-No-Mo'",
+            "Pellet Options",
+            "Pellet Rotation",
+            "Pellet Merge",
+            "Shade Effect",
+            "Bibites Fear Shade",
+            "World Wraps Behind Shade"
+          ]
+        },
+        {
+          "kind": "Toggle",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/Toggle",
+          "name": "Toggle",
+          "is_on": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Pellet Collision",
+            "Add Shaded Bounds",
+            "The Red Death Bloom",
+            "Void-No-Mo'",
+            "Pellet Options",
+            "Pellet Rotation",
+            "Pellet Merge",
+            "Shade Effect",
+            "Bibites Fear Shade",
+            "World Wraps Behind Shade"
+          ]
+        },
+        {
+          "kind": "Toggle",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+          "name": "Toggle",
+          "is_on": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Corpses",
+            "Prevent Mutations",
+            "Egg Collision",
+            "Disable Herding",
+            "Prevent Red Pheromones Production",
+            "Prevent Green Pheromones Production",
+            "Prevent Blue Pheromones Production",
+            "Disable Drag On Held Pellet",
+            "Pellet Collision",
+            "Pellet Options"
+          ]
+        },
+        {
+          "kind": "Toggle",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+          "name": "Toggle",
+          "is_on": true,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Corpses",
+            "Prevent Mutations",
+            "Egg Collision",
+            "Disable Herding",
+            "Prevent Red Pheromones Production",
+            "Prevent Green Pheromones Production",
+            "Prevent Blue Pheromones Production",
+            "Disable Drag On Held Pellet",
+            "Pellet Collision",
+            "Pellet Options"
+          ]
+        },
+        {
+          "kind": "Toggle",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/Toggle",
+          "name": "Toggle",
+          "is_on": true,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Pellet Collision",
+            "Add Shaded Bounds",
+            "The Red Death Bloom",
+            "Void-No-Mo'",
+            "Pellet Options",
+            "Pellet Rotation",
+            "Pellet Merge",
+            "Shade Effect",
+            "Bibites Fear Shade",
+            "World Wraps Behind Shade"
+          ]
+        },
+        {
+          "kind": "Toggle",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+          "name": "Toggle",
+          "is_on": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Corpses",
+            "Prevent Mutations",
+            "Egg Collision",
+            "Disable Herding",
+            "Prevent Red Pheromones Production",
+            "Prevent Green Pheromones Production",
+            "Prevent Blue Pheromones Production",
+            "Disable Drag On Held Pellet",
+            "Pellet Collision",
+            "Pellet Options"
+          ]
+        },
+        {
+          "kind": "Toggle",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+          "name": "Toggle",
+          "is_on": true,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Corpses",
+            "Prevent Mutations",
+            "Egg Collision",
+            "Disable Herding",
+            "Prevent Red Pheromones Production",
+            "Prevent Green Pheromones Production",
+            "Prevent Blue Pheromones Production",
+            "Disable Drag On Held Pellet",
+            "Pellet Collision",
+            "Pellet Options"
+          ]
+        },
+        {
+          "kind": "Toggle",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Panels/BrainTab/BrainToolbar/UtilityButtons/Visibility/Toggle",
+          "name": "Toggle",
+          "is_on": true,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Weigth",
+            "-1,56",
+            "Enter value...",
+            "0\u200b",
+            "Enabled",
+            "Filter...",
+            "want2\u200b",
+            "7",
+            "input nodes",
+            "output nodes"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 50,
+          "minValue": 0,
+          "maxValue": 200,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.1,
+          "minValue": 0,
+          "maxValue": 2,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 5,
+          "minValue": 0,
+          "maxValue": 20,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.25,
+          "minValue": 0,
+          "maxValue": 1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.25,
+          "minValue": 0,
+          "maxValue": 1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 1,
+          "minValue": 0,
+          "maxValue": 10,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 2,
+          "minValue": 0,
+          "maxValue": 3,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 80,
+          "minValue": 1,
+          "maxValue": 500,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 1,
+          "minValue": 0,
+          "maxValue": 2,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.025,
+          "minValue": 0.001,
+          "maxValue": 0.25,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0.5,
+          "minValue": 0,
+          "maxValue": 1,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 3,
+          "minValue": 0,
+          "maxValue": 4,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 1.5,
+          "minValue": 0,
+          "maxValue": 2.5,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 50,
+          "minValue": 1,
+          "maxValue": 1000,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 5,
+          "minValue": 0,
+          "maxValue": 25,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": -2,
+          "minValue": -2,
+          "maxValue": 2,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 5,
+          "minValue": 1,
+          "maxValue": 50,
+          "wholeNumbers": true,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 10,
+          "minValue": 1,
+          "maxValue": 100,
+          "wholeNumbers": true,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 2,
+          "minValue": 1,
+          "maxValue": 100,
+          "wholeNumbers": true,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 2,
+          "minValue": 1,
+          "maxValue": 100,
+          "wholeNumbers": true,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/SimTab/Scroll View/Viewport/Content/List/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 30,
+          "minValue": 5,
+          "maxValue": 100,
+          "wholeNumbers": true,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Ticks Per Second",
+            "30 tps",
+            "Enter value...",
+            "0\u200b",
+            "Brain Update Factor",
+            "2 X",
+            "Decay Update Factor",
+            "Corpses",
+            "Prevent Mutations",
+            "Pellet Collision"
+          ]
+        },
+        {
+          "kind": "Input",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Previewer/BibitePreview/Body/line/Name Field/Edit Section/renameField",
+          "name": "renameField",
+          "text": "Accept",
+          "labels": [],
+          "label_context": [
+            "Enter text...",
+            "\u200b",
+            "Accept\u200b",
+            "Name:",
+            "Name: ",
+            "Description:",
+            "A small reliable edite\u200b",
+            "Bibite Growth Curve",
+            " (",
+            "u\u00b2/s"
+          ]
+        },
+        {
+          "kind": "Input",
+          "path": "UI/BibiteSelector/BibiteEditor/Panel/Holder/Previewer/BibitePreview/Body/Description Field/Edit Section/renameField",
+          "name": "renameField",
+          "text": "",
+          "labels": [],
+          "label_context": [
+            "Enter text...",
+            "A small reliable edite\u200b",
+            "\u200b",
+            "Description:",
+            "Description: ",
+            "Name:",
+            "Bibite Growth Curve",
+            " (",
+            "u\u00b2/s",
+            ")"
+          ]
+        }
+      ]
+    }
+  ],
+  "note": "Hidden Welcome UI; library selector/editor gene+brain, New Game option controls, scenario editor zone/challenge panels. Text labels/options from live controls.",
+  "label_enrichment": "label_context from ancestor/descendant TMP text in the captured atlas sessions.",
+  "known_paths": {
+    "library_create_new": "UI/BibiteSelector/SelectionPanel/Holder/Panels/LeftSide Buttons/CreateNew",
+    "library_templates": "UI/BibiteSelector/SelectionPanel/Holder/Panels/LeftSide Buttons/Templates",
+    "library_edit": "UI/BibiteSelector/SelectionPanel/Holder/Preview/Right Side Buttons/Edit Button",
+    "newgame_start": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ParametersPanel/Content/Bottom/StartButton"
+  },
+  "resolved_gaps": {
+    "gap_flows": "assets/game/reference/functional_ui/gap_flows.json",
+    "save_dialogs": "assets/game/reference/functional_ui/save_dialogs.json",
+    "note": "CreateNew/Edit/Genes/Submit paths resolve; gene sliders set; save created then dialogs attempted; newgame dropdown controls captured earlier."
+  }
+}

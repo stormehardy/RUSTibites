@@ -1,0 +1,31 @@
+# RUSTibites benchmark environment
+
+Captured (UTC):        2026-11-02T05:05:23.4490242Z
+Host:                  DESKTOP
+OS:                    Microsoft Windows 10 Home | version=10.0.19045
+CPU:                   AMD Ryzen 5 3600 6-Core Processor | physical=6 logical=12 | max_clock_mhz=3593
+Memory:                16.0 GB total, 4.25 GB free at capture
+CPU load at capture:   6.0 %
+PowerShell:            5.1.19041.6456
+rustc:                 1.99.1 (58cf8f9c3 2026-10-13) (release 1.99.1, x86_64-pc-windows-msvc)
+cargo:                 1.99.1 (5f94df478 2026-08-27)
+Git HEAD:              271fd060c9b28610fcfc052c1e88807f087fcb73 (main) 2026-11-02T00:03:56-05:00
+Git subject:           io: fix comment encoding after period-threading patch
+Git dirty:             True (3 changed paths)
+Git status:
+  ?? tools/bench/results/x32-thread-ab/
+  ?? tools/parity/make_game_seed.py
+  ?? tools/parity/plugin/_fix_select.py
+Release profile:
+  opt-level = 3
+  lto = "fat"
+  codegen-units = 1
+  panic = "abort"
+  strip = "debuginfo"
+Benchmark binary:      Z:\RUSTibites\target\release\rustibites.exe
+  sha256:              F08146E490982BA82EE5C89B3F139B5FEE623598EEDCF8A2C8F669A4E1D95E00
+  size:                2229248 bytes
+  mtime (UTC):         2026-11-02T05:05:21.7834459Z
+  stable copy:         C:\Users\Storme\AppData\Local\Temp\rustibites-bench\bin\rustibites-F08146E490982BA8.exe
+Simulator:             30 TPS (fixed_dt = 1/30 s)
+Seed:                  seed = 0x5255535400000000 xor repetition_index (repetition starts at 0)

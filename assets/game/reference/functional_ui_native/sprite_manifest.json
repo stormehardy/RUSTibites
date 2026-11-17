@@ -1,0 +1,1926 @@
+{
+  "schema": "rustibites.ui.native_sprite_manifest.v1",
+  "source": "UnityPy Sprite/Texture2D extraction from game assets for names referenced by native runtime UI dumps",
+  "referenced_count": 213,
+  "mapped_count": 213,
+  "missing": [],
+  "sprites": {
+    "1727490": {
+      "file": "assets/game/reference/functional_ui_native/sprites/1727490.png",
+      "width": 512,
+      "height": 512,
+      "texture": "1727490",
+      "texture_path_id": 68,
+      "source": "sharedassets1.assets",
+      "path_id": 130
+    },
+    "ACH_APOCALYPSE_1STAR_0": {
+      "file": "assets/game/reference/functional_ui_native/sprites/ACH_APOCALYPSE_1STAR_0.png",
+      "width": 256,
+      "height": 256,
+      "texture": "ACH_APOCALYPSE_1STAR_0",
+      "texture_path_id": 145,
+      "source": "sharedassets0.assets",
+      "path_id": 298
+    },
+    "ACH_APOCALYPSE_1STAR_1": {
+      "file": "assets/game/reference/functional_ui_native/sprites/ACH_APOCALYPSE_1STAR_1.png",
+      "width": 256,
+      "height": 256,
+      "texture": "ACH_APOCALYPSE_1STAR_1",
+      "texture_path_id": 51,
+      "source": "sharedassets0.assets",
+      "path_id": 221
+    },
+    "ACH_APOCALYPSE_2STAR_0": {
+      "file": "assets/game/reference/functional_ui_native/sprites/ACH_APOCALYPSE_2STAR_0.png",
+      "width": 256,
+      "height": 256,
+      "texture": "ACH_APOCALYPSE_2STAR_0",
+      "texture_path_id": 101,
+      "source": "sharedassets0.assets",
+      "path_id": 262
+    },
+    "ACH_APOCALYPSE_3STAR_0": {
+      "file": "assets/game/reference/functional_ui_native/sprites/ACH_APOCALYPSE_3STAR_0.png",
+      "width": 256,
+      "height": 256,
+      "texture": "ACH_APOCALYPSE_3STAR_0",
+      "texture_path_id": 161,
+      "source": "sharedassets0.assets",
+      "path_id": 309
+    },
+    "ACH_BIBITE_EDITOR_1": {
+      "file": "assets/game/reference/functional_ui_native/sprites/ACH_BIBITE_EDITOR_1.png",
+      "width": 256,
+      "height": 256,
+      "texture": "ACH_BIBITE_EDITOR_1",
+      "texture_path_id": 73,
+      "source": "sharedassets0.assets",
+      "path_id": 238
+    },
+    "ACH_DOWNWITHTHEBASICS_1STAR_1": {
+      "file": "assets/game/reference/functional_ui_native/sprites/ACH_DOWNWITHTHEBASICS_1STAR_1.png",
+      "width": 256,
+      "height": 256,
+      "texture": "ACH_DOWNWITHTHEBASICS_1STAR_1",
+      "texture_path_id": 39,
+      "source": "sharedassets0.assets",
+      "path_id": 212
+    },
+    "ACH_DOWNWITHTHEBASICS_2STAR_1": {
+      "file": "assets/game/reference/functional_ui_native/sprites/ACH_DOWNWITHTHEBASICS_2STAR_1.png",
+      "width": 256,
+      "height": 256,
+      "texture": "ACH_DOWNWITHTHEBASICS_2STAR_1",
+      "texture_path_id": 54,
+      "source": "sharedassets0.assets",
+      "path_id": 223
+    },
+    "ACH_DOWNWITHTHEBASICS_3STAR_0": {
+      "file": "assets/game/reference/functional_ui_native/sprites/ACH_DOWNWITHTHEBASICS_3STAR_0.png",
+      "width": 256,
+      "height": 256,
+      "texture": "ACH_DOWNWITHTHEBASICS_3STAR_0",
+      "texture_path_id": 86,
+      "source": "sharedassets0.assets",
+      "path_id": 248
+    },
+    "ACH_LIKERABBITS_1STAR_0": {
+      "file": "assets/game/reference/functional_ui_native/sprites/ACH_LIKERABBITS_1STAR_0.png",
+      "width": 256,
+      "height": 256,
+      "texture": "ACH_LIKERABBITS_1STAR_0",
+      "texture_path_id": 169,
+      "source": "sharedassets0.assets",
+      "path_id": 316
+    },
+    "ACH_LIKERABBITS_2STAR_0": {
+      "file": "assets/game/reference/functional_ui_native/sprites/ACH_LIKERABBITS_2STAR_0.png",
+      "width": 256,
+      "height": 256,
+      "texture": "ACH_LIKERABBITS_2STAR_0",
+      "texture_path_id": 76,
+      "source": "sharedassets0.assets",
+      "path_id": 241
+    },
+    "ACH_LIKERABBITS_3STAR_0": {
+      "file": "assets/game/reference/functional_ui_native/sprites/ACH_LIKERABBITS_3STAR_0.png",
+      "width": 256,
+      "height": 256,
+      "texture": "ACH_LIKERABBITS_3STAR_0",
+      "texture_path_id": 129,
+      "source": "sharedassets0.assets",
+      "path_id": 285
+    },
+    "ACH_THEULTIMATEDUEL_1STAR_0": {
+      "file": "assets/game/reference/functional_ui_native/sprites/ACH_THEULTIMATEDUEL_1STAR_0.png",
+      "width": 256,
+      "height": 256,
+      "texture": "ACH_THEULTIMATEDUEL_1STAR_0",
+      "texture_path_id": 122,
+      "source": "sharedassets0.assets",
+      "path_id": 279
+    },
+    "ACH_THEULTIMATEDUEL_2STAR_0": {
+      "file": "assets/game/reference/functional_ui_native/sprites/ACH_THEULTIMATEDUEL_2STAR_0.png",
+      "width": 256,
+      "height": 256,
+      "texture": "ACH_THEULTIMATEDUEL_2STAR_0",
+      "texture_path_id": 136,
+      "source": "sharedassets0.assets",
+      "path_id": 291
+    },
+    "ACH_THEULTIMATEDUEL_3STAR_0": {
+      "file": "assets/game/reference/functional_ui_native/sprites/ACH_THEULTIMATEDUEL_3STAR_0.png",
+      "width": 256,
+      "height": 256,
+      "texture": "ACH_THEULTIMATEDUEL_3STAR_0",
+      "texture_path_id": 133,
+      "source": "sharedassets0.assets",
+      "path_id": 288
+    },
+    "Add": {
+      "file": "assets/game/reference/functional_ui_native/sprites/Add.png",
+      "width": 16,
+      "height": 16,
+      "texture": "Add",
+      "texture_path_id": 144,
+      "source": "sharedassets0.assets",
+      "path_id": 297
+    },
+    "Arrow": {
+      "file": "assets/game/reference/functional_ui_native/sprites/Arrow.png",
+      "width": 35,
+      "height": 17,
+      "texture": "Arrow",
+      "texture_path_id": 53,
+      "source": "sharedassets1.assets",
+      "path_id": 120
+    },
+    "Background": {
+      "file": "assets/game/reference/functional_ui_native/sprites/Background.png",
+      "width": 32,
+      "height": 32,
+      "texture": "Background",
+      "texture_path_id": 33,
+      "source": "sharedassets0.assets",
+      "path_id": 207
+    },
+    "Beyond the Basics_0": {
+      "file": "assets/game/reference/functional_ui_native/sprites/Beyond_the_Basics_0.png",
+      "width": 800,
+      "height": 800,
+      "texture": "Beyond the Basics",
+      "texture_path_id": 48,
+      "source": "sharedassets1.assets",
+      "path_id": 91
+    },
+    "Brax": {
+      "file": "assets/game/reference/functional_ui_native/sprites/Brax.png",
+      "width": 400,
+      "height": 400,
+      "texture": "Brax",
+      "texture_path_id": 43,
+      "source": "sharedassets1.assets",
+      "path_id": 115
+    },
+    "Button_UI": {
+      "file": "assets/game/reference/functional_ui_native/sprites/Button_UI.png",
+      "width": 352,
+      "height": 352,
+      "texture": "Button_UI",
+      "texture_path_id": 167,
+      "source": "sharedassets0.assets",
+      "path_id": 315
+    },
+    "Checkmark": {
+      "file": "assets/game/reference/functional_ui_native/sprites/Checkmark.png",
+      "width": 27,
+      "height": 23,
+      "texture": "Checkmark",
+      "texture_path_id": 31,
+      "source": "sharedassets0.assets",
+      "path_id": 205
+    },
+    "Circle": {
+      "file": "assets/game/reference/functional_ui_native/sprites/Circle.png",
+      "width": 256,
+      "height": 256,
+      "texture": "Circle",
+      "texture_path_id": 52,
+      "source": "sharedassets1.assets",
+      "path_id": 93
+    },
+    "Credits": {
+      "file": "assets/game/reference/functional_ui_native/sprites/Credits.png",
+      "width": 352,
+      "height": 352,
+      "texture": "Credits",
+      "texture_path_id": 54,
+      "source": "sharedassets1.assets",
+      "path_id": 121
+    },
+    "Delete_0": {
+      "file": "assets/game/reference/functional_ui_native/sprites/Delete_0.png",
+      "width": 21,
+      "height": 27,
+      "texture": "Delete",
+      "texture_path_id": 112,
+      "source": "sharedassets0.assets",
+      "path_id": 204
+    },
+    "Discord-Logo_0": {
+      "file": "assets/game/reference/functional_ui_native/sprites/Discord-Logo_0.png",
+      "width": 1427,
+      "height": 1108,
+      "texture": "Discord-Logo",
+      "texture_path_id": 19,
+      "source": "sharedassets1.assets",
+      "path_id": 147
+    },
+    "DropdownArrow": {
+      "file": "assets/game/reference/functional_ui_native/sprites/DropdownArrow.png",
+      "width": 24,
+      "height": 16,
+      "texture": "DropdownArrow",
+      "texture_path_id": 35,
+      "source": "sharedassets0.assets",
+      "path_id": 209
+    },
+    "Genes_button_selected": {
+      "file": "assets/game/reference/functional_ui_native/sprites/Genes_button_selected.png",
+      "width": 352,
+      "height": 352,
+      "texture": "Genes_button_selected",
+      "texture_path_id": 69,
+      "source": "sharedassets2.assets",
+      "path_id": 138
+    },
+    "Help": {
+      "file": "assets/game/reference/functional_ui_native/sprites/Help.png",
+      "width": 352,
+      "height": 352,
+      "texture": "Help",
+      "texture_path_id": 138,
+      "source": "sharedassets0.assets",
+      "path_id": 292
+    },
+    "InputFieldBackground": {
+      "file": "assets/game/reference/functional_ui_native/sprites/InputFieldBackground.png",
+      "width": 32,
+      "height": 32,
+      "texture": "InputFieldBackground",
+      "texture_path_id": 34,
+      "source": "sharedassets0.assets",
+      "path_id": 208
+    },
+    "Long_UI": {
+      "file": "assets/game/reference/functional_ui_native/sprites/Long_UI.png",
+      "width": 670,
+      "height": 1090,
+      "texture": "Long_UI",
+      "texture_path_id": 148,
+      "source": "sharedassets0.assets",
+      "path_id": 300
+    },
+    "Patreon": {
+      "file": "assets/game/reference/functional_ui_native/sprites/Patreon.png",
+      "width": 512,
+      "height": 496,
+      "texture": "Patreon",
+      "texture_path_id": 49,
+      "source": "sharedassets1.assets",
+      "path_id": 118
+    },
+    "Pellet": {
+      "file": "assets/game/reference/functional_ui_native/sprites/Pellet.png",
+      "width": 7,
+      "height": 7,
+      "texture": "Pellet",
+      "texture_path_id": 42,
+      "source": "sharedassets2.assets",
+      "path_id": 115
+    },
+    "PlatformWhiteSprite": {
+      "file": "assets/game/reference/functional_ui_native/sprites/PlatformWhiteSprite.png",
+      "width": 512,
+      "height": 128,
+      "texture": "PlatformWhiteSprite",
+      "texture_path_id": 67,
+      "source": "sharedassets2.assets",
+      "path_id": 136
+    },
+    "Quit_button": {
+      "file": "assets/game/reference/functional_ui_native/sprites/Quit_button.png",
+      "width": 288,
+      "height": 288,
+      "texture": "Quit_button",
+      "texture_path_id": 95,
+      "source": "sharedassets0.assets",
+      "path_id": 257
+    },
+    "RAD": {
+      "file": "assets/game/reference/functional_ui_native/sprites/RAD.png",
+      "width": 26,
+      "height": 29,
+      "texture": "RAD",
+      "texture_path_id": 58,
+      "source": "sharedassets2.assets",
+      "path_id": 129
+    },
+    "Reset settings icon-1.png": {
+      "file": "assets/game/reference/functional_ui_native/sprites/Reset_settings_icon-1.png.png",
+      "width": 404,
+      "height": 374,
+      "texture": "Reset settings icon-1.png",
+      "texture_path_id": 111,
+      "source": "sharedassets0.assets",
+      "path_id": 271
+    },
+    "Settings_button_selected": {
+      "file": "assets/game/reference/functional_ui_native/sprites/Settings_button_selected.png",
+      "width": 352,
+      "height": 352,
+      "texture": "Settings_button_selected",
+      "texture_path_id": 171,
+      "source": "sharedassets0.assets",
+      "path_id": 318
+    },
+    "Square": {
+      "file": "assets/game/reference/functional_ui_native/sprites/Square.png",
+      "width": 256,
+      "height": 256,
+      "texture": "Square",
+      "texture_path_id": 29,
+      "source": "sharedassets2.assets",
+      "path_id": 143
+    },
+    "Status_Energy": {
+      "file": "assets/game/reference/functional_ui_native/sprites/Status_Energy.png",
+      "width": 316,
+      "height": 316,
+      "texture": "Status_Energy",
+      "texture_path_id": 59,
+      "source": "sharedassets2.assets",
+      "path_id": 130
+    },
+    "Status_Health": {
+      "file": "assets/game/reference/functional_ui_native/sprites/Status_Health.png",
+      "width": 316,
+      "height": 316,
+      "texture": "Status_Health",
+      "texture_path_id": 49,
+      "source": "sharedassets2.assets",
+      "path_id": 121
+    },
+    "UIMask": {
+      "file": "assets/game/reference/functional_ui_native/sprites/UIMask.png",
+      "width": 28,
+      "height": 28,
+      "texture": "UIMask",
+      "texture_path_id": 36,
+      "source": "sharedassets0.assets",
+      "path_id": 210
+    },
+    "UISprite": {
+      "file": "assets/game/reference/functional_ui_native/sprites/UISprite.png",
+      "width": 32,
+      "height": 32,
+      "texture": "UISprite",
+      "texture_path_id": 32,
+      "source": "sharedassets0.assets",
+      "path_id": 206
+    },
+    "Ultimate Duel_0": {
+      "file": "assets/game/reference/functional_ui_native/sprites/Ultimate_Duel_0.png",
+      "width": 800,
+      "height": 800,
+      "texture": "Ultimate Duel",
+      "texture_path_id": 66,
+      "source": "sharedassets1.assets",
+      "path_id": 144
+    },
+    "Wallpaper-white-21": {
+      "file": "assets/game/reference/functional_ui_native/sprites/Wallpaper-white-21.png",
+      "width": 1366,
+      "height": 768,
+      "texture": "Wallpaper-white-21",
+      "texture_path_id": 65,
+      "source": "sharedassets1.assets",
+      "path_id": 128
+    },
+    "Womb": {
+      "file": "assets/game/reference/functional_ui_native/sprites/Womb.png",
+      "width": 13,
+      "height": 11,
+      "texture": "Womb",
+      "texture_path_id": 37,
+      "source": "sharedassets2.assets",
+      "path_id": 96
+    },
+    "X_icon_0": {
+      "file": "assets/game/reference/functional_ui_native/sprites/X_icon_0.png",
+      "width": 120,
+      "height": 112,
+      "texture": "X_icon",
+      "texture_path_id": 46,
+      "source": "sharedassets1.assets",
+      "path_id": 89
+    },
+    "Youtube": {
+      "file": "assets/game/reference/functional_ui_native/sprites/Youtube.png",
+      "width": 800,
+      "height": 563,
+      "texture": "Youtube",
+      "texture_path_id": 29,
+      "source": "sharedassets1.assets",
+      "path_id": 104
+    },
+    "add In Connection_0": {
+      "file": "assets/game/reference/functional_ui_native/sprites/add_In_Connection_0.png",
+      "width": 30,
+      "height": 30,
+      "texture": "add In Connection",
+      "texture_path_id": 28,
+      "source": "sharedassets1.assets",
+      "path_id": 95
+    },
+    "add Out Connection_0": {
+      "file": "assets/game/reference/functional_ui_native/sprites/add_Out_Connection_0.png",
+      "width": 30,
+      "height": 30,
+      "texture": "add Out Connection",
+      "texture_path_id": 60,
+      "source": "sharedassets1.assets",
+      "path_id": 90
+    },
+    "addNodeAfter_0": {
+      "file": "assets/game/reference/functional_ui_native/sprites/addNodeAfter_0.png",
+      "width": 31,
+      "height": 31,
+      "texture": "addNodeAfter",
+      "texture_path_id": 32,
+      "source": "sharedassets1.assets",
+      "path_id": 143
+    },
+    "addNodeBefore_0": {
+      "file": "assets/game/reference/functional_ui_native/sprites/addNodeBefore_0.png",
+      "width": 31,
+      "height": 31,
+      "texture": "addNodeBefore",
+      "texture_path_id": 21,
+      "source": "sharedassets1.assets",
+      "path_id": 92
+    },
+    "animation_icon": {
+      "file": "assets/game/reference/functional_ui_native/sprites/animation_icon.png",
+      "width": 33,
+      "height": 33,
+      "texture": "animation_icon",
+      "texture_path_id": 27,
+      "source": "sharedassets1.assets",
+      "path_id": 103
+    },
+    "base_circle_icon": {
+      "file": "assets/game/reference/functional_ui_native/sprites/base_circle_icon.png",
+      "width": 35,
+      "height": 35,
+      "texture": "base_circle_icon",
+      "texture_path_id": 45,
+      "source": "sharedassets0.assets",
+      "path_id": 216
+    },
+    "base_icon": {
+      "file": "assets/game/reference/functional_ui_native/sprites/base_icon.png",
+      "width": 35,
+      "height": 35,
+      "texture": "base_icon",
+      "texture_path_id": 67,
+      "source": "sharedassets0.assets",
+      "path_id": 233
+    },
+    "base_icon_thin": {
+      "file": "assets/game/reference/functional_ui_native/sprites/base_icon_thin.png",
+      "width": 35,
+      "height": 35,
+      "texture": "base_icon_thin",
+      "texture_path_id": 33,
+      "source": "sharedassets1.assets",
+      "path_id": 107
+    },
+    "bibite": {
+      "file": "assets/game/reference/functional_ui_native/sprites/bibite.png",
+      "width": 20,
+      "height": 20,
+      "texture": "bibite",
+      "texture_path_id": 130,
+      "source": "sharedassets0.assets",
+      "path_id": 286
+    },
+    "bibite_body": {
+      "file": "assets/game/reference/functional_ui_native/sprites/bibite_body.png",
+      "width": 30,
+      "height": 30,
+      "texture": "bibite_body",
+      "texture_path_id": 51,
+      "source": "sharedassets2.assets",
+      "path_id": 123
+    },
+    "bibite_import_tool": {
+      "file": "assets/game/reference/functional_ui_native/sprites/bibite_import_tool.png",
+      "width": 28,
+      "height": 26,
+      "texture": "bibite_import_tool",
+      "texture_path_id": 30,
+      "source": "sharedassets1.assets",
+      "path_id": 105
+    },
+    "bibite_options_tool": {
+      "file": "assets/game/reference/functional_ui_native/sprites/bibite_options_tool.png",
+      "width": 28,
+      "height": 26,
+      "texture": "bibite_options_tool",
+      "texture_path_id": 77,
+      "source": "sharedassets1.assets",
+      "path_id": 139
+    },
+    "bibite_sillouhette": {
+      "file": "assets/game/reference/functional_ui_native/sprites/bibite_sillouhette.png",
+      "width": 32,
+      "height": 19,
+      "texture": "bibite_sillouhette",
+      "texture_path_id": 27,
+      "source": "sharedassets2.assets",
+      "path_id": 103
+    },
+    "bibites icon": {
+      "file": "assets/game/reference/functional_ui_native/sprites/bibites_icon.png",
+      "width": 568,
+      "height": 568,
+      "texture": "bibites icon",
+      "texture_path_id": 59,
+      "source": "sharedassets1.assets",
+      "path_id": 124
+    },
+    "bluesky_0": {
+      "file": "assets/game/reference/functional_ui_native/sprites/bluesky_0.png",
+      "width": 300,
+      "height": 270,
+      "texture": "bluesky",
+      "texture_path_id": 56,
+      "source": "sharedassets1.assets",
+      "path_id": 148
+    },
+    "brain_icon": {
+      "file": "assets/game/reference/functional_ui_native/sprites/brain_icon.png",
+      "width": 27,
+      "height": 27,
+      "texture": "brain_icon",
+      "texture_path_id": 42,
+      "source": "sharedassets1.assets",
+      "path_id": 114
+    },
+    "bug_icon": {
+      "file": "assets/game/reference/functional_ui_native/sprites/bug_icon.png",
+      "width": 31,
+      "height": 29,
+      "texture": "bug_icon",
+      "texture_path_id": 73,
+      "source": "sharedassets1.assets",
+      "path_id": 135
+    },
+    "checkmark_icon": {
+      "file": "assets/game/reference/functional_ui_native/sprites/checkmark_icon.png",
+      "width": 28,
+      "height": 22,
+      "texture": "checkmark_icon",
+      "texture_path_id": 151,
+      "source": "sharedassets0.assets",
+      "path_id": 303
+    },
+    "clone_tool": {
+      "file": "assets/game/reference/functional_ui_native/sprites/clone_tool.png",
+      "width": 29,
+      "height": 26,
+      "texture": "clone_tool",
+      "texture_path_id": 22,
+      "source": "sharedassets1.assets",
+      "path_id": 99
+    },
+    "compass": {
+      "file": "assets/game/reference/functional_ui_native/sprites/compass.png",
+      "width": 29,
+      "height": 31,
+      "texture": "compass",
+      "texture_path_id": 26,
+      "source": "sharedassets2.assets",
+      "path_id": 102
+    },
+    "credits_icon": {
+      "file": "assets/game/reference/functional_ui_native/sprites/credits_icon.png",
+      "width": 30,
+      "height": 29,
+      "texture": "credits_icon",
+      "texture_path_id": 38,
+      "source": "sharedassets1.assets",
+      "path_id": 112
+    },
+    "dead": {
+      "file": "assets/game/reference/functional_ui_native/sprites/dead.png",
+      "width": 27,
+      "height": 27,
+      "texture": "dead",
+      "texture_path_id": 53,
+      "source": "sharedassets2.assets",
+      "path_id": 125
+    },
+    "dna_icon": {
+      "file": "assets/game/reference/functional_ui_native/sprites/dna_icon.png",
+      "width": 21,
+      "height": 29,
+      "texture": "dna_icon",
+      "texture_path_id": 45,
+      "source": "sharedassets1.assets",
+      "path_id": 116
+    },
+    "egg_icon_30": {
+      "file": "assets/game/reference/functional_ui_native/sprites/egg_icon_30.png",
+      "width": 30,
+      "height": 30,
+      "texture": "egg_icon_30",
+      "texture_path_id": 28,
+      "source": "sharedassets2.assets",
+      "path_id": 104
+    },
+    "energy_empty": {
+      "file": "assets/game/reference/functional_ui_native/sprites/energy_empty.png",
+      "width": 120,
+      "height": 12,
+      "texture": "bars",
+      "texture_path_id": 43,
+      "source": "sharedassets2.assets",
+      "path_id": 92
+    },
+    "energy_filled": {
+      "file": "assets/game/reference/functional_ui_native/sprites/energy_filled.png",
+      "width": 120,
+      "height": 12,
+      "texture": "bars",
+      "texture_path_id": 43,
+      "source": "sharedassets2.assets",
+      "path_id": 95
+    },
+    "energy_icon": {
+      "file": "assets/game/reference/functional_ui_native/sprites/energy_icon.png",
+      "width": 24,
+      "height": 26,
+      "texture": "energy_icon",
+      "texture_path_id": 34,
+      "source": "sharedassets1.assets",
+      "path_id": 108
+    },
+    "exit_icon": {
+      "file": "assets/game/reference/functional_ui_native/sprites/exit_icon.png",
+      "width": 25,
+      "height": 25,
+      "texture": "exit_icon",
+      "texture_path_id": 90,
+      "source": "sharedassets0.assets",
+      "path_id": 252
+    },
+    "export_icon": {
+      "file": "assets/game/reference/functional_ui_native/sprites/export_icon.png",
+      "width": 27,
+      "height": 25,
+      "texture": "export_icon",
+      "texture_path_id": 25,
+      "source": "sharedassets1.assets",
+      "path_id": 101
+    },
+    "eye_icon_0": {
+      "file": "assets/game/reference/functional_ui_native/sprites/eye_icon_0.png",
+      "width": 29,
+      "height": 19,
+      "texture": "eye_icon",
+      "texture_path_id": 63,
+      "source": "sharedassets1.assets",
+      "path_id": 146
+    },
+    "fat": {
+      "file": "assets/game/reference/functional_ui_native/sprites/fat.png",
+      "width": 16,
+      "height": 17,
+      "texture": "fat",
+      "texture_path_id": 30,
+      "source": "sharedassets2.assets",
+      "path_id": 105
+    },
+    "fat_icon": {
+      "file": "assets/game/reference/functional_ui_native/sprites/fat_icon.png",
+      "width": 30,
+      "height": 30,
+      "texture": "fat_icon",
+      "texture_path_id": 65,
+      "source": "sharedassets2.assets",
+      "path_id": 134
+    },
+    "fat_pellet": {
+      "file": "assets/game/reference/functional_ui_native/sprites/fat_pellet.png",
+      "width": 9,
+      "height": 9,
+      "texture": "fat_pellet",
+      "texture_path_id": 118,
+      "source": "sharedassets0.assets",
+      "path_id": 276
+    },
+    "feedback_icon": {
+      "file": "assets/game/reference/functional_ui_native/sprites/feedback_icon.png",
+      "width": 29,
+      "height": 29,
+      "texture": "feedback_icon",
+      "texture_path_id": 69,
+      "source": "sharedassets1.assets",
+      "path_id": 131
+    },
+    "goto_arrow": {
+      "file": "assets/game/reference/functional_ui_native/sprites/goto_arrow.png",
+      "width": 11,
+      "height": 8,
+      "texture": "goto_arrow",
+      "texture_path_id": 39,
+      "source": "sharedassets1.assets",
+      "path_id": 113
+    },
+    "gotolink_icon": {
+      "file": "assets/game/reference/functional_ui_native/sprites/gotolink_icon.png",
+      "width": 27,
+      "height": 25,
+      "texture": "gotolink_icon",
+      "texture_path_id": 26,
+      "source": "sharedassets1.assets",
+      "path_id": 102
+    },
+    "gray_panel": {
+      "file": "assets/game/reference/functional_ui_native/sprites/gray_panel.png",
+      "width": 36,
+      "height": 36,
+      "texture": "gray_panel",
+      "texture_path_id": 17,
+      "source": "sharedassets1.assets",
+      "path_id": 96
+    },
+    "gray_panel2": {
+      "file": "assets/game/reference/functional_ui_native/sprites/gray_panel2.png",
+      "width": 24,
+      "height": 24,
+      "texture": "gray_panel2",
+      "texture_path_id": 75,
+      "source": "sharedassets1.assets",
+      "path_id": 137
+    },
+    "gray_panel_head2": {
+      "file": "assets/game/reference/functional_ui_native/sprites/gray_panel_head2.png",
+      "width": 24,
+      "height": 24,
+      "texture": "gray_panel_head2",
+      "texture_path_id": 35,
+      "source": "sharedassets1.assets",
+      "path_id": 109
+    },
+    "health_empty": {
+      "file": "assets/game/reference/functional_ui_native/sprites/health_empty.png",
+      "width": 120,
+      "height": 12,
+      "texture": "bars",
+      "texture_path_id": 43,
+      "source": "sharedassets2.assets",
+      "path_id": 91
+    },
+    "health_filled": {
+      "file": "assets/game/reference/functional_ui_native/sprites/health_filled.png",
+      "width": 120,
+      "height": 12,
+      "texture": "bars",
+      "texture_path_id": 43,
+      "source": "sharedassets2.assets",
+      "path_id": 140
+    },
+    "health_icon": {
+      "file": "assets/game/reference/functional_ui_native/sprites/health_icon.png",
+      "width": 25,
+      "height": 23,
+      "texture": "health_icon",
+      "texture_path_id": 20,
+      "source": "sharedassets1.assets",
+      "path_id": 98
+    },
+    "help_icon": {
+      "file": "assets/game/reference/functional_ui_native/sprites/help_icon.png",
+      "width": 26,
+      "height": 27,
+      "texture": "help_icon",
+      "texture_path_id": 50,
+      "source": "sharedassets1.assets",
+      "path_id": 119
+    },
+    "hidden_abs": {
+      "file": "assets/game/reference/functional_ui_native/sprites/hidden_abs.png",
+      "width": 19,
+      "height": 19,
+      "texture": "hidden_abs",
+      "texture_path_id": 81,
+      "source": "sharedassets0.assets",
+      "path_id": 244
+    },
+    "hidden_adaptor2": {
+      "file": "assets/game/reference/functional_ui_native/sprites/hidden_adaptor2.png",
+      "width": 19,
+      "height": 19,
+      "texture": "hidden_adaptor2",
+      "texture_path_id": 124,
+      "source": "sharedassets0.assets",
+      "path_id": 281
+    },
+    "hidden_diff": {
+      "file": "assets/game/reference/functional_ui_native/sprites/hidden_diff.png",
+      "width": 19,
+      "height": 19,
+      "texture": "hidden_diff",
+      "texture_path_id": 126,
+      "source": "sharedassets0.assets",
+      "path_id": 282
+    },
+    "hidden_gaussian": {
+      "file": "assets/game/reference/functional_ui_native/sprites/hidden_gaussian.png",
+      "width": 19,
+      "height": 19,
+      "texture": "hidden_gaussian",
+      "texture_path_id": 127,
+      "source": "sharedassets0.assets",
+      "path_id": 283
+    },
+    "hidden_latch": {
+      "file": "assets/game/reference/functional_ui_native/sprites/hidden_latch.png",
+      "width": 19,
+      "height": 19,
+      "texture": "hidden_latch",
+      "texture_path_id": 165,
+      "source": "sharedassets0.assets",
+      "path_id": 313
+    },
+    "hidden_linear": {
+      "file": "assets/game/reference/functional_ui_native/sprites/hidden_linear.png",
+      "width": 19,
+      "height": 19,
+      "texture": "hidden_linear",
+      "texture_path_id": 163,
+      "source": "sharedassets0.assets",
+      "path_id": 311
+    },
+    "hidden_mult": {
+      "file": "assets/game/reference/functional_ui_native/sprites/hidden_mult.png",
+      "width": 19,
+      "height": 19,
+      "texture": "hidden_mult",
+      "texture_path_id": 99,
+      "source": "sharedassets0.assets",
+      "path_id": 260
+    },
+    "hidden_relu": {
+      "file": "assets/game/reference/functional_ui_native/sprites/hidden_relu.png",
+      "width": 19,
+      "height": 19,
+      "texture": "hidden_relu",
+      "texture_path_id": 52,
+      "source": "sharedassets0.assets",
+      "path_id": 222
+    },
+    "hidden_sigmoid": {
+      "file": "assets/game/reference/functional_ui_native/sprites/hidden_sigmoid.png",
+      "width": 19,
+      "height": 19,
+      "texture": "hidden_sigmoid",
+      "texture_path_id": 97,
+      "source": "sharedassets0.assets",
+      "path_id": 258
+    },
+    "hidden_sine": {
+      "file": "assets/game/reference/functional_ui_native/sprites/hidden_sine.png",
+      "width": 19,
+      "height": 19,
+      "texture": "hidden_sine",
+      "texture_path_id": 62,
+      "source": "sharedassets0.assets",
+      "path_id": 229
+    },
+    "hidden_softlatch_0": {
+      "file": "assets/game/reference/functional_ui_native/sprites/hidden_softlatch_0.png",
+      "width": 19,
+      "height": 19,
+      "texture": "hidden_softlatch",
+      "texture_path_id": 79,
+      "source": "sharedassets0.assets",
+      "path_id": 322
+    },
+    "hidden_tanh": {
+      "file": "assets/game/reference/functional_ui_native/sprites/hidden_tanh.png",
+      "width": 19,
+      "height": 19,
+      "texture": "hidden_tanh",
+      "texture_path_id": 71,
+      "source": "sharedassets0.assets",
+      "path_id": 236
+    },
+    "home_icon": {
+      "file": "assets/game/reference/functional_ui_native/sprites/home_icon.png",
+      "width": 29,
+      "height": 26,
+      "texture": "home_icon",
+      "texture_path_id": 52,
+      "source": "sharedassets2.assets",
+      "path_id": 124
+    },
+    "import_icon": {
+      "file": "assets/game/reference/functional_ui_native/sprites/import_icon.png",
+      "width": 27,
+      "height": 25,
+      "texture": "import_icon",
+      "texture_path_id": 58,
+      "source": "sharedassets1.assets",
+      "path_id": 123
+    },
+    "information_icon_0": {
+      "file": "assets/game/reference/functional_ui_native/sprites/information_icon_0.png",
+      "width": 15,
+      "height": 25,
+      "texture": "information_icon",
+      "texture_path_id": 51,
+      "source": "sharedassets1.assets",
+      "path_id": 140
+    },
+    "input_attacked_damage": {
+      "file": "assets/game/reference/functional_ui_native/sprites/input_attacked_damage.png",
+      "width": 19,
+      "height": 19,
+      "texture": "input_attacked_damage",
+      "texture_path_id": 114,
+      "source": "sharedassets0.assets",
+      "path_id": 272
+    },
+    "input_bb_conc_angle": {
+      "file": "assets/game/reference/functional_ui_native/sprites/input_bb_conc_angle.png",
+      "width": 19,
+      "height": 19,
+      "texture": "input_bb_conc_angle",
+      "texture_path_id": 38,
+      "source": "sharedassets0.assets",
+      "path_id": 211
+    },
+    "input_bb_conc_weight": {
+      "file": "assets/game/reference/functional_ui_native/sprites/input_bb_conc_weight.png",
+      "width": 19,
+      "height": 19,
+      "texture": "input_bb_conc_weight",
+      "texture_path_id": 82,
+      "source": "sharedassets0.assets",
+      "path_id": 245
+    },
+    "input_closest_bb_b": {
+      "file": "assets/game/reference/functional_ui_native/sprites/input_closest_bb_b.png",
+      "width": 19,
+      "height": 19,
+      "texture": "input_closest_bb_b",
+      "texture_path_id": 88,
+      "source": "sharedassets0.assets",
+      "path_id": 250
+    },
+    "input_closest_bb_g": {
+      "file": "assets/game/reference/functional_ui_native/sprites/input_closest_bb_g.png",
+      "width": 19,
+      "height": 19,
+      "texture": "input_closest_bb_g",
+      "texture_path_id": 105,
+      "source": "sharedassets0.assets",
+      "path_id": 265
+    },
+    "input_closest_bb_r": {
+      "file": "assets/game/reference/functional_ui_native/sprites/input_closest_bb_r.png",
+      "width": 19,
+      "height": 19,
+      "texture": "input_closest_bb_r",
+      "texture_path_id": 50,
+      "source": "sharedassets0.assets",
+      "path_id": 220
+    },
+    "input_eggstored": {
+      "file": "assets/game/reference/functional_ui_native/sprites/input_eggstored.png",
+      "width": 19,
+      "height": 19,
+      "texture": "input_eggstored",
+      "texture_path_id": 49,
+      "source": "sharedassets0.assets",
+      "path_id": 219
+    },
+    "input_energy_ratio": {
+      "file": "assets/game/reference/functional_ui_native/sprites/input_energy_ratio.png",
+      "width": 19,
+      "height": 19,
+      "texture": "input_energy_ratio",
+      "texture_path_id": 63,
+      "source": "sharedassets0.assets",
+      "path_id": 230
+    },
+    "input_fullness": {
+      "file": "assets/game/reference/functional_ui_native/sprites/input_fullness.png",
+      "width": 19,
+      "height": 19,
+      "texture": "input_fullness",
+      "texture_path_id": 85,
+      "source": "sharedassets0.assets",
+      "path_id": 247
+    },
+    "input_is_grabbing_objects": {
+      "file": "assets/game/reference/functional_ui_native/sprites/input_is_grabbing_objects.png",
+      "width": 19,
+      "height": 19,
+      "texture": "input_is_grabbing_objects",
+      "texture_path_id": 108,
+      "source": "sharedassets0.assets",
+      "path_id": 268
+    },
+    "input_life_ratio": {
+      "file": "assets/game/reference/functional_ui_native/sprites/input_life_ratio.png",
+      "width": 19,
+      "height": 19,
+      "texture": "input_life_ratio",
+      "texture_path_id": 44,
+      "source": "sharedassets0.assets",
+      "path_id": 215
+    },
+    "input_maturity": {
+      "file": "assets/game/reference/functional_ui_native/sprites/input_maturity.png",
+      "width": 19,
+      "height": 19,
+      "texture": "input_maturity",
+      "texture_path_id": 146,
+      "source": "sharedassets0.assets",
+      "path_id": 299
+    },
+    "input_meat_conc_angle": {
+      "file": "assets/game/reference/functional_ui_native/sprites/input_meat_conc_angle.png",
+      "width": 19,
+      "height": 19,
+      "texture": "input_meat_conc_angle",
+      "texture_path_id": 103,
+      "source": "sharedassets0.assets",
+      "path_id": 263
+    },
+    "input_meat_conc_weight": {
+      "file": "assets/game/reference/functional_ui_native/sprites/input_meat_conc_weight.png",
+      "width": 19,
+      "height": 19,
+      "texture": "input_meat_conc_weight",
+      "texture_path_id": 135,
+      "source": "sharedassets0.assets",
+      "path_id": 290
+    },
+    "input_minute": {
+      "file": "assets/game/reference/functional_ui_native/sprites/input_minute.png",
+      "width": 19,
+      "height": 19,
+      "texture": "input_minute",
+      "texture_path_id": 94,
+      "source": "sharedassets0.assets",
+      "path_id": 256
+    },
+    "input_n_visible_bb": {
+      "file": "assets/game/reference/functional_ui_native/sprites/input_n_visible_bb.png",
+      "width": 19,
+      "height": 19,
+      "texture": "input_n_visible_bb",
+      "texture_path_id": 153,
+      "source": "sharedassets0.assets",
+      "path_id": 304
+    },
+    "input_n_visible_meat": {
+      "file": "assets/game/reference/functional_ui_native/sprites/input_n_visible_meat.png",
+      "width": 19,
+      "height": 19,
+      "texture": "input_n_visible_meat",
+      "texture_path_id": 104,
+      "source": "sharedassets0.assets",
+      "path_id": 264
+    },
+    "input_n_visible_plant": {
+      "file": "assets/game/reference/functional_ui_native/sprites/input_n_visible_plant.png",
+      "width": 19,
+      "height": 19,
+      "texture": "input_n_visible_plant",
+      "texture_path_id": 132,
+      "source": "sharedassets0.assets",
+      "path_id": 287
+    },
+    "input_pellet_conc_weight": {
+      "file": "assets/game/reference/functional_ui_native/sprites/input_pellet_conc_weight.png",
+      "width": 16,
+      "height": 17,
+      "texture": "input_pellet_conc_weight",
+      "texture_path_id": 21,
+      "source": "sharedassets2.assets",
+      "path_id": 97
+    },
+    "input_phero1_angle": {
+      "file": "assets/game/reference/functional_ui_native/sprites/input_phero1_angle.png",
+      "width": 19,
+      "height": 19,
+      "texture": "input_phero1_angle",
+      "texture_path_id": 123,
+      "source": "sharedassets0.assets",
+      "path_id": 280
+    },
+    "input_phero1_heading": {
+      "file": "assets/game/reference/functional_ui_native/sprites/input_phero1_heading.png",
+      "width": 19,
+      "height": 19,
+      "texture": "input_phero1_heading",
+      "texture_path_id": 100,
+      "source": "sharedassets0.assets",
+      "path_id": 261
+    },
+    "input_phero2_angle": {
+      "file": "assets/game/reference/functional_ui_native/sprites/input_phero2_angle.png",
+      "width": 19,
+      "height": 19,
+      "texture": "input_phero2_angle",
+      "texture_path_id": 139,
+      "source": "sharedassets0.assets",
+      "path_id": 293
+    },
+    "input_phero2_heading": {
+      "file": "assets/game/reference/functional_ui_native/sprites/input_phero2_heading.png",
+      "width": 19,
+      "height": 19,
+      "texture": "input_phero2_heading",
+      "texture_path_id": 55,
+      "source": "sharedassets0.assets",
+      "path_id": 224
+    },
+    "input_phero3_angle": {
+      "file": "assets/game/reference/functional_ui_native/sprites/input_phero3_angle.png",
+      "width": 19,
+      "height": 19,
+      "texture": "input_phero3_angle",
+      "texture_path_id": 128,
+      "source": "sharedassets0.assets",
+      "path_id": 284
+    },
+    "input_phero3_heading": {
+      "file": "assets/game/reference/functional_ui_native/sprites/input_phero3_heading.png",
+      "width": 19,
+      "height": 19,
+      "texture": "input_phero3_heading",
+      "texture_path_id": 87,
+      "source": "sharedassets0.assets",
+      "path_id": 249
+    },
+    "input_pherosense1": {
+      "file": "assets/game/reference/functional_ui_native/sprites/input_pherosense1.png",
+      "width": 19,
+      "height": 19,
+      "texture": "input_pherosense1",
+      "texture_path_id": 119,
+      "source": "sharedassets0.assets",
+      "path_id": 277
+    },
+    "input_pherosense2": {
+      "file": "assets/game/reference/functional_ui_native/sprites/input_pherosense2.png",
+      "width": 19,
+      "height": 19,
+      "texture": "input_pherosense2",
+      "texture_path_id": 92,
+      "source": "sharedassets0.assets",
+      "path_id": 254
+    },
+    "input_pherosense3": {
+      "file": "assets/game/reference/functional_ui_native/sprites/input_pherosense3.png",
+      "width": 19,
+      "height": 19,
+      "texture": "input_pherosense3",
+      "texture_path_id": 93,
+      "source": "sharedassets0.assets",
+      "path_id": 255
+    },
+    "input_plant_conc_angle": {
+      "file": "assets/game/reference/functional_ui_native/sprites/input_plant_conc_angle.png",
+      "width": 19,
+      "height": 19,
+      "texture": "input_plant_conc_angle",
+      "texture_path_id": 143,
+      "source": "sharedassets0.assets",
+      "path_id": 296
+    },
+    "input_plant_conc_weight": {
+      "file": "assets/game/reference/functional_ui_native/sprites/input_plant_conc_weight.png",
+      "width": 19,
+      "height": 19,
+      "texture": "input_plant_conc_weight",
+      "texture_path_id": 134,
+      "source": "sharedassets0.assets",
+      "path_id": 289
+    },
+    "input_rotation_speed": {
+      "file": "assets/game/reference/functional_ui_native/sprites/input_rotation_speed.png",
+      "width": 19,
+      "height": 19,
+      "texture": "input_rotation_speed",
+      "texture_path_id": 74,
+      "source": "sharedassets0.assets",
+      "path_id": 239
+    },
+    "input_speed": {
+      "file": "assets/game/reference/functional_ui_native/sprites/input_speed.png",
+      "width": 19,
+      "height": 19,
+      "texture": "input_speed",
+      "texture_path_id": 75,
+      "source": "sharedassets0.assets",
+      "path_id": 240
+    },
+    "input_tic": {
+      "file": "assets/game/reference/functional_ui_native/sprites/input_tic.png",
+      "width": 19,
+      "height": 19,
+      "texture": "input_tic",
+      "texture_path_id": 57,
+      "source": "sharedassets0.assets",
+      "path_id": 225
+    },
+    "input_time_alive": {
+      "file": "assets/game/reference/functional_ui_native/sprites/input_time_alive.png",
+      "width": 19,
+      "height": 19,
+      "texture": "input_time_alive",
+      "texture_path_id": 43,
+      "source": "sharedassets0.assets",
+      "path_id": 214
+    },
+    "integrator": {
+      "file": "assets/game/reference/functional_ui_native/sprites/integrator.png",
+      "width": 19,
+      "height": 19,
+      "texture": "integrator",
+      "texture_path_id": 84,
+      "source": "sharedassets0.assets",
+      "path_id": 246
+    },
+    "kill_bibite_tool": {
+      "file": "assets/game/reference/functional_ui_native/sprites/kill_bibite_tool.png",
+      "width": 30,
+      "height": 25,
+      "texture": "kill_bibite_tool",
+      "texture_path_id": 23,
+      "source": "sharedassets2.assets",
+      "path_id": 99
+    },
+    "laser_circle": {
+      "file": "assets/game/reference/functional_ui_native/sprites/laser_circle.png",
+      "width": 35,
+      "height": 35,
+      "texture": "laser_circle",
+      "texture_path_id": 55,
+      "source": "sharedassets2.assets",
+      "path_id": 127
+    },
+    "lay_egg_tool": {
+      "file": "assets/game/reference/functional_ui_native/sprites/lay_egg_tool.png",
+      "width": 21,
+      "height": 21,
+      "texture": "lay_egg_tool",
+      "texture_path_id": 63,
+      "source": "sharedassets2.assets",
+      "path_id": 133
+    },
+    "luca_import_tool": {
+      "file": "assets/game/reference/functional_ui_native/sprites/luca_import_tool.png",
+      "width": 27,
+      "height": 26,
+      "texture": "luca_import_tool",
+      "texture_path_id": 47,
+      "source": "sharedassets2.assets",
+      "path_id": 119
+    },
+    "medium_meat": {
+      "file": "assets/game/reference/functional_ui_native/sprites/medium_meat.png",
+      "width": 9,
+      "height": 9,
+      "texture": "medium_meat",
+      "texture_path_id": 141,
+      "source": "sharedassets0.assets",
+      "path_id": 294
+    },
+    "medium_plant": {
+      "file": "assets/game/reference/functional_ui_native/sprites/medium_plant.png",
+      "width": 9,
+      "height": 9,
+      "texture": "medium_plant",
+      "texture_path_id": 89,
+      "source": "sharedassets0.assets",
+      "path_id": 251
+    },
+    "mesh_icon": {
+      "file": "assets/game/reference/functional_ui_native/sprites/mesh_icon.png",
+      "width": 25,
+      "height": 27,
+      "texture": "mesh_icon",
+      "texture_path_id": 39,
+      "source": "sharedassets2.assets",
+      "path_id": 112
+    },
+    "minus": {
+      "file": "assets/game/reference/functional_ui_native/sprites/minus.png",
+      "width": 11,
+      "height": 11,
+      "texture": "minus",
+      "texture_path_id": 62,
+      "source": "sharedassets1.assets",
+      "path_id": 126
+    },
+    "mouth_icon_30": {
+      "file": "assets/game/reference/functional_ui_native/sprites/mouth_icon_30.png",
+      "width": 30,
+      "height": 30,
+      "texture": "mouth_icon_30",
+      "texture_path_id": 60,
+      "source": "sharedassets2.assets",
+      "path_id": 131
+    },
+    "no_eye_icon_0": {
+      "file": "assets/game/reference/functional_ui_native/sprites/no_eye_icon_0.png",
+      "width": 29,
+      "height": 23,
+      "texture": "no_eye_icon",
+      "texture_path_id": 41,
+      "source": "sharedassets1.assets",
+      "path_id": 145
+    },
+    "none_pellet": {
+      "file": "assets/game/reference/functional_ui_native/sprites/none_pellet.png",
+      "width": 9,
+      "height": 9,
+      "texture": "none_pellet",
+      "texture_path_id": 77,
+      "source": "sharedassets0.assets",
+      "path_id": 242
+    },
+    "normal_arms_0": {
+      "file": "assets/game/reference/functional_ui_native/sprites/normal_arms_0.png",
+      "width": 9,
+      "height": 3,
+      "texture": "normal_arms",
+      "texture_path_id": 21,
+      "source": "resources.assets",
+      "path_id": 431
+    },
+    "normal_body_0": {
+      "file": "assets/game/reference/functional_ui_native/sprites/normal_body_0.png",
+      "width": 11,
+      "height": 9,
+      "texture": "normal_body",
+      "texture_path_id": 46,
+      "source": "resources.assets",
+      "path_id": 419
+    },
+    "normal_exoskeleton_1": {
+      "file": "assets/game/reference/functional_ui_native/sprites/normal_exoskeleton_1.png",
+      "width": 16,
+      "height": 9,
+      "texture": "normal_exoskeleton",
+      "texture_path_id": 26,
+      "source": "resources.assets",
+      "path_id": 342
+    },
+    "normal_eyes_1": {
+      "file": "assets/game/reference/functional_ui_native/sprites/normal_eyes_1.png",
+      "width": 8,
+      "height": 9,
+      "texture": "normal_eyes",
+      "texture_path_id": 25,
+      "source": "resources.assets",
+      "path_id": 340
+    },
+    "normal_mouth_0": {
+      "file": "assets/game/reference/functional_ui_native/sprites/normal_mouth_0.png",
+      "width": 5,
+      "height": 9,
+      "texture": "normal_mouth",
+      "texture_path_id": 20,
+      "source": "resources.assets",
+      "path_id": 429
+    },
+    "output_accelerate": {
+      "file": "assets/game/reference/functional_ui_native/sprites/output_accelerate.png",
+      "width": 19,
+      "height": 19,
+      "texture": "output_accelerate",
+      "texture_path_id": 66,
+      "source": "sharedassets0.assets",
+      "path_id": 232
+    },
+    "output_clk_reset": {
+      "file": "assets/game/reference/functional_ui_native/sprites/output_clk_reset.png",
+      "width": 19,
+      "height": 19,
+      "texture": "output_clk_reset",
+      "texture_path_id": 40,
+      "source": "sharedassets0.assets",
+      "path_id": 213
+    },
+    "output_digestion": {
+      "file": "assets/game/reference/functional_ui_native/sprites/output_digestion.png",
+      "width": 19,
+      "height": 19,
+      "texture": "output_digestion",
+      "texture_path_id": 154,
+      "source": "sharedassets0.assets",
+      "path_id": 305
+    },
+    "output_eggProduction": {
+      "file": "assets/game/reference/functional_ui_native/sprites/output_eggProduction.png",
+      "width": 19,
+      "height": 19,
+      "texture": "output_eggProduction",
+      "texture_path_id": 48,
+      "source": "sharedassets0.assets",
+      "path_id": 218
+    },
+    "output_grab": {
+      "file": "assets/game/reference/functional_ui_native/sprites/output_grab.png",
+      "width": 19,
+      "height": 19,
+      "texture": "output_grab",
+      "texture_path_id": 60,
+      "source": "sharedassets0.assets",
+      "path_id": 227
+    },
+    "output_herding": {
+      "file": "assets/game/reference/functional_ui_native/sprites/output_herding.png",
+      "width": 19,
+      "height": 19,
+      "texture": "output_herding",
+      "texture_path_id": 172,
+      "source": "sharedassets0.assets",
+      "path_id": 319
+    },
+    "output_pher_out1": {
+      "file": "assets/game/reference/functional_ui_native/sprites/output_pher_out1.png",
+      "width": 19,
+      "height": 19,
+      "texture": "output_pher_out1",
+      "texture_path_id": 58,
+      "source": "sharedassets0.assets",
+      "path_id": 226
+    },
+    "output_pher_out2": {
+      "file": "assets/game/reference/functional_ui_native/sprites/output_pher_out2.png",
+      "width": 19,
+      "height": 19,
+      "texture": "output_pher_out2",
+      "texture_path_id": 109,
+      "source": "sharedassets0.assets",
+      "path_id": 269
+    },
+    "output_pher_out3": {
+      "file": "assets/game/reference/functional_ui_native/sprites/output_pher_out3.png",
+      "width": 19,
+      "height": 19,
+      "texture": "output_pher_out3",
+      "texture_path_id": 107,
+      "source": "sharedassets0.assets",
+      "path_id": 267
+    },
+    "output_rotate": {
+      "file": "assets/game/reference/functional_ui_native/sprites/output_rotate.png",
+      "width": 19,
+      "height": 19,
+      "texture": "output_rotate",
+      "texture_path_id": 150,
+      "source": "sharedassets0.assets",
+      "path_id": 302
+    },
+    "output_want2attack": {
+      "file": "assets/game/reference/functional_ui_native/sprites/output_want2attack.png",
+      "width": 19,
+      "height": 19,
+      "texture": "output_want2attack",
+      "texture_path_id": 106,
+      "source": "sharedassets0.assets",
+      "path_id": 266
+    },
+    "output_want2eat": {
+      "file": "assets/game/reference/functional_ui_native/sprites/output_want2eat.png",
+      "width": 19,
+      "height": 19,
+      "texture": "output_want2eat",
+      "texture_path_id": 64,
+      "source": "sharedassets0.assets",
+      "path_id": 231
+    },
+    "output_want2grow": {
+      "file": "assets/game/reference/functional_ui_native/sprites/output_want2grow.png",
+      "width": 19,
+      "height": 19,
+      "texture": "output_want2grow",
+      "texture_path_id": 149,
+      "source": "sharedassets0.assets",
+      "path_id": 301
+    },
+    "output_want2heal": {
+      "file": "assets/game/reference/functional_ui_native/sprites/output_want2heal.png",
+      "width": 19,
+      "height": 19,
+      "texture": "output_want2heal",
+      "texture_path_id": 142,
+      "source": "sharedassets0.assets",
+      "path_id": 295
+    },
+    "output_want2lay": {
+      "file": "assets/game/reference/functional_ui_native/sprites/output_want2lay.png",
+      "width": 19,
+      "height": 19,
+      "texture": "output_want2lay",
+      "texture_path_id": 120,
+      "source": "sharedassets0.assets",
+      "path_id": 278
+    },
+    "pause_icon": {
+      "file": "assets/game/reference/functional_ui_native/sprites/pause_icon.png",
+      "width": 23,
+      "height": 25,
+      "texture": "pause_icon",
+      "texture_path_id": 57,
+      "source": "sharedassets1.assets",
+      "path_id": 122
+    },
+    "pheroTower": {
+      "file": "assets/game/reference/functional_ui_native/sprites/pheroTower.png",
+      "width": 42,
+      "height": 39,
+      "texture": "pheroTower",
+      "texture_path_id": 37,
+      "source": "sharedassets2.assets",
+      "path_id": 110
+    },
+    "plant_paint_tool": {
+      "file": "assets/game/reference/functional_ui_native/sprites/plant_paint_tool.png",
+      "width": 29,
+      "height": 28,
+      "texture": "plant_paint_tool",
+      "texture_path_id": 50,
+      "source": "sharedassets2.assets",
+      "path_id": 122
+    },
+    "plus": {
+      "file": "assets/game/reference/functional_ui_native/sprites/plus.png",
+      "width": 11,
+      "height": 11,
+      "texture": "plus",
+      "texture_path_id": 61,
+      "source": "sharedassets1.assets",
+      "path_id": 125
+    },
+    "plus_icon": {
+      "file": "assets/game/reference/functional_ui_native/sprites/plus_icon.png",
+      "width": 27,
+      "height": 27,
+      "texture": "plus_icon",
+      "texture_path_id": 116,
+      "source": "sharedassets0.assets",
+      "path_id": 274
+    },
+    "radioactive": {
+      "file": "assets/game/reference/functional_ui_native/sprites/radioactive.png",
+      "width": 29,
+      "height": 28,
+      "texture": "radioactive",
+      "texture_path_id": 71,
+      "source": "sharedassets2.assets",
+      "path_id": 139
+    },
+    "rainbow": {
+      "file": "assets/game/reference/functional_ui_native/sprites/rainbow.png",
+      "width": 29,
+      "height": 21,
+      "texture": "rainbow",
+      "texture_path_id": 33,
+      "source": "sharedassets2.assets",
+      "path_id": 107
+    },
+    "red carni": {
+      "file": "assets/game/reference/functional_ui_native/sprites/red_carni.png",
+      "width": 560,
+      "height": 460,
+      "texture": "red carni",
+      "texture_path_id": 18,
+      "source": "sharedassets1.assets",
+      "path_id": 97
+    },
+    "reddit": {
+      "file": "assets/game/reference/functional_ui_native/sprites/reddit.png",
+      "width": 1024,
+      "height": 1024,
+      "texture": "reddit",
+      "texture_path_id": 31,
+      "source": "sharedassets1.assets",
+      "path_id": 106
+    },
+    "rename_icon": {
+      "file": "assets/game/reference/functional_ui_native/sprites/rename_icon.png",
+      "width": 27,
+      "height": 29,
+      "texture": "rename_icon",
+      "texture_path_id": 36,
+      "source": "sharedassets1.assets",
+      "path_id": 110
+    },
+    "reset_icon": {
+      "file": "assets/game/reference/functional_ui_native/sprites/reset_icon.png",
+      "width": 25,
+      "height": 25,
+      "texture": "reset_icon",
+      "texture_path_id": 166,
+      "source": "sharedassets0.assets",
+      "path_id": 314
+    },
+    "resume_icon": {
+      "file": "assets/game/reference/functional_ui_native/sprites/resume_icon.png",
+      "width": 22,
+      "height": 23,
+      "texture": "resume_icon",
+      "texture_path_id": 47,
+      "source": "sharedassets1.assets",
+      "path_id": 117
+    },
+    "revive_icon": {
+      "file": "assets/game/reference/functional_ui_native/sprites/revive_icon.png",
+      "width": 32,
+      "height": 29,
+      "texture": "revive_icon",
+      "texture_path_id": 48,
+      "source": "sharedassets2.assets",
+      "path_id": 120
+    },
+    "rockstar_placeholder_colored": {
+      "file": "assets/game/reference/functional_ui_native/sprites/rockstar_placeholder_colored.png",
+      "width": 250,
+      "height": 250,
+      "texture": "rockstar_placeholder_colored",
+      "texture_path_id": 157,
+      "source": "sharedassets0.assets",
+      "path_id": 307
+    },
+    "rockstar_placeholder_grayscale": {
+      "file": "assets/game/reference/functional_ui_native/sprites/rockstar_placeholder_grayscale.png",
+      "width": 250,
+      "height": 250,
+      "texture": "rockstar_placeholder_grayscale",
+      "texture_path_id": 115,
+      "source": "sharedassets0.assets",
+      "path_id": 273
+    },
+    "rond": {
+      "file": "assets/game/reference/functional_ui_native/sprites/rond.png",
+      "width": 119,
+      "height": 119,
+      "texture": "rond",
+      "texture_path_id": 64,
+      "source": "sharedassets1.assets",
+      "path_id": 127
+    },
+    "save_icon": {
+      "file": "assets/game/reference/functional_ui_native/sprites/save_icon.png",
+      "width": 27,
+      "height": 26,
+      "texture": "save_icon",
+      "texture_path_id": 37,
+      "source": "sharedassets1.assets",
+      "path_id": 111
+    },
+    "scroll": {
+      "file": "assets/game/reference/functional_ui_native/sprites/scroll.png",
+      "width": 35,
+      "height": 35,
+      "texture": "scroll",
+      "texture_path_id": 76,
+      "source": "sharedassets1.assets",
+      "path_id": 138
+    },
+    "secret_Placeholder": {
+      "file": "assets/game/reference/functional_ui_native/sprites/secret_Placeholder.png",
+      "width": 100,
+      "height": 100,
+      "texture": "secret_Placeholder",
+      "texture_path_id": 24,
+      "source": "sharedassets1.assets",
+      "path_id": 100
+    },
+    "settings_icon": {
+      "file": "assets/game/reference/functional_ui_native/sprites/settings_icon.png",
+      "width": 29,
+      "height": 29,
+      "texture": "settings_icon",
+      "texture_path_id": 72,
+      "source": "sharedassets1.assets",
+      "path_id": 134
+    },
+    "simulation_icon": {
+      "file": "assets/game/reference/functional_ui_native/sprites/simulation_icon.png",
+      "width": 29,
+      "height": 29,
+      "texture": "simulation_icon",
+      "texture_path_id": 71,
+      "source": "sharedassets1.assets",
+      "path_id": 133
+    },
+    "smallGreen": {
+      "file": "assets/game/reference/functional_ui_native/sprites/smallGreen.png",
+      "width": 302,
+      "height": 264,
+      "texture": "smallGreen",
+      "texture_path_id": 74,
+      "source": "sharedassets1.assets",
+      "path_id": 136
+    },
+    "small_circle_base_icon": {
+      "file": "assets/game/reference/functional_ui_native/sprites/small_circle_base_icon.png",
+      "width": 29,
+      "height": 29,
+      "texture": "small_circle_base_icon",
+      "texture_path_id": 72,
+      "source": "sharedassets0.assets",
+      "path_id": 237
+    },
+    "star_0": {
+      "file": "assets/game/reference/functional_ui_native/sprites/star_0.png",
+      "width": 20,
+      "height": 20,
+      "texture": "star",
+      "texture_path_id": 147,
+      "source": "sharedassets0.assets",
+      "path_id": 321
+    },
+    "stats_icon": {
+      "file": "assets/game/reference/functional_ui_native/sprites/stats_icon.png",
+      "width": 29,
+      "height": 28,
+      "texture": "stats_icon",
+      "texture_path_id": 24,
+      "source": "sharedassets2.assets",
+      "path_id": 100
+    },
+    "steam_add_icon": {
+      "file": "assets/game/reference/functional_ui_native/sprites/steam_add_icon.png",
+      "width": 30,
+      "height": 30,
+      "texture": "steam_add_icon",
+      "texture_path_id": 67,
+      "source": "sharedassets1.assets",
+      "path_id": 129
+    },
+    "steam_icon": {
+      "file": "assets/game/reference/functional_ui_native/sprites/steam_icon.png",
+      "width": 30,
+      "height": 30,
+      "texture": "steam_icon",
+      "texture_path_id": 70,
+      "source": "sharedassets1.assets",
+      "path_id": 132
+    },
+    "step_icon_0": {
+      "file": "assets/game/reference/functional_ui_native/sprites/step_icon_0.png",
+      "width": 22,
+      "height": 23,
+      "texture": "step_icon",
+      "texture_path_id": 40,
+      "source": "sharedassets1.assets",
+      "path_id": 94
+    },
+    "stomach": {
+      "file": "assets/game/reference/functional_ui_native/sprites/stomach.png",
+      "width": 15,
+      "height": 11,
+      "texture": "stomach",
+      "texture_path_id": 34,
+      "source": "sharedassets2.assets",
+      "path_id": 108
+    },
+    "stomach_icon": {
+      "file": "assets/game/reference/functional_ui_native/sprites/stomach_icon.png",
+      "width": 25,
+      "height": 31,
+      "texture": "stomach_icon",
+      "texture_path_id": 32,
+      "source": "sharedassets2.assets",
+      "path_id": 106
+    },
+    "stomach_icon_30": {
+      "file": "assets/game/reference/functional_ui_native/sprites/stomach_icon_30.png",
+      "width": 30,
+      "height": 30,
+      "texture": "stomach_icon_30",
+      "texture_path_id": 56,
+      "source": "sharedassets2.assets",
+      "path_id": 128
+    },
+    "synapse_0": {
+      "file": "assets/game/reference/functional_ui_native/sprites/synapse_0.png",
+      "width": 12,
+      "height": 7,
+      "texture": "synapse",
+      "texture_path_id": 44,
+      "source": "sharedassets1.assets",
+      "path_id": 86
+    },
+    "synapse_1": {
+      "file": "assets/game/reference/functional_ui_native/sprites/synapse_1.png",
+      "width": 8,
+      "height": 5,
+      "texture": "synapse",
+      "texture_path_id": 44,
+      "source": "sharedassets2.assets",
+      "path_id": 93
+    },
+    "tiled_bars_0": {
+      "file": "assets/game/reference/functional_ui_native/sprites/tiled_bars_0.png",
+      "width": 38,
+      "height": 12,
+      "texture": "tiled_bars",
+      "texture_path_id": 23,
+      "source": "sharedassets1.assets",
+      "path_id": 141
+    },
+    "tiled_bars_1": {
+      "file": "assets/game/reference/functional_ui_native/sprites/tiled_bars_1.png",
+      "width": 38,
+      "height": 12,
+      "texture": "tiled_bars",
+      "texture_path_id": 23,
+      "source": "sharedassets1.assets",
+      "path_id": 87
+    },
+    "tiled_bars_2": {
+      "file": "assets/game/reference/functional_ui_native/sprites/tiled_bars_2.png",
+      "width": 5,
+      "height": 12,
+      "texture": "tiled_bars",
+      "texture_path_id": 23,
+      "source": "sharedassets2.assets",
+      "path_id": 142
+    },
+    "tiled_bars_3": {
+      "file": "assets/game/reference/functional_ui_native/sprites/tiled_bars_3.png",
+      "width": 5,
+      "height": 12,
+      "texture": "tiled_bars",
+      "texture_path_id": 23,
+      "source": "sharedassets2.assets",
+      "path_id": 141
+    },
+    "tiled_bars_empty": {
+      "file": "assets/game/reference/functional_ui_native/sprites/tiled_bars_empty.png",
+      "width": 38,
+      "height": 12,
+      "texture": "tiled_bars",
+      "texture_path_id": 55,
+      "source": "sharedassets1.assets",
+      "path_id": 88
+    },
+    "tiled_bars_full": {
+      "file": "assets/game/reference/functional_ui_native/sprites/tiled_bars_full.png",
+      "width": 38,
+      "height": 12,
+      "texture": "tiled_bars",
+      "texture_path_id": 55,
+      "source": "sharedassets1.assets",
+      "path_id": 142
+    },
+    "tiny_egg": {
+      "file": "assets/game/reference/functional_ui_native/sprites/tiny_egg.png",
+      "width": 6,
+      "height": 6,
+      "texture": "tiny_egg",
+      "texture_path_id": 82,
+      "source": "resources.assets",
+      "path_id": 408
+    },
+    "tree_icon": {
+      "file": "assets/game/reference/functional_ui_native/sprites/tree_icon.png",
+      "width": 25,
+      "height": 25,
+      "texture": "tree_icon",
+      "texture_path_id": 61,
+      "source": "sharedassets2.assets",
+      "path_id": 132
+    }
+  }
+}

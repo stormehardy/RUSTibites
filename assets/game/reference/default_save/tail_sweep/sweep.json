@@ -1,0 +1,1532 @@
+{
+  "schema": "rustibites.assets.tail_sweep.v1",
+  "capture": {
+    "method": "single hidden load paused t=20s; Body renderer only; shader floats set via /d/material_float; exact closeup camera; visible alpha = diff vs all-off",
+    "save": "Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip",
+    "selected_id": -964754386,
+    "selected_body_position": {
+      "x": -5.360003,
+      "y": 831.0031,
+      "z": -0.01
+    },
+    "camera": {
+      "ok": true,
+      "x": -5.360003,
+      "y": 831.0031,
+      "size": 12.0,
+      "worldHalfSize": 2000.0,
+      "aspect": 1.77777779,
+      "orthographic": true
+    },
+    "screen": [
+      1280,
+      720
+    ],
+    "pixels_per_world_unit": 30.0,
+    "pixel_formula": "x_px=640+(x-cam.x)*30; y_px_up=360+(y-cam.y)*30; image_y=720-y_px_up",
+    "material": "ProceduralBibiteMaterial(Clone) (Instance)",
+    "shader": "Shader Graphs/proceduralBibiteShader",
+    "all_off": "testdata/parity/default/tail_sweep/all_off.png",
+    "renderer_off": {
+      "ok": true,
+      "action": "off",
+      "id": -964754386,
+      "renderers": [
+        {
+          "path": "BibiteHolder/bibite(Clone)/Left Arm",
+          "enabled": false,
+          "active": true,
+          "name": "Left Arm"
+        },
+        {
+          "path": "BibiteHolder/bibite(Clone)/RightArm",
+          "enabled": false,
+          "active": true,
+          "name": "RightArm"
+        },
+        {
+          "path": "BibiteHolder/bibite(Clone)/Mouth",
+          "enabled": false,
+          "active": true,
+          "name": "Mouth"
+        },
+        {
+          "path": "BibiteHolder/bibite(Clone)/Body",
+          "enabled": false,
+          "active": true,
+          "name": "Body"
+        },
+        {
+          "path": "BibiteHolder/bibite(Clone)/Exoskelton",
+          "enabled": false,
+          "active": true,
+          "name": "Exoskelton"
+        },
+        {
+          "path": "BibiteHolder/bibite(Clone)/Eyes",
+          "enabled": false,
+          "active": true,
+          "name": "Eyes"
+        }
+      ],
+      "renderer_count": 6
+    },
+    "renderer_body_only": {
+      "ok": true,
+      "action": "only",
+      "id": -964754386,
+      "renderers": [
+        {
+          "path": "BibiteHolder/bibite(Clone)/Left Arm",
+          "enabled": false,
+          "active": true,
+          "name": "Left Arm"
+        },
+        {
+          "path": "BibiteHolder/bibite(Clone)/RightArm",
+          "enabled": false,
+          "active": true,
+          "name": "RightArm"
+        },
+        {
+          "path": "BibiteHolder/bibite(Clone)/Mouth",
+          "enabled": false,
+          "active": true,
+          "name": "Mouth"
+        },
+        {
+          "path": "BibiteHolder/bibite(Clone)/Body",
+          "enabled": true,
+          "active": true,
+          "name": "Body"
+        },
+        {
+          "path": "BibiteHolder/bibite(Clone)/Exoskelton",
+          "enabled": false,
+          "active": true,
+          "name": "Exoskelton"
+        },
+        {
+          "path": "BibiteHolder/bibite(Clone)/Eyes",
+          "enabled": false,
+          "active": true,
+          "name": "Eyes"
+        }
+      ],
+      "renderer_count": 6
+    },
+    "renderer_restore": {
+      "ok": true,
+      "action": "restore",
+      "id": -964754386,
+      "renderers": [
+        {
+          "path": "BibiteHolder/bibite(Clone)/Left Arm",
+          "enabled": true,
+          "active": true
+        },
+        {
+          "path": "BibiteHolder/bibite(Clone)/RightArm",
+          "enabled": true,
+          "active": true
+        },
+        {
+          "path": "BibiteHolder/bibite(Clone)/Mouth",
+          "enabled": true,
+          "active": true
+        },
+        {
+          "path": "BibiteHolder/bibite(Clone)/Body",
+          "enabled": true,
+          "active": true
+        },
+        {
+          "path": "BibiteHolder/bibite(Clone)/Exoskelton",
+          "enabled": true,
+          "active": true
+        },
+        {
+          "path": "BibiteHolder/bibite(Clone)/Eyes",
+          "enabled": true,
+          "active": true
+        }
+      ],
+      "renderer_count": 6
+    },
+    "controller_off": {
+      "ok": true,
+      "enabled": false,
+      "count": 23,
+      "scripts": [
+        {
+          "type": "BibiteID",
+          "path": "BibiteHolder/bibite(Clone)",
+          "enabled": false
+        },
+        {
+          "type": "BibiteBody",
+          "path": "BibiteHolder/bibite(Clone)",
+          "enabled": false
+        },
+        {
+          "type": "NEATBrain",
+          "path": "BibiteHolder/bibite(Clone)",
+          "enabled": false
+        },
+        {
+          "type": "BibitePheromoneOrgan",
+          "path": "BibiteHolder/bibite(Clone)",
+          "enabled": false
+        },
+        {
+          "type": "BibiteGenes",
+          "path": "BibiteHolder/bibite(Clone)",
+          "enabled": false
+        },
+        {
+          "type": "BibiteGrowth",
+          "path": "BibiteHolder/bibite(Clone)",
+          "enabled": false
+        },
+        {
+          "type": "FieldOfView",
+          "path": "BibiteHolder/bibite(Clone)",
+          "enabled": false
+        },
+        {
+          "type": "InternalClock",
+          "path": "BibiteHolder/bibite(Clone)",
+          "enabled": false
+        },
+        {
+          "type": "Pherosense",
+          "path": "BibiteHolder/bibite(Clone)",
+          "enabled": false
+        },
+        {
+          "type": "BibiteEggLayingOrgan",
+          "path": "BibiteHolder/bibite(Clone)",
+          "enabled": false
+        },
+        {
+          "type": "BibiteProceduralSpriter",
+          "path": "BibiteHolder/bibite(Clone)",
+          "enabled": false
+        },
+        {
+          "type": "DraggableObject",
+          "path": "BibiteHolder/bibite(Clone)",
+          "enabled": false
+        },
+        {
+          "type": "GrabbableObject",
+          "path": "BibiteHolder/bibite(Clone)",
+          "enabled": false
+        },
+        {
+          "type": "TargetableObject",
+          "path": "BibiteHolder/bibite(Clone)",
+          "enabled": false
+        },
+        {
+          "type": "TargetObjectOnClick",
+          "path": "BibiteHolder/bibite(Clone)",
+          "enabled": false
+        },
+        {
+          "type": "BibiteArmor",
+          "path": "BibiteHolder/bibite(Clone)",
+          "enabled": false
+        },
+        {
+          "type": "BibitePropulsion",
+          "path": "BibiteHolder/bibite(Clone)",
+          "enabled": false
+        },
+        {
+          "type": "BibiteMouth",
+          "path": "BibiteHolder/bibite(Clone)/Mouth",
+          "enabled": false
+        },
+        {
+          "type": "BibitePart",
+          "path": "BibiteHolder/bibite(Clone)/Mouth",
+          "enabled": false
+        },
+        {
+          "type": "BibitePart",
+          "path": "BibiteHolder/bibite(Clone)/Tail",
+          "enabled": false
+        },
+        {
+          "type": "BibiteFatOrgan",
+          "path": "BibiteHolder/bibite(Clone)/Tail",
+          "enabled": false
+        },
+        {
+          "type": "BibitePart",
+          "path": "BibiteHolder/bibite(Clone)/Body",
+          "enabled": false
+        },
+        {
+          "type": "BibiteStomach",
+          "path": "BibiteHolder/bibite(Clone)/Body",
+          "enabled": false
+        }
+      ]
+    },
+    "controller_on": {
+      "ok": true,
+      "enabled": true,
+      "count": 23,
+      "scripts": [
+        {
+          "type": "BibiteID",
+          "path": "BibiteHolder/bibite(Clone)",
+          "enabled": true
+        },
+        {
+          "type": "BibiteBody",
+          "path": "BibiteHolder/bibite(Clone)",
+          "enabled": true
+        },
+        {
+          "type": "NEATBrain",
+          "path": "BibiteHolder/bibite(Clone)",
+          "enabled": true
+        },
+        {
+          "type": "BibitePheromoneOrgan",
+          "path": "BibiteHolder/bibite(Clone)",
+          "enabled": true
+        },
+        {
+          "type": "BibiteGenes",
+          "path": "BibiteHolder/bibite(Clone)",
+          "enabled": true
+        },
+        {
+          "type": "BibiteGrowth",
+          "path": "BibiteHolder/bibite(Clone)",
+          "enabled": true
+        },
+        {
+          "type": "FieldOfView",
+          "path": "BibiteHolder/bibite(Clone)",
+          "enabled": true
+        },
+        {
+          "type": "InternalClock",
+          "path": "BibiteHolder/bibite(Clone)",
+          "enabled": true
+        },
+        {
+          "type": "Pherosense",
+          "path": "BibiteHolder/bibite(Clone)",
+          "enabled": true
+        },
+        {
+          "type": "BibiteEggLayingOrgan",
+          "path": "BibiteHolder/bibite(Clone)",
+          "enabled": true
+        },
+        {
+          "type": "BibiteProceduralSpriter",
+          "path": "BibiteHolder/bibite(Clone)",
+          "enabled": true
+        },
+        {
+          "type": "DraggableObject",
+          "path": "BibiteHolder/bibite(Clone)",
+          "enabled": true
+        },
+        {
+          "type": "GrabbableObject",
+          "path": "BibiteHolder/bibite(Clone)",
+          "enabled": true
+        },
+        {
+          "type": "TargetableObject",
+          "path": "BibiteHolder/bibite(Clone)",
+          "enabled": true
+        },
+        {
+          "type": "TargetObjectOnClick",
+          "path": "BibiteHolder/bibite(Clone)",
+          "enabled": true
+        },
+        {
+          "type": "BibiteArmor",
+          "path": "BibiteHolder/bibite(Clone)",
+          "enabled": true
+        },
+        {
+          "type": "BibitePropulsion",
+          "path": "BibiteHolder/bibite(Clone)",
+          "enabled": true
+        },
+        {
+          "type": "BibiteMouth",
+          "path": "BibiteHolder/bibite(Clone)/Mouth",
+          "enabled": true
+        },
+        {
+          "type": "BibitePart",
+          "path": "BibiteHolder/bibite(Clone)/Mouth",
+          "enabled": true
+        },
+        {
+          "type": "BibitePart",
+          "path": "BibiteHolder/bibite(Clone)/Tail",
+          "enabled": true
+        },
+        {
+          "type": "BibiteFatOrgan",
+          "path": "BibiteHolder/bibite(Clone)/Tail",
+          "enabled": true
+        },
+        {
+          "type": "BibitePart",
+          "path": "BibiteHolder/bibite(Clone)/Body",
+          "enabled": true
+        },
+        {
+          "type": "BibiteStomach",
+          "path": "BibiteHolder/bibite(Clone)/Body",
+          "enabled": true
+        }
+      ]
+    },
+    "original_floats": {
+      "_TailAngle": 0.0,
+      "_MiddleSegmentAngle": 0.0
+    }
+  },
+  "properties": [
+    {
+      "index": 0,
+      "name": "_MainTex",
+      "type": "Texture",
+      "property_id": 7,
+      "float": 0,
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      },
+      "texture": "normal_body"
+    },
+    {
+      "index": 1,
+      "name": "_upp",
+      "type": "Float",
+      "property_id": 869,
+      "float": 1.14955354,
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      }
+    },
+    {
+      "index": 2,
+      "name": "Vector1_e3a0e0f92b6a43b0a108a2b076fa6cbf",
+      "type": "Range",
+      "property_id": 856,
+      "float": 2,
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      }
+    },
+    {
+      "index": 3,
+      "name": "Vector1_1e7790215f0448d2a070ca6771cc5c41",
+      "type": "Range",
+      "property_id": 855,
+      "float": 0.5,
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      }
+    },
+    {
+      "index": 4,
+      "name": "_Color",
+      "type": "Color",
+      "property_id": 177,
+      "float": 0,
+      "color": {
+        "r": 0.9,
+        "g": 0.9,
+        "b": 0.9,
+        "a": 1
+      }
+    },
+    {
+      "index": 5,
+      "name": "_HurtAmount",
+      "type": "Range",
+      "property_id": 860,
+      "float": 0,
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      }
+    },
+    {
+      "index": 6,
+      "name": "_InfectedRatio",
+      "type": "Range",
+      "property_id": 861,
+      "float": 0,
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      }
+    },
+    {
+      "index": 7,
+      "name": "_VirusColor",
+      "type": "Color",
+      "property_id": 873,
+      "float": 0,
+      "color": {
+        "r": 1,
+        "g": 0,
+        "b": 0.02849722,
+        "a": 1
+      }
+    },
+    {
+      "index": 8,
+      "name": "_IsRainbow",
+      "type": "Float",
+      "property_id": 864,
+      "float": 0,
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      }
+    },
+    {
+      "index": 9,
+      "name": "_MainTex_TexelSize",
+      "type": "Vector",
+      "property_id": 35,
+      "float": 0,
+      "color": {
+        "r": 0.09090909,
+        "g": 0.0370370373,
+        "b": 11,
+        "a": 27
+      }
+    },
+    {
+      "index": 10,
+      "name": "_IsProducer",
+      "type": "Float",
+      "property_id": 863,
+      "float": 0,
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      }
+    },
+    {
+      "index": 11,
+      "name": "_IsKiller",
+      "type": "Float",
+      "property_id": 862,
+      "float": 0,
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      }
+    },
+    {
+      "index": 12,
+      "name": "_RootPos",
+      "type": "Vector",
+      "property_id": 871,
+      "float": 0,
+      "color": {
+        "r": -5.360003,
+        "g": 831.0031,
+        "b": -0.01,
+        "a": 0
+      }
+    },
+    {
+      "index": 13,
+      "name": "_Dir",
+      "type": "Vector",
+      "property_id": 870,
+      "float": 0,
+      "color": {
+        "r": -0.6425098,
+        "g": 0.766277432,
+        "b": 0,
+        "a": 0
+      }
+    },
+    {
+      "index": 14,
+      "name": "_RainbowScale",
+      "type": "Float",
+      "property_id": 865,
+      "float": 3,
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      }
+    },
+    {
+      "index": 15,
+      "name": "_BodyWidth",
+      "type": "Float",
+      "property_id": 859,
+      "float": 15,
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      }
+    },
+    {
+      "index": 16,
+      "name": "unity_Lightmaps",
+      "type": "Texture",
+      "property_id": 769,
+      "float": 0,
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      }
+    },
+    {
+      "index": 17,
+      "name": "unity_LightmapsInd",
+      "type": "Texture",
+      "property_id": 770,
+      "float": 0,
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      }
+    },
+    {
+      "index": 18,
+      "name": "unity_ShadowMasks",
+      "type": "Texture",
+      "property_id": 771,
+      "float": 0,
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      }
+    },
+    {
+      "index": 19,
+      "name": "_BUILTIN_QueueOffset",
+      "type": "Float",
+      "property_id": 858,
+      "float": 0,
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      }
+    },
+    {
+      "index": 20,
+      "name": "_BUILTIN_QueueControl",
+      "type": "Float",
+      "property_id": 857,
+      "float": -1,
+      "color": {
+        "r": 0,
+        "g": 0,
+        "b": 0,
+        "a": 0
+      }
+    }
+  ],
+  "sweep": {
+    "tail_deg": [
+      -25,
+      -20,
+      -15,
+      -10,
+      -5,
+      0,
+      5,
+      10,
+      15,
+      20,
+      25
+    ],
+    "middle_deg": [
+      -7.5,
+      -3.75,
+      0,
+      3.75,
+      7.5
+    ],
+    "frames": [
+      {
+        "tail_deg": -25,
+        "mid_deg": -7.5,
+        "tail_rad": -0.4363323129985824,
+        "mid_rad": -0.1308996938995747,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_-25_mid_-7.50.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_-25_mid_-7.50_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": -25,
+        "mid_deg": -3.75,
+        "tail_rad": -0.4363323129985824,
+        "mid_rad": -0.06544984694978735,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_-25_mid_-3.75.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_-25_mid_-3.75_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": -25,
+        "mid_deg": 0,
+        "tail_rad": -0.4363323129985824,
+        "mid_rad": 0.0,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_-25_mid_+0.00.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_-25_mid_+0.00_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": -25,
+        "mid_deg": 3.75,
+        "tail_rad": -0.4363323129985824,
+        "mid_rad": 0.06544984694978735,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_-25_mid_+3.75.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_-25_mid_+3.75_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": -25,
+        "mid_deg": 7.5,
+        "tail_rad": -0.4363323129985824,
+        "mid_rad": 0.1308996938995747,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_-25_mid_+7.50.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_-25_mid_+7.50_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": -20,
+        "mid_deg": -7.5,
+        "tail_rad": -0.3490658503988659,
+        "mid_rad": -0.1308996938995747,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_-20_mid_-7.50.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_-20_mid_-7.50_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": -20,
+        "mid_deg": -3.75,
+        "tail_rad": -0.3490658503988659,
+        "mid_rad": -0.06544984694978735,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_-20_mid_-3.75.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_-20_mid_-3.75_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": -20,
+        "mid_deg": 0,
+        "tail_rad": -0.3490658503988659,
+        "mid_rad": 0.0,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_-20_mid_+0.00.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_-20_mid_+0.00_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": -20,
+        "mid_deg": 3.75,
+        "tail_rad": -0.3490658503988659,
+        "mid_rad": 0.06544984694978735,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_-20_mid_+3.75.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_-20_mid_+3.75_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": -20,
+        "mid_deg": 7.5,
+        "tail_rad": -0.3490658503988659,
+        "mid_rad": 0.1308996938995747,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_-20_mid_+7.50.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_-20_mid_+7.50_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": -15,
+        "mid_deg": -7.5,
+        "tail_rad": -0.2617993877991494,
+        "mid_rad": -0.1308996938995747,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_-15_mid_-7.50.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_-15_mid_-7.50_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": -15,
+        "mid_deg": -3.75,
+        "tail_rad": -0.2617993877991494,
+        "mid_rad": -0.06544984694978735,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_-15_mid_-3.75.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_-15_mid_-3.75_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": -15,
+        "mid_deg": 0,
+        "tail_rad": -0.2617993877991494,
+        "mid_rad": 0.0,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_-15_mid_+0.00.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_-15_mid_+0.00_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": -15,
+        "mid_deg": 3.75,
+        "tail_rad": -0.2617993877991494,
+        "mid_rad": 0.06544984694978735,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_-15_mid_+3.75.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_-15_mid_+3.75_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": -15,
+        "mid_deg": 7.5,
+        "tail_rad": -0.2617993877991494,
+        "mid_rad": 0.1308996938995747,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_-15_mid_+7.50.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_-15_mid_+7.50_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": -10,
+        "mid_deg": -7.5,
+        "tail_rad": -0.17453292519943295,
+        "mid_rad": -0.1308996938995747,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_-10_mid_-7.50.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_-10_mid_-7.50_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": -10,
+        "mid_deg": -3.75,
+        "tail_rad": -0.17453292519943295,
+        "mid_rad": -0.06544984694978735,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_-10_mid_-3.75.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_-10_mid_-3.75_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": -10,
+        "mid_deg": 0,
+        "tail_rad": -0.17453292519943295,
+        "mid_rad": 0.0,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_-10_mid_+0.00.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_-10_mid_+0.00_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": -10,
+        "mid_deg": 3.75,
+        "tail_rad": -0.17453292519943295,
+        "mid_rad": 0.06544984694978735,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_-10_mid_+3.75.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_-10_mid_+3.75_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": -10,
+        "mid_deg": 7.5,
+        "tail_rad": -0.17453292519943295,
+        "mid_rad": 0.1308996938995747,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_-10_mid_+7.50.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_-10_mid_+7.50_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": -5,
+        "mid_deg": -7.5,
+        "tail_rad": -0.08726646259971647,
+        "mid_rad": -0.1308996938995747,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_-05_mid_-7.50.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_-05_mid_-7.50_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": -5,
+        "mid_deg": -3.75,
+        "tail_rad": -0.08726646259971647,
+        "mid_rad": -0.06544984694978735,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_-05_mid_-3.75.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_-05_mid_-3.75_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": -5,
+        "mid_deg": 0,
+        "tail_rad": -0.08726646259971647,
+        "mid_rad": 0.0,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_-05_mid_+0.00.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_-05_mid_+0.00_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": -5,
+        "mid_deg": 3.75,
+        "tail_rad": -0.08726646259971647,
+        "mid_rad": 0.06544984694978735,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_-05_mid_+3.75.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_-05_mid_+3.75_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": -5,
+        "mid_deg": 7.5,
+        "tail_rad": -0.08726646259971647,
+        "mid_rad": 0.1308996938995747,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_-05_mid_+7.50.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_-05_mid_+7.50_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": 0,
+        "mid_deg": -7.5,
+        "tail_rad": 0.0,
+        "mid_rad": -0.1308996938995747,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_000_mid_-7.50.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_000_mid_-7.50_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": 0,
+        "mid_deg": -3.75,
+        "tail_rad": 0.0,
+        "mid_rad": -0.06544984694978735,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_000_mid_-3.75.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_000_mid_-3.75_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": 0,
+        "mid_deg": 0,
+        "tail_rad": 0.0,
+        "mid_rad": 0.0,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_000_mid_+0.00.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_000_mid_+0.00_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": 0,
+        "mid_deg": 3.75,
+        "tail_rad": 0.0,
+        "mid_rad": 0.06544984694978735,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_000_mid_+3.75.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_000_mid_+3.75_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": 0,
+        "mid_deg": 7.5,
+        "tail_rad": 0.0,
+        "mid_rad": 0.1308996938995747,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_000_mid_+7.50.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_000_mid_+7.50_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": 5,
+        "mid_deg": -7.5,
+        "tail_rad": 0.08726646259971647,
+        "mid_rad": -0.1308996938995747,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_+05_mid_-7.50.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_+05_mid_-7.50_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": 5,
+        "mid_deg": -3.75,
+        "tail_rad": 0.08726646259971647,
+        "mid_rad": -0.06544984694978735,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_+05_mid_-3.75.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_+05_mid_-3.75_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": 5,
+        "mid_deg": 0,
+        "tail_rad": 0.08726646259971647,
+        "mid_rad": 0.0,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_+05_mid_+0.00.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_+05_mid_+0.00_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": 5,
+        "mid_deg": 3.75,
+        "tail_rad": 0.08726646259971647,
+        "mid_rad": 0.06544984694978735,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_+05_mid_+3.75.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_+05_mid_+3.75_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": 5,
+        "mid_deg": 7.5,
+        "tail_rad": 0.08726646259971647,
+        "mid_rad": 0.1308996938995747,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_+05_mid_+7.50.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_+05_mid_+7.50_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": 10,
+        "mid_deg": -7.5,
+        "tail_rad": 0.17453292519943295,
+        "mid_rad": -0.1308996938995747,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_+10_mid_-7.50.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_+10_mid_-7.50_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": 10,
+        "mid_deg": -3.75,
+        "tail_rad": 0.17453292519943295,
+        "mid_rad": -0.06544984694978735,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_+10_mid_-3.75.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_+10_mid_-3.75_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": 10,
+        "mid_deg": 0,
+        "tail_rad": 0.17453292519943295,
+        "mid_rad": 0.0,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_+10_mid_+0.00.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_+10_mid_+0.00_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": 10,
+        "mid_deg": 3.75,
+        "tail_rad": 0.17453292519943295,
+        "mid_rad": 0.06544984694978735,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_+10_mid_+3.75.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_+10_mid_+3.75_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": 10,
+        "mid_deg": 7.5,
+        "tail_rad": 0.17453292519943295,
+        "mid_rad": 0.1308996938995747,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_+10_mid_+7.50.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_+10_mid_+7.50_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": 15,
+        "mid_deg": -7.5,
+        "tail_rad": 0.2617993877991494,
+        "mid_rad": -0.1308996938995747,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_+15_mid_-7.50.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_+15_mid_-7.50_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": 15,
+        "mid_deg": -3.75,
+        "tail_rad": 0.2617993877991494,
+        "mid_rad": -0.06544984694978735,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_+15_mid_-3.75.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_+15_mid_-3.75_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": 15,
+        "mid_deg": 0,
+        "tail_rad": 0.2617993877991494,
+        "mid_rad": 0.0,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_+15_mid_+0.00.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_+15_mid_+0.00_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": 15,
+        "mid_deg": 3.75,
+        "tail_rad": 0.2617993877991494,
+        "mid_rad": 0.06544984694978735,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_+15_mid_+3.75.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_+15_mid_+3.75_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": 15,
+        "mid_deg": 7.5,
+        "tail_rad": 0.2617993877991494,
+        "mid_rad": 0.1308996938995747,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_+15_mid_+7.50.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_+15_mid_+7.50_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": 20,
+        "mid_deg": -7.5,
+        "tail_rad": 0.3490658503988659,
+        "mid_rad": -0.1308996938995747,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_+20_mid_-7.50.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_+20_mid_-7.50_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": 20,
+        "mid_deg": -3.75,
+        "tail_rad": 0.3490658503988659,
+        "mid_rad": -0.06544984694978735,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_+20_mid_-3.75.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_+20_mid_-3.75_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": 20,
+        "mid_deg": 0,
+        "tail_rad": 0.3490658503988659,
+        "mid_rad": 0.0,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_+20_mid_+0.00.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_+20_mid_+0.00_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": 20,
+        "mid_deg": 3.75,
+        "tail_rad": 0.3490658503988659,
+        "mid_rad": 0.06544984694978735,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_+20_mid_+3.75.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_+20_mid_+3.75_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": 20,
+        "mid_deg": 7.5,
+        "tail_rad": 0.3490658503988659,
+        "mid_rad": 0.1308996938995747,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_+20_mid_+7.50.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_+20_mid_+7.50_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": 25,
+        "mid_deg": -7.5,
+        "tail_rad": 0.4363323129985824,
+        "mid_rad": -0.1308996938995747,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_+25_mid_-7.50.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_+25_mid_-7.50_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": 25,
+        "mid_deg": -3.75,
+        "tail_rad": 0.4363323129985824,
+        "mid_rad": -0.06544984694978735,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_+25_mid_-3.75.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_+25_mid_-3.75_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": 25,
+        "mid_deg": 0,
+        "tail_rad": 0.4363323129985824,
+        "mid_rad": 0.0,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_+25_mid_+0.00.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_+25_mid_+0.00_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": 25,
+        "mid_deg": 3.75,
+        "tail_rad": 0.4363323129985824,
+        "mid_rad": 0.06544984694978735,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_+25_mid_+3.75.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_+25_mid_+3.75_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      },
+      {
+        "tail_deg": 25,
+        "mid_deg": 7.5,
+        "tail_rad": 0.4363323129985824,
+        "mid_rad": 0.1308996938995747,
+        "raw_frame": "testdata/parity/default/tail_sweep/frames/tail_+25_mid_+7.50.png",
+        "alpha_mask": "assets/game/reference/default_save/tail_sweep/tail_+25_mid_+7.50_alpha.png",
+        "visible_alpha_bbox_pixels": [
+          521,
+          261,
+          897,
+          662
+        ],
+        "visible_alpha_pixels": 77307
+      }
+    ]
+  },
+  "note": "values in radians are what ProceduralSpriteController writes to the shader; frame alpha masks/bboxes show the Body sprite warp only. Tail transform node is not a mesh.",
+  "limitation": "This hidden-session sweep is diagnostic only: ProceduralBibiteMaterial's live property list (21 props) does not expose _TailAngle/_MiddleSegmentAngle; setting them (controller/body scripts disabled, property block cleared) produced byte-identical frames at every grid point, so the alpha masks/bboxes are not a fitted warp. The live shader property IDs remain unknown/unexposed. Raw frames are retained under testdata for inspection; do not use these bboxes as fit targets."
+}

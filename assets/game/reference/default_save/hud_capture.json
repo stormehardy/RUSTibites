@@ -1,0 +1,150 @@
+{
+  "schema": "rustibites.assets.hud_reference.v1",
+  "capture_method": "hidden BibitesAPI lab; bridge GET /screenshot (main camera) + ParityDump GET /d/ui_overlay (transparent UICamera RenderTexture), composited with PIL",
+  "save": "Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip",
+  "screen": {
+    "width": 1920,
+    "height": 1080
+  },
+  "ui_scale": 1.0,
+  "frames": [
+    {
+      "file": "assets/game/reference/default_save/hud_default_1920x1080.png",
+      "camera": {
+        "ok": true,
+        "x": 0.0,
+        "y": 0.0,
+        "size": 2080.0,
+        "worldHalfSize": 2000.0,
+        "aspect": 1.77777779,
+        "orthographic": true
+      },
+      "selected_id": null,
+      "panel": null,
+      "ui_overlay_camera": "Main Camera",
+      "ui_overlay_alpha_pixels": 43608
+    },
+    {
+      "file": "assets/game/reference/default_save/hud_inspector_1920x1080.png",
+      "camera": {
+        "ok": true,
+        "x": 94.5817261,
+        "y": 1162.3916,
+        "size": 400.0,
+        "worldHalfSize": 2000.0,
+        "aspect": 1.77777779,
+        "orthographic": true
+      },
+      "selected_id": "bibite(Clone) (SimulationScripts.BibiteScripts.BibiteID)",
+      "panel": "Stats (OpenData)",
+      "ui_overlay_camera": "Main Camera",
+      "ui_overlay_alpha_pixels": 60538
+    }
+  ],
+  "world": {
+    "simulated_time_s": 20.000001907348633,
+    "paused": true,
+    "counts": {
+      "bibites": 11,
+      "corpses": 0,
+      "eggs": 0
+    }
+  },
+  "game_bibite_ids": [
+    898750452,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    74654177
+  ],
+  "game_bibite_count": 11,
+  "game_bibite_positions": [
+    {
+      "id": 898750452,
+      "x": -5.360003,
+      "y": 831.0031
+    },
+    {
+      "id": 1,
+      "x": -147.0503,
+      "y": 1515.47815
+    },
+    {
+      "id": 2,
+      "x": 588.4508,
+      "y": 808.801758
+    },
+    {
+      "id": 3,
+      "x": 1117.64929,
+      "y": -1201.20349
+    },
+    {
+      "id": 4,
+      "x": -930.0524,
+      "y": -132.488708
+    },
+    {
+      "id": 5,
+      "x": 72.32022,
+      "y": -973.0674
+    },
+    {
+      "id": 6,
+      "x": -702.8065,
+      "y": -707.5477
+    },
+    {
+      "id": 7,
+      "x": -649.3836,
+      "y": 895.856567
+    },
+    {
+      "id": 8,
+      "x": 691.7259,
+      "y": -724.1946
+    },
+    {
+      "id": 9,
+      "x": -1492.70947,
+      "y": 693.109436
+    },
+    {
+      "id": 74654177,
+      "x": 94.5817261,
+      "y": 1162.3916
+    }
+  ],
+  "save_bibite_count": 10,
+  "added_on_load": [
+    {
+      "id": 74654177,
+      "x": 94.5817261,
+      "y": 1162.3916
+    }
+  ],
+  "ui_overlay_alpha_pixels": 43608,
+  "ui_overlay_file": "assets/game/reference/default_save/hud_overlay_1920x1080.png",
+  "selection": {
+    "ok": true,
+    "selected_id": "bibite(Clone) (SimulationScripts.BibiteScripts.BibiteID)",
+    "name": "bibite(Clone)",
+    "pos": {
+      "x": 94.5817261,
+      "y": 1162.3916,
+      "z": 0
+    },
+    "requested": ""
+  },
+  "stats_press": {
+    "ok": true,
+    "pressed": "OpenData",
+    "path": "UICanvas/MainUI/Layer2/StatsPanel/Top Bar/TopLeft/OpenData"
+  }
+}

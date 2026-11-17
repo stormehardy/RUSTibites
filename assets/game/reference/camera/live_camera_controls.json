@@ -1,0 +1,41 @@
+{
+  "ok": true,
+  "type": "ManagementScripts.CameraManager",
+  "fields": {
+    "controller": "MainController (ManagementScripts.UserControl)",
+    "speed": 400,
+    "scrollSpeed": 1,
+    "startScrollDragHeight": 0,
+    "speedScale": 1
+  },
+  "camSize_static": 400,
+  "main_camera": {
+    "name": "Main Camera",
+    "orthographic": true,
+    "orthographic_size": 400,
+    "position": {
+      "x": 0,
+      "y": 0,
+      "z": -855
+    },
+    "rotation": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "rect": {
+      "x": 0,
+      "y": 0,
+      "w": 1,
+      "h": 1
+    },
+    "pixel_rect": {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 1080
+    },
+    "near": 0.3,
+    "far": 1000
+  }
+}

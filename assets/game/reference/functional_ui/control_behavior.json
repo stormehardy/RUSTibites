@@ -1,0 +1,4187 @@
+{
+  "schema": "rustibites.assets.functional_ui.control_behavior.v1",
+  "sections": {
+    "settings_controls": {
+      "before": {
+        "texts": [
+          "Graphics Settings",
+          "Fullscreen",
+          "Automatically Detect Screen Resolution",
+          "Screen Resolution",
+          "1080p",
+          "UI Scale",
+          "Normal (1.0)",
+          "Pheromones Strength",
+          "10%",
+          "Procedural Size",
+          "Genetic",
+          "UI Preferences",
+          "Fertility Color",
+          "#E79B00FF",
+          "Background",
+          "Background Color",
+          "#000000",
+          "Show Grid",
+          "Show Experimental Background",
+          "Show Node Names",
+          "Graphic Settings",
+          "Game Settings",
+          "Hotkeys",
+          "Reset Warnings"
+        ],
+        "buttons": [
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingDropdown(Clone)/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingDropdown(Clone)/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "10%"
+            ]
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingDropdown(Clone)/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/ColorPicker(Clone)/ColorDisplay",
+            "name": "ColorDisplay",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/ColorPicker(Clone)/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/ColorPicker(Clone)/ColorDisplay",
+            "name": "ColorDisplay",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/ColorPicker(Clone)/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/GroupEdit",
+            "name": "GroupEdit",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/GroupEdit",
+            "name": "GroupEdit",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/SelectorPanel/List/CloseButton",
+            "name": "CloseButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/SelectorPanel/List/GraphicsButton",
+            "name": "GraphicsButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/SelectorPanel/List/Gameplay Button",
+            "name": "Gameplay Button",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/SelectorPanel/List/Controls Button",
+            "name": "Controls Button",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/SelectorPanel/List/Reset Warnings",
+            "name": "Reset Warnings",
+            "enabled": true,
+            "labels": []
+          }
+        ],
+        "images": []
+      },
+      "controls": [
+        "Graphics Settings",
+        "Fullscreen",
+        "Automatically Detect Screen Resolution",
+        "Screen Resolution",
+        "1080p",
+        "UI Scale",
+        "Normal (1.0)",
+        "Pheromones Strength",
+        "10%",
+        "Procedural Size",
+        "Genetic",
+        "UI Preferences",
+        "Fertility Color",
+        "#E79B00FF",
+        "Background",
+        "Background Color",
+        "#000000",
+        "Show Grid",
+        "Show Experimental Background",
+        "Show Node Names",
+        "Graphic Settings",
+        "Game Settings",
+        "Hotkeys",
+        "Reset Warnings"
+      ],
+      "actions": [
+        {
+          "kind": "Toggle",
+          "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+          "labels": [],
+          "options_before": null,
+          "options_after": null,
+          "before": false,
+          "after": true,
+          "hit": {
+            "ok": true,
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+            "kind": "Toggle"
+          },
+          "label_context": [
+            "Show Node Names",
+            "Fertility Color",
+            "#E79B00FF",
+            "Background",
+            "Background Color",
+            "#000000",
+            "Show Grid",
+            "Grid Options"
+          ]
+        },
+        {
+          "kind": "Toggle",
+          "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/Toggle",
+          "labels": [],
+          "options_before": null,
+          "options_after": null,
+          "before": false,
+          "after": true,
+          "hit": {
+            "ok": true,
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/Toggle",
+            "kind": "Toggle"
+          },
+          "label_context": [
+            "Show Grid",
+            "Show Experimental Background",
+            "Grid Options",
+            "Fine Grid Color",
+            "#FFFFFF40",
+            "Fine Grid Step",
+            "100 u",
+            "Enter value..."
+          ]
+        },
+        {
+          "kind": "Toggle",
+          "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/Toggle",
+          "labels": [],
+          "options_before": null,
+          "options_after": null,
+          "before": true,
+          "after": false,
+          "hit": {
+            "ok": true,
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/Toggle",
+            "kind": "Toggle"
+          },
+          "label_context": [
+            "Show Grid",
+            "Show Experimental Background",
+            "Grid Options",
+            "Fine Grid Color",
+            "#FFFFFF40",
+            "Fine Grid Step",
+            "100 u",
+            "Enter value..."
+          ]
+        },
+        {
+          "kind": "Toggle",
+          "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+          "labels": [],
+          "options_before": null,
+          "options_after": null,
+          "before": true,
+          "after": false,
+          "hit": {
+            "ok": true,
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+            "kind": "Toggle"
+          },
+          "label_context": [
+            "Fullscreen",
+            "Automatically Detect Screen Resolution",
+            "Screen Resolution",
+            "1080p",
+            "UI Scale",
+            "Normal (1.0)",
+            "Pheromones Strength",
+            "10%"
+          ]
+        },
+        {
+          "kind": "Toggle",
+          "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+          "labels": [],
+          "options_before": null,
+          "options_after": null,
+          "before": true,
+          "after": false,
+          "hit": {
+            "ok": true,
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+            "kind": "Toggle"
+          },
+          "label_context": [
+            "Fullscreen",
+            "Automatically Detect Screen Resolution",
+            "Screen Resolution",
+            "1080p",
+            "UI Scale",
+            "Normal (1.0)",
+            "Pheromones Strength",
+            "10%"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+          "labels": [],
+          "options_before": null,
+          "options_after": null,
+          "before": 0.1,
+          "after": 0.5,
+          "hit": {
+            "ok": true,
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+            "kind": "Slider"
+          },
+          "label_context": [
+            "Pheromones Strength",
+            "10%",
+            "Enter value...",
+            "0\u200b",
+            "Fullscreen",
+            "Automatically Detect Screen Resolution",
+            "Screen Resolution",
+            "1080p"
+          ]
+        },
+        {
+          "kind": "Dropdown",
+          "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingDropdown(Clone)/Dropdown",
+          "labels": [],
+          "options_before": [
+            "Genetic",
+            "Maturity",
+            "Both"
+          ],
+          "options_after": [
+            "Genetic",
+            "Maturity",
+            "Both"
+          ],
+          "before": 0,
+          "after": 1,
+          "hit": {
+            "ok": true,
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingDropdown(Clone)/Dropdown",
+            "kind": "Dropdown"
+          },
+          "label_context": [
+            "1080p",
+            "Normal (1.0)",
+            "Genetic",
+            "Screen Resolution",
+            "UI Scale",
+            "Procedural Size",
+            "Fullscreen",
+            "Automatically Detect Screen Resolution"
+          ]
+        },
+        {
+          "kind": "Dropdown",
+          "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingDropdown(Clone)/Dropdown",
+          "labels": [],
+          "options_before": [
+            "Smaller (0.5)",
+            "Small (0.75)",
+            "Normal (1.0)",
+            "Large (1.15)",
+            "Larger (1.25)"
+          ],
+          "options_after": [
+            "Genetic",
+            "Maturity",
+            "Both"
+          ],
+          "before": 2,
+          "after": 0,
+          "hit": {
+            "ok": true,
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingDropdown(Clone)/Dropdown",
+            "kind": "Dropdown"
+          },
+          "label_context": [
+            "1080p",
+            "Normal (1.0)",
+            "Genetic",
+            "Screen Resolution",
+            "UI Scale",
+            "Procedural Size",
+            "Fullscreen",
+            "Automatically Detect Screen Resolution"
+          ]
+        }
+      ],
+      "after": {
+        "texts": [
+          "Graphics Settings",
+          "Fullscreen",
+          "Automatically Detect Screen Resolution",
+          "Screen Resolution",
+          "1080p",
+          "UI Scale",
+          "Normal (1.0)",
+          "Pheromones Strength",
+          "50%",
+          "Procedural Size",
+          "Genetic",
+          "UI Preferences",
+          "Fertility Color",
+          "#E79B00FF",
+          "Background",
+          "Background Color",
+          "#000000",
+          "Show Grid",
+          "Show Experimental Background",
+          "Show Node Names",
+          "Graphic Settings",
+          "Game Settings",
+          "Hotkeys",
+          "Reset Warnings"
+        ],
+        "buttons": [
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingDropdown(Clone)/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingDropdown(Clone)/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "50%"
+            ]
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingDropdown(Clone)/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/ColorPicker(Clone)/ColorDisplay",
+            "name": "ColorDisplay",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/ColorPicker(Clone)/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/ColorPicker(Clone)/ColorDisplay",
+            "name": "ColorDisplay",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/ColorPicker(Clone)/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/GroupEdit",
+            "name": "GroupEdit",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/SelectorPanel/List/CloseButton",
+            "name": "CloseButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/SelectorPanel/List/GraphicsButton",
+            "name": "GraphicsButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/SelectorPanel/List/Gameplay Button",
+            "name": "Gameplay Button",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/SelectorPanel/List/Controls Button",
+            "name": "Controls Button",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/SelectorPanel/List/Reset Warnings",
+            "name": "Reset Warnings",
+            "enabled": true,
+            "labels": []
+          }
+        ],
+        "images": []
+      },
+      "label_note": "label_context lists the nearest setting names/values/options from the atlas tree; dropdown options are exact."
+    },
+    "save_load_browsers": {
+      "load": {
+        "texts": [
+          "Include autosaves",
+          "New Game",
+          "Version: ",
+          "0.4.4a6",
+          "Last edit:",
+          "2012-19-09 19:00",
+          "Informations",
+          "Sim Time:",
+          "100h 34m 01s",
+          "Sim Size:",
+          "0u",
+          "Number of Bibites: ",
+          "300",
+          "Number of Pellets: ",
+          "10000",
+          "Load"
+        ],
+        "buttons": [
+          {
+            "path": "UICanvas/MainUI/TopLayer/LoadGamePanel/LoadList/Scroll View/Viewport/Content/SettingToggle/Button",
+            "name": "Button",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/TopLayer/LoadGamePanel/SelectedPanel/SaveInfo/DeleteButton",
+            "name": "DeleteButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/TopLayer/LoadGamePanel/SelectedPanel/SaveInfo/CloseButton",
+            "name": "CloseButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/TopLayer/LoadGamePanel/SelectedPanel/SaveInfo/ButtonHolder/LoadButton",
+            "name": "LoadButton",
+            "enabled": true,
+            "labels": []
+          }
+        ],
+        "images": [],
+        "controls": [
+          {
+            "kind": "Toggle",
+            "path": "UICanvas/MainUI/TopLayer/LoadGamePanel/LoadList/Scroll View/Viewport/Content/SettingToggle/Toggle",
+            "name": "Toggle",
+            "is_on": true,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Info : Sample Text",
+              "Free Tip: You can click on the button to head to the wiki page",
+              "Include autosaves",
+              "No Preview Image Could Be Found",
+              "New Game",
+              "Version: ",
+              "0.4.4a6",
+              "Last edit:"
+            ]
+          },
+          {
+            "kind": "Slider",
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel/Slider",
+            "name": "Slider",
+            "value": 0,
+            "minValue": -1.43067658,
+            "maxValue": 2.86135316,
+            "wholeNumbers": false,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Enter value...",
+              "0\u200b",
+              "X 0.00",
+              "x 1.0",
+              "New Text",
+              "Place Bibite",
+              "Place Pellets",
+              "Place Color Selector"
+            ]
+          }
+        ]
+      },
+      "save": {
+        "texts": [
+          "New Save",
+          "Enter name...",
+          "\u200b",
+          "Informations",
+          "Sim Time:",
+          "100h 34m 01s",
+          "Sim Size:",
+          "0u",
+          "Number of Bibites: ",
+          "300",
+          "Number of Pellets: ",
+          "10000",
+          "Save"
+        ],
+        "buttons": [
+          {
+            "path": "UICanvas/MainUI/TopLayer/Save Game Panel/SelectedPanel/SaveInfo/DeleteButton",
+            "name": "DeleteButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/TopLayer/Save Game Panel/SelectedPanel/SaveInfo/CloseButton",
+            "name": "CloseButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/TopLayer/Save Game Panel/SelectedPanel/SaveInfo/Save Button Holder/SaveButton",
+            "name": "SaveButton",
+            "enabled": true,
+            "labels": []
+          }
+        ],
+        "images": [],
+        "controls": [
+          {
+            "kind": "Toggle",
+            "path": "UICanvas/MainUI/TopLayer/LoadGamePanel/LoadList/Scroll View/Viewport/Content/SettingToggle/Toggle",
+            "name": "Toggle",
+            "is_on": true,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Info : Sample Text",
+              "Free Tip: You can click on the button to head to the wiki page",
+              "Include autosaves",
+              "No Preview Image Could Be Found",
+              "New Game",
+              "Version: ",
+              "0.4.4a6",
+              "Last edit:"
+            ]
+          },
+          {
+            "kind": "Slider",
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel/Slider",
+            "name": "Slider",
+            "value": 0,
+            "minValue": -1.43067658,
+            "maxValue": 2.86135316,
+            "wholeNumbers": false,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Enter value...",
+              "0\u200b",
+              "X 0.00",
+              "x 1.0",
+              "New Text",
+              "Place Bibite",
+              "Place Pellets",
+              "Place Color Selector"
+            ]
+          },
+          {
+            "kind": "Input",
+            "path": "UICanvas/MainUI/TopLayer/Save Game Panel/SelectedPanel/SaveInfo/List/Name line/InputField (TMP)",
+            "name": "InputField (TMP)",
+            "text": "",
+            "labels": [],
+            "label_context": [
+              "Enter name...",
+              "\u200b",
+              "New Save",
+              "Informations",
+              "Sim Time:",
+              "100h 34m 01s",
+              "Sim Size:",
+              "3000 u"
+            ]
+          }
+        ]
+      },
+      "notes": {
+        "load": "Hidden lab save browser has no user slots besides the sample/New Game placeholder; captured panel texts, buttons (Load/Delete/Close) and images; no overwrite/delete dialog was triggered.",
+        "save": "Save Game Panel shows New Save/name input; Save button available; no overwrite/delete dialog triggered."
+      }
+    },
+    "kill_dialog": {
+      "before": {
+        "texts": [
+          "131 / 131",
+          "157 / 157",
+          "Time: 00:00:20\n0 fps   /  0 tps\nsim/real: x0.00",
+          "X 0.00",
+          "100u",
+          "Species:",
+          "Basic bibite",
+          "Tag: ",
+          "None",
+          "State:",
+          "Generation:",
+          "0",
+          "Length:",
+          "14.31 u",
+          "Size:",
+          "104.81 u\u00b2",
+          "Mass:",
+          "2.65 g",
+          "Speed:",
+          "0.00 u/s",
+          "Stats:",
+          "Time Alive:",
+          "0s",
+          "Total Distance Traveled:",
+          "0.00 u",
+          "Eggs Laid:",
+          "0",
+          "Alive children:",
+          "0",
+          "Bibites Bitten:",
+          "0",
+          "Total Damages Dealt:",
+          "0.0HP",
+          "Times Attacked:",
+          "0",
+          "Total Damages Suffered:",
+          "0.0HP",
+          "KILL",
+          "LAY",
+          "SAVE",
+          "EDIT\n",
+          "Info",
+          "+"
+        ],
+        "buttons": [
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/PlacerButton",
+            "name": "PlacerButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/UserActions",
+            "name": "UserActions",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton",
+            "name": "ViewButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/InformationPanelButton",
+            "name": "InformationPanelButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/DynamicParametersButton",
+            "name": "DynamicParametersButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/AncestralLineageButton",
+            "name": "AncestralLineageButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/SettingsButton",
+            "name": "SettingsButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/PauseButton",
+            "name": "PauseButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/PlayButton",
+            "name": "PlayButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "X 0.00"
+            ]
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibiteButtons/StatsButton",
+            "name": "StatsButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibiteButtons/GeneButton",
+            "name": "GeneButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibiteButtons/BiologyButton",
+            "name": "BiologyButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibiteButtons/BrainButton",
+            "name": "BrainButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel/MainSection/TagHolder/Label Holder",
+            "name": "Label Holder",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel/MainSection/BibiteStats/Alive Children/Button ",
+            "name": "Button ",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel/ButtonHolder/KillBibiteButton",
+            "name": "KillBibiteButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel/ButtonHolder/LayBibiteEggButton",
+            "name": "LayBibiteEggButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel/ButtonHolder/Save",
+            "name": "Save",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel/ButtonHolder/Edit",
+            "name": "Edit",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/QuickStatsHolder/OpenButtons/OpenQuickStats",
+            "name": "OpenQuickStats",
+            "enabled": true,
+            "labels": []
+          }
+        ],
+        "images": []
+      },
+      "after": {
+        "texts": [
+          "Time: 00:00:20\n0 fps   /  0 tps\nsim/real: x0.00",
+          "X 0.00",
+          "100u",
+          "Info",
+          "+"
+        ],
+        "buttons": [
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/PlacerButton",
+            "name": "PlacerButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/UserActions",
+            "name": "UserActions",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton",
+            "name": "ViewButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/InformationPanelButton",
+            "name": "InformationPanelButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/DynamicParametersButton",
+            "name": "DynamicParametersButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/AncestralLineageButton",
+            "name": "AncestralLineageButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/SettingsButton",
+            "name": "SettingsButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/PauseButton",
+            "name": "PauseButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/PlayButton",
+            "name": "PlayButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "X 0.00"
+            ]
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/QuickStatsHolder/OpenButtons/OpenQuickStats",
+            "name": "OpenQuickStats",
+            "enabled": true,
+            "labels": []
+          }
+        ],
+        "images": []
+      },
+      "active_controls": [
+        {
+          "kind": "Slider",
+          "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0,
+          "minValue": -1.43067658,
+          "maxValue": 2.86135316,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": []
+        }
+      ],
+      "full_texts": [
+        "Killing half the population",
+        "You're about to kill half of all bibites (each bibites will have a 50% chance of being killed, results may vary). \n\rAre you sure???",
+        "Cancel",
+        "YES",
+        "Time: 00:00:25\n820 fps  /  61 tps\nsim/real: x2.05"
+      ],
+      "dialogs": [
+        "Killing half the population",
+        "You're about to kill half of all bibites (each bibites will have a 50% chance of being killed, results may vary). \n\rAre you sure???",
+        "KILL",
+        "SAVE",
+        "Press close button to exit placement mode."
+      ],
+      "source": "behavioral_reference.json inspector:Kill"
+    },
+    "placer_properties": {
+      "panels": {
+        "texts": [
+          "You can place pellets by left mouse click.\n",
+          "Material",
+          "Plant",
+          "Pellet Size Factor",
+          "1.0 ",
+          "Pellet Number",
+          "1 ",
+          "Press close button to exit placement mode."
+        ],
+        "buttons": [
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "1.0 "
+            ]
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider (1)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "1 "
+            ]
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/CancelPelletPlacement",
+            "name": "CancelPelletPlacement",
+            "enabled": true,
+            "labels": []
+          }
+        ],
+        "images": []
+      },
+      "controls": [
+        {
+          "kind": "Slider",
+          "path": "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0,
+          "minValue": -1,
+          "maxValue": 3,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Pellet Size Factor",
+            "1.0 ",
+            "Enter value...",
+            "0\u200b",
+            "Info : Sample Text",
+            "Free Tip: You can click on the button to head to the wiki page",
+            "Material",
+            "Plant"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 0,
+          "minValue": -1.43067658,
+          "maxValue": 2.86135316,
+          "wholeNumbers": false,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Enter value...",
+            "0\u200b",
+            "X 0.00",
+            "x 1.0",
+            "New Text",
+            "Place Bibite",
+            "Place Pellets",
+            "Place Color Selector"
+          ]
+        },
+        {
+          "kind": "Slider",
+          "path": "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider (1)/NormalSecton/SliderPanel/Slider",
+          "name": "Slider",
+          "value": 1,
+          "minValue": 1,
+          "maxValue": 10,
+          "wholeNumbers": true,
+          "interactable": true,
+          "labels": [],
+          "label_context": [
+            "Pellet Number",
+            "1 ",
+            "Enter value...",
+            "0\u200b",
+            "Info : Sample Text",
+            "Free Tip: You can click on the button to head to the wiki page",
+            "Material",
+            "Plant"
+          ]
+        },
+        {
+          "kind": "Dropdown",
+          "path": "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/basicDropdown/Dropdown",
+          "name": "Dropdown",
+          "value": 0,
+          "options": [
+            "Plant",
+            "Meat"
+          ],
+          "labels": [],
+          "label_context": [
+            "Plant",
+            "Option A",
+            "Info : Sample Text",
+            "Free Tip: You can click on the button to head to the wiki page",
+            "Material",
+            "Pellet Size Factor",
+            "1.0 ",
+            "Enter value..."
+          ]
+        }
+      ]
+    },
+    "inspector_lay": {
+      "before": {
+        "bibites": 10,
+        "corpses": 1,
+        "eggs": 0
+      },
+      "after": {
+        "bibites": 10,
+        "corpses": 1,
+        "eggs": 0
+      },
+      "hit": {
+        "ok": true,
+        "pressed": "LayBibiteEggButton",
+        "path": "UICanvas/MainUI/Layer1/Panels/UtilityPanels/SelectionPanel/Content/ButtonsHolder/LayBibiteEggButton"
+      },
+      "note": "LayBibiteEggButton name/path was not found in the active StatsPanel in this pass; counts unchanged."
+    },
+    "inspector_tag": {
+      "before": {
+        "texts": [
+          "123 / 123",
+          "148 / 148",
+          "Time: 00:00:20\n0 fps   /  0 tps\nsim/real: x0.00",
+          "X 0.00",
+          "100u",
+          "Species:",
+          "Basic bibite",
+          "Tag: ",
+          "None",
+          "State:",
+          "Generation:",
+          "0",
+          "Length:",
+          "13.87 u",
+          "Size:",
+          "98.54 u\u00b2",
+          "Mass:",
+          "2.49 g",
+          "Speed:",
+          "0.00 u/s",
+          "Stats:",
+          "Time Alive:",
+          "0s",
+          "Total Distance Traveled:",
+          "0.00 u",
+          "Eggs Laid:",
+          "0",
+          "Alive children:",
+          "0",
+          "Bibites Bitten:",
+          "0",
+          "Total Damages Dealt:",
+          "0.0HP",
+          "Times Attacked:",
+          "0",
+          "Total Damages Suffered:",
+          "0.0HP",
+          "KILL",
+          "LAY",
+          "SAVE",
+          "EDIT\n",
+          "Info",
+          "+"
+        ],
+        "buttons": [
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/PlacerButton",
+            "name": "PlacerButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/UserActions",
+            "name": "UserActions",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton",
+            "name": "ViewButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/InformationPanelButton",
+            "name": "InformationPanelButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/DynamicParametersButton",
+            "name": "DynamicParametersButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/AncestralLineageButton",
+            "name": "AncestralLineageButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/SettingsButton",
+            "name": "SettingsButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/PauseButton",
+            "name": "PauseButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/PlayButton",
+            "name": "PlayButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "X 0.00"
+            ]
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibiteButtons/StatsButton",
+            "name": "StatsButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibiteButtons/GeneButton",
+            "name": "GeneButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibiteButtons/BiologyButton",
+            "name": "BiologyButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibiteButtons/BrainButton",
+            "name": "BrainButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel/MainSection/TagHolder/Label Holder",
+            "name": "Label Holder",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel/MainSection/BibiteStats/Alive Children/Button ",
+            "name": "Button ",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel/ButtonHolder/KillBibiteButton",
+            "name": "KillBibiteButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel/ButtonHolder/LayBibiteEggButton",
+            "name": "LayBibiteEggButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel/ButtonHolder/Save",
+            "name": "Save",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel/ButtonHolder/Edit",
+            "name": "Edit",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/QuickStatsHolder/OpenButtons/OpenQuickStats",
+            "name": "OpenQuickStats",
+            "enabled": true,
+            "labels": []
+          }
+        ]
+      },
+      "after": {
+        "texts": [
+          "Time: 00:00:20\n0 fps   /  0 tps\nsim/real: x0.00",
+          "X 0.00",
+          "100u",
+          "Species:",
+          "Basic bibite",
+          "Tag: ",
+          "None",
+          "Traits: ",
+          "DEAD",
+          "State:",
+          "Generation:",
+          "0",
+          "Length:",
+          "13.87 u",
+          "Size:",
+          "98.54 u\u00b2",
+          "Mass:",
+          "2.49 g",
+          "Speed:",
+          "0.00 u/s",
+          "Stats:",
+          "Time Alive:",
+          "0s",
+          "Total Distance Traveled:",
+          "0.00 u",
+          "Eggs Laid:",
+          "0",
+          "Alive children:",
+          "0",
+          "Bibites Bitten:",
+          "0",
+          "Total Damages Dealt:",
+          "0.0HP",
+          "Times Attacked:",
+          "0",
+          "Total Damages Suffered:",
+          "0.0HP",
+          "REVIVE",
+          "SAVE",
+          "Info",
+          "+"
+        ],
+        "buttons": [
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/PlacerButton",
+            "name": "PlacerButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/UserActions",
+            "name": "UserActions",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton",
+            "name": "ViewButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/InformationPanelButton",
+            "name": "InformationPanelButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/DynamicParametersButton",
+            "name": "DynamicParametersButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/AncestralLineageButton",
+            "name": "AncestralLineageButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/SettingsButton",
+            "name": "SettingsButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/PauseButton",
+            "name": "PauseButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/PlayButton",
+            "name": "PlayButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "X 0.00"
+            ]
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel/MainSection/TagHolder/Label Holder",
+            "name": "Label Holder",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel/MainSection/BibiteStats/Alive Children/Button ",
+            "name": "Button ",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel/ButtonHolder/ReviveCorpseButton",
+            "name": "ReviveCorpseButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel/ButtonHolder/Save",
+            "name": "Save",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/QuickStatsHolder/OpenButtons/OpenQuickStats",
+            "name": "OpenQuickStats",
+            "enabled": true,
+            "labels": []
+          }
+        ]
+      },
+      "hit": {
+        "ok": false,
+        "error": "button not found",
+        "name": "EditTagButton",
+        "path": null
+      },
+      "texts_new": [
+        "Traits: ",
+        "DEAD",
+        "REVIVE"
+      ],
+      "note": "EditTagButton not found in the active StatsPanel; tag control not captured."
+    },
+    "kill_dialog_full": {
+      "before": {
+        "texts": [
+          "123 / 123",
+          "148 / 148",
+          "Time: 00:00:20\n0 fps   /  0 tps\nsim/real: x0.00",
+          "X 0.00",
+          "100u",
+          "Species:",
+          "Basic bibite",
+          "Tag: ",
+          "None",
+          "State:",
+          "Generation:",
+          "0",
+          "Length:",
+          "13.87 u",
+          "Size:",
+          "98.54 u\u00b2",
+          "Mass:",
+          "2.49 g",
+          "Speed:",
+          "0.00 u/s",
+          "Stats:",
+          "Time Alive:",
+          "0s",
+          "Total Distance Traveled:",
+          "0.00 u",
+          "Eggs Laid:",
+          "0",
+          "Alive children:",
+          "0",
+          "Bibites Bitten:",
+          "0",
+          "Total Damages Dealt:",
+          "0.0HP",
+          "Times Attacked:",
+          "0",
+          "Total Damages Suffered:",
+          "0.0HP",
+          "KILL",
+          "LAY",
+          "SAVE",
+          "EDIT\n",
+          "Info",
+          "+"
+        ],
+        "buttons": [
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/PlacerButton",
+            "name": "PlacerButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/UserActions",
+            "name": "UserActions",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton",
+            "name": "ViewButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/InformationPanelButton",
+            "name": "InformationPanelButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/DynamicParametersButton",
+            "name": "DynamicParametersButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/AncestralLineageButton",
+            "name": "AncestralLineageButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/SettingsButton",
+            "name": "SettingsButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/PauseButton",
+            "name": "PauseButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/PlayButton",
+            "name": "PlayButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "X 0.00"
+            ]
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibiteButtons/StatsButton",
+            "name": "StatsButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibiteButtons/GeneButton",
+            "name": "GeneButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibiteButtons/BiologyButton",
+            "name": "BiologyButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibiteButtons/BrainButton",
+            "name": "BrainButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel/MainSection/TagHolder/Label Holder",
+            "name": "Label Holder",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel/MainSection/BibiteStats/Alive Children/Button ",
+            "name": "Button ",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel/ButtonHolder/KillBibiteButton",
+            "name": "KillBibiteButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel/ButtonHolder/LayBibiteEggButton",
+            "name": "LayBibiteEggButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel/ButtonHolder/Save",
+            "name": "Save",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel/ButtonHolder/Edit",
+            "name": "Edit",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/QuickStatsHolder/OpenButtons/OpenQuickStats",
+            "name": "OpenQuickStats",
+            "enabled": true,
+            "labels": []
+          }
+        ]
+      },
+      "after": {
+        "texts": [
+          "Time: 00:00:20\n0 fps   /  0 tps\nsim/real: x0.00",
+          "X 0.00",
+          "100u",
+          "Info",
+          "+"
+        ],
+        "buttons": [
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/PlacerButton",
+            "name": "PlacerButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/UserActions",
+            "name": "UserActions",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton",
+            "name": "ViewButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/InformationPanelButton",
+            "name": "InformationPanelButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/DynamicParametersButton",
+            "name": "DynamicParametersButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/AncestralLineageButton",
+            "name": "AncestralLineageButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/SettingsButton",
+            "name": "SettingsButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/PauseButton",
+            "name": "PauseButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/PlayButton",
+            "name": "PlayButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "X 0.00"
+            ]
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/QuickStatsHolder/OpenButtons/OpenQuickStats",
+            "name": "OpenQuickStats",
+            "enabled": true,
+            "labels": []
+          }
+        ]
+      },
+      "hit": {
+        "ok": true,
+        "pressed": "KillBibiteButton",
+        "path": "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel/ButtonHolder/KillBibiteButton"
+      },
+      "active_popup_paths": [
+        "UICanvas/MainUI/TopLayer/Popuholder"
+      ],
+      "dismiss": {
+        "ok": true,
+        "path": "UICanvas/MainUI/TopLayer/Popuholder",
+        "active": false,
+        "active_in_hierarchy": false
+      }
+    },
+    "settings_pages_full": {
+      "menu_graphics": {
+        "control_path": "UI/SettingsPanel/SelectorPanel/List/GraphicsButton",
+        "controls": [
+          {
+            "kind": "Toggle",
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": true,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Show Node Names",
+              "Fertility Color",
+              "#E79B00FF",
+              "Background",
+              "Background Color",
+              "#000000",
+              "Show Grid",
+              "Grid Options",
+              "Fine Grid Color",
+              "#FFFFFF40"
+            ]
+          },
+          {
+            "kind": "Toggle",
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": false,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Show Experimental Background",
+              "Texture Options",
+              "Texture Color",
+              "#333343",
+              "Background Color",
+              "#000000",
+              "Show Grid",
+              "Grid Options",
+              "Fine Grid Color",
+              "#FFFFFF40"
+            ]
+          },
+          {
+            "kind": "Toggle",
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": true,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Show Experimental Background",
+              "Texture Options",
+              "Texture Color",
+              "#333343",
+              "Background Color",
+              "#000000",
+              "Show Grid",
+              "Grid Options",
+              "Fine Grid Color",
+              "#FFFFFF40"
+            ]
+          },
+          {
+            "kind": "Toggle",
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": false,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Automatically Detect Screen Resolution",
+              "Fullscreen",
+              "Screen Resolution",
+              "1080p",
+              "UI Scale",
+              "Normal (1.0)",
+              "Pheromones Strength",
+              "50%",
+              "Enter value...",
+              "0\u200b"
+            ]
+          },
+          {
+            "kind": "Toggle",
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": true,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Automatically Detect Screen Resolution",
+              "Fullscreen",
+              "Screen Resolution",
+              "1080p",
+              "UI Scale",
+              "Normal (1.0)",
+              "Pheromones Strength",
+              "50%",
+              "Enter value...",
+              "0\u200b"
+            ]
+          },
+          {
+            "kind": "Slider",
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+            "name": "Slider",
+            "value": 0.5,
+            "minValue": 0,
+            "maxValue": 1,
+            "wholeNumbers": false,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Pheromones Strength",
+              "50%",
+              "Enter value...",
+              "0\u200b",
+              "Fullscreen",
+              "Automatically Detect Screen Resolution",
+              "Screen Resolution",
+              "1080p",
+              "UI Scale",
+              "Normal (1.0)"
+            ]
+          },
+          {
+            "kind": "Dropdown",
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingDropdown(Clone)/Dropdown",
+            "name": "Dropdown",
+            "value": 0,
+            "options": [
+              "Genetic",
+              "Maturity",
+              "Both"
+            ],
+            "labels": [],
+            "label_context": [
+              "Genetic",
+              "Procedural Size",
+              "Fullscreen",
+              "Automatically Detect Screen Resolution",
+              "Screen Resolution",
+              "1080p",
+              "UI Scale",
+              "Normal (1.0)",
+              "Pheromones Strength",
+              "50%"
+            ]
+          },
+          {
+            "kind": "Dropdown",
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingDropdown(Clone)/Dropdown",
+            "name": "Dropdown",
+            "value": 2,
+            "options": [
+              "Smaller (0.5)",
+              "Small (0.75)",
+              "Normal (1.0)",
+              "Large (1.15)",
+              "Larger (1.25)"
+            ],
+            "labels": [],
+            "label_context": [
+              "Genetic",
+              "Procedural Size",
+              "Fullscreen",
+              "Automatically Detect Screen Resolution",
+              "Screen Resolution",
+              "1080p",
+              "UI Scale",
+              "Normal (1.0)",
+              "Pheromones Strength",
+              "50%"
+            ]
+          },
+          {
+            "kind": "Dropdown",
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingDropdown(Clone)/Dropdown",
+            "name": "Dropdown",
+            "value": 3,
+            "options": [
+              "720p",
+              "768p",
+              "900p",
+              "1080p",
+              "1440p",
+              "4K"
+            ],
+            "labels": [],
+            "label_context": [
+              "Genetic",
+              "Procedural Size",
+              "Fullscreen",
+              "Automatically Detect Screen Resolution",
+              "Screen Resolution",
+              "1080p",
+              "UI Scale",
+              "Normal (1.0)",
+              "Pheromones Strength",
+              "50%"
+            ]
+          }
+        ],
+        "active_texts": [
+          "The Bibites: Digital Life",
+          "Omnia Studios",
+          "the studio Leo Caussan ended up founding",
+          "This is all possible thanks to the amazing patrons supporting the project on Patreon\n\nHelp propel the creation of a new form of life!",
+          "The Bibites",
+          "Continue",
+          "New",
+          "Load",
+          "Bibite Library",
+          "Settings\n",
+          "Achievements",
+          "Additional Tools",
+          "Credits\n",
+          "Quit\n",
+          "The Bibites 0.6.3.1",
+          "Graphics Settings",
+          "Fullscreen",
+          "Automatically Detect Screen Resolution",
+          "Screen Resolution",
+          "1080p",
+          "UI Scale",
+          "Normal (1.0)",
+          "Pheromones Strength",
+          "50%",
+          "Procedural Size",
+          "Genetic",
+          "UI Preferences",
+          "Fertility Color",
+          "#E79B00FF",
+          "Background",
+          "Background Color",
+          "#000000",
+          "Show Grid",
+          "Show Experimental Background",
+          "Show Node Names",
+          "Graphic Settings",
+          "Game Settings",
+          "Hotkeys",
+          "Reset Warnings"
+        ],
+        "active_buttons": [
+          {
+            "path": "UI/WelcomeScreen/Patreon Holder/Button",
+            "name": "Button",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Continue",
+            "name": "Continue",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/NewSim",
+            "name": "NewSim",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/LoadSim",
+            "name": "LoadSim",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Editor",
+            "name": "Editor",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Settings",
+            "name": "Settings",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Achievements",
+            "name": "Achievements",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/More",
+            "name": "More",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Credits",
+            "name": "Credits",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Quit",
+            "name": "Quit",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingDropdown(Clone)/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingDropdown(Clone)/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "50%"
+            ]
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingDropdown(Clone)/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/ColorPicker(Clone)/ColorDisplay",
+            "name": "ColorDisplay",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/ColorPicker(Clone)/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/ColorPicker(Clone)/ColorDisplay",
+            "name": "ColorDisplay",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/ColorPicker(Clone)/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/GroupEdit",
+            "name": "GroupEdit",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/GroupEdit",
+            "name": "GroupEdit",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/SelectorPanel/List/CloseButton",
+            "name": "CloseButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/SelectorPanel/List/GraphicsButton",
+            "name": "GraphicsButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/SelectorPanel/List/Gameplay Button",
+            "name": "Gameplay Button",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/SelectorPanel/List/Controls Button",
+            "name": "Controls Button",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/SelectorPanel/List/Reset Warnings",
+            "name": "Reset Warnings",
+            "enabled": true,
+            "labels": []
+          }
+        ],
+        "reset_paths": [
+          "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingDropdown(Clone)/ResetButton",
+          "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingDropdown(Clone)/ResetButton",
+          "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingDropdown(Clone)/ResetButton",
+          "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/ColorPicker(Clone)/ResetButton",
+          "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingGroupPrefab(Clone)/SettingsHolder/ColorPicker(Clone)/ResetButton",
+          "UI/SettingsPanel/SelectorPanel/List/Reset Warnings"
+        ]
+      },
+      "menu_gameplay": {
+        "control_path": "UI/SettingsPanel/SelectorPanel/List/Gameplay Button",
+        "controls": [
+          {
+            "kind": "Toggle",
+            "path": "UI/SettingsPanel/PagesPanels/Game/Scroll View/Viewport/Content/GameHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": true,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Analytics Consent",
+              "Cloud Diagnostic Consent",
+              "Reporting Settings",
+              "Save Settings",
+              "Autosave",
+              "Autosave Period",
+              "One Minute",
+              "Real-time autosave period",
+              "Reload After AutoSaves",
+              "Pause After Load"
+            ]
+          },
+          {
+            "kind": "Toggle",
+            "path": "UI/SettingsPanel/PagesPanels/Game/Scroll View/Viewport/Content/GameHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": false,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Analytics Consent",
+              "Cloud Diagnostic Consent",
+              "Reporting Settings",
+              "Save Settings",
+              "Autosave",
+              "Autosave Period",
+              "One Minute",
+              "Real-time autosave period",
+              "Reload After AutoSaves",
+              "Pause After Load"
+            ]
+          },
+          {
+            "kind": "Toggle",
+            "path": "UI/SettingsPanel/PagesPanels/Game/Scroll View/Viewport/Content/GameHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": true,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Analytics Consent",
+              "Cloud Diagnostic Consent",
+              "Reporting Settings",
+              "Save Settings",
+              "Autosave",
+              "Autosave Period",
+              "One Minute",
+              "Real-time autosave period",
+              "Reload After AutoSaves",
+              "Pause After Load"
+            ]
+          },
+          {
+            "kind": "Toggle",
+            "path": "UI/SettingsPanel/PagesPanels/Game/Scroll View/Viewport/Content/GameHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": true,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Analytics Consent",
+              "Cloud Diagnostic Consent",
+              "Reporting Settings",
+              "Save Settings",
+              "Autosave",
+              "Autosave Period",
+              "One Minute",
+              "Real-time autosave period",
+              "Reload After AutoSaves",
+              "Pause After Load"
+            ]
+          },
+          {
+            "kind": "Toggle",
+            "path": "UI/SettingsPanel/PagesPanels/Game/Scroll View/Viewport/Content/GameHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": true,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Analytics Consent",
+              "Cloud Diagnostic Consent",
+              "Reporting Settings",
+              "Save Settings",
+              "Autosave",
+              "Autosave Period",
+              "One Minute",
+              "Real-time autosave period",
+              "Reload After AutoSaves",
+              "Pause After Load"
+            ]
+          },
+          {
+            "kind": "Toggle",
+            "path": "UI/SettingsPanel/PagesPanels/Game/Scroll View/Viewport/Content/GameHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": false,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Analytics Consent",
+              "Cloud Diagnostic Consent",
+              "Reporting Settings",
+              "Save Settings",
+              "Autosave",
+              "Autosave Period",
+              "One Minute",
+              "Real-time autosave period",
+              "Reload After AutoSaves",
+              "Pause After Load"
+            ]
+          },
+          {
+            "kind": "Toggle",
+            "path": "UI/SettingsPanel/PagesPanels/Game/Scroll View/Viewport/Content/GameHolder/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": true,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Allow Easter Eggs",
+              "Easter Eggs Settings",
+              "Easter Eggs Probability Period",
+              "500k ",
+              "Enter value...",
+              "0\u200b",
+              "Cloud Diagnostic Consent",
+              "Analytics Consent",
+              "Reporting Settings",
+              "Save Settings"
+            ]
+          },
+          {
+            "kind": "Toggle",
+            "path": "UI/SettingsPanel/PagesPanels/Game/Scroll View/Viewport/Content/GameHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": false,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Analytics Consent",
+              "Cloud Diagnostic Consent",
+              "Reporting Settings",
+              "Save Settings",
+              "Autosave",
+              "Autosave Period",
+              "One Minute",
+              "Real-time autosave period",
+              "Reload After AutoSaves",
+              "Pause After Load"
+            ]
+          },
+          {
+            "kind": "Toggle",
+            "path": "UI/SettingsPanel/PagesPanels/Game/Scroll View/Viewport/Content/GameHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": false,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Analytics Consent",
+              "Cloud Diagnostic Consent",
+              "Reporting Settings",
+              "Save Settings",
+              "Autosave",
+              "Autosave Period",
+              "One Minute",
+              "Real-time autosave period",
+              "Reload After AutoSaves",
+              "Pause After Load"
+            ]
+          },
+          {
+            "kind": "Toggle",
+            "path": "UI/SettingsPanel/PagesPanels/Game/Scroll View/Viewport/Content/GameHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": true,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Analytics Consent",
+              "Cloud Diagnostic Consent",
+              "Reporting Settings",
+              "Save Settings",
+              "Autosave",
+              "Autosave Period",
+              "One Minute",
+              "Real-time autosave period",
+              "Reload After AutoSaves",
+              "Pause After Load"
+            ]
+          },
+          {
+            "kind": "Toggle",
+            "path": "UI/SettingsPanel/PagesPanels/Game/Scroll View/Viewport/Content/GameHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": true,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Analytics Consent",
+              "Cloud Diagnostic Consent",
+              "Reporting Settings",
+              "Save Settings",
+              "Autosave",
+              "Autosave Period",
+              "One Minute",
+              "Real-time autosave period",
+              "Reload After AutoSaves",
+              "Pause After Load"
+            ]
+          },
+          {
+            "kind": "Slider",
+            "path": "UI/SettingsPanel/PagesPanels/Game/Scroll View/Viewport/Content/GameHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+            "name": "Slider",
+            "value": 5,
+            "minValue": 0,
+            "maxValue": 10,
+            "wholeNumbers": false,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Reselection Delay",
+              "5.0s",
+              "Enter value...",
+              "0\u200b",
+              "Cloud Diagnostic Consent",
+              "Analytics Consent",
+              "Reporting Settings",
+              "Save Settings",
+              "Autosave",
+              "Autosave Period"
+            ]
+          },
+          {
+            "kind": "Slider",
+            "path": "UI/SettingsPanel/PagesPanels/Game/Scroll View/Viewport/Content/GameHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+            "name": "Slider",
+            "value": 0.075,
+            "minValue": 0,
+            "maxValue": 1,
+            "wholeNumbers": false,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Reselection Delay",
+              "5.0s",
+              "Enter value...",
+              "0\u200b",
+              "Cloud Diagnostic Consent",
+              "Analytics Consent",
+              "Reporting Settings",
+              "Save Settings",
+              "Autosave",
+              "Autosave Period"
+            ]
+          },
+          {
+            "kind": "Slider",
+            "path": "UI/SettingsPanel/PagesPanels/Game/Scroll View/Viewport/Content/GameHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+            "name": "Slider",
+            "value": 15,
+            "minValue": 0,
+            "maxValue": 120,
+            "wholeNumbers": true,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Reselection Delay",
+              "5.0s",
+              "Enter value...",
+              "0\u200b",
+              "Cloud Diagnostic Consent",
+              "Analytics Consent",
+              "Reporting Settings",
+              "Save Settings",
+              "Autosave",
+              "Autosave Period"
+            ]
+          },
+          {
+            "kind": "Slider",
+            "path": "UI/SettingsPanel/PagesPanels/Game/Scroll View/Viewport/Content/GameHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+            "name": "Slider",
+            "value": 100,
+            "minValue": 1,
+            "maxValue": 100,
+            "wholeNumbers": true,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Reselection Delay",
+              "5.0s",
+              "Enter value...",
+              "0\u200b",
+              "Cloud Diagnostic Consent",
+              "Analytics Consent",
+              "Reporting Settings",
+              "Save Settings",
+              "Autosave",
+              "Autosave Period"
+            ]
+          },
+          {
+            "kind": "Dropdown",
+            "path": "UI/SettingsPanel/PagesPanels/Game/Scroll View/Viewport/Content/GameHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingDropdown(Clone)/Dropdown",
+            "name": "Dropdown",
+            "value": 0,
+            "options": [
+              "One Minute",
+              "Five Minutes",
+              "Ten Minutes",
+              "Thirty Minutes",
+              "One Hour",
+              "Five Hours",
+              "Ten Hours"
+            ],
+            "labels": [],
+            "label_context": [
+              "One Minute",
+              "Autosave Period",
+              "Cloud Diagnostic Consent",
+              "Analytics Consent",
+              "Reporting Settings",
+              "Save Settings",
+              "Autosave",
+              "Real-time autosave period",
+              "Reload After AutoSaves",
+              "Pause After Load"
+            ]
+          }
+        ],
+        "active_texts": [
+          "The Bibites: Digital Life",
+          "Omnia Studios",
+          "the studio Leo Caussan ended up founding",
+          "This is all possible thanks to the amazing patrons supporting the project on Patreon\n\nHelp propel the creation of a new form of life!",
+          "The Bibites",
+          "Continue",
+          "New",
+          "Load",
+          "Bibite Library",
+          "Settings\n",
+          "Achievements",
+          "Additional Tools",
+          "Credits\n",
+          "Quit\n",
+          "The Bibites 0.6.3.1",
+          "Save Settings",
+          "Autosave",
+          "Autosave Period",
+          "One Minute",
+          "Real-time autosave period",
+          "Reload After AutoSaves",
+          "Pause After Load",
+          "AutoSave Max Files",
+          "2k ",
+          "Gameplay Options",
+          "Allow Easter Eggs",
+          "Control Options",
+          "Minimum FPS",
+          "15 ",
+          "Ignore FPS minimum When Unfocused",
+          "Allow Arrow Key",
+          "Open Zone Editor On Select",
+          "Selection Radius",
+          "7.5%",
+          "Reselect On Corpses",
+          "Reselection Delay",
+          "5.0s",
+          "Reporting Settings",
+          "Cloud Diagnostic Consent",
+          "Analytics Consent",
+          "Graphic Settings",
+          "Game Settings",
+          "Hotkeys",
+          "Reset Warnings"
+        ],
+        "active_buttons": [
+          {
+            "path": "UI/WelcomeScreen/Patreon Holder/Button",
+            "name": "Button",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Continue",
+            "name": "Continue",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/NewSim",
+            "name": "NewSim",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/LoadSim",
+            "name": "LoadSim",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Editor",
+            "name": "Editor",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Settings",
+            "name": "Settings",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Achievements",
+            "name": "Achievements",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/More",
+            "name": "More",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Credits",
+            "name": "Credits",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Quit",
+            "name": "Quit",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Game/Scroll View/Viewport/Content/GameHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingDropdown(Clone)/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Game/Scroll View/Viewport/Content/GameHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "2k "
+            ]
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Game/Scroll View/Viewport/Content/GameHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Game/Scroll View/Viewport/Content/GameHolder/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/GroupEdit",
+            "name": "GroupEdit",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Game/Scroll View/Viewport/Content/GameHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "15 "
+            ]
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Game/Scroll View/Viewport/Content/GameHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Game/Scroll View/Viewport/Content/GameHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "7.5%"
+            ]
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Game/Scroll View/Viewport/Content/GameHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Game/Scroll View/Viewport/Content/GameHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "5.0s"
+            ]
+          },
+          {
+            "path": "UI/SettingsPanel/PagesPanels/Game/Scroll View/Viewport/Content/GameHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/SelectorPanel/List/CloseButton",
+            "name": "CloseButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/SelectorPanel/List/GraphicsButton",
+            "name": "GraphicsButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/SelectorPanel/List/Gameplay Button",
+            "name": "Gameplay Button",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/SelectorPanel/List/Controls Button",
+            "name": "Controls Button",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/SelectorPanel/List/Reset Warnings",
+            "name": "Reset Warnings",
+            "enabled": true,
+            "labels": []
+          }
+        ],
+        "reset_paths": [
+          "UI/SettingsPanel/PagesPanels/Game/Scroll View/Viewport/Content/GameHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingDropdown(Clone)/ResetButton",
+          "UI/SettingsPanel/PagesPanels/Game/Scroll View/Viewport/Content/GameHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "UI/SettingsPanel/PagesPanels/Game/Scroll View/Viewport/Content/GameHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "UI/SettingsPanel/PagesPanels/Game/Scroll View/Viewport/Content/GameHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "UI/SettingsPanel/PagesPanels/Game/Scroll View/Viewport/Content/GameHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "UI/SettingsPanel/SelectorPanel/List/Reset Warnings"
+        ]
+      },
+      "menu_hotkeys": {
+        "control_path": "UI/SettingsPanel/SelectorPanel/List/Controls Button",
+        "controls": [],
+        "active_texts": [
+          "The Bibites: Digital Life",
+          "Omnia Studios",
+          "the studio Leo Caussan ended up founding",
+          "This is all possible thanks to the amazing patrons supporting the project on Patreon\n\nHelp propel the creation of a new form of life!",
+          "The Bibites",
+          "Continue",
+          "New",
+          "Load",
+          "Bibite Library",
+          "Settings\n",
+          "Achievements",
+          "Additional Tools",
+          "Credits\n",
+          "Quit\n",
+          "The Bibites 0.6.3.1",
+          "Simulation Hotkeys",
+          "This is just a list of all existing controls for the simulation. \nFor now they can't be changed, but I'll be working on that at some point",
+          "Camera Controls:",
+          "WASD // Arrow keys => move the camera  \nPage-up => increase camera scroll speed (x1.25)\nPage-down => decrease camera scroll speed (x0.8)\nScroll-wheel => Zoom In/Out by small increment\nClick-and-Dragging scroll-wheel => gradual zoom in/out\n+ // Keypad+ => zoom in (x0.8)\n- // Keypad- => zoom out (x1.25)\nHome => return to (0,0)",
+          "Selection Hotkeys:",
+          "R => select random bibite\nE => select random egg\nG => select bibite with highest gen count\nO => select oldest bibite\nZ => select random zone\nK => autopanning mode (needs to be reworked)\n\nLCtrl + [Any selection Key] => automatically reselect same type on target death",
+          "Utility Controls",
+          "Space => toggle Pause/Play\nH => toggle UI visibility\nF5 => save the game under \"quick.zip\", overwriting any previous quicksave\nF9 => load last quick save\nInsert => Lay Egg of selected bibite\nDelete => Kill selected bibite or egg\nCTRL-dragging a bibite => Rotates bibite toward cursor\nCTRL-click certain UI elements => developer mode (used for videos)",
+          "Graphic Settings",
+          "Game Settings",
+          "Hotkeys",
+          "Reset Warnings"
+        ],
+        "active_buttons": [
+          {
+            "path": "UI/WelcomeScreen/Patreon Holder/Button",
+            "name": "Button",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Continue",
+            "name": "Continue",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/NewSim",
+            "name": "NewSim",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/LoadSim",
+            "name": "LoadSim",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Editor",
+            "name": "Editor",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Settings",
+            "name": "Settings",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Achievements",
+            "name": "Achievements",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/More",
+            "name": "More",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Credits",
+            "name": "Credits",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Quit",
+            "name": "Quit",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/SelectorPanel/List/CloseButton",
+            "name": "CloseButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/SelectorPanel/List/GraphicsButton",
+            "name": "GraphicsButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/SelectorPanel/List/Gameplay Button",
+            "name": "Gameplay Button",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/SelectorPanel/List/Controls Button",
+            "name": "Controls Button",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UI/SettingsPanel/SelectorPanel/List/Reset Warnings",
+            "name": "Reset Warnings",
+            "enabled": true,
+            "labels": []
+          }
+        ],
+        "reset_paths": [
+          "UI/SettingsPanel/SelectorPanel/List/Reset Warnings"
+        ]
+      },
+      "world_dynamic_parameters": {
+        "button": "DynamicParametersButton",
+        "controls": [
+          {
+            "kind": "Toggle",
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": false,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Disable Drag On Held Pellet",
+              "Drag Coefficient",
+              "5.00 Nu/s",
+              "Enter value...",
+              "0\u200b",
+              "Physics Parameters",
+              "Simulation Options",
+              "Corpses",
+              "Prevent Mutations",
+              "Pellet Collision"
+            ]
+          },
+          {
+            "kind": "Toggle",
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": false,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Void-No-Mo'",
+              "Void Avoidance Settings",
+              "Void Avoidance Distance",
+              "100 u",
+              "Enter value...",
+              "0\u200b",
+              "Drag Coefficient",
+              "5.00 Nu/s",
+              "Disable Drag On Held Pellet",
+              "Physics Parameters"
+            ]
+          },
+          {
+            "kind": "Toggle",
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": false,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Disable Drag On Held Pellet",
+              "Drag Coefficient",
+              "5.00 Nu/s",
+              "Enter value...",
+              "0\u200b",
+              "Physics Parameters",
+              "Simulation Options",
+              "Corpses",
+              "Prevent Mutations",
+              "Pellet Collision"
+            ]
+          },
+          {
+            "kind": "Toggle",
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": false,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Disable Drag On Held Pellet",
+              "Drag Coefficient",
+              "5.00 Nu/s",
+              "Enter value...",
+              "0\u200b",
+              "Physics Parameters",
+              "Simulation Options",
+              "Corpses",
+              "Prevent Mutations",
+              "Pellet Collision"
+            ]
+          },
+          {
+            "kind": "Toggle",
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": false,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Disable Drag On Held Pellet",
+              "Drag Coefficient",
+              "5.00 Nu/s",
+              "Enter value...",
+              "0\u200b",
+              "Physics Parameters",
+              "Simulation Options",
+              "Corpses",
+              "Prevent Mutations",
+              "Pellet Collision"
+            ]
+          },
+          {
+            "kind": "Toggle",
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": false,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Void-No-Mo'",
+              "Void Avoidance Settings",
+              "Void Avoidance Distance",
+              "100 u",
+              "Enter value...",
+              "0\u200b",
+              "Drag Coefficient",
+              "5.00 Nu/s",
+              "Disable Drag On Held Pellet",
+              "Physics Parameters"
+            ]
+          },
+          {
+            "kind": "Toggle",
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": true,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Void-No-Mo'",
+              "Void Avoidance Settings",
+              "Void Avoidance Distance",
+              "100 u",
+              "Enter value...",
+              "0\u200b",
+              "Drag Coefficient",
+              "5.00 Nu/s",
+              "Disable Drag On Held Pellet",
+              "Physics Parameters"
+            ]
+          },
+          {
+            "kind": "Toggle",
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": false,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Disable Drag On Held Pellet",
+              "Drag Coefficient",
+              "5.00 Nu/s",
+              "Enter value...",
+              "0\u200b",
+              "Physics Parameters",
+              "Simulation Options",
+              "Corpses",
+              "Prevent Mutations",
+              "Pellet Collision"
+            ]
+          },
+          {
+            "kind": "Toggle",
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": true,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Void-No-Mo'",
+              "Void Avoidance Settings",
+              "Void Avoidance Distance",
+              "100 u",
+              "Enter value...",
+              "0\u200b",
+              "Drag Coefficient",
+              "5.00 Nu/s",
+              "Disable Drag On Held Pellet",
+              "Physics Parameters"
+            ]
+          },
+          {
+            "kind": "Toggle",
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": false,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Disable Drag On Held Pellet",
+              "Drag Coefficient",
+              "5.00 Nu/s",
+              "Enter value...",
+              "0\u200b",
+              "Physics Parameters",
+              "Simulation Options",
+              "Corpses",
+              "Prevent Mutations",
+              "Pellet Collision"
+            ]
+          },
+          {
+            "kind": "Toggle",
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": true,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Disable Drag On Held Pellet",
+              "Drag Coefficient",
+              "5.00 Nu/s",
+              "Enter value...",
+              "0\u200b",
+              "Physics Parameters",
+              "Simulation Options",
+              "Corpses",
+              "Prevent Mutations",
+              "Pellet Collision"
+            ]
+          },
+          {
+            "kind": "Slider",
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+            "name": "Slider",
+            "value": 5,
+            "minValue": 0,
+            "maxValue": 25,
+            "wholeNumbers": false,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Drag Coefficient",
+              "5.00 Nu/s",
+              "Enter value...",
+              "0\u200b",
+              "Disable Drag On Held Pellet",
+              "Physics Parameters",
+              "Simulation Options",
+              "Corpses",
+              "Prevent Mutations",
+              "Pellet Collision"
+            ]
+          },
+          {
+            "kind": "Slider",
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+            "name": "Slider",
+            "value": 0,
+            "minValue": -2,
+            "maxValue": 2,
+            "wholeNumbers": false,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Drag Coefficient",
+              "5.00 Nu/s",
+              "Enter value...",
+              "0\u200b",
+              "Disable Drag On Held Pellet",
+              "Physics Parameters",
+              "Simulation Options",
+              "Corpses",
+              "Prevent Mutations",
+              "Pellet Collision"
+            ]
+          },
+          {
+            "kind": "Slider",
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+            "name": "Slider",
+            "value": 5,
+            "minValue": 1,
+            "maxValue": 50,
+            "wholeNumbers": true,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Drag Coefficient",
+              "5.00 Nu/s",
+              "Enter value...",
+              "0\u200b",
+              "Disable Drag On Held Pellet",
+              "Physics Parameters",
+              "Simulation Options",
+              "Corpses",
+              "Prevent Mutations",
+              "Pellet Collision"
+            ]
+          },
+          {
+            "kind": "Slider",
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+            "name": "Slider",
+            "value": 10,
+            "minValue": 1,
+            "maxValue": 100,
+            "wholeNumbers": true,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Drag Coefficient",
+              "5.00 Nu/s",
+              "Enter value...",
+              "0\u200b",
+              "Disable Drag On Held Pellet",
+              "Physics Parameters",
+              "Simulation Options",
+              "Corpses",
+              "Prevent Mutations",
+              "Pellet Collision"
+            ]
+          },
+          {
+            "kind": "Slider",
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+            "name": "Slider",
+            "value": 2,
+            "minValue": 1,
+            "maxValue": 100,
+            "wholeNumbers": true,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Drag Coefficient",
+              "5.00 Nu/s",
+              "Enter value...",
+              "0\u200b",
+              "Disable Drag On Held Pellet",
+              "Physics Parameters",
+              "Simulation Options",
+              "Corpses",
+              "Prevent Mutations",
+              "Pellet Collision"
+            ]
+          },
+          {
+            "kind": "Slider",
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+            "name": "Slider",
+            "value": 2,
+            "minValue": 1,
+            "maxValue": 100,
+            "wholeNumbers": true,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Drag Coefficient",
+              "5.00 Nu/s",
+              "Enter value...",
+              "0\u200b",
+              "Disable Drag On Held Pellet",
+              "Physics Parameters",
+              "Simulation Options",
+              "Corpses",
+              "Prevent Mutations",
+              "Pellet Collision"
+            ]
+          },
+          {
+            "kind": "Slider",
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+            "name": "Slider",
+            "value": 30,
+            "minValue": 5,
+            "maxValue": 100,
+            "wholeNumbers": true,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Drag Coefficient",
+              "5.00 Nu/s",
+              "Enter value...",
+              "0\u200b",
+              "Disable Drag On Held Pellet",
+              "Physics Parameters",
+              "Simulation Options",
+              "Corpses",
+              "Prevent Mutations",
+              "Pellet Collision"
+            ]
+          },
+          {
+            "kind": "Slider",
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel/Slider",
+            "name": "Slider",
+            "value": 0,
+            "minValue": -1.43067658,
+            "maxValue": 2.86135316,
+            "wholeNumbers": false,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Enter value...",
+              "0\u200b",
+              "X 0.00",
+              "x 1.0",
+              "New Text",
+              "Place Bibite",
+              "Place Pellets",
+              "Place Color Selector",
+              "Place Phero Tower",
+              "Place Rad Tower"
+            ]
+          }
+        ],
+        "active_texts": [
+          "Time: 00:00:20\n0 fps   /  0 tps\nsim/real: x0.00",
+          "X 0.00",
+          "100u",
+          "Simulation Options",
+          "Corpses",
+          "Prevent Mutations",
+          "Pellet Collision",
+          "Disable Herding",
+          "Add Shaded Bounds",
+          "The Red Death Bloom",
+          "Prevent Red Pheromones Production",
+          "Prevent Green Pheromones Production",
+          "Prevent Blue Pheromones Production",
+          "Cheat Options",
+          "Void-No-Mo'",
+          "Simulation Performance Parameters",
+          "Ticks Per Second",
+          "30 tps",
+          "Brain Update Factor",
+          "2 X",
+          "Decay Update Factor",
+          "2 X",
+          "Vision Lookup Factor",
+          "10 X",
+          "Vision Sensing Factor",
+          "5 X",
+          "Minimum Pellet Size",
+          "100.00 mu\u00b2",
+          "Physics Parameters",
+          "Drag Coefficient",
+          "5.00 Nu/s",
+          "Disable Drag On Held Pellet"
+        ],
+        "active_buttons": [
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/PlacerButton",
+            "name": "PlacerButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/UserActions",
+            "name": "UserActions",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton",
+            "name": "ViewButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/InformationPanelButton",
+            "name": "InformationPanelButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/DynamicParametersButton",
+            "name": "DynamicParametersButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/AncestralLineageButton",
+            "name": "AncestralLineageButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/SettingsButton",
+            "name": "SettingsButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/PauseButton",
+            "name": "PauseButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/PlayButton",
+            "name": "PlayButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "X 0.00"
+            ]
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/TabButtons/SimulationTabButton",
+            "name": "SimulationTabButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/TabButtons/ZonesTabButton ",
+            "name": "ZonesTabButton ",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/TabButtons/BibiteTabButton",
+            "name": "BibiteTabButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/TabButtons/EnergyTabButton",
+            "name": "EnergyTabButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/TabButtons/AnimationTabButton",
+            "name": "AnimationTabButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/TabButtons/Save Scenario Button",
+            "name": "Save Scenario Button",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/TabButtons/ClosePanel",
+            "name": "ClosePanel",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/GroupEdit",
+            "name": "GroupEdit",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/GroupEdit",
+            "name": "GroupEdit",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/GroupEdit",
+            "name": "GroupEdit",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/GroupEdit",
+            "name": "GroupEdit",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "30 tps"
+            ]
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "2 X"
+            ]
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "2 X"
+            ]
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "10 X"
+            ]
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "5 X"
+            ]
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "100.00 mu\u00b2"
+            ]
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "5.00 Nu/s"
+            ]
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          }
+        ],
+        "reset_paths": [
+          "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton"
+        ]
+      },
+      "world_settings": {
+        "button": "SettingsButton",
+        "controls": [
+          {
+            "kind": "Toggle",
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": false,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Disable Drag On Held Pellet",
+              "Drag Coefficient",
+              "5.00 Nu/s",
+              "Enter value...",
+              "0\u200b",
+              "Physics Parameters",
+              "Simulation Options",
+              "Corpses",
+              "Prevent Mutations",
+              "Pellet Collision"
+            ]
+          },
+          {
+            "kind": "Toggle",
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": false,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Void-No-Mo'",
+              "Void Avoidance Settings",
+              "Void Avoidance Distance",
+              "100 u",
+              "Enter value...",
+              "0\u200b",
+              "Drag Coefficient",
+              "5.00 Nu/s",
+              "Disable Drag On Held Pellet",
+              "Physics Parameters"
+            ]
+          },
+          {
+            "kind": "Toggle",
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": false,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Disable Drag On Held Pellet",
+              "Drag Coefficient",
+              "5.00 Nu/s",
+              "Enter value...",
+              "0\u200b",
+              "Physics Parameters",
+              "Simulation Options",
+              "Corpses",
+              "Prevent Mutations",
+              "Pellet Collision"
+            ]
+          },
+          {
+            "kind": "Toggle",
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": false,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Disable Drag On Held Pellet",
+              "Drag Coefficient",
+              "5.00 Nu/s",
+              "Enter value...",
+              "0\u200b",
+              "Physics Parameters",
+              "Simulation Options",
+              "Corpses",
+              "Prevent Mutations",
+              "Pellet Collision"
+            ]
+          },
+          {
+            "kind": "Toggle",
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": false,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Disable Drag On Held Pellet",
+              "Drag Coefficient",
+              "5.00 Nu/s",
+              "Enter value...",
+              "0\u200b",
+              "Physics Parameters",
+              "Simulation Options",
+              "Corpses",
+              "Prevent Mutations",
+              "Pellet Collision"
+            ]
+          },
+          {
+            "kind": "Toggle",
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": false,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Void-No-Mo'",
+              "Void Avoidance Settings",
+              "Void Avoidance Distance",
+              "100 u",
+              "Enter value...",
+              "0\u200b",
+              "Drag Coefficient",
+              "5.00 Nu/s",
+              "Disable Drag On Held Pellet",
+              "Physics Parameters"
+            ]
+          },
+          {
+            "kind": "Toggle",
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": true,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Void-No-Mo'",
+              "Void Avoidance Settings",
+              "Void Avoidance Distance",
+              "100 u",
+              "Enter value...",
+              "0\u200b",
+              "Drag Coefficient",
+              "5.00 Nu/s",
+              "Disable Drag On Held Pellet",
+              "Physics Parameters"
+            ]
+          },
+          {
+            "kind": "Toggle",
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": false,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Disable Drag On Held Pellet",
+              "Drag Coefficient",
+              "5.00 Nu/s",
+              "Enter value...",
+              "0\u200b",
+              "Physics Parameters",
+              "Simulation Options",
+              "Corpses",
+              "Prevent Mutations",
+              "Pellet Collision"
+            ]
+          },
+          {
+            "kind": "Toggle",
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": true,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Void-No-Mo'",
+              "Void Avoidance Settings",
+              "Void Avoidance Distance",
+              "100 u",
+              "Enter value...",
+              "0\u200b",
+              "Drag Coefficient",
+              "5.00 Nu/s",
+              "Disable Drag On Held Pellet",
+              "Physics Parameters"
+            ]
+          },
+          {
+            "kind": "Toggle",
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": false,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Disable Drag On Held Pellet",
+              "Drag Coefficient",
+              "5.00 Nu/s",
+              "Enter value...",
+              "0\u200b",
+              "Physics Parameters",
+              "Simulation Options",
+              "Corpses",
+              "Prevent Mutations",
+              "Pellet Collision"
+            ]
+          },
+          {
+            "kind": "Toggle",
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingToggle(Clone)/Toggle",
+            "name": "Toggle",
+            "is_on": true,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Disable Drag On Held Pellet",
+              "Drag Coefficient",
+              "5.00 Nu/s",
+              "Enter value...",
+              "0\u200b",
+              "Physics Parameters",
+              "Simulation Options",
+              "Corpses",
+              "Prevent Mutations",
+              "Pellet Collision"
+            ]
+          },
+          {
+            "kind": "Slider",
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+            "name": "Slider",
+            "value": 5,
+            "minValue": 0,
+            "maxValue": 25,
+            "wholeNumbers": false,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Drag Coefficient",
+              "5.00 Nu/s",
+              "Enter value...",
+              "0\u200b",
+              "Disable Drag On Held Pellet",
+              "Physics Parameters",
+              "Simulation Options",
+              "Corpses",
+              "Prevent Mutations",
+              "Pellet Collision"
+            ]
+          },
+          {
+            "kind": "Slider",
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+            "name": "Slider",
+            "value": 0,
+            "minValue": -2,
+            "maxValue": 2,
+            "wholeNumbers": false,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Drag Coefficient",
+              "5.00 Nu/s",
+              "Enter value...",
+              "0\u200b",
+              "Disable Drag On Held Pellet",
+              "Physics Parameters",
+              "Simulation Options",
+              "Corpses",
+              "Prevent Mutations",
+              "Pellet Collision"
+            ]
+          },
+          {
+            "kind": "Slider",
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+            "name": "Slider",
+            "value": 5,
+            "minValue": 1,
+            "maxValue": 50,
+            "wholeNumbers": true,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Drag Coefficient",
+              "5.00 Nu/s",
+              "Enter value...",
+              "0\u200b",
+              "Disable Drag On Held Pellet",
+              "Physics Parameters",
+              "Simulation Options",
+              "Corpses",
+              "Prevent Mutations",
+              "Pellet Collision"
+            ]
+          },
+          {
+            "kind": "Slider",
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+            "name": "Slider",
+            "value": 10,
+            "minValue": 1,
+            "maxValue": 100,
+            "wholeNumbers": true,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Drag Coefficient",
+              "5.00 Nu/s",
+              "Enter value...",
+              "0\u200b",
+              "Disable Drag On Held Pellet",
+              "Physics Parameters",
+              "Simulation Options",
+              "Corpses",
+              "Prevent Mutations",
+              "Pellet Collision"
+            ]
+          },
+          {
+            "kind": "Slider",
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+            "name": "Slider",
+            "value": 2,
+            "minValue": 1,
+            "maxValue": 100,
+            "wholeNumbers": true,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Drag Coefficient",
+              "5.00 Nu/s",
+              "Enter value...",
+              "0\u200b",
+              "Disable Drag On Held Pellet",
+              "Physics Parameters",
+              "Simulation Options",
+              "Corpses",
+              "Prevent Mutations",
+              "Pellet Collision"
+            ]
+          },
+          {
+            "kind": "Slider",
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+            "name": "Slider",
+            "value": 2,
+            "minValue": 1,
+            "maxValue": 100,
+            "wholeNumbers": true,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Drag Coefficient",
+              "5.00 Nu/s",
+              "Enter value...",
+              "0\u200b",
+              "Disable Drag On Held Pellet",
+              "Physics Parameters",
+              "Simulation Options",
+              "Corpses",
+              "Prevent Mutations",
+              "Pellet Collision"
+            ]
+          },
+          {
+            "kind": "Slider",
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel/Slider",
+            "name": "Slider",
+            "value": 30,
+            "minValue": 5,
+            "maxValue": 100,
+            "wholeNumbers": true,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Drag Coefficient",
+              "5.00 Nu/s",
+              "Enter value...",
+              "0\u200b",
+              "Disable Drag On Held Pellet",
+              "Physics Parameters",
+              "Simulation Options",
+              "Corpses",
+              "Prevent Mutations",
+              "Pellet Collision"
+            ]
+          },
+          {
+            "kind": "Slider",
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel/Slider",
+            "name": "Slider",
+            "value": 0,
+            "minValue": -1.43067658,
+            "maxValue": 2.86135316,
+            "wholeNumbers": false,
+            "interactable": true,
+            "labels": [],
+            "label_context": [
+              "Enter value...",
+              "0\u200b",
+              "X 0.00",
+              "x 1.0",
+              "New Text",
+              "Place Bibite",
+              "Place Pellets",
+              "Place Color Selector",
+              "Place Phero Tower",
+              "Place Rad Tower"
+            ]
+          }
+        ],
+        "active_texts": [
+          "Time: 00:00:20\n0 fps   /  0 tps\nsim/real: x0.00",
+          "X 0.00",
+          "100u",
+          "Simulation Options",
+          "Corpses",
+          "Prevent Mutations",
+          "Pellet Collision",
+          "Disable Herding",
+          "Add Shaded Bounds",
+          "The Red Death Bloom",
+          "Prevent Red Pheromones Production",
+          "Prevent Green Pheromones Production",
+          "Prevent Blue Pheromones Production",
+          "Cheat Options",
+          "Void-No-Mo'",
+          "Simulation Performance Parameters",
+          "Ticks Per Second",
+          "30 tps",
+          "Brain Update Factor",
+          "2 X",
+          "Decay Update Factor",
+          "2 X",
+          "Vision Lookup Factor",
+          "10 X",
+          "Vision Sensing Factor",
+          "5 X",
+          "Minimum Pellet Size",
+          "100.00 mu\u00b2",
+          "Physics Parameters",
+          "Drag Coefficient",
+          "5.00 Nu/s",
+          "Disable Drag On Held Pellet"
+        ],
+        "active_buttons": [
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/PlacerButton",
+            "name": "PlacerButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/UserActions",
+            "name": "UserActions",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton",
+            "name": "ViewButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/InformationPanelButton",
+            "name": "InformationPanelButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/DynamicParametersButton",
+            "name": "DynamicParametersButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/AncestralLineageButton",
+            "name": "AncestralLineageButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/SettingsButton",
+            "name": "SettingsButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/PauseButton",
+            "name": "PauseButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/PlayButton",
+            "name": "PlayButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "X 0.00"
+            ]
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/TabButtons/SimulationTabButton",
+            "name": "SimulationTabButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/TabButtons/ZonesTabButton ",
+            "name": "ZonesTabButton ",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/TabButtons/BibiteTabButton",
+            "name": "BibiteTabButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/TabButtons/EnergyTabButton",
+            "name": "EnergyTabButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/TabButtons/AnimationTabButton",
+            "name": "AnimationTabButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/TabButtons/Save Scenario Button",
+            "name": "Save Scenario Button",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/TabButtons/ClosePanel",
+            "name": "ClosePanel",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/GroupEdit",
+            "name": "GroupEdit",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/GroupEdit",
+            "name": "GroupEdit",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/GroupEdit",
+            "name": "GroupEdit",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SubSettingsGroupPrefab(Clone)/ToggleHolder/SubSettingMasterTogglePrefab(Clone)/GroupEdit",
+            "name": "GroupEdit",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "30 tps"
+            ]
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "2 X"
+            ]
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "2 X"
+            ]
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "10 X"
+            ]
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "5 X"
+            ]
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "100.00 mu\u00b2"
+            ]
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/FloatInfoText",
+            "name": "FloatInfoText",
+            "enabled": true,
+            "labels": [
+              "5.00 Nu/s"
+            ]
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+            "name": "ResetButton",
+            "enabled": true,
+            "labels": []
+          }
+        ],
+        "reset_paths": [
+          "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton",
+          "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/ResetButton"
+        ]
+      }
+    }
+  },
+  "label_enrichment": "label_context is collected from ancestor/descendant TMP text in atlas UI sessions."
+}

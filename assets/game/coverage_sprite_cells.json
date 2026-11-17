@@ -1,0 +1,72 @@
+{
+  "schema": "rustibites.assets.sprite_cells.v1",
+  "stats": {
+    "total": 107,
+    "transparent": 1,
+    "topflip_match": 62,
+    "noflip_match": 27,
+    "neither": 45,
+    "transparent_mismatch": 0
+  },
+  "transparent_cells": [
+    {
+      "name": "normal_exoskeleton_00",
+      "file": "assets/game/sprites/normal_exoskeleton_0.png",
+      "rect": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 16.0,
+        "height": 9.0
+      },
+      "sheet_topflip_nontransparent": 0,
+      "sheet_noflip_nontransparent": 0
+    }
+  ],
+  "mismatches": [
+    "huge_eyes_dead_08",
+    "Mark Ericson",
+    "Bobert",
+    "Steve Acomb",
+    "Omer Glickman",
+    "radnugget",
+    "Timothy Walden",
+    "Kamm",
+    "CD",
+    "Jim Beaver",
+    "Josh Nygaard",
+    "AtomicFault",
+    "SUPERS05",
+    "Maimoru",
+    "Gordon Willis",
+    "Brant Dela Cruz",
+    "Kolt Baxter",
+    "Het Nikik",
+    "benjamin donahue",
+    "mink",
+    "runboxx17",
+    "Chibity",
+    "evin oge",
+    "Eben",
+    "JajajTec",
+    "DV_Gen",
+    "William Eriksson",
+    "Chas Cooper",
+    "Ecunna Versity",
+    "bu k",
+    "Martin Schaneman",
+    "Jeffrey Y",
+    "Charlie Garcia",
+    "Dustin D Trammell",
+    "Colton the Sultan",
+    "Evan Fleak",
+    "Corbin Jeffrey",
+    "Yodxxx1",
+    "Creig Humes",
+    "Rowan DeWitt",
+    "Bryan Nova",
+    "Alex Moorhouse",
+    "Zediwan",
+    "Janes Meier",
+    "God Bidoof"
+  ]
+}

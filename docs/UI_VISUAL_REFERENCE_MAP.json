@@ -1,0 +1,6003 @@
+{
+ "schema": "rustibites.ui_visual_reference_map.v1",
+ "generated": "2026-11-03",
+ "runtime_atlas": "tools/ui/ui_runtime_atlas.index.json",
+ "reference_quality": {
+  "functional_ui_1920": {
+   "pixel_authoritative": false,
+   "source": "upscaled from a 320x240 hidden-game window; not native 1920",
+   "native_recapture": "in progress",
+   "use": "layout/state/hit-map reference only; do not claim pixel parity"
+  },
+  "functional_ui_native_1920": {
+   "pixel_authoritative": true,
+   "source": "standalone hidden The Bibites launch at 1920x1080 (not 320x240 launcher)",
+   "available": [
+    "title full/opaque",
+    "settings full/opaque",
+    "world UI-only/transparent",
+    "native in-world panels toolbar/placer/user-actions/view/dynamic/lineage/inspector/settings"
+   ],
+   "limitations": [
+    "transparent UI-only menu isolation unresolved; menu refs are opaque full frames",
+    "only a probe subset captured; per-session native recapture in progress"
+   ]
+  },
+  "functional_ui_native_1920_findings": {
+   "menu_fx": "menu-only soft-focus/blur and TMP SDF text; in-world HUD is crisp",
+   "old_refs": "old functional_ui 1920 PNGs are upscaled 320x240 and non-authoritative",
+   "menu_isolation": "transparent menu UI-only isolation unresolved"
+  },
+  "default_1920": {
+   "pixel_authoritative": true,
+   "source": "native hidden-game RenderTexture screenshot"
+  },
+  "default_save_1920": {
+   "pixel_authoritative": true,
+   "source": "native hidden-game RenderTexture/HUD capture"
+  },
+  "native_runtime_layout": {
+   "pixel_authoritative": true,
+   "source": "standalone hidden native 1920 /d/ui",
+   "old_atlas_historical": true,
+   "bulk_recapture": "complete",
+   "version": "v2",
+   "layout_group_free": true
+  }
+ },
+ "session_count": 60,
+ "session_coverage": {
+  "usable": 60,
+  "partial": 0,
+  "missing": 0
+ },
+ "harness": {
+  "session_key": "session",
+  "primary_reference_field": "primary_reference",
+  "skip_missing": "status == \"missing\"",
+  "compare": "compare session render to primary reference; use full/overlay/world roles per test",
+  "background_note": "transparent overlays have alpha=0 background; opaque menu/world captures include background",
+  "pixel_compare_allowed": false,
+  "pixel_compare_note": "Old functional_ui 1920 PNGs are upscaled 320x240; use only for layout/state. Native title/settings full and world UI-only refs are pixel-authoritative for their states; menu transparent isolation and per-session native recapture are pending. Do not claim pixel parity against old menu refs."
+ },
+ "sessions": [
+  {
+   "session": "main_menu",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/main_menu_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [25, 76, 1869, 1054])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/probe_title_native_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "26f219aa223839764550d2befdc43a95c8b147eba22783ff675b5985e8738240",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": true,
+     "role": "supplemental",
+     "state": "native title full frame (opaque)",
+     "note": "native probe; no dedicated baseline UI-only capture"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_menu_functional_title_full_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "e2e8f1041972321911ef62a205010a5f1627604b5952e5c0bc9f1640c012f554",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "alias",
+     "state": "old upscaled title capture; not pixel-authoritative"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/main_menu_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "default_world_newgame",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/default_world_newgame_native_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.021199363425925925,
+     "pixel_authoritative": true,
+     "role": "native-in-world",
+     "state": "native in-world UI-only (alpha fraction 0.021, nonblack bbox [10, 10, 1909, 1069])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json"
+    },
+    {
+     "path": "assets/game/reference/default_save/hud_default_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "2deb15f757ee9d206253583a7403eff0368ffa909a8ccef22c87e65fc1ee552a",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": true,
+     "role": "supplemental",
+     "state": "default-save HUD/world; fresh New Game world state is not captured"
+    },
+    {
+     "path": "assets/game/reference/default/full_world.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "560028cbfe999a7160da362da1d18ff6d45f5e0690428bfaef660394e99a8d41",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": true,
+     "role": "supplemental",
+     "state": "historical lol save full-world reference; not the fresh New Game state"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/in_world/default_world_newgame_native_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "default_world",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/default_world_native_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.021199363425925925,
+     "pixel_authoritative": true,
+     "role": "native-in-world",
+     "state": "native in-world UI-only (alpha fraction 0.021, nonblack bbox [10, 10, 1909, 1069])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json"
+    },
+    {
+     "path": "assets/game/reference/default_save/hud_default_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "2deb15f757ee9d206253583a7403eff0368ffa909a8ccef22c87e65fc1ee552a",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": true,
+     "role": "supplemental",
+     "state": "default-save HUD/world baseline"
+    },
+    {
+     "path": "assets/game/reference/default/full_world.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "560028cbfe999a7160da362da1d18ff6d45f5e0690428bfaef660394e99a8d41",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": true,
+     "role": "supplemental",
+     "state": "historical lol save full-world reference"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/in_world/default_world_native_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "default_world_inspector",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/inspector/native_inspector_stats_ui_only_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.14538435570987654,
+     "alpha_min": 0,
+     "sha256": "f1cd9fe735f3f35971a1e3437db19e4cb6c737b14a92bd62829dfb477ada0ff3",
+     "pixel_authoritative": true,
+     "role": "native-inspector-stats",
+     "state": "native stats inspector UI-only (alpha fraction 0.145, 465 colors)",
+     "note": "corrected per-tab native UI-only ref; old same-page refs removed"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/inspector/native_inspector_stats_ui_only_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.14538435570987654,
+     "alpha_min": 0,
+     "sha256": "f1cd9fe735f3f35971a1e3437db19e4cb6c737b14a92bd62829dfb477ada0ff3",
+     "pixel_authoritative": true,
+     "role": "native-inspector-stats",
+     "state": "native stats inspector UI-only (alpha fraction 0.145, 465 colors)",
+     "note": "corrected per-tab native UI-only ref; old same-page refs removed"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/default_world_inspector_native_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.14538435570987654,
+     "pixel_authoritative": true,
+     "role": "native-in-world",
+     "state": "native in-world UI-only (alpha fraction 0.145, nonblack bbox [10, 10, 1909, 1069])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/native_inspector_stats.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "alpha_min": 255,
+     "pixel_authoritative": true,
+     "role": "supplemental",
+     "state": "native in-world UI-only native_inspector_stats (alpha fraction 1.0, 412 colors)",
+     "note": "native standalone 1920 /d/ui_overlay; source manifest functional_ui_native/in_world/manifest.json"
+    },
+    {
+     "path": "assets/game/reference/default_save/hud_inspector_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "3a3612b26cb78971763f2d37184202ec99933226ba77795e2fd86133082d241f",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": true,
+     "role": "supplemental",
+     "state": "default-save HUD with selected-bibite inspector"
+    },
+    {
+     "path": "assets/game/reference/default_save/hud_inspector_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "eb2962c6ce6fe8d476294270b5bf87f3f1c0d92074ce4d9b9170f10fb541ed8f",
+     "alpha": "transparent",
+     "alpha_min": 0,
+     "pixel_authoritative": true,
+     "role": "supplemental",
+     "state": "transparent UI overlay for same inspector"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/in_world/inspector/native_inspector_stats_ui_only_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "main_menu_title",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/main_menu_title_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [25, 76, 1869, 1054])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/probe_title_native_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "26f219aa223839764550d2befdc43a95c8b147eba22783ff675b5985e8738240",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": true,
+     "role": "supplemental",
+     "state": "native title full frame (opaque)",
+     "note": "native probe; menu UI-only isolation unresolved"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_menu_functional_title_full_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "e2e8f1041972321911ef62a205010a5f1627604b5952e5c0bc9f1640c012f554",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "alias",
+     "state": "old upscaled title capture; not pixel-authoritative"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/main_menu_title_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "main_menu_settings",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/main_menu_settings_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [0, 0, 1919, 1079])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/probe_settings_native_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "e3701573325fe883b4b3c13acbf8e3e988149c5386a964c2b666d9a634167d1c",
+     "alpha": "opaque",
+     "alpha_min": 2,
+     "pixel_authoritative": true,
+     "role": "supplemental",
+     "state": "native Settings full frame (opaque; graphics page state)",
+     "note": "native probe"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_menu_settings_full_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "4014df01102eff692f06d2c7066243f31667156dd19da46adb4f35736aa97140",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "alias",
+     "state": "old upscaled settings capture; not pixel-authoritative"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/settings_page_graphics_controls_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "dde1769e75f461dae99984d0ffe9b6cbdf7f40e8e6cdbf99d9205fa4daa6d22e",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "old upscaled controls overlay; layout/state only"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/main_menu_settings_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "default_world_genes",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/inspector/native_inspector_genes_ui_only_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.21958960262345678,
+     "alpha_min": 0,
+     "sha256": "82f8d04ed82a6822edac754dec8e710bd2745531ce517e7183ac2b231e483da1",
+     "pixel_authoritative": true,
+     "role": "native-inspector-genes",
+     "state": "native genes inspector UI-only (alpha fraction 0.220, 665 colors)",
+     "note": "corrected per-tab native UI-only ref; old same-page refs removed"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/inspector/native_inspector_genes_ui_only_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.21958960262345678,
+     "alpha_min": 0,
+     "sha256": "82f8d04ed82a6822edac754dec8e710bd2745531ce517e7183ac2b231e483da1",
+     "pixel_authoritative": true,
+     "role": "native-inspector-genes",
+     "state": "native genes inspector UI-only (alpha fraction 0.220, 665 colors)",
+     "note": "corrected per-tab native UI-only ref; old same-page refs removed"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/default_world_genes_native_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.21958960262345678,
+     "pixel_authoritative": true,
+     "role": "native-in-world",
+     "state": "native in-world UI-only (alpha fraction 0.220, nonblack bbox [10, 10, 1909, 1069])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/native_inspector_genes.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "alpha_min": 255,
+     "pixel_authoritative": true,
+     "role": "supplemental",
+     "state": "native in-world UI-only native_inspector_genes (alpha fraction 1.0, 412 colors)",
+     "note": "native standalone 1920 /d/ui_overlay; source manifest functional_ui_native/in_world/manifest.json"
+    },
+    {
+     "path": "assets/game/reference/default_save/hud_inspector_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "3a3612b26cb78971763f2d37184202ec99933226ba77795e2fd86133082d241f",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": true,
+     "role": "wrong-state",
+     "state": "inspector chrome only; selected tab is not the genes tab"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/in_world/inspector/native_inspector_genes_ui_only_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "default_world_biology",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/inspector/native_inspector_biology_ui_only_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.1206081211419753,
+     "alpha_min": 0,
+     "sha256": "4561fe70128fd8b131b1df155c942565f1d1d0568fbf7496efec8d3016374e47",
+     "pixel_authoritative": true,
+     "role": "native-inspector-biology",
+     "state": "native biology inspector UI-only (alpha fraction 0.121, 959 colors)",
+     "note": "corrected per-tab native UI-only ref; old same-page refs removed"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/inspector/native_inspector_biology_ui_only_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.1206081211419753,
+     "alpha_min": 0,
+     "sha256": "4561fe70128fd8b131b1df155c942565f1d1d0568fbf7496efec8d3016374e47",
+     "pixel_authoritative": true,
+     "role": "native-inspector-biology",
+     "state": "native biology inspector UI-only (alpha fraction 0.121, 959 colors)",
+     "note": "corrected per-tab native UI-only ref; old same-page refs removed"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/default_world_biology_native_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.1206081211419753,
+     "pixel_authoritative": true,
+     "role": "native-in-world",
+     "state": "native in-world UI-only (alpha fraction 0.121, nonblack bbox [10, 10, 1909, 1069])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/native_inspector_biology.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "alpha_min": 255,
+     "pixel_authoritative": true,
+     "role": "supplemental",
+     "state": "native in-world UI-only native_inspector_biology (alpha fraction 1.0, 412 colors)",
+     "note": "native standalone 1920 /d/ui_overlay; source manifest functional_ui_native/in_world/manifest.json"
+    },
+    {
+     "path": "assets/game/reference/default_save/hud_inspector_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "3a3612b26cb78971763f2d37184202ec99933226ba77795e2fd86133082d241f",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": true,
+     "role": "wrong-state",
+     "state": "inspector chrome only; selected tab is not the biology tab"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/in_world/inspector/native_inspector_biology_ui_only_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "default_world_brain",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/inspector/native_inspector_brain_ui_only_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.1937037037037037,
+     "alpha_min": 0,
+     "sha256": "ce79f0e6337f04dadfdf2694a85f65411deaeb5ae33ce4cbe9f304ba61acef9b",
+     "pixel_authoritative": true,
+     "role": "native-inspector-brain",
+     "state": "native brain inspector UI-only (alpha fraction 0.194, 687 colors)",
+     "note": "corrected per-tab native UI-only ref; old same-page refs removed"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/inspector/native_inspector_brain_ui_only_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.1937037037037037,
+     "alpha_min": 0,
+     "sha256": "ce79f0e6337f04dadfdf2694a85f65411deaeb5ae33ce4cbe9f304ba61acef9b",
+     "pixel_authoritative": true,
+     "role": "native-inspector-brain",
+     "state": "native brain inspector UI-only (alpha fraction 0.194, 687 colors)",
+     "note": "corrected per-tab native UI-only ref; old same-page refs removed"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/default_world_brain_native_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.1937037037037037,
+     "pixel_authoritative": true,
+     "role": "native-in-world",
+     "state": "native in-world UI-only (alpha fraction 0.194, nonblack bbox [10, 10, 1909, 1069])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/native_inspector_brain.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "alpha_min": 255,
+     "pixel_authoritative": true,
+     "role": "supplemental",
+     "state": "native in-world UI-only native_inspector_brain (alpha fraction 1.0, 412 colors)",
+     "note": "native standalone 1920 /d/ui_overlay; source manifest functional_ui_native/in_world/manifest.json"
+    },
+    {
+     "path": "assets/game/reference/default_save/hud_inspector_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "3a3612b26cb78971763f2d37184202ec99933226ba77795e2fd86133082d241f",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": true,
+     "role": "wrong-state",
+     "state": "inspector chrome only; selected tab is not the brain tab"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/in_world/inspector/native_inspector_brain_ui_only_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "main_menu_functional_title",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/main_menu_functional_title_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [25, 76, 1869, 1054])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_menu_functional_title_full_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "e2e8f1041972321911ef62a205010a5f1627604b5952e5c0bc9f1640c012f554",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "opaque full screen/world + UI"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_menu_functional_title_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "e2e8f1041972321911ef62a205010a5f1627604b5952e5c0bc9f1640c012f554",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "opaque menu/panel capture"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/main_menu_functional_title_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "main_menu_load_game",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/main_menu_load_game_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [0, 0, 1919, 1079])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_menu_load_game_full_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "ddc1ece0b0ab1c65c80e0539ad8c71e9a388d1108c6696de1c8a540658848137",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "opaque full screen/world + UI"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_menu_load_game_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "ddc1ece0b0ab1c65c80e0539ad8c71e9a388d1108c6696de1c8a540658848137",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "opaque menu/panel capture"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/main_menu_load_game_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "main_menu_new_game",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/main_menu_new_game_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [0, 0, 1919, 1079])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/newgame_scenario_options_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "27ef5ede6c56278b7982e2a8d2eef612fd3180ea58402bb6a5d3f376e2b01a25",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "New Game/scenario options selector"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/newgame_new_scenario_button_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "27ef5ede6c56278b7982e2a8d2eef612fd3180ea58402bb6a5d3f376e2b01a25",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "New Scenario button state"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/newgame_new_challenge_button_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "27ef5ede6c56278b7982e2a8d2eef612fd3180ea58402bb6a5d3f376e2b01a25",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "New Challenge button state"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_menu_new_game_full_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "b89f4313685da9b4c8710b270b96e2744131b49808c1c952d49f100f9b4e12e7",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "wrong-state",
+     "state": "capture shows Graphics Settings, not New Game"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_menu_new_game_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "b89f4313685da9b4c8710b270b96e2744131b49808c1c952d49f100f9b4e12e7",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "wrong-state",
+     "state": "capture shows Graphics Settings, not New Game"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/main_menu_new_game_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "main_menu_bibite_library",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/main_menu_bibite_library_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [0, 0, 1919, 1079])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_menu_bibite_library_full_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "a272b71da05686e63d6b6cc65cc009ac4617f37ad50f85addf52cac309cbe4f8",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "Bibite Library selector"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_menu_bibite_library_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "a272b71da05686e63d6b6cc65cc009ac4617f37ad50f85addf52cac309cbe4f8",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "identical to full in current capture"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/library_selector_flow_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "40802a665257a539801ee0ab677e4f2449e60586f35b8a2ce64a431e86229d8a",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "library selector flow overlay"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/main_menu_bibite_library_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "main_menu_achievements",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/main_menu_achievements_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [0, 0, 1919, 1076])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_menu_achievements_full_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "a272b71da05686e63d6b6cc65cc009ac4617f37ad50f85addf52cac309cbe4f8",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "wrong-state",
+     "state": "capture shows Bibite Library, not Achievements"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_menu_achievements_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "a272b71da05686e63d6b6cc65cc009ac4617f37ad50f85addf52cac309cbe4f8",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "wrong-state",
+     "state": "capture shows Bibite Library, not Achievements"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/main_menu_achievements_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "main_menu_additional_tools",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/main_menu_additional_tools_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [25, 10, 1909, 1069])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_menu_additional_tools_full_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "a272b71da05686e63d6b6cc65cc009ac4617f37ad50f85addf52cac309cbe4f8",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "wrong-state",
+     "state": "capture shows Bibite Library, not Additional Tools"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_menu_additional_tools_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "a272b71da05686e63d6b6cc65cc009ac4617f37ad50f85addf52cac309cbe4f8",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "wrong-state",
+     "state": "capture shows Bibite Library, not Additional Tools"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/main_menu_additional_tools_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "main_menu_credits",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/main_menu_credits_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [25, 10, 1909, 1069])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_menu_credits_full_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "a272b71da05686e63d6b6cc65cc009ac4617f37ad50f85addf52cac309cbe4f8",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "wrong-state",
+     "state": "capture shows Bibite Library, not Credits"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_menu_credits_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "a272b71da05686e63d6b6cc65cc009ac4617f37ad50f85addf52cac309cbe4f8",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "wrong-state",
+     "state": "capture shows Bibite Library, not Credits"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/main_menu_credits_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "main_menu_new_panel",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/main_menu_new_panel_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [0, 0, 1919, 1079])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_menu_new_panel_full_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "a272b71da05686e63d6b6cc65cc009ac4617f37ad50f85addf52cac309cbe4f8",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "wrong-state",
+     "state": "capture shows Bibite Library, not New panel"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_menu_new_panel_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "a272b71da05686e63d6b6cc65cc009ac4617f37ad50f85addf52cac309cbe4f8",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "wrong-state",
+     "state": "capture shows Bibite Library, not New panel"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/main_menu_new_panel_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "main_menu_workshop",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/main_menu_workshop_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [0, 0, 1919, 1079])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_menu_workshop_full_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "e6beb5f7f0744d3357dd43f89255f5b431108e4030d821968d1eca3a5c17e933",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "Steam Workshop panel"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_menu_workshop_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "e6beb5f7f0744d3357dd43f89255f5b431108e4030d821968d1eca3a5c17e933",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "identical to full in current capture"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/workshop_panel_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "565c049376a71678948f6cfc829152c8a2e2252ae814ca93c9e2bcc5596162fc",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "workshop flow overlay"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/main_menu_workshop_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "main_menu_scenario_editor",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/main_menu_scenario_editor_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [0, 0, 1919, 1079])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/scenario_editor_flow_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "27ef5ede6c56278b7982e2a8d2eef612fd3180ea58402bb6a5d3f376e2b01a25",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "scenario editor flow"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/scenario_editor_zones_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "27ef5ede6c56278b7982e2a8d2eef612fd3180ea58402bb6a5d3f376e2b01a25",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "scenario editor zones tab"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/scenario_editor_ChallengeOptions_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "27ef5ede6c56278b7982e2a8d2eef612fd3180ea58402bb6a5d3f376e2b01a25",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "scenario editor challenge options"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/scenario_editor_sim_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "27ef5ede6c56278b7982e2a8d2eef612fd3180ea58402bb6a5d3f376e2b01a25",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "scenario editor sim tab"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_menu_scenario_editor_full_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "e6beb5f7f0744d3357dd43f89255f5b431108e4030d821968d1eca3a5c17e933",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "wrong-state",
+     "state": "capture shows Steam Workshop, not Scenario Editor"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_menu_scenario_editor_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "e6beb5f7f0744d3357dd43f89255f5b431108e4030d821968d1eca3a5c17e933",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "wrong-state",
+     "state": "capture shows Steam Workshop, not Scenario Editor"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/main_menu_scenario_editor_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "main_menu_settings_graphics",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/main_menu_settings_graphics_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [0, 0, 1919, 1079])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/probe_settings_native_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "e3701573325fe883b4b3c13acbf8e3e988149c5386a964c2b666d9a634167d1c",
+     "alpha": "opaque",
+     "alpha_min": 2,
+     "pixel_authoritative": true,
+     "role": "supplemental",
+     "state": "native Settings full frame (opaque; graphics page state)",
+     "note": "native probe"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/settings_page_graphics_controls_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "dde1769e75f461dae99984d0ffe9b6cbdf7f40e8e6cdbf99d9205fa4daa6d22e",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "old upscaled controls overlay; layout/state only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_menu_settings_graphics_full_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "e6beb5f7f0744d3357dd43f89255f5b431108e4030d821968d1eca3a5c17e933",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "wrong-state",
+     "state": "capture shows Steam Workshop, not graphics settings"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_menu_settings_graphics_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "e6beb5f7f0744d3357dd43f89255f5b431108e4030d821968d1eca3a5c17e933",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "wrong-state",
+     "state": "capture shows Steam Workshop, not graphics settings"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/main_menu_settings_graphics_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "main_menu_settings_gameplay",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/main_menu_settings_gameplay_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [0, 0, 1919, 1079])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/settings_page_gameplay_controls_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "cf6411139cf81ee3e2fed0377e0ca29b6f7a1800edcf98ad02f19963eb882632",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "gameplay settings controls page (old upscaled; layout/state only)"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_menu_settings_gameplay_full_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "e6beb5f7f0744d3357dd43f89255f5b431108e4030d821968d1eca3a5c17e933",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "wrong-state",
+     "state": "capture shows Steam Workshop, not gameplay settings"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_menu_settings_gameplay_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "e6beb5f7f0744d3357dd43f89255f5b431108e4030d821968d1eca3a5c17e933",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "wrong-state",
+     "state": "capture shows Steam Workshop, not gameplay settings"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/main_menu_settings_gameplay_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "main_menu_settings_hotkeys",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/main_menu_settings_hotkeys_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [0, 0, 1919, 1079])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/settings_page_hotkeys_controls_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "4435c022c7591231db259445bc7e4c573aed7470ea9834b6603e830ae97b1d8b",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "hotkeys settings controls page (old upscaled; layout/state only)"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_menu_settings_hotkeys_full_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "e6beb5f7f0744d3357dd43f89255f5b431108e4030d821968d1eca3a5c17e933",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "wrong-state",
+     "state": "capture shows Steam Workshop, not hotkeys settings"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_menu_settings_hotkeys_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "e6beb5f7f0744d3357dd43f89255f5b431108e4030d821968d1eca3a5c17e933",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "wrong-state",
+     "state": "capture shows Steam Workshop, not hotkeys settings"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/main_menu_settings_hotkeys_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "main_menu_bibite_editor_genes",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/main_menu_bibite_editor_genes_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [25, 76, 1869, 1054])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_menu_bibite_editor_genes_full_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "387342c28074cb3b94a0c681874817431fd5b9c0191ce6ae1e45a3bb3789899a",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "Bibite Editor genes tab"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_menu_bibite_editor_genes_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "387342c28074cb3b94a0c681874817431fd5b9c0191ce6ae1e45a3bb3789899a",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "identical to full in current capture"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/library_editor_genes_flow_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "bb8f576f777c1b03b7da3f1d92f440263bfb3dd10ee70437b5aa109e8aff44f2",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "gene editor flow overlay"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/main_menu_bibite_editor_genes_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "main_menu_bibite_editor_brain",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/main_menu_bibite_editor_brain_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [25, 76, 1869, 1054])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_menu_bibite_editor_brain_full_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "a3079de96ed961bd0b72078de21e202e0b9fee4437c52489e8c7d76f5f8ec653",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "Bibite Editor brain tab"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_menu_bibite_editor_brain_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "a3079de96ed961bd0b72078de21e202e0b9fee4437c52489e8c7d76f5f8ec653",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "identical to full in current capture"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/library_editor_brain_flow_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "27ef5ede6c56278b7982e2a8d2eef612fd3180ea58402bb6a5d3f376e2b01a25",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "brain editor flow overlay"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/library_editor_brain_after_add_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "27ef5ede6c56278b7982e2a8d2eef612fd3180ea58402bb6a5d3f376e2b01a25",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "brain editor after add-node state"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/main_menu_bibite_editor_brain_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "main_world_toolbar",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/native_world_toolbar_hud_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.028597125771604937,
+     "alpha_min": 0,
+     "sha256": "0f90805bf37543f69d08d3fd52f0eefa130c7d89b11d691a091f9d64a0b4e970",
+     "pixel_authoritative": true,
+     "role": "native-hud",
+     "state": "native HUD/toolbar inspector-closed (alpha fraction 0.029, 421 colors)",
+     "note": "HUD toolbar reference matches default_world"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/main_world_toolbar_native_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.1937037037037037,
+     "pixel_authoritative": true,
+     "role": "native-in-world",
+     "state": "native in-world UI-only (alpha fraction 0.194, nonblack bbox [10, 10, 1909, 1069])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/native_world_toolbar.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.021199363425925925,
+     "alpha_min": 0,
+     "pixel_authoritative": true,
+     "role": "supplemental",
+     "state": "native in-world UI-only native_world_toolbar (alpha fraction 0.021199363425925925, 363 colors)",
+     "note": "native standalone 1920 /d/ui_overlay; source manifest functional_ui_native/in_world/manifest.json"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/probe_world_native_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "2dcf0fabdbceb856c0618ef8843305d1475e643ce7541085f8159a846e0f1e08",
+     "alpha": "transparent",
+     "alpha_min": 0,
+     "pixel_authoritative": true,
+     "role": "supplemental",
+     "state": "native world UI-only overlay (transparent)",
+     "note": "native probe"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_world_toolbar_full_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "31913a7aafb5f66fac4c0e27c9d58f03006777b8a262e83824ef84da467063c4",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "old upscaled full/world capture; layout only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_world_toolbar_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "2931524fec4d818a28fa369135878070a7b858555287723b1dc078063a023e1f",
+     "alpha": "transparent",
+     "alpha_min": 0,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "old upscaled overlay; layout only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_world_toolbar_world_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "1d4e391979d9ade93d9b9797081de147434885b972cfa32a2e9473e7f89cd76b",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "old upscaled world capture; layout only"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/in_world/native_world_toolbar_hud_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "main_world_tool_placer",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/native_world_placer.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.025047743055555554,
+     "alpha_min": 0,
+     "pixel_authoritative": true,
+     "role": "native-in-world",
+     "state": "native in-world UI-only native_world_placer (alpha fraction 0.025, 367 colors)",
+     "note": "native standalone 1920 /d/ui_overlay"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/native_world_placer.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.025047743055555554,
+     "alpha_min": 0,
+     "pixel_authoritative": true,
+     "role": "native-in-world",
+     "state": "native in-world UI-only native_world_placer (alpha fraction 0.025, 367 colors)",
+     "note": "native standalone 1920 /d/ui_overlay"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/main_world_tool_placer_native_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.19755208333333332,
+     "pixel_authoritative": true,
+     "role": "native-in-world",
+     "state": "native in-world UI-only (alpha fraction 0.198, nonblack bbox [10, 10, 1909, 1069])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/native_world_placer.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.025047743055555554,
+     "alpha_min": 0,
+     "pixel_authoritative": true,
+     "role": "supplemental",
+     "state": "native in-world UI-only native_world_placer (alpha fraction 0.025047743055555554, 367 colors)",
+     "note": "native standalone 1920 /d/ui_overlay; source manifest functional_ui_native/in_world/manifest.json"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_world_tool_placer_full_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "23022ad8ca8dad22ed58c22e5d6760efd8f3caa5ee43842788e50a69935b9502",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "opaque full screen/world + UI"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_world_tool_placer_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "80541abda329e5837108eab56d62eb01febd4cd3aab2f763639e862c58b27ab5",
+     "alpha": "transparent",
+     "alpha_min": 0,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "transparent UI overlay"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_world_tool_placer_world_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "1d4e391979d9ade93d9b9797081de147434885b972cfa32a2e9473e7f89cd76b",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "world-only capture"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/native_world_placer_pellets.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "alpha_min": 255,
+     "pixel_authoritative": true,
+     "role": "supplemental",
+     "state": "native placer/pellets full-panel state (alpha 1)",
+     "note": "native standalone 1920 /d/ui_overlay; source manifest functional_ui_native/in_world/manifest.json"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/in_world/native_world_placer.png",
+   "missing_reason": null
+  },
+  {
+   "session": "main_world_tool_user_actions",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/native_world_user_actions.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.026587094907407408,
+     "alpha_min": 0,
+     "pixel_authoritative": true,
+     "role": "native-in-world",
+     "state": "native in-world UI-only native_world_user_actions (alpha fraction 0.027, 368 colors)",
+     "note": "native standalone 1920 /d/ui_overlay"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/native_world_user_actions.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.026587094907407408,
+     "alpha_min": 0,
+     "pixel_authoritative": true,
+     "role": "native-in-world",
+     "state": "native in-world UI-only native_world_user_actions (alpha fraction 0.027, 368 colors)",
+     "note": "native standalone 1920 /d/ui_overlay"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/main_world_tool_user_actions_native_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.19909143518518518,
+     "pixel_authoritative": true,
+     "role": "native-in-world",
+     "state": "native in-world UI-only (alpha fraction 0.199, nonblack bbox [10, 10, 1909, 1069])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/native_world_user_actions.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.026587094907407408,
+     "alpha_min": 0,
+     "pixel_authoritative": true,
+     "role": "supplemental",
+     "state": "native in-world UI-only native_world_user_actions (alpha fraction 0.026587094907407408, 368 colors)",
+     "note": "native standalone 1920 /d/ui_overlay; source manifest functional_ui_native/in_world/manifest.json"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_world_tool_user_actions_full_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "76ab9ffc79b64aac06aa01ca6f2748d77637dbda54e4c33c98fbe51c71253cf9",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "opaque full screen/world + UI"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_world_tool_user_actions_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "af6d0df059ab810071bcf8cf5fe3a9cc00a022d44ed6792687ff93fec3bc61de",
+     "alpha": "transparent",
+     "alpha_min": 0,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "transparent UI overlay"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_world_tool_user_actions_world_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "1d4e391979d9ade93d9b9797081de147434885b972cfa32a2e9473e7f89cd76b",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "world-only capture"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/in_world/native_world_user_actions.png",
+   "missing_reason": null
+  },
+  {
+   "session": "main_world_tool_view",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/native_world_view.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.05726224922839506,
+     "alpha_min": 0,
+     "pixel_authoritative": true,
+     "role": "native-in-world",
+     "state": "native in-world UI-only native_world_view (alpha fraction 0.057, 368 colors)",
+     "note": "native standalone 1920 /d/ui_overlay"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/native_world_view.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.05726224922839506,
+     "alpha_min": 0,
+     "pixel_authoritative": true,
+     "role": "native-in-world",
+     "state": "native in-world UI-only native_world_view (alpha fraction 0.057, 368 colors)",
+     "note": "native standalone 1920 /d/ui_overlay"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/main_world_tool_view_native_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.22976658950617285,
+     "pixel_authoritative": true,
+     "role": "native-in-world",
+     "state": "native in-world UI-only (alpha fraction 0.230, nonblack bbox [10, 10, 1909, 1069])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/native_world_view.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.05726224922839506,
+     "alpha_min": 0,
+     "pixel_authoritative": true,
+     "role": "supplemental",
+     "state": "native in-world UI-only native_world_view (alpha fraction 0.05726224922839506, 368 colors)",
+     "note": "native standalone 1920 /d/ui_overlay; source manifest functional_ui_native/in_world/manifest.json"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_world_tool_view_full_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "9f7aabbb20451100b032e39000022ecf28f5014813627539f8f8e6a46d33f2e0",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "opaque full screen/world + UI"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_world_tool_view_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "d2c8749e5231efa7d161fad7adc889918d901412b41a1e309e6b456bf609fddf",
+     "alpha": "transparent",
+     "alpha_min": 0,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "transparent UI overlay"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_world_tool_view_world_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "1d4e391979d9ade93d9b9797081de147434885b972cfa32a2e9473e7f89cd76b",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "world-only capture"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/in_world/native_world_view.png",
+   "missing_reason": null
+  },
+  {
+   "session": "main_world_dynamic_parameters",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/native_world_dynamic.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.5225163966049383,
+     "alpha_min": 0,
+     "pixel_authoritative": true,
+     "role": "native-in-world",
+     "state": "native in-world UI-only native_world_dynamic (alpha fraction 0.523, 431 colors)",
+     "note": "native standalone 1920 /d/ui_overlay"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/native_world_dynamic.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.5225163966049383,
+     "alpha_min": 0,
+     "pixel_authoritative": true,
+     "role": "native-in-world",
+     "state": "native in-world UI-only native_world_dynamic (alpha fraction 0.523, 431 colors)",
+     "note": "native standalone 1920 /d/ui_overlay"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/main_world_dynamic_parameters_native_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.6945770640432098,
+     "pixel_authoritative": true,
+     "role": "native-in-world",
+     "state": "native in-world UI-only (alpha fraction 0.695, nonblack bbox [10, 10, 1919, 1079])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/native_world_dynamic.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.5225163966049383,
+     "alpha_min": 0,
+     "pixel_authoritative": true,
+     "role": "supplemental",
+     "state": "native in-world UI-only native_world_dynamic (alpha fraction 0.5225163966049383, 431 colors)",
+     "note": "native standalone 1920 /d/ui_overlay; source manifest functional_ui_native/in_world/manifest.json"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_world_dynamic_parameters_full_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "19dc618f21651297ea70fc32fe33518b8fdfe6f1d4a6bb65ec727ef3d2a3fd0c",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "opaque full screen/world + UI"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_world_dynamic_parameters_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "ac978d30d92a0651cbbab72f12c86205d99cbc6ef6192a35be1afb8fc99fa699",
+     "alpha": "transparent",
+     "alpha_min": 0,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "transparent UI overlay"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_world_dynamic_parameters_world_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "1d4e391979d9ade93d9b9797081de147434885b972cfa32a2e9473e7f89cd76b",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "world-only capture"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/in_world/native_world_dynamic.png",
+   "missing_reason": null
+  },
+  {
+   "session": "main_world_lineage",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/native_world_lineage.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.10344280478395061,
+     "alpha_min": 0,
+     "pixel_authoritative": true,
+     "role": "native-in-world",
+     "state": "native in-world UI-only native_world_lineage (alpha fraction 0.103, 468 colors)",
+     "note": "native standalone 1920 /d/ui_overlay"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/native_world_lineage.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.10344280478395061,
+     "alpha_min": 0,
+     "pixel_authoritative": true,
+     "role": "native-in-world",
+     "state": "native in-world UI-only native_world_lineage (alpha fraction 0.103, 468 colors)",
+     "note": "native standalone 1920 /d/ui_overlay"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/main_world_lineage_native_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.2750487075617284,
+     "pixel_authoritative": true,
+     "role": "native-in-world",
+     "state": "native in-world UI-only (alpha fraction 0.275, nonblack bbox [10, 10, 1909, 1069])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/native_world_lineage.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.10344280478395061,
+     "alpha_min": 0,
+     "pixel_authoritative": true,
+     "role": "supplemental",
+     "state": "native in-world UI-only native_world_lineage (alpha fraction 0.10344280478395061, 468 colors)",
+     "note": "native standalone 1920 /d/ui_overlay; source manifest functional_ui_native/in_world/manifest.json"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_world_lineage_full_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "cbf7d3a68580e0b70fb965c3fd9b85ee03819d20b76a2e8a4539da4d1ad5f704",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "opaque full screen/world + UI"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_world_lineage_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "017efaf0845a2d3db817f035d2ec6a58f0695f8f7a8e1d965a89b70451e794d5",
+     "alpha": "transparent",
+     "alpha_min": 0,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "transparent UI overlay"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_world_lineage_world_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "1d4e391979d9ade93d9b9797081de147434885b972cfa32a2e9473e7f89cd76b",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "world-only capture"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/in_world/native_world_lineage.png",
+   "missing_reason": null
+  },
+  {
+   "session": "main_world_information",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/native_world_information.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "alpha_min": 255,
+     "pixel_authoritative": true,
+     "role": "native-in-world",
+     "state": "native in-world UI-only native_world_information (alpha fraction 1.000, 412 colors)",
+     "note": "native standalone 1920 /d/ui_overlay"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/native_world_information.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "alpha_min": 255,
+     "pixel_authoritative": true,
+     "role": "native-in-world",
+     "state": "native in-world UI-only native_world_information (alpha fraction 1.000, 412 colors)",
+     "note": "native standalone 1920 /d/ui_overlay"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/main_world_information_native_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-in-world",
+     "state": "native in-world UI-only (alpha fraction 1.000, nonblack bbox [0, 0, 1919, 1079])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/native_world_information.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "alpha_min": 255,
+     "pixel_authoritative": true,
+     "role": "supplemental",
+     "state": "native in-world UI-only native_world_information (alpha fraction 1.0, 412 colors)",
+     "note": "native standalone 1920 /d/ui_overlay; source manifest functional_ui_native/in_world/manifest.json"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_world_information_full_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "c50e7ef97d050df93810e13349b913350b36437b00d7164835f8ea48fc398833",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "opaque full screen/world + UI"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_world_information_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "ac27916103068d325602c346815a999a80d6af030c052682122481db8ca24e9e",
+     "alpha": "opaque",
+     "alpha_min": 128,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "opaque menu/panel capture"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_world_information_world_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "31d25dbd9270bd5951975066ac170d2a3c6dfca5574c71587f002be0059d1911",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "world-only capture"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/in_world/native_world_information.png",
+   "missing_reason": null
+  },
+  {
+   "session": "main_world_settings_panel",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/native_world_settings.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "alpha_min": 255,
+     "pixel_authoritative": true,
+     "role": "native-in-world",
+     "state": "native in-world UI-only native_world_settings (alpha fraction 1.000, 412 colors)",
+     "note": "native standalone 1920 /d/ui_overlay"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/native_world_settings.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "alpha_min": 255,
+     "pixel_authoritative": true,
+     "role": "native-in-world",
+     "state": "native in-world UI-only native_world_settings (alpha fraction 1.000, 412 colors)",
+     "note": "native standalone 1920 /d/ui_overlay"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/main_world_settings_panel_native_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-in-world",
+     "state": "native in-world UI-only (alpha fraction 1.000, nonblack bbox [0, 0, 1919, 1079])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json"
+    },
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/native_world_settings.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "alpha_min": 255,
+     "pixel_authoritative": true,
+     "role": "supplemental",
+     "state": "native in-world UI-only native_world_settings (alpha fraction 1.0, 412 colors)",
+     "note": "native standalone 1920 /d/ui_overlay; source manifest functional_ui_native/in_world/manifest.json"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_world_settings_panel_full_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "c50e7ef97d050df93810e13349b913350b36437b00d7164835f8ea48fc398833",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "opaque full screen/world + UI"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_world_settings_panel_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "ac27916103068d325602c346815a999a80d6af030c052682122481db8ca24e9e",
+     "alpha": "opaque",
+     "alpha_min": 128,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "opaque menu/panel capture"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/main_world_settings_panel_world_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "31d25dbd9270bd5951975066ac170d2a3c6dfca5574c71587f002be0059d1911",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "world-only capture"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/in_world/native_world_settings.png",
+   "missing_reason": null
+  },
+  {
+   "session": "library_selector_flow",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/library_selector_flow_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [0, 0, 1919, 1079])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/library_selector_flow_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "40802a665257a539801ee0ab677e4f2449e60586f35b8a2ce64a431e86229d8a",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "opaque menu/panel capture"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/library_selector_flow_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "library_create_new",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/library_create_new_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [0, 0, 1919, 1079])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/library_create_new_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "40802a665257a539801ee0ab677e4f2449e60586f35b8a2ce64a431e86229d8a",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "opaque menu/panel capture"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/library_create_new_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "library_editor_genes_flow",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/library_editor_genes_flow_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [25, 76, 1869, 1054])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/library_editor_genes_flow_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "bb8f576f777c1b03b7da3f1d92f440263bfb3dd10ee70437b5aa109e8aff44f2",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "opaque menu/panel capture"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/library_editor_genes_flow_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "library_editor_brain_flow",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/library_editor_brain_flow_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [25, 76, 1869, 1054])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/library_editor_brain_flow_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "27ef5ede6c56278b7982e2a8d2eef612fd3180ea58402bb6a5d3f376e2b01a25",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "opaque menu/panel capture"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/library_editor_brain_flow_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "library_editor_brain_after_add",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/library_editor_brain_after_add_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [25, 76, 1869, 1054])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/library_editor_brain_after_add_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "27ef5ede6c56278b7982e2a8d2eef612fd3180ea58402bb6a5d3f376e2b01a25",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "opaque menu/panel capture"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/library_editor_brain_after_add_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "newgame_scenario_options",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/newgame_scenario_options_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [0, 0, 1919, 1079])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/newgame_scenario_options_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "27ef5ede6c56278b7982e2a8d2eef612fd3180ea58402bb6a5d3f376e2b01a25",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "opaque menu/panel capture"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/newgame_scenario_options_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "newgame_new_scenario_button",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/newgame_new_scenario_button_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [0, 0, 1919, 1079])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/newgame_new_scenario_button_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "27ef5ede6c56278b7982e2a8d2eef612fd3180ea58402bb6a5d3f376e2b01a25",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "opaque menu/panel capture"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/newgame_new_scenario_button_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "newgame_new_challenge_button",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/newgame_new_challenge_button_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [0, 0, 1919, 1079])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/newgame_new_challenge_button_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "27ef5ede6c56278b7982e2a8d2eef612fd3180ea58402bb6a5d3f376e2b01a25",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "opaque menu/panel capture"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/newgame_new_challenge_button_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "scenario_editor_flow",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/scenario_editor_flow_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [0, 0, 1919, 1079])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/scenario_editor_flow_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "27ef5ede6c56278b7982e2a8d2eef612fd3180ea58402bb6a5d3f376e2b01a25",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "opaque menu/panel capture"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/scenario_editor_flow_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "scenario_editor_zones",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/scenario_editor_zones_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [0, 0, 1919, 1079])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/scenario_editor_zones_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "27ef5ede6c56278b7982e2a8d2eef612fd3180ea58402bb6a5d3f376e2b01a25",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "opaque menu/panel capture"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/scenario_editor_zones_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "scenario_editor_ChallengeOptions",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/scenario_editor_ChallengeOptions_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [0, 0, 1919, 1079])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/scenario_editor_ChallengeOptions_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "27ef5ede6c56278b7982e2a8d2eef612fd3180ea58402bb6a5d3f376e2b01a25",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "opaque menu/panel capture"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/scenario_editor_ChallengeOptions_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "scenario_editor_sim",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/scenario_editor_sim_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [0, 0, 1919, 1079])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/scenario_editor_sim_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "27ef5ede6c56278b7982e2a8d2eef612fd3180ea58402bb6a5d3f376e2b01a25",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "opaque menu/panel capture"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/scenario_editor_sim_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "settings_page_graphics_controls",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/settings_page_graphics_controls_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [0, 0, 1919, 1079])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/settings_page_graphics_controls_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "dde1769e75f461dae99984d0ffe9b6cbdf7f40e8e6cdbf99d9205fa4daa6d22e",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "opaque menu/panel capture"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/settings_page_graphics_controls_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "settings_page_gameplay_controls",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/settings_page_gameplay_controls_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [0, 0, 1919, 1079])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/settings_page_gameplay_controls_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "cf6411139cf81ee3e2fed0377e0ca29b6f7a1800edcf98ad02f19963eb882632",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "opaque menu/panel capture"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/settings_page_gameplay_controls_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "settings_page_hotkeys_controls",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/settings_page_hotkeys_controls_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [0, 0, 1919, 1079])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/settings_page_hotkeys_controls_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "4435c022c7591231db259445bc7e4c573aed7470ea9834b6603e830ae97b1d8b",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "opaque menu/panel capture"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/settings_page_hotkeys_controls_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "world_dynamic_parameters_controls",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/world_dynamic_parameters_controls_native_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.7137789351851852,
+     "pixel_authoritative": true,
+     "role": "native-in-world",
+     "state": "native in-world UI-only (alpha fraction 0.714, nonblack bbox [10, 10, 1919, 1079])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/world_dynamic_parameters_controls_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "99de0e24bf9b5edc7732c4b09ff6461fc2174fc42be78f598a129cb542a3dfb2",
+     "alpha": "transparent",
+     "alpha_min": 0,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "transparent UI overlay"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/in_world/world_dynamic_parameters_controls_native_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "world_settings_controls",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/world_settings_controls_native_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.7137789351851852,
+     "pixel_authoritative": true,
+     "role": "native-in-world",
+     "state": "native in-world UI-only (alpha fraction 0.714, nonblack bbox [10, 10, 1919, 1079])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/world_settings_controls_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "99de0e24bf9b5edc7732c4b09ff6461fc2174fc42be78f598a129cb542a3dfb2",
+     "alpha": "transparent",
+     "alpha_min": 0,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "transparent UI overlay"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/in_world/world_settings_controls_native_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "challenge_selector",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/challenge_selector_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [0, 0, 1919, 1079])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/challenge_selector_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "b222221a8e8600e4e24624c10c667055c5d0b09f6338ccbc4ebf827ef4ece203",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "opaque menu/panel capture"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/challenge_selector_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "challenge_scenario_panel",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/challenge_scenario_panel_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [0, 0, 1919, 1079])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/challenge_scenario_panel_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "b222221a8e8600e4e24624c10c667055c5d0b09f6338ccbc4ebf827ef4ece203",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "opaque menu/panel capture"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/challenge_scenario_panel_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "challenge_champion_selection",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/challenge_champion_selection_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [25, 76, 1869, 1054])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/challenge_champion_selection_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "8aeb713a069ef80e89005d9cb27dfc4d444938d4b86734a09ec52a0618a377aa",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "opaque menu/panel capture"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/challenge_champion_selection_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "challenge_parameters_editor",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/challenge_parameters_editor_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [25, 76, 1869, 1054])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/challenge_parameters_editor_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "8aeb713a069ef80e89005d9cb27dfc4d444938d4b86734a09ec52a0618a377aa",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "opaque menu/panel capture"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/challenge_parameters_editor_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "workshop_panel",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/workshop_panel_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [0, 0, 1919, 1079])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/workshop_panel_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "565c049376a71678948f6cfc829152c8a2e2252ae814ca93c9e2bcc5596162fc",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "opaque menu/panel capture"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/workshop_panel_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "workshop_edit_shared",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/menu_ui/workshop_edit_shared_ui_on_black_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "opaque",
+     "alpha_fraction": 1.0,
+     "pixel_authoritative": true,
+     "role": "native-ui-on-black",
+     "state": "native UI-on-black diagnostic (alpha fraction 1.000, nonblack bbox [25, 76, 1869, 1054])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json; opaque black background, not transparent UI-only"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/workshop_edit_shared_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "a3f338ba66ae5dbb7b0bc0186605367d6e2f25f3cfd63efa267f6a4a5de93635",
+     "alpha": "opaque",
+     "alpha_min": 255,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "opaque menu/panel capture"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/menu_ui/workshop_edit_shared_ui_on_black_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "lineage_species_panel",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/lineage_species_panel_native_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.2750487075617284,
+     "pixel_authoritative": true,
+     "role": "native-in-world",
+     "state": "native in-world UI-only (alpha fraction 0.275, nonblack bbox [10, 10, 1909, 1069])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/lineage_species_panel_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "749d7e626dcbc31bff31a97424bc8c0c0e1c6e327436a28c2d3724f42d87a2e6",
+     "alpha": "transparent",
+     "alpha_min": 0,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "transparent UI overlay"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/in_world/lineage_species_panel_native_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "lineage_species_tabs",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/lineage_species_tabs_native_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.2750487075617284,
+     "pixel_authoritative": true,
+     "role": "native-in-world",
+     "state": "native in-world UI-only (alpha fraction 0.275, nonblack bbox [10, 10, 1909, 1069])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/lineage_species_tabs_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "749d7e626dcbc31bff31a97424bc8c0c0e1c6e327436a28c2d3724f42d87a2e6",
+     "alpha": "transparent",
+     "alpha_min": 0,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "transparent UI overlay"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/in_world/lineage_species_tabs_native_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "lineage_species_info",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/lineage_species_info_native_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.2750487075617284,
+     "pixel_authoritative": true,
+     "role": "native-in-world",
+     "state": "native in-world UI-only (alpha fraction 0.275, nonblack bbox [10, 10, 1909, 1069])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/lineage_species_info_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "749d7e626dcbc31bff31a97424bc8c0c0e1c6e327436a28c2d3724f42d87a2e6",
+     "alpha": "transparent",
+     "alpha_min": 0,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "transparent UI overlay"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/in_world/lineage_species_info_native_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "lineage_species_genes",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/lineage_species_genes_native_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.2750487075617284,
+     "pixel_authoritative": true,
+     "role": "native-in-world",
+     "state": "native in-world UI-only (alpha fraction 0.275, nonblack bbox [10, 10, 1909, 1069])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/lineage_species_genes_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "749d7e626dcbc31bff31a97424bc8c0c0e1c6e327436a28c2d3724f42d87a2e6",
+     "alpha": "transparent",
+     "alpha_min": 0,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "transparent UI overlay"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/in_world/lineage_species_genes_native_1920x1080.png",
+   "missing_reason": null
+  },
+  {
+   "session": "lineage_species_brain",
+   "status": "usable",
+   "references": [
+    {
+     "path": "assets/game/reference/functional_ui_native/in_world/lineage_species_brain_native_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "alpha": "transparent",
+     "alpha_fraction": 0.2750487075617284,
+     "pixel_authoritative": true,
+     "role": "native-in-world",
+     "state": "native in-world UI-only (alpha fraction 0.275, nonblack bbox [10, 10, 1909, 1069])",
+     "note": "native 1920 capture from functional_ui_native/native_runtime_manifest.json"
+    },
+    {
+     "path": "assets/game/reference/functional_ui/lineage_species_brain_overlay_1920x1080.png",
+     "width": 1920,
+     "height": 1080,
+     "sha256": "749d7e626dcbc31bff31a97424bc8c0c0e1c6e327436a28c2d3724f42d87a2e6",
+     "alpha": "transparent",
+     "alpha_min": 0,
+     "pixel_authoritative": false,
+     "role": "supplemental",
+     "state": "transparent UI overlay"
+    }
+   ],
+   "primary_reference": "assets/game/reference/functional_ui_native/in_world/lineage_species_brain_native_1920x1080.png",
+   "missing_reason": null
+  }
+ ],
+ "native_findings": {
+  "menu_only": "Menu refs show soft-focus/blur plus TMP SDF text rendering; in-world HUD/UI refs are crisp.",
+  "old_refs": "Existing functional_ui 1920 PNGs were upscaled from 320x240; do not use as pixel truth.",
+  "menu_isolation": "Still in progress. Excluding Title Screen/BackGround yields an opaque frame; suppressing screenBlocker/fullscreen yields alpha0 (blank menu_ui_only/settings_ui_only captures). Native in-world UI-only reference is valid and should be used to tune SDF text first.",
+  "native_state": "Native probe currently supplies title/settings full frames and world UI-only transparent overlay; per-session native recapture in progress.",
+  "sdf_status": "TMP font inventory landed; view SDF in progress. Tune against native in-world UI-only refs first; menu UI-only remains blocked.",
+  "in_world_refs": "Canonical native session_map aliases used for 13 in-world sessions; inspector tabs corrected, HUD toolbar matches default_world.",
+  "button_theme": "Neutral white Button/Image theme captured for 7 toolbar/top-right buttons; dark native look is not explained by tint values. Missing icon sprites dumped 35x35.",
+  "layout": "Native 60-session atlas v2: every active node has native 1920 screen_bbox/world_corners; verified title panel [1374.7,132.5,1870,848.6], GenesPanel [10,104.4,457.5,1000]. Layout-group-free composer can consume; old atlas historical.",
+  "menu_background": "Native shared title/settings background-only frame documented: blurred live-world VideoClip showOff -> RenderTexture Video 1920x1080, frozen at frame 52/2812. Composite behind UI-on-black refs; dark menu look comes from this background/composition, not button tints.",
+  "inspector_tabs": "Correct per-tab native UI-only refs: Stats/Genes/Biology/Brain distinct hashes/alpha/color counts; old same-page native_inspector_* refs removed. HUD toolbar ref matches default_world (inspector-closed)."
+ },
+ "rendering_plan": [
+  {
+   "order": 1,
+   "step": "TMP font metadata via runtime reflection dump",
+   "detail": "Landed (`85e08ea`): 6 TMP font assets / 6 atlases + per-font face/glyph/character/kerning/material JSON under assets/game/ui_fonts.",
+   "status": "done"
+  },
+  {
+   "order": 2,
+   "step": "SDF text renderer",
+   "detail": "View has started SDF text rendering; tune glyph metrics/outline against native in-world UI-only refs now that they exist.",
+   "status": "in progress"
+  },
+  {
+   "order": 3,
+   "step": "Menu blur pass",
+   "detail": "Composite native UI-on-black over the shared native menu background frame; menu background is a frozen showOff VideoClip blurred into RenderTexture Video 1920x1080. Transparent UI-only isolation remains blocked.",
+   "status": "pending"
+  },
+  {
+   "order": 4,
+   "step": "Per-session mask/text diff",
+   "detail": "After native per-session refs: compare alpha/mask and text regions; no pixel parity against old upscaled refs.",
+   "status": "pending"
+  }
+ ],
+ "native_probe": {
+  "root": "assets/game/reference/functional_ui_native",
+  "schema": "rustibites.ui_visual_reference_native.v1",
+  "pixel_authoritative": true,
+  "available": [
+   "title full/opaque",
+   "settings full/opaque",
+   "world UI-only/transparent"
+  ],
+  "limitations": [
+   "transparent UI-only menu isolation still in progress",
+   "menu refs are opaque; in-world UI-only ref is valid",
+   "per-session native recapture in progress"
+  ],
+  "references": [
+   {
+    "path": "assets/game/reference/functional_ui_native/probe_title_native_1920x1080.png",
+    "width": 1920,
+    "height": 1080,
+    "sha256": "26f219aa223839764550d2befdc43a95c8b147eba22783ff675b5985e8738240",
+    "alpha": "opaque",
+    "alpha_min": 255,
+    "pixel_authoritative": true,
+    "kind": "title-full",
+    "state": "native title full frame, opaque (Title Screen/BackGround composition)"
+   },
+   {
+    "path": "assets/game/reference/functional_ui_native/probe_title_bg_off_1920x1080.png",
+    "width": 1920,
+    "height": 1080,
+    "sha256": "26f219aa223839764550d2befdc43a95c8b147eba22783ff675b5985e8738240",
+    "alpha": "opaque",
+    "alpha_min": 255,
+    "pixel_authoritative": true,
+    "kind": "title-full",
+    "state": "native title with background off; opaque"
+   },
+   {
+    "path": "assets/game/reference/functional_ui_native/probe_title_full_overlay_1920x1080.png",
+    "width": 1920,
+    "height": 1080,
+    "sha256": "e2e8f1041972321911ef62a205010a5f1627604b5952e5c0bc9f1640c012f554",
+    "alpha": "opaque",
+    "alpha_min": 255,
+    "pixel_authoritative": true,
+    "kind": "title-full",
+    "state": "native title full overlay; opaque"
+   },
+   {
+    "path": "assets/game/reference/functional_ui_native/probe_settings_native_1920x1080.png",
+    "width": 1920,
+    "height": 1080,
+    "sha256": "e3701573325fe883b4b3c13acbf8e3e988149c5386a964c2b666d9a634167d1c",
+    "alpha": "opaque",
+    "alpha_min": 2,
+    "pixel_authoritative": true,
+    "kind": "settings-full",
+    "state": "native Settings full frame, opaque"
+   },
+   {
+    "path": "assets/game/reference/functional_ui_native/probe_world_native_1920x1080.png",
+    "width": 1920,
+    "height": 1080,
+    "sha256": "2dcf0fabdbceb856c0618ef8843305d1475e643ce7541085f8159a846e0f1e08",
+    "alpha": "transparent",
+    "alpha_min": 0,
+    "pixel_authoritative": true,
+    "kind": "world-ui-only",
+    "state": "native in-world UI-only overlay, transparent"
+   }
+  ]
+ },
+ "in_world_captures": [
+  {
+   "path": "assets/game/reference/default/full_world.png",
+   "width": 1920,
+   "height": 1080,
+   "sha256": "560028cbfe999a7160da362da1d18ff6d45f5e0690428bfaef660394e99a8d41",
+   "alpha": "opaque",
+   "alpha_min": 255,
+   "pixel_authoritative": true,
+   "kind": "world",
+   "state": "historical lol save; fit whole 4000x4000 world; paused, 22 bibites/13 corpses/4 eggs, sim_tps 15"
+  },
+  {
+   "path": "assets/game/reference/default/population.png",
+   "width": 1920,
+   "height": 1080,
+   "sha256": "3606fca5acf197fcb1da26726fb85682b166a4fac64ee5bcc3d5894b580b0367",
+   "alpha": "opaque",
+   "alpha_min": 255,
+   "pixel_authoritative": true,
+   "kind": "world",
+   "state": "historical lol save; population/planted-zone camera (centre 0,0 size 120)"
+  },
+  {
+   "path": "assets/game/reference/default/zone_pellets_eggs.png",
+   "width": 1920,
+   "height": 1080,
+   "sha256": "987ada5451e41df85e8d0dd804382a6e331aa82c1bc50cf873a94ce75ff192ec",
+   "alpha": "opaque",
+   "alpha_min": 255,
+   "pixel_authoritative": true,
+   "kind": "world",
+   "state": "historical lol save; zone ring/pellets/eggs close camera (size 230)"
+  },
+  {
+   "path": "assets/game/reference/default/bibite_closeup.png",
+   "width": 1280,
+   "height": 720,
+   "sha256": "296ccfd6c6ed522aff6e76afe5dcceb34122b7311d14787133353485ad794ec3",
+   "alpha": "opaque",
+   "alpha_min": 255,
+   "pixel_authoritative": true,
+   "kind": "world",
+   "state": "historical lol save; single-bibite closeup (1280x720, size 12)"
+  },
+  {
+   "path": "assets/game/reference/default_save/hud_default_1920x1080.png",
+   "width": 1920,
+   "height": 1080,
+   "sha256": "2deb15f757ee9d206253583a7403eff0368ffa909a8ccef22c87e65fc1ee552a",
+   "alpha": "opaque",
+   "alpha_min": 255,
+   "pixel_authoritative": true,
+   "kind": "hud",
+   "state": "default-save HUD/world baseline"
+  },
+  {
+   "path": "assets/game/reference/default_save/hud_overlay_1920x1080.png",
+   "width": 1920,
+   "height": 1080,
+   "sha256": "cd8250e5aa9504c2ff5553833b57c8ab66b3bd13c9f11f59cf2e7d2b07551112",
+   "alpha": "transparent",
+   "alpha_min": 0,
+   "pixel_authoritative": true,
+   "kind": "hud-overlay",
+   "state": "transparent HUD overlay, default-save state"
+  },
+  {
+   "path": "assets/game/reference/default_save/hud_savestate_1920x1080.png",
+   "width": 1920,
+   "height": 1080,
+   "sha256": "8be2c47e0c2d435ec1276f8a739d531bad5e698763156af7d8f5df4c7bb39744",
+   "alpha": "opaque",
+   "alpha_min": 255,
+   "pixel_authoritative": true,
+   "kind": "hud-save",
+   "state": "default-save saved-state HUD"
+  },
+  {
+   "path": "assets/game/reference/default_save/hud_savestate_overlay_1920x1080.png",
+   "width": 1920,
+   "height": 1080,
+   "sha256": "ab80e1ab23b4121f5adbbab0f6f6ed810e4008cc19c7d33e2b50819a3f2a329b",
+   "alpha": "transparent",
+   "alpha_min": 0,
+   "pixel_authoritative": true,
+   "kind": "hud-overlay",
+   "state": "transparent HUD overlay, saved state"
+  },
+  {
+   "path": "assets/game/reference/default_save/hud_inspector_1920x1080.png",
+   "width": 1920,
+   "height": 1080,
+   "sha256": "3a3612b26cb78971763f2d37184202ec99933226ba77795e2fd86133082d241f",
+   "alpha": "opaque",
+   "alpha_min": 255,
+   "pixel_authoritative": true,
+   "kind": "hud-inspector",
+   "state": "default-save inspector"
+  },
+  {
+   "path": "assets/game/reference/default_save/hud_inspector_overlay_1920x1080.png",
+   "width": 1920,
+   "height": 1080,
+   "sha256": "eb2962c6ce6fe8d476294270b5bf87f3f1c0d92074ce4d9b9170f10fb541ed8f",
+   "alpha": "transparent",
+   "alpha_min": 0,
+   "pixel_authoritative": true,
+   "kind": "hud-overlay",
+   "state": "transparent inspector overlay"
+  },
+  {
+   "path": "assets/game/reference/default_save/hud_inspector_expanded_1920x1080.png",
+   "width": 1920,
+   "height": 1080,
+   "sha256": "16a247cc6bb563f03bdc46ea3c7ec40768c13028b2e20ccc0506efe63546d9a2",
+   "alpha": "opaque",
+   "alpha_min": 255,
+   "pixel_authoritative": true,
+   "kind": "hud-inspector",
+   "state": "expanded inspector"
+  },
+  {
+   "path": "assets/game/reference/default_save/hud_inspector_expanded_overlay_1920x1080.png",
+   "width": 1920,
+   "height": 1080,
+   "sha256": "07470ebd605cd95dac3a329682dbd258e3ff786222f0768823ea307a6493bae2",
+   "alpha": "transparent",
+   "alpha_min": 0,
+   "pixel_authoritative": true,
+   "kind": "hud-overlay",
+   "state": "transparent expanded-inspector overlay"
+  },
+  {
+   "path": "assets/game/reference/default_save/full_world.png",
+   "width": 1920,
+   "height": 1080,
+   "sha256": "5223d3ed1ca4ca4194efb9bac76b93f9bae01eaf5fe1d18665961347bc98989f",
+   "alpha": "opaque",
+   "alpha_min": 255,
+   "pixel_authoritative": true,
+   "kind": "world",
+   "state": "default-save full-world render"
+  },
+  {
+   "path": "assets/game/reference/default_save/population.png",
+   "width": 1920,
+   "height": 1080,
+   "sha256": "8dbecaf6a0dca3338f076d2ca1848f01255767f891901b070f1b93f039c9e214",
+   "alpha": "opaque",
+   "alpha_min": 255,
+   "pixel_authoritative": true,
+   "kind": "world",
+   "state": "default-save population render"
+  },
+  {
+   "path": "assets/game/reference/default_save/zone_pellets_eggs.png",
+   "width": 1920,
+   "height": 1080,
+   "sha256": "6b6ad11582b089771b151edf4de3f882573014f61e2d19b7f1aaaf4a0b585977",
+   "alpha": "opaque",
+   "alpha_min": 255,
+   "pixel_authoritative": true,
+   "kind": "world",
+   "state": "default-save zone/pellets/eggs render"
+  },
+  {
+   "path": "assets/game/reference/default_save/bibite_closeup.png",
+   "width": 1280,
+   "height": 720,
+   "sha256": "9216cdc9c3fa06019906d604fd8d738be9cf912569877c2a5e8df650b75ce1f9",
+   "alpha": "opaque",
+   "alpha_min": 255,
+   "pixel_authoritative": true,
+   "kind": "world",
+   "state": "default-save bibite closeup (1280x720)"
+  },
+  {
+   "path": "assets/game/reference/main_menu/loading_screen_1920x1080.png",
+   "width": 1920,
+   "height": 1080,
+   "sha256": "2ce29dc5884ca5b14fd80a3de02092ceb72cd5f15845a8610de9ecd79c0b8ca2",
+   "alpha": "opaque",
+   "alpha_min": 255,
+   "pixel_authoritative": true,
+   "kind": "menu-loading",
+   "state": "game loading screen; not a title-menu reference"
+  },
+  {
+   "path": "assets/game/reference/main_menu/settings_screen_1920x1080.png",
+   "width": 1920,
+   "height": 1080,
+   "sha256": "2ce29dc5884ca5b14fd80a3de02092ceb72cd5f15845a8610de9ecd79c0b8ca2",
+   "alpha": "opaque",
+   "alpha_min": 255,
+   "pixel_authoritative": true,
+   "kind": "menu-loading",
+   "state": "byte-identical to loading_screen; not a settings reference"
+  },
+  {
+   "path": "assets/game/reference/functional_ui/hotkeys_readonly_flow_overlay_1920x1080.png",
+   "width": 1920,
+   "height": 1080,
+   "sha256": "4435c022c7591231db259445bc7e4c573aed7470ea9834b6603e830ae97b1d8b",
+   "alpha": "opaque",
+   "alpha_min": 255,
+   "pixel_authoritative": false,
+   "kind": "flow-overlay",
+   "state": "hotkey page read-only state; supplemental for settings_page_hotkeys_controls"
+  },
+  {
+   "path": "assets/game/reference/functional_ui/workshop_edit_last_overlay_1920x1080.png",
+   "width": 1920,
+   "height": 1080,
+   "sha256": "a3f338ba66ae5dbb7b0bc0186605367d6e2f25f3cfd63efa267f6a4a5de93635",
+   "alpha": "opaque",
+   "alpha_min": 255,
+   "pixel_authoritative": false,
+   "kind": "flow-overlay",
+   "state": "workshop edit state after change; supplemental for workshop_edit_shared"
+  }
+ ],
+ "missing_sessions": [],
+ "partial_sessions": [],
+ "unusable_references": [
+  "functional_ui/main_menu_achievements_{full,overlay}: show Bibite Library",
+  "functional_ui/main_menu_additional_tools_{full,overlay}: show Bibite Library",
+  "functional_ui/main_menu_credits_{full,overlay}: show Bibite Library",
+  "functional_ui/main_menu_new_panel_{full,overlay}: show Bibite Library",
+  "functional_ui/main_menu_new_game_{full,overlay}: show Graphics Settings",
+  "functional_ui/main_menu_scenario_editor_{full,overlay}: show Steam Workshop",
+  "functional_ui/main_menu_settings_graphics_{full,overlay}: show Steam Workshop",
+  "functional_ui/main_menu_settings_gameplay_{full,overlay}: show Steam Workshop",
+  "functional_ui/main_menu_settings_hotkeys_{full,overlay}: show Steam Workshop",
+  "functional_ui_native/probe_world_full_native_1920x1080.png: fully transparent/empty capture; unusable",
+  "main_menu/loading_screen and settings_screen are identical loading-screen captures",
+  "functional_ui_native/menu_ui_only_native_1920x1080.png: alpha0/blank menu UI-only attempt",
+  "functional_ui_native/settings_ui_only_native_1920x1080.png: alpha0/blank settings UI-only attempt",
+  "functional_ui_native/probe_world_full_native_1920x1080.png: fully transparent/empty capture"
+ ],
+ "notes": [
+  "QUALITY LIMIT: functional_ui 1920x1080 PNGs were upscaled from a 320x240 hidden-game window and are NOT pixel-authoritative; native 1920 recapture is in progress. Do not claim pixel parity against these old refs.",
+  "Menu full/overlay captures are often byte-identical in current captures; overlay/full roles do not imply transparency for menu sessions.",
+  "In-world overlays are transparent PNGs; full/world references are opaque.",
+  "Sessions with missing references are listed explicitly; do not use wrong-state captures for visual comparisons."
+ ],
+ "tmp_font_inventory": {
+  "schema": "rustibites.assets.tmp_fonts.v1",
+  "root": "assets/game/ui_fonts",
+  "manifest": "assets/game/ui_fonts/fonts_manifest.json",
+  "report": "assets/game/ui_fonts/fonts_report.json",
+  "status": "landed 85e08ea; sufficient for SDF text rendering",
+  "coverage": "6 TMP font assets (one 0-glyph fallback) / 6 atlas textures; per-font face/glyph/character/kerning/material JSON",
+  "fonts": [
+   {
+    "name": "Boston Black SDF",
+    "glyphs": 97,
+    "characters": 97,
+    "atlas": "atlas_Boston_Black_SDF_Atlas.png",
+    "atlas_size": "512x512",
+    "material": "Boston Black SDF Material",
+    "shader": "TextMeshPro/Distance Field"
+   },
+   {
+    "name": "LiberationSans SDF",
+    "glyphs": 250,
+    "characters": 250,
+    "atlas": "atlas_LiberationSans_SDF_Atlas.png",
+    "atlas_size": "1024x1024",
+    "material": "LiberationSans SDF Material",
+    "shader": "TextMeshPro/Mobile/Distance Field"
+   },
+   {
+    "name": "LiberationSans SDF - Fallback",
+    "glyphs": 0,
+    "characters": 0,
+    "atlas": "atlas_LiberationSans_SDF_Atlas.png",
+    "atlas_size": "1024x1024",
+    "material": "LiberationSans SDF Material",
+    "shader": "TextMeshPro/Mobile/Distance Field"
+   },
+   {
+    "name": "Roboto-Bold SDF NoOutline",
+    "glyphs": 112,
+    "characters": 112,
+    "atlas": "atlas_Roboto-Bold_Atlas.png",
+    "atlas_size": "1024x1024",
+    "material": "Roboto-Bold Atlas Material",
+    "shader": "TextMeshPro/Distance Field"
+   },
+   {
+    "name": "Roboto-Bold SDF WhiteOutline",
+    "glyphs": 98,
+    "characters": 98,
+    "atlas": "atlas_Roboto-Bold_SDF_Atlas.png",
+    "atlas_size": "512x512",
+    "material": "Roboto-Bold SDF Material",
+    "shader": "TextMeshPro/Distance Field"
+   },
+   {
+    "name": "Roboto-Regular SDF",
+    "glyphs": 98,
+    "characters": 98,
+    "atlas": "atlas_Roboto-Regular_SDF_Atlas.png",
+    "atlas_size": "512x512",
+    "material": "Roboto-Regular SDF Material",
+    "shader": "TextMeshPro/Distance Field"
+   }
+  ]
+ },
+ "rendering_priority": "Tune SDF text against native in-world UI-only refs first; menu blur and per-session native diff follow once menu UI-only isolation is resolved.",
+ "native_in_world": {
+  "manifest": "assets/game/reference/functional_ui_native/in_world/manifest.json",
+  "session_map": "assets/game/reference/functional_ui_native/in_world/session_map.json",
+  "schema": "rustibites.ui.visual_reference_map.v1",
+  "count": 13,
+  "note": "Canonical native in-world map; inspector tabs now per-tab distinct hashes; HUD toolbar matches default_world; old same-page inspector refs removed.",
+  "sessions": [
+   {
+    "session": "main_world_toolbar",
+    "path": "assets/game/reference/functional_ui_native/in_world/native_world_toolbar_hud_1920x1080.png",
+    "width": 1920,
+    "height": 1080,
+    "alpha_fraction": 0.028597125771604937,
+    "unique_opaque_colors": 421,
+    "role": "native-hud",
+    "pixel_authoritative": true,
+    "sha256": "0f90805bf37543f69d08d3fd52f0eefa130c7d89b11d691a091f9d64a0b4e970"
+   },
+   {
+    "session": "main_world_tool_placer",
+    "path": "assets/game/reference/functional_ui_native/in_world/native_world_placer.png",
+    "width": 1920,
+    "height": 1080,
+    "alpha_fraction": 0.025047743055555554,
+    "unique_opaque_colors": null,
+    "role": "native-in-world",
+    "pixel_authoritative": true
+   },
+   {
+    "session": "main_world_tool_user_actions",
+    "path": "assets/game/reference/functional_ui_native/in_world/native_world_user_actions.png",
+    "width": 1920,
+    "height": 1080,
+    "alpha_fraction": 0.026587094907407408,
+    "unique_opaque_colors": null,
+    "role": "native-in-world",
+    "pixel_authoritative": true
+   },
+   {
+    "session": "main_world_tool_view",
+    "path": "assets/game/reference/functional_ui_native/in_world/native_world_view.png",
+    "width": 1920,
+    "height": 1080,
+    "alpha_fraction": 0.05726224922839506,
+    "unique_opaque_colors": null,
+    "role": "native-in-world",
+    "pixel_authoritative": true
+   },
+   {
+    "session": "main_world_dynamic_parameters",
+    "path": "assets/game/reference/functional_ui_native/in_world/native_world_dynamic.png",
+    "width": 1920,
+    "height": 1080,
+    "alpha_fraction": 0.5225163966049383,
+    "unique_opaque_colors": null,
+    "role": "native-in-world",
+    "pixel_authoritative": true
+   },
+   {
+    "session": "main_world_lineage",
+    "path": "assets/game/reference/functional_ui_native/in_world/native_world_lineage.png",
+    "width": 1920,
+    "height": 1080,
+    "alpha_fraction": 0.10344280478395061,
+    "unique_opaque_colors": null,
+    "role": "native-in-world",
+    "pixel_authoritative": true
+   },
+   {
+    "session": "main_world_information",
+    "path": "assets/game/reference/functional_ui_native/in_world/native_world_information.png",
+    "width": 1920,
+    "height": 1080,
+    "alpha_fraction": 1.0,
+    "unique_opaque_colors": null,
+    "role": "native-in-world",
+    "pixel_authoritative": true
+   },
+   {
+    "session": "main_world_settings_panel",
+    "path": "assets/game/reference/functional_ui_native/in_world/native_world_settings.png",
+    "width": 1920,
+    "height": 1080,
+    "alpha_fraction": 1.0,
+    "unique_opaque_colors": null,
+    "role": "native-in-world",
+    "pixel_authoritative": true
+   },
+   {
+    "session": "main_world_tool_placer_pellets",
+    "path": "assets/game/reference/functional_ui_native/in_world/native_world_placer_pellets.png",
+    "width": 1920,
+    "height": 1080,
+    "alpha_fraction": 1.0,
+    "unique_opaque_colors": null,
+    "role": "native-in-world",
+    "pixel_authoritative": true
+   },
+   {
+    "session": "default_world_inspector",
+    "path": "assets/game/reference/functional_ui_native/in_world/inspector/native_inspector_stats_ui_only_1920x1080.png",
+    "width": 1920,
+    "height": 1080,
+    "alpha_fraction": 0.14538435570987654,
+    "unique_opaque_colors": 465,
+    "role": "native-inspector-stats",
+    "pixel_authoritative": true,
+    "sha256": "f1cd9fe735f3f35971a1e3437db19e4cb6c737b14a92bd62829dfb477ada0ff3"
+   },
+   {
+    "session": "default_world_genes",
+    "path": "assets/game/reference/functional_ui_native/in_world/inspector/native_inspector_genes_ui_only_1920x1080.png",
+    "width": 1920,
+    "height": 1080,
+    "alpha_fraction": 0.21958960262345678,
+    "unique_opaque_colors": 665,
+    "role": "native-inspector-genes",
+    "pixel_authoritative": true,
+    "sha256": "82f8d04ed82a6822edac754dec8e710bd2745531ce517e7183ac2b231e483da1"
+   },
+   {
+    "session": "default_world_biology",
+    "path": "assets/game/reference/functional_ui_native/in_world/inspector/native_inspector_biology_ui_only_1920x1080.png",
+    "width": 1920,
+    "height": 1080,
+    "alpha_fraction": 0.1206081211419753,
+    "unique_opaque_colors": 959,
+    "role": "native-inspector-biology",
+    "pixel_authoritative": true,
+    "sha256": "4561fe70128fd8b131b1df155c942565f1d1d0568fbf7496efec8d3016374e47"
+   },
+   {
+    "session": "default_world_brain",
+    "path": "assets/game/reference/functional_ui_native/in_world/inspector/native_inspector_brain_ui_only_1920x1080.png",
+    "width": 1920,
+    "height": 1080,
+    "alpha_fraction": 0.1937037037037037,
+    "unique_opaque_colors": 687,
+    "role": "native-inspector-brain",
+    "pixel_authoritative": true,
+    "sha256": "ce79f0e6337f04dadfdf2694a85f65411deaeb5ae33ce4cbe9f304ba61acef9b"
+   }
+  ]
+ },
+ "button_theme": {
+  "schema": "rustibites.ui.button_theme.v1",
+  "root": "assets/game/reference/functional_ui_native/in_world/button_theme",
+  "json": "assets/game/reference/functional_ui_native/in_world/button_theme/button_theme.json",
+  "raw": "assets/game/reference/functional_ui_native/in_world/button_theme/button_theme_raw.json",
+  "sprites": [
+   "base_icon",
+   "energy_icon",
+   "rename_icon",
+   "feedback_icon",
+   "simulation_icon",
+   "settings_icon",
+   "stats_icon",
+   "luca_import_tool"
+  ],
+  "buttons": 7,
+  "button_names": [
+   "DynamicParametersButton",
+   "InformationPanelButton",
+   "UserActions",
+   "SettingsButton",
+   "AncestralLineageButton",
+   "ViewButton",
+   "PlacerButton"
+  ],
+  "states": [
+   "normal",
+   "highlighted",
+   "pressed",
+   "selected",
+   "disabled"
+  ],
+  "sprite_size": "35x35",
+  "note": "All seven use Image+base_icon, Default UI Material/UI/Default, neutral white theme tints (pressed .7843, disabled alpha .502). Native dark toolbar look is NOT from Button/Image tints; sprite/background/composition source remains open.",
+  "docs": "docs/UI_BUTTON_THEME.md"
+ },
+ "native_runtime_layout": {
+  "schema": "rustibites.assets.ui_runtime_native.index.v2",
+  "index": "assets/game/ui_runtime_native.index.json",
+  "runtime": "assets/game/ui_runtime_native.json.gz",
+  "historical_old_atlas": "assets/game/ui_runtime.json.gz",
+  "session_count": 60,
+  "sessions": {
+   "main_menu": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 4358,
+    "canvases": 26,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/main_menu_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 424071,
+     "nonblack_bbox": [
+      25,
+      76,
+      1869,
+      1054
+     ]
+    }
+   },
+   "main_menu_title": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 4358,
+    "canvases": 26,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/main_menu_title_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 424071,
+     "nonblack_bbox": [
+      25,
+      76,
+      1869,
+      1054
+     ]
+    }
+   },
+   "main_menu_functional_title": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 4358,
+    "canvases": 26,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/main_menu_functional_title_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 424071,
+     "nonblack_bbox": [
+      25,
+      76,
+      1869,
+      1054
+     ]
+    }
+   },
+   "main_menu_load_game": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 4358,
+    "canvases": 26,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/main_menu_load_game_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 2072189,
+     "nonblack_bbox": [
+      0,
+      0,
+      1919,
+      1079
+     ]
+    }
+   },
+   "main_menu_new_game": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 4358,
+    "canvases": 26,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/main_menu_new_game_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 2073600,
+     "nonblack_bbox": [
+      0,
+      0,
+      1919,
+      1079
+     ]
+    }
+   },
+   "main_menu_bibite_library": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 4358,
+    "canvases": 26,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/main_menu_bibite_library_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 2073600,
+     "nonblack_bbox": [
+      0,
+      0,
+      1919,
+      1079
+     ]
+    }
+   },
+   "main_menu_achievements": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 4378,
+    "canvases": 26,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/main_menu_achievements_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 2049865,
+     "nonblack_bbox": [
+      0,
+      0,
+      1919,
+      1076
+     ]
+    }
+   },
+   "main_menu_additional_tools": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 4378,
+    "canvases": 26,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/main_menu_additional_tools_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 1101653,
+     "nonblack_bbox": [
+      25,
+      10,
+      1909,
+      1069
+     ]
+    }
+   },
+   "main_menu_credits": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 4378,
+    "canvases": 26,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/main_menu_credits_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 1052893,
+     "nonblack_bbox": [
+      25,
+      10,
+      1909,
+      1069
+     ]
+    }
+   },
+   "main_menu_new_panel": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 4378,
+    "canvases": 26,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/main_menu_new_panel_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 2073600,
+     "nonblack_bbox": [
+      0,
+      0,
+      1919,
+      1079
+     ]
+    }
+   },
+   "main_menu_workshop": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 4378,
+    "canvases": 26,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/main_menu_workshop_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 2073600,
+     "nonblack_bbox": [
+      0,
+      0,
+      1919,
+      1079
+     ]
+    }
+   },
+   "main_menu_scenario_editor": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 4378,
+    "canvases": 26,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/main_menu_scenario_editor_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 2073600,
+     "nonblack_bbox": [
+      0,
+      0,
+      1919,
+      1079
+     ]
+    }
+   },
+   "main_menu_settings": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 5423,
+    "canvases": 60,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/main_menu_settings_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 2062999,
+     "nonblack_bbox": [
+      0,
+      0,
+      1919,
+      1079
+     ]
+    }
+   },
+   "main_menu_settings_graphics": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 5423,
+    "canvases": 60,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/main_menu_settings_graphics_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 2062999,
+     "nonblack_bbox": [
+      0,
+      0,
+      1919,
+      1079
+     ]
+    }
+   },
+   "main_menu_settings_gameplay": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 5423,
+    "canvases": 60,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/main_menu_settings_gameplay_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 2071436,
+     "nonblack_bbox": [
+      0,
+      0,
+      1919,
+      1079
+     ]
+    }
+   },
+   "main_menu_settings_hotkeys": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 5423,
+    "canvases": 60,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/main_menu_settings_hotkeys_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 2072384,
+     "nonblack_bbox": [
+      0,
+      0,
+      1919,
+      1079
+     ]
+    }
+   },
+   "settings_page_graphics_controls": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 5423,
+    "canvases": 60,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/settings_page_graphics_controls_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 2072384,
+     "nonblack_bbox": [
+      0,
+      0,
+      1919,
+      1079
+     ]
+    }
+   },
+   "settings_page_gameplay_controls": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 5423,
+    "canvases": 60,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/settings_page_gameplay_controls_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 2072384,
+     "nonblack_bbox": [
+      0,
+      0,
+      1919,
+      1079
+     ]
+    }
+   },
+   "settings_page_hotkeys_controls": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 5423,
+    "canvases": 60,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/settings_page_hotkeys_controls_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 2072384,
+     "nonblack_bbox": [
+      0,
+      0,
+      1919,
+      1079
+     ]
+    }
+   },
+   "main_menu_bibite_editor_genes": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 5423,
+    "canvases": 60,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/main_menu_bibite_editor_genes_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 424071,
+     "nonblack_bbox": [
+      25,
+      76,
+      1869,
+      1054
+     ]
+    }
+   },
+   "main_menu_bibite_editor_brain": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 5606,
+    "canvases": 60,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/main_menu_bibite_editor_brain_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 424071,
+     "nonblack_bbox": [
+      25,
+      76,
+      1869,
+      1054
+     ]
+    }
+   },
+   "library_selector_flow": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 6351,
+    "canvases": 60,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/library_selector_flow_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 2073481,
+     "nonblack_bbox": [
+      0,
+      0,
+      1919,
+      1079
+     ]
+    }
+   },
+   "library_create_new": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 6351,
+    "canvases": 60,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/library_create_new_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 2073481,
+     "nonblack_bbox": [
+      0,
+      0,
+      1919,
+      1079
+     ]
+    }
+   },
+   "library_editor_genes_flow": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 6351,
+    "canvases": 60,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/library_editor_genes_flow_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 424071,
+     "nonblack_bbox": [
+      25,
+      76,
+      1869,
+      1054
+     ]
+    }
+   },
+   "library_editor_brain_flow": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 6351,
+    "canvases": 60,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/library_editor_brain_flow_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 424071,
+     "nonblack_bbox": [
+      25,
+      76,
+      1869,
+      1054
+     ]
+    }
+   },
+   "library_editor_brain_after_add": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 6351,
+    "canvases": 60,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/library_editor_brain_after_add_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 424071,
+     "nonblack_bbox": [
+      25,
+      76,
+      1869,
+      1054
+     ]
+    }
+   },
+   "newgame_scenario_options": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 6351,
+    "canvases": 60,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/newgame_scenario_options_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 2073600,
+     "nonblack_bbox": [
+      0,
+      0,
+      1919,
+      1079
+     ]
+    }
+   },
+   "newgame_new_scenario_button": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 6351,
+    "canvases": 60,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/newgame_new_scenario_button_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 2073600,
+     "nonblack_bbox": [
+      0,
+      0,
+      1919,
+      1079
+     ]
+    }
+   },
+   "newgame_new_challenge_button": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 6351,
+    "canvases": 60,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/newgame_new_challenge_button_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 2073600,
+     "nonblack_bbox": [
+      0,
+      0,
+      1919,
+      1079
+     ]
+    }
+   },
+   "scenario_editor_flow": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 6351,
+    "canvases": 60,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/scenario_editor_flow_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 2073600,
+     "nonblack_bbox": [
+      0,
+      0,
+      1919,
+      1079
+     ]
+    }
+   },
+   "scenario_editor_zones": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 6351,
+    "canvases": 60,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/scenario_editor_zones_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 2071674,
+     "nonblack_bbox": [
+      0,
+      0,
+      1919,
+      1079
+     ]
+    }
+   },
+   "scenario_editor_ChallengeOptions": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 6351,
+    "canvases": 60,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/scenario_editor_ChallengeOptions_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 2073600,
+     "nonblack_bbox": [
+      0,
+      0,
+      1919,
+      1079
+     ]
+    }
+   },
+   "scenario_editor_sim": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 6351,
+    "canvases": 60,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/scenario_editor_sim_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 2073600,
+     "nonblack_bbox": [
+      0,
+      0,
+      1919,
+      1079
+     ]
+    }
+   },
+   "challenge_selector": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 6351,
+    "canvases": 60,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/challenge_selector_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 2073600,
+     "nonblack_bbox": [
+      0,
+      0,
+      1919,
+      1079
+     ]
+    }
+   },
+   "challenge_scenario_panel": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 6351,
+    "canvases": 60,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/challenge_scenario_panel_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 2073600,
+     "nonblack_bbox": [
+      0,
+      0,
+      1919,
+      1079
+     ]
+    }
+   },
+   "challenge_champion_selection": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 6351,
+    "canvases": 60,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/challenge_champion_selection_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 424071,
+     "nonblack_bbox": [
+      25,
+      76,
+      1869,
+      1054
+     ]
+    }
+   },
+   "challenge_parameters_editor": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 6351,
+    "canvases": 60,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/challenge_parameters_editor_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 424071,
+     "nonblack_bbox": [
+      25,
+      76,
+      1869,
+      1054
+     ]
+    }
+   },
+   "workshop_panel": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 6351,
+    "canvases": 60,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/workshop_panel_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 2073600,
+     "nonblack_bbox": [
+      0,
+      0,
+      1919,
+      1079
+     ]
+    }
+   },
+   "workshop_edit_shared": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 6351,
+    "canvases": 60,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/menu_ui/workshop_edit_shared_ui_on_black_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 424071,
+     "nonblack_bbox": [
+      25,
+      76,
+      1869,
+      1054
+     ]
+    }
+   },
+   "default_world_newgame": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 7874,
+    "canvases": 41,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/in_world/default_world_newgame_native_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 0.021199363425925925,
+     "nonblack_pixels": 42492,
+     "nonblack_bbox": [
+      10,
+      10,
+      1909,
+      1069
+     ]
+    }
+   },
+   "default_world": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 7874,
+    "canvases": 41,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/in_world/default_world_native_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 0.021199363425925925,
+     "nonblack_pixels": 42492,
+     "nonblack_bbox": [
+      10,
+      10,
+      1909,
+      1069
+     ]
+    }
+   },
+   "default_world_inspector": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 7974,
+    "canvases": 41,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/in_world/default_world_inspector_native_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 0.14538435570987654,
+     "nonblack_pixels": 292446,
+     "nonblack_bbox": [
+      10,
+      10,
+      1909,
+      1069
+     ]
+    }
+   },
+   "default_world_genes": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 7974,
+    "canvases": 41,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/in_world/default_world_genes_native_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 0.21958960262345678,
+     "nonblack_pixels": 450809,
+     "nonblack_bbox": [
+      10,
+      10,
+      1909,
+      1069
+     ]
+    }
+   },
+   "default_world_biology": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 7974,
+    "canvases": 41,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/in_world/default_world_biology_native_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 0.1206081211419753,
+     "nonblack_pixels": 245811,
+     "nonblack_bbox": [
+      10,
+      10,
+      1909,
+      1069
+     ]
+    }
+   },
+   "default_world_brain": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 7974,
+    "canvases": 41,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/in_world/default_world_brain_native_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 0.1937037037037037,
+     "nonblack_pixels": 398630,
+     "nonblack_bbox": [
+      10,
+      10,
+      1909,
+      1069
+     ]
+    }
+   },
+   "main_world_toolbar": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 7974,
+    "canvases": 41,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/in_world/main_world_toolbar_native_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 0.1937037037037037,
+     "nonblack_pixels": 398630,
+     "nonblack_bbox": [
+      10,
+      10,
+      1909,
+      1069
+     ]
+    }
+   },
+   "main_world_tool_placer": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 7974,
+    "canvases": 41,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/in_world/main_world_tool_placer_native_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 0.19755208333333332,
+     "nonblack_pixels": 406610,
+     "nonblack_bbox": [
+      10,
+      10,
+      1909,
+      1069
+     ]
+    }
+   },
+   "main_world_tool_user_actions": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 7974,
+    "canvases": 41,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/in_world/main_world_tool_user_actions_native_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 0.19909143518518518,
+     "nonblack_pixels": 409802,
+     "nonblack_bbox": [
+      10,
+      10,
+      1909,
+      1069
+     ]
+    }
+   },
+   "main_world_tool_view": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 7974,
+    "canvases": 41,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/in_world/main_world_tool_view_native_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 0.22976658950617285,
+     "nonblack_pixels": 473410,
+     "nonblack_bbox": [
+      10,
+      10,
+      1909,
+      1069
+     ]
+    }
+   },
+   "main_world_dynamic_parameters": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 7974,
+    "canvases": 41,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/in_world/main_world_dynamic_parameters_native_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 0.6945770640432098,
+     "nonblack_pixels": 1437063,
+     "nonblack_bbox": [
+      10,
+      10,
+      1919,
+      1079
+     ]
+    }
+   },
+   "main_world_lineage": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 7981,
+    "canvases": 41,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/in_world/main_world_lineage_native_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 0.2750487075617284,
+     "nonblack_pixels": 565267,
+     "nonblack_bbox": [
+      10,
+      10,
+      1909,
+      1069
+     ]
+    }
+   },
+   "main_world_information": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 8259,
+    "canvases": 41,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/in_world/main_world_information_native_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 2030500,
+     "nonblack_bbox": [
+      0,
+      0,
+      1919,
+      1079
+     ]
+    }
+   },
+   "main_world_settings_panel": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 8259,
+    "canvases": 41,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/in_world/main_world_settings_panel_native_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 1.0,
+     "nonblack_pixels": 2030500,
+     "nonblack_bbox": [
+      0,
+      0,
+      1919,
+      1079
+     ]
+    }
+   },
+   "world_dynamic_parameters_controls": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 8259,
+    "canvases": 41,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/in_world/world_dynamic_parameters_controls_native_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 0.7137789351851852,
+     "nonblack_pixels": 1474840,
+     "nonblack_bbox": [
+      10,
+      10,
+      1919,
+      1079
+     ]
+    }
+   },
+   "world_settings_controls": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 8259,
+    "canvases": 41,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/in_world/world_settings_controls_native_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 0.7137789351851852,
+     "nonblack_pixels": 1474840,
+     "nonblack_bbox": [
+      10,
+      10,
+      1919,
+      1079
+     ]
+    }
+   },
+   "lineage_species_panel": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 8266,
+    "canvases": 41,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/in_world/lineage_species_panel_native_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 0.2750487075617284,
+     "nonblack_pixels": 565267,
+     "nonblack_bbox": [
+      10,
+      10,
+      1909,
+      1069
+     ]
+    }
+   },
+   "lineage_species_tabs": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 8273,
+    "canvases": 41,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/in_world/lineage_species_tabs_native_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 0.2750487075617284,
+     "nonblack_pixels": 565267,
+     "nonblack_bbox": [
+      10,
+      10,
+      1909,
+      1069
+     ]
+    }
+   },
+   "lineage_species_info": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 8280,
+    "canvases": 41,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/in_world/lineage_species_info_native_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 0.2750487075617284,
+     "nonblack_pixels": 565267,
+     "nonblack_bbox": [
+      10,
+      10,
+      1909,
+      1069
+     ]
+    }
+   },
+   "lineage_species_genes": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 8287,
+    "canvases": 41,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/in_world/lineage_species_genes_native_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 0.2750487075617284,
+     "nonblack_pixels": 565267,
+     "nonblack_bbox": [
+      10,
+      10,
+      1909,
+      1069
+     ]
+    }
+   },
+   "lineage_species_brain": {
+    "screen": {
+     "width": 1920,
+     "height": 1080,
+     "dpi": 96,
+     "fullscreen": true
+    },
+    "node_count": 8294,
+    "canvases": 41,
+    "menu_ref": {
+     "file": "assets/game/reference/functional_ui_native/in_world/lineage_species_brain_native_1920x1080.png",
+     "size": [
+      1920,
+      1080
+     ],
+     "alpha_fraction": 0.2750487075617284,
+     "nonblack_pixels": 565267,
+     "nonblack_bbox": [
+      10,
+      10,
+      1909,
+      1069
+     ]
+    }
+   }
+  },
+  "sprite_manifest": {
+   "path": "assets/game/reference/functional_ui_native/sprite_manifest.json",
+   "schema": "rustibites.ui.native_sprite_manifest.v1",
+   "referenced_count": 213,
+   "mapped_count": 213,
+   "missing": []
+  },
+  "geometry": {
+   "path": "assets/game/reference/functional_ui_native/ui_geometry.json",
+   "title": {
+    "ok": true,
+    "screen": {
+     "width": 1920,
+     "height": 1080
+    },
+    "canvases": [
+     {
+      "path": "Title Screen",
+      "name": "Title Screen",
+      "render_mode": "ScreenSpaceOverlay",
+      "world_camera": "UI Camera",
+      "sorting_order": 10,
+      "rect_size": {
+       "x": 1920,
+       "y": 1080
+      },
+      "size_delta": {
+       "x": 1920,
+       "y": 1080
+      },
+      "pivot": {
+       "x": 0.5,
+       "y": 0.5
+      },
+      "anchor_min": {
+       "x": 0,
+       "y": 0
+      },
+      "anchor_max": {
+       "x": 0,
+       "y": 0
+      },
+      "local_scale": {
+       "x": 1,
+       "y": 1,
+       "z": 1
+      },
+      "position": {
+       "x": 960,
+       "y": 540,
+       "z": 0
+      },
+      "world_corners": [
+       {
+        "x": 0,
+        "y": 0
+       },
+       {
+        "x": 0,
+        "y": 1080
+       },
+       {
+        "x": 1920,
+        "y": 1080
+       },
+       {
+        "x": 1920,
+        "y": 0
+       }
+      ],
+      "screen_bbox": {
+       "x0": 0,
+       "y0": 0,
+       "x1": 1920,
+       "y1": 1080
+      },
+      "canvas_scaler": {
+       "uiScaleMode": "ConstantPixelSize",
+       "referenceResolution": {
+        "x": 800,
+        "y": 600
+       },
+       "screenMatchMode": "MatchWidthOrHeight",
+       "matchWidthOrHeight": 0,
+       "scaleFactor": 1,
+       "referencePixelsPerUnit": 100
+      }
+     },
+     {
+      "path": "BackGround",
+      "name": "BackGround",
+      "render_mode": "ScreenSpaceCamera",
+      "world_camera": "Main Camera",
+      "sorting_order": 0,
+      "rect_size": {
+       "x": 1920,
+       "y": 1080
+      },
+      "size_delta": {
+       "x": 1920,
+       "y": 1080
+      },
+      "pivot": {
+       "x": 0.5,
+       "y": 0.5
+      },
+      "anchor_min": {
+       "x": 0,
+       "y": 0
+      },
+      "anchor_max": {
+       "x": 0,
+       "y": 0
+      },
+      "local_scale": {
+       "x": 1,
+       "y": 1,
+       "z": 1
+      },
+      "position": {
+       "x": 960,
+       "y": 540,
+       "z": -107.570007
+      },
+      "world_corners": [
+       {
+        "x": 0,
+        "y": 0
+       },
+       {
+        "x": 0,
+        "y": 1080
+       },
+       {
+        "x": 1920,
+        "y": 1080
+       },
+       {
+        "x": 1920,
+        "y": 0
+       }
+      ],
+      "screen_bbox": {
+       "x0": 0,
+       "y0": 0,
+       "x1": 1920,
+       "y1": 1080
+      },
+      "canvas_scaler": {
+       "uiScaleMode": "ConstantPixelSize",
+       "referenceResolution": {
+        "x": 800,
+        "y": 600
+       },
+       "screenMatchMode": "MatchWidthOrHeight",
+       "matchWidthOrHeight": 0,
+       "scaleFactor": 1,
+       "referencePixelsPerUnit": 100
+      }
+     },
+     {
+      "path": "LoadingPanel",
+      "name": "LoadingPanel",
+      "render_mode": "ScreenSpaceOverlay",
+      "world_camera": "UI Camera",
+      "sorting_order": 11,
+      "rect_size": {
+       "x": 1920,
+       "y": 1080
+      },
+      "size_delta": {
+       "x": 1920,
+       "y": 1080
+      },
+      "pivot": {
+       "x": 0.5,
+       "y": 0.5
+      },
+      "anchor_min": {
+       "x": 0,
+       "y": 0
+      },
+      "anchor_max": {
+       "x": 0,
+       "y": 0
+      },
+      "local_scale": {
+       "x": 1,
+       "y": 1,
+       "z": 1
+      },
+      "position": {
+       "x": 960,
+       "y": 540,
+       "z": 0
+      },
+      "world_corners": [
+       {
+        "x": 0,
+        "y": 0
+       },
+       {
+        "x": 0,
+        "y": 1080
+       },
+       {
+        "x": 1920,
+        "y": 1080
+       },
+       {
+        "x": 1920,
+        "y": 0
+       }
+      ],
+      "screen_bbox": {
+       "x0": 0,
+       "y0": 0,
+       "x1": 1920,
+       "y1": 1080
+      },
+      "canvas_scaler": {
+       "uiScaleMode": "ConstantPixelSize",
+       "referenceResolution": {
+        "x": 800,
+        "y": 600
+       },
+       "screenMatchMode": "MatchWidthOrHeight",
+       "matchWidthOrHeight": 0,
+       "scaleFactor": 1,
+       "referencePixelsPerUnit": 100
+      }
+     }
+    ],
+    "key_rects": []
+   },
+   "settings": {
+    "ok": true,
+    "screen": {
+     "width": 1920,
+     "height": 1080
+    },
+    "canvases": [
+     {
+      "path": "Title Screen",
+      "name": "Title Screen",
+      "render_mode": "ScreenSpaceOverlay",
+      "world_camera": "UI Camera",
+      "sorting_order": 10,
+      "rect_size": {
+       "x": 1920,
+       "y": 1080
+      },
+      "size_delta": {
+       "x": 1920,
+       "y": 1080
+      },
+      "pivot": {
+       "x": 0.5,
+       "y": 0.5
+      },
+      "anchor_min": {
+       "x": 0,
+       "y": 0
+      },
+      "anchor_max": {
+       "x": 0,
+       "y": 0
+      },
+      "local_scale": {
+       "x": 1,
+       "y": 1,
+       "z": 1
+      },
+      "position": {
+       "x": 960,
+       "y": 540,
+       "z": 0
+      },
+      "world_corners": [
+       {
+        "x": 0,
+        "y": 0
+       },
+       {
+        "x": 0,
+        "y": 1080
+       },
+       {
+        "x": 1920,
+        "y": 1080
+       },
+       {
+        "x": 1920,
+        "y": 0
+       }
+      ],
+      "screen_bbox": {
+       "x0": 0,
+       "y0": 0,
+       "x1": 1920,
+       "y1": 1080
+      },
+      "canvas_scaler": {
+       "uiScaleMode": "ConstantPixelSize",
+       "referenceResolution": {
+        "x": 800,
+        "y": 600
+       },
+       "screenMatchMode": "MatchWidthOrHeight",
+       "matchWidthOrHeight": 0,
+       "scaleFactor": 1,
+       "referencePixelsPerUnit": 100
+      }
+     },
+     {
+      "path": "BackGround",
+      "name": "BackGround",
+      "render_mode": "ScreenSpaceCamera",
+      "world_camera": "Main Camera",
+      "sorting_order": 0,
+      "rect_size": {
+       "x": 1920,
+       "y": 1080
+      },
+      "size_delta": {
+       "x": 1920,
+       "y": 1080
+      },
+      "pivot": {
+       "x": 0.5,
+       "y": 0.5
+      },
+      "anchor_min": {
+       "x": 0,
+       "y": 0
+      },
+      "anchor_max": {
+       "x": 0,
+       "y": 0
+      },
+      "local_scale": {
+       "x": 1,
+       "y": 1,
+       "z": 1
+      },
+      "position": {
+       "x": 960,
+       "y": 540,
+       "z": -107.570007
+      },
+      "world_corners": [
+       {
+        "x": 0,
+        "y": 0
+       },
+       {
+        "x": 0,
+        "y": 1080
+       },
+       {
+        "x": 1920,
+        "y": 1080
+       },
+       {
+        "x": 1920,
+        "y": 0
+       }
+      ],
+      "screen_bbox": {
+       "x0": 0,
+       "y0": 0,
+       "x1": 1920,
+       "y1": 1080
+      },
+      "canvas_scaler": {
+       "uiScaleMode": "ConstantPixelSize",
+       "referenceResolution": {
+        "x": 800,
+        "y": 600
+       },
+       "screenMatchMode": "MatchWidthOrHeight",
+       "matchWidthOrHeight": 0,
+       "scaleFactor": 1,
+       "referencePixelsPerUnit": 100
+      }
+     },
+     {
+      "path": "LoadingPanel",
+      "name": "LoadingPanel",
+      "render_mode": "ScreenSpaceOverlay",
+      "world_camera": "UI Camera",
+      "sorting_order": 11,
+      "rect_size": {
+       "x": 1920,
+       "y": 1080
+      },
+      "size_delta": {
+       "x": 1920,
+       "y": 1080
+      },
+      "pivot": {
+       "x": 0.5,
+       "y": 0.5
+      },
+      "anchor_min": {
+       "x": 0,
+       "y": 0
+      },
+      "anchor_max": {
+       "x": 0,
+       "y": 0
+      },
+      "local_scale": {
+       "x": 1,
+       "y": 1,
+       "z": 1
+      },
+      "position": {
+       "x": 960,
+       "y": 540,
+       "z": 0
+      },
+      "world_corners": [
+       {
+        "x": 0,
+        "y": 0
+       },
+       {
+        "x": 0,
+        "y": 1080
+       },
+       {
+        "x": 1920,
+        "y": 1080
+       },
+       {
+        "x": 1920,
+        "y": 0
+       }
+      ],
+      "screen_bbox": {
+       "x0": 0,
+       "y0": 0,
+       "x1": 1920,
+       "y1": 1080
+      },
+      "canvas_scaler": {
+       "uiScaleMode": "ConstantPixelSize",
+       "referenceResolution": {
+        "x": 800,
+        "y": 600
+       },
+       "screenMatchMode": "MatchWidthOrHeight",
+       "matchWidthOrHeight": 0,
+       "scaleFactor": 1,
+       "referencePixelsPerUnit": 100
+      }
+     }
+    ],
+    "key_rects": []
+   },
+   "world": {
+    "ok": true,
+    "screen": {
+     "width": 1920,
+     "height": 1080
+    },
+    "canvases": [
+     {
+      "path": "UICanvas/MainUI/TopLayer",
+      "name": "TopLayer",
+      "render_mode": "ScreenSpaceCamera",
+      "world_camera": "UICamera",
+      "sorting_order": 20,
+      "rect_size": {
+       "x": 1920,
+       "y": 1080
+      },
+      "size_delta": {
+       "x": 0,
+       "y": 0
+      },
+      "pivot": {
+       "x": 0.5,
+       "y": 0.5
+      },
+      "anchor_min": {
+       "x": 0,
+       "y": 0
+      },
+      "anchor_max": {
+       "x": 1,
+       "y": 1
+      },
+      "local_scale": {
+       "x": 1,
+       "y": 1,
+       "z": 1
+      },
+      "position": {
+       "x": 0,
+       "y": 0,
+       "z": 0
+      },
+      "world_corners": [
+       {
+        "x": 0,
+        "y": 0
+       },
+       {
+        "x": 0,
+        "y": 1080
+       },
+       {
+        "x": 1920,
+        "y": 1080
+       },
+       {
+        "x": 1920,
+        "y": 0
+       }
+      ],
+      "screen_bbox": {
+       "x0": 0,
+       "y0": 0,
+       "x1": 1920,
+       "y1": 1080
+      }
+     },
+     {
+      "path": "UICanvas/MainUI/Layer2",
+      "name": "Layer2",
+      "render_mode": "ScreenSpaceCamera",
+      "world_camera": "UICamera",
+      "sorting_order": 5,
+      "rect_size": {
+       "x": 1920,
+       "y": 1080
+      },
+      "size_delta": {
+       "x": 0,
+       "y": 0
+      },
+      "pivot": {
+       "x": 0.5,
+       "y": 0.5
+      },
+      "anchor_min": {
+       "x": 0,
+       "y": 0
+      },
+      "anchor_max": {
+       "x": 1,
+       "y": 1
+      },
+      "local_scale": {
+       "x": 1,
+       "y": 1,
+       "z": 1
+      },
+      "position": {
+       "x": 0,
+       "y": 0,
+       "z": 0
+      },
+      "world_corners": [
+       {
+        "x": 0,
+        "y": 0
+       },
+       {
+        "x": 0,
+        "y": 1080
+       },
+       {
+        "x": 1920,
+        "y": 1080
+       },
+       {
+        "x": 1920,
+        "y": 0
+       }
+      ],
+      "screen_bbox": {
+       "x0": 0,
+       "y0": 0,
+       "x1": 1920,
+       "y1": 1080
+      }
+     },
+     {
+      "path": "WeightDisplayHolder",
+      "name": "WeightDisplayHolder",
+      "render_mode": "WorldSpace",
+      "world_camera": null,
+      "sorting_order": -1,
+      "rect_size": {
+       "x": 100000,
+       "y": 100000
+      },
+      "size_delta": {
+       "x": 100000,
+       "y": 100000
+      },
+      "pivot": {
+       "x": 0.5,
+       "y": 0.5
+      },
+      "anchor_min": {
+       "x": 0.5,
+       "y": 0.5
+      },
+      "anchor_max": {
+       "x": 0.5,
+       "y": 0.5
+      },
+      "local_scale": {
+       "x": 1,
+       "y": 1,
+       "z": 1
+      },
+      "position": {
+       "x": -0.7,
+       "y": 0.32,
+       "z": 0
+      },
+      "world_corners": [
+       {
+        "x": -50000.7,
+        "y": -49999.68
+       },
+       {
+        "x": -50000.7,
+        "y": 50000.32
+       },
+       {
+        "x": 49999.3,
+        "y": 50000.32
+       },
+       {
+        "x": 49999.3,
+        "y": -49999.68
+       }
+      ],
+      "screen_bbox": {
+       "x0": -50000.7,
+       "y0": -49999.68,
+       "x1": 49999.3,
+       "y1": 50000.32
+      }
+     },
+     {
+      "path": "UICanvas/MainUI/TopLayer/Popuholder",
+      "name": "Popuholder",
+      "render_mode": "ScreenSpaceCamera",
+      "world_camera": "UICamera",
+      "sorting_order": 100,
+      "rect_size": {
+       "x": 1920,
+       "y": 1080
+      },
+      "size_delta": {
+       "x": 0,
+       "y": 0
+      },
+      "pivot": {
+       "x": 0.5,
+       "y": 0.5
+      },
+      "anchor_min": {
+       "x": 0,
+       "y": 0
+      },
+      "anchor_max": {
+       "x": 1,
+       "y": 1
+      },
+      "local_scale": {
+       "x": 1.35,
+       "y": 1.35,
+       "z": 1.35
+      },
+      "position": {
+       "x": 0,
+       "y": 0,
+       "z": -21.73
+      },
+      "world_corners": [
+       {
+        "x": -336.000031,
+        "y": -189.000015
+       },
+       {
+        "x": -336.000031,
+        "y": 1269
+       },
+       {
+        "x": 2256,
+        "y": 1269
+       },
+       {
+        "x": 2256,
+        "y": -189.000015
+       }
+      ],
+      "screen_bbox": {
+       "x0": -336.000031,
+       "y0": -189.000015,
+       "x1": 2256,
+       "y1": 1269
+      }
+     },
+     {
+      "path": "UICanvas",
+      "name": "UICanvas",
+      "render_mode": "ScreenSpaceCamera",
+      "world_camera": "UICamera",
+      "sorting_order": 0,
+      "rect_size": {
+       "x": 1920,
+       "y": 1080
+      },
+      "size_delta": {
+       "x": 1920,
+       "y": 1080
+      },
+      "pivot": {
+       "x": 0.5,
+       "y": 0.5
+      },
+      "anchor_min": {
+       "x": 0,
+       "y": 0
+      },
+      "anchor_max": {
+       "x": 0,
+       "y": 0
+      },
+      "local_scale": {
+       "x": 1,
+       "y": 1,
+       "z": 1
+      },
+      "position": {
+       "x": 0,
+       "y": 0,
+       "z": 0
+      },
+      "world_corners": [
+       {
+        "x": 0,
+        "y": 0
+       },
+       {
+        "x": 0,
+        "y": 1080
+       },
+       {
+        "x": 1920,
+        "y": 1080
+       },
+       {
+        "x": 1920,
+        "y": 0
+       }
+      ],
+      "screen_bbox": {
+       "x0": 0,
+       "y0": 0,
+       "x1": 1920,
+       "y1": 1080
+      },
+      "canvas_scaler": {
+       "uiScaleMode": "ConstantPixelSize",
+       "referenceResolution": {
+        "x": 1920,
+        "y": 1080
+       },
+       "screenMatchMode": "MatchWidthOrHeight",
+       "matchWidthOrHeight": 0,
+       "scaleFactor": 1,
+       "referencePixelsPerUnit": 100
+      }
+     },
+     {
+      "path": "UICanvas/MainUI/TopLayer/TooltipCanvas",
+      "name": "TooltipCanvas",
+      "render_mode": "ScreenSpaceCamera",
+      "world_camera": "UICamera",
+      "sorting_order": 150,
+      "rect_size": {
+       "x": 1920,
+       "y": 1080
+      },
+      "size_delta": {
+       "x": 3.05175781e-05,
+       "y": 0
+      },
+      "pivot": {
+       "x": 0.5,
+       "y": 0.5
+      },
+      "anchor_min": {
+       "x": 0,
+       "y": 0
+      },
+      "anchor_max": {
+       "x": 1,
+       "y": 1
+      },
+      "local_scale": {
+       "x": 1,
+       "y": 1,
+       "z": 1
+      },
+      "position": {
+       "x": 0,
+       "y": 0,
+       "z": 0
+      },
+      "world_corners": [
+       {
+        "x": 0,
+        "y": 0
+       },
+       {
+        "x": 0,
+        "y": 1080
+       },
+       {
+        "x": 1920,
+        "y": 1080
+       },
+       {
+        "x": 1920,
+        "y": 0
+       }
+      ],
+      "screen_bbox": {
+       "x0": 0,
+       "y0": 0,
+       "x1": 1920,
+       "y1": 1080
+      }
+     }
+    ],
+    "key_rects": []
+   }
+  },
+  "native_refs_manifest": "assets/game/reference/functional_ui_native/menu_ui/native_runtime_manifest.json",
+  "status": "native 1920 atlas v2: 60 sessions, every active node carries screen_bbox/world_corners; layout-group-free composer can consume",
+  "note": "v2 verified title panel [1374.7,132.5,1870,848.6], GenesPanel [10,104.4,457.5,1000]. Old runtime atlas/layout remains historical.",
+  "per_active_node_rects": true,
+  "layout_group_free_composer": true,
+  "verified_rects": {
+   "title_panel": [
+    1374.7,
+    132.5,
+    1870,
+    848.6
+   ],
+   "genes_panel": [
+    10,
+    104.4,
+    457.5,
+    1000
+   ]
+  }
+ },
+ "native_menu_background": {
+  "schema": "rustibites.ui.native_menu_background.v1",
+  "root": "assets/game/reference/functional_ui_native/menu_background",
+  "manifest": "assets/game/reference/functional_ui_native/menu_background/manifest.json",
+  "frames": [
+   {
+    "name": "menu_background_title",
+    "route": "/d/menu_background",
+    "file": "assets/game/reference/functional_ui_native/menu_background/menu_background_title_1920x1080.png",
+    "sha256": "f3f2eb5ebaf64971ea0a7479009698834dbb9eecb7061f6b7e203c6506f748ea",
+    "size": [
+     1920,
+     1080
+    ],
+    "mean_rgb": [
+     5.623439911265432,
+     35.60262345679013,
+     21.10491512345679
+    ],
+    "unique_colors": 45429
+   },
+   {
+    "name": "menu_background_title_canvas",
+    "route": "/d/ui_overlay",
+    "file": "assets/game/reference/functional_ui_native/menu_background/menu_background_title_canvas_1920x1080.png",
+    "sha256": "f3f2eb5ebaf64971ea0a7479009698834dbb9eecb7061f6b7e203c6506f748ea",
+    "size": [
+     1920,
+     1080
+    ],
+    "mean_rgb": [
+     5.623439911265432,
+     35.60262345679013,
+     21.10491512345679
+    ],
+    "unique_colors": 45429
+   },
+   {
+    "name": "menu_background_settings",
+    "route": "/d/menu_background",
+    "file": "assets/game/reference/functional_ui_native/menu_background/menu_background_settings_1920x1080.png",
+    "sha256": "f3f2eb5ebaf64971ea0a7479009698834dbb9eecb7061f6b7e203c6506f748ea",
+    "size": [
+     1920,
+     1080
+    ],
+    "mean_rgb": [
+     5.623439911265432,
+     35.60262345679013,
+     21.10491512345679
+    ],
+    "unique_colors": 45429
+   }
+  ],
+  "screen": {
+   "width": 1920,
+   "height": 1080,
+   "dpi": 96,
+   "fullscreen": true
+  },
+  "freeze": {
+   "timescale": {
+    "ok": true,
+    "timeScale": 0
+   },
+   "video": {
+    "ok": true,
+    "paused": true,
+    "players": 1
+   }
+  },
+  "ui_hidden_method": "deactivate UI, Title Screen, UI/Popuholder/screenBlocker; BackGround kept active",
+  "paused": "Time.timeScale=0 + VideoPlayer.Pause()",
+  "video": {
+   "ok": true,
+   "video_players": [
+    {
+     "path": "BackGround/Video Player",
+     "name": "Video Player",
+     "isPlaying": true,
+     "isPaused": false,
+     "isLooping": true,
+     "frame": 52,
+     "frameCount": "2812",
+     "time": 1.7333333333333334,
+     "timeReference": "Freerun",
+     "renderMode": "RenderTexture",
+     "aspectRatio": "FitInside",
+     "clip": "showOff",
+     "url": "",
+     "targetTexture": "Video"
+    }
+   ],
+   "clips": [
+    {
+     "name": "showOff",
+     "type": "VideoClip"
+    }
+   ],
+   "render_textures": [
+    {
+     "name": "Video",
+     "width": 1920,
+     "height": 1080
+    }
+   ]
+  },
+  "note": "Shared title/settings background-only frozen frame (identical hashes); BackGround retained, UI/Title Screen/screenBlocker hidden; VideoClip showOff -> RenderTexture Video 1920x1080, paused. Composite behind native UI-on-black diagnostics; transparent UI-only isolation still separate."
+ }
+}

@@ -1,0 +1,19 @@
+{
+ "name": "eyesRecolorizerShader",
+ "shader": "Shader Graphs/eyesRecolorizerShader",
+ "colors": {
+  "_Color": null
+ },
+ "floats": {
+  "_QueueControl": -1.0,
+  "_QueueOffset": 0.0,
+  "_hueShift": 0.0
+ },
+ "textures": {
+  "_MainTex": "UnityTexEnv(m_Offset=Vector2f(0.0, 0.0), m_Scale=Vector2f(1.0, 1.0), m_Texture=PPtr(m_FileID=0, m_PathID=42, assetsfile=<SerializedFile>))",
+  "unity_Lightmaps": "UnityTexEnv(m_Offset=Vector2f(0.0, 0.0), m_Scale=Vector2f(1.0, 1.0), m_Texture=PPtr(m_FileID=0, m_PathID=0, assetsfile=<SerializedFile>))",
+  "unity_LightmapsInd": "UnityTexEnv(m_Offset=Vector2f(0.0, 0.0), m_Scale=Vector2f(1.0, 1.0), m_Texture=PPtr(m_FileID=0, m_PathID=0, assetsfile=<SerializedFile>))",
+  "unity_ShadowMasks": "UnityTexEnv(m_Offset=Vector2f(0.0, 0.0), m_Scale=Vector2f(1.0, 1.0), m_Texture=PPtr(m_FileID=0, m_PathID=0, assetsfile=<SerializedFile>))"
+ },
+ "source_asset": "sharedassets0.assets"
+}

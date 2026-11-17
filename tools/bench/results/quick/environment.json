@@ -1,0 +1,82 @@
+{
+    "schema":  "rustibites.bench.environment/1",
+    "captured_at_utc":  "2026-10-30T07:11:50.6428861Z",
+    "hostname":  "DESKTOP",
+    "os":  {
+               "description":  "Microsoft Windows 10 Home",
+               "version":  "10.0.19045",
+               "architecture":  "AMD64",
+               "build":  "19045"
+           },
+    "cpu":  {
+                "name":  "AMD Ryzen 5 3600 6-Core Processor",
+                "physical_cores":  6,
+                "logical_cores":  12,
+                "max_clock_mhz":  3593
+            },
+    "logical_processors":  12,
+    "memory_total_gb":  15.95,
+    "memory_free_gb":  6.21,
+    "cpu_load_pct":  63,
+    "powershell":  "5.1.19041.6456",
+    "rust":  {
+                 "rustc":  "1.99.1 (58cf8f9c3 2026-10-13)",
+                 "cargo":  "1.99.1 (5f94df478 2026-08-27)",
+                 "release":  "1.99.1",
+                 "commit_hash":  "58cf8f9c35b355199727627d07ae34a4e2846d67",
+                 "host":  "x86_64-pc-windows-msvc",
+                 "llvm":  "23.1.1"
+             },
+    "git":  {
+                "head":  "07a401ec7f897fffd5711e85647bae7fe5ee6bbf",
+                "head_short":  "07a401ec7f89",
+                "branch":  "main",
+                "subject":  "World: persistent pool API for body (ParallelExecutor, deterministic chunk merge) + CI workflows/local gate + docs; io robustness lint fix; spec audit WIP",
+                "commit_date":  "2026-10-30T03:11:00-04:00",
+                "describe":  "07a401e-dirty",
+                "dirty":  true,
+                "dirty_files":  12,
+                "status_lines":  [
+                                     " M Cargo.lock",
+                                     " M Cargo.toml",
+                                     " M crates/bibites-core/src/body.rs",
+                                     " M crates/bibites-core/src/brain.rs",
+                                     " M crates/bibites-core/src/genome.rs",
+                                     " M crates/bibites-core/src/species.rs",
+                                     " M docs/spec/02-body-organs-physics.md",
+                                     " M docs/spec/03-world-ecology.md",
+                                     "?? crates/bibites-core/examples/",
+                                     "?? crates/bibites-view/",
+                                     "?? tools/bench/",
+                                     "?? tools/parity_round2/"
+                                 ]
+            },
+    "release_profile":  {
+                            "manifest":  "Cargo.toml",
+                            "entries":  {
+                                            "opt-level":  "3",
+                                            "lto":  "\"fat\"",
+                                            "codegen-units":  "1",
+                                            "panic":  "\"abort\"",
+                                            "strip":  "\"debuginfo\""
+                                        },
+                            "raw":  "[profile.release]\nopt-level = 3\nlto = \"fat\"\ncodegen-units = 1\npanic = \"abort\"\nstrip = \"debuginfo\""
+                        },
+    "binary":  {
+                   "original_path":  "Z:\\RUSTibites\\target\\release\\rustibites.exe",
+                   "benchmark_copy":  "C:\\Users\\Storme\\AppData\\Local\\Temp\\rustibites-bench\\bin\\rustibites-D80ED2C74CEC7995.exe",
+                   "sha256":  "D80ED2C74CEC79952170AC5D95DE28EAE7389FB176E253098434418960D32F1D",
+                   "size_bytes":  1855488,
+                   "last_write_utc":  "2026-10-30T07:07:59.5317773Z"
+               },
+    "simulator":  {
+                      "default_sim_tps":  30,
+                      "note":  "SimSettings::game_defaults() fixed_dt = 1/30 s; bench reports sim_secs = ticks * fixed_dt"
+                  },
+    "benchmark":  {
+                      "engine_wall_secs_excludes":  "world construction/spawn and state_fingerprint sampling; process_wall_secs includes them",
+                      "seed_base":  "0x5255535400000000",
+                      "seed_formula":  "seed = 0x5255535400000000 xor repetition_index (repetition starts at 0)",
+                      "metric":  "bibite_updates_per_second = ticks_per_second * bibites_start (primary throughput)"
+                  }
+}

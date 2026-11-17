@@ -1,0 +1,232 @@
+{
+  "schema": "rustibites.compat.game_report.v1",
+  "game_version": "0.6.3.1",
+  "player_log": "C:\\Users\\Storme\\AppData\\Local\\Low\\The Bibites\\The Bibites\\Player.log",
+  "method": "one fixture per fresh process/lab via tools/roundtrip/load_compat_pack.py --one-fixture <name> --hard-timeout 90 --settle 2 --resave-retries 2 (watchdog 2e8eda4); loads previously verified one-per-process, re-save retest after fmt 0989692",
+  "fixtures": [
+    {
+      "name": "rust_lol_save.zip",
+      "kind": "save",
+      "accepted": true,
+      "counts": {
+        "bibites": 22,
+        "corpses": 13,
+        "eggs": 4
+      },
+      "certified": true
+    },
+    {
+      "name": "rust_state_save.zip",
+      "kind": "save",
+      "accepted": true,
+      "counts": {
+        "bibites": 22,
+        "corpses": 13,
+        "eggs": 4
+      },
+      "resave_ok": false,
+      "resave_error": "BridgeUnavailable('bridge_unavailable: [WinError 10054] An existing connection was forcibly closed by the remote host')"
+    },
+    {
+      "name": "rust_eggs_save.zip",
+      "kind": "save",
+      "accepted": true,
+      "counts": {
+        "bibites": 22,
+        "corpses": 13,
+        "eggs": 4
+      },
+      "resave_ok": false,
+      "resave_error": "BridgeUnavailable('bridge_unavailable: [WinError 10054] An existing connection was forcibly closed by the remote host')"
+    },
+    {
+      "name": "rust_corpses_save.zip",
+      "kind": "save",
+      "accepted": true,
+      "counts": {
+        "bibites": 22,
+        "corpses": 13,
+        "eggs": 4
+      },
+      "certified": true
+    },
+    {
+      "name": "rust_tools_phero_save.zip",
+      "kind": "save",
+      "accepted": true,
+      "counts": {
+        "bibites": 22,
+        "corpses": 13,
+        "eggs": 4
+      },
+      "resave_ok": false,
+      "resave_error": "BridgeUnavailable('bridge_unavailable: [WinError 10054] An existing connection was forcibly closed by the remote host')"
+    },
+    {
+      "name": "rust_default_scenario_save.zip",
+      "kind": "save",
+      "accepted": true,
+      "counts": {
+        "bibites": 1,
+        "corpses": 0,
+        "eggs": 0
+      },
+      "resave_ok": false,
+      "resave_error": "BridgeUnavailable('bridge_unavailable: [WinError 10054] An existing connection was forcibly closed by the remote host')"
+    },
+    {
+      "name": "rust_default_scenario.zip",
+      "kind": "scenario",
+      "accepted": true,
+      "counts": {
+        "bibites": 1,
+        "corpses": 0,
+        "eggs": 0
+      }
+    },
+    {
+      "name": "rust_ring_scenario.zip",
+      "kind": "scenario",
+      "accepted": true,
+      "counts": {
+        "bibites": 1,
+        "corpses": 0,
+        "eggs": 0
+      }
+    },
+    {
+      "name": "rust_template.bb8template",
+      "kind": "template",
+      "accepted": true,
+      "template_kind": "template"
+    }
+  ],
+  "results": [
+    {
+      "name": "rust_lol_save.zip",
+      "kind": "save",
+      "accepted": true,
+      "counts": {
+        "bibites": 22,
+        "corpses": 13,
+        "eggs": 4
+      },
+      "certified": true
+    },
+    {
+      "name": "rust_state_save.zip",
+      "kind": "save",
+      "accepted": true,
+      "counts": {
+        "bibites": 22,
+        "corpses": 13,
+        "eggs": 4
+      },
+      "resave_ok": false,
+      "resave_error": "BridgeUnavailable('bridge_unavailable: [WinError 10054] An existing connection was forcibly closed by the remote host')"
+    },
+    {
+      "name": "rust_eggs_save.zip",
+      "kind": "save",
+      "accepted": true,
+      "counts": {
+        "bibites": 22,
+        "corpses": 13,
+        "eggs": 4
+      },
+      "resave_ok": false,
+      "resave_error": "BridgeUnavailable('bridge_unavailable: [WinError 10054] An existing connection was forcibly closed by the remote host')"
+    },
+    {
+      "name": "rust_corpses_save.zip",
+      "kind": "save",
+      "accepted": true,
+      "counts": {
+        "bibites": 22,
+        "corpses": 13,
+        "eggs": 4
+      },
+      "certified": true
+    },
+    {
+      "name": "rust_tools_phero_save.zip",
+      "kind": "save",
+      "accepted": true,
+      "counts": {
+        "bibites": 22,
+        "corpses": 13,
+        "eggs": 4
+      },
+      "resave_ok": false,
+      "resave_error": "BridgeUnavailable('bridge_unavailable: [WinError 10054] An existing connection was forcibly closed by the remote host')"
+    },
+    {
+      "name": "rust_default_scenario_save.zip",
+      "kind": "save",
+      "accepted": true,
+      "counts": {
+        "bibites": 1,
+        "corpses": 0,
+        "eggs": 0
+      },
+      "resave_ok": false,
+      "resave_error": "BridgeUnavailable('bridge_unavailable: [WinError 10054] An existing connection was forcibly closed by the remote host')"
+    },
+    {
+      "name": "rust_default_scenario.zip",
+      "kind": "scenario",
+      "accepted": true,
+      "counts": {
+        "bibites": 1,
+        "corpses": 0,
+        "eggs": 0
+      }
+    },
+    {
+      "name": "rust_ring_scenario.zip",
+      "kind": "scenario",
+      "accepted": true,
+      "counts": {
+        "bibites": 1,
+        "corpses": 0,
+        "eggs": 0
+      }
+    },
+    {
+      "name": "rust_template.bb8template",
+      "kind": "template",
+      "accepted": true,
+      "template_kind": "template"
+    }
+  ],
+  "classification": {
+    "load_accepted": [
+      "rust_lol_save.zip",
+      "rust_state_save.zip",
+      "rust_eggs_save.zip",
+      "rust_corpses_save.zip",
+      "rust_tools_phero_save.zip",
+      "rust_default_scenario_save.zip",
+      "rust_default_scenario.zip",
+      "rust_ring_scenario.zip",
+      "rust_template.bb8template"
+    ],
+    "resave_ok": [],
+    "resave_failed": [
+      "rust_state_save.zip",
+      "rust_eggs_save.zip",
+      "rust_tools_phero_save.zip",
+      "rust_default_scenario_save.zip"
+    ],
+    "no_resave_expected": [
+      "rust_default_scenario.zip",
+      "rust_ring_scenario.zip",
+      "rust_template.bb8template"
+    ]
+  },
+  "notes": [
+    "All fixtures load-accepted with expected counts; no dropped expected fields/Player.log errors at load.",
+    "The updated script's re-save retry still hits WinError10054 (bridge forced close) after a successful load for every save fixture; the lifecycle watchdog then exits 124, so no resave_ok result is produced.",
+    "Scenario/template entries have no re-save requirement."
+  ]
+}

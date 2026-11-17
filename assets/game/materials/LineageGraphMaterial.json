@@ -1,0 +1,36 @@
+{
+ "name": "LineageGraphMaterial",
+ "shader": "Lineage Mesh Shader",
+ "colors": {
+  "Color_030f35829c51451b8148294378e89c40": null,
+  "Color_e3685aa8e3b0496cb662f7a098b70c91": null,
+  "Color_e483d28d460742b8a0aebc13807583a4": null,
+  "_BorderColor": null,
+  "_Color": null,
+  "_ParentColor": null,
+  "_VirusColor": null
+ },
+ "floats": {
+  "Vector1_113434e1fb2f4426ad43994dd8a824dc": 0.25,
+  "Vector1_1e7790215f0448d2a070ca6771cc5c41": 0.5,
+  "Vector1_e3a0e0f92b6a43b0a108a2b076fa6cbf": 2.0,
+  "_BlendHeight": 0.0,
+  "_BorderWidth": 0.5,
+  "_ColorMask": 15.0,
+  "_Focus": 0.0,
+  "_HurtAmount": 0.0,
+  "_InfectedRatio": 0.0,
+  "_Stencil": 0.0,
+  "_StencilComp": 2.0,
+  "_StencilOp": 0.0,
+  "_StencilReadMask": 255.0,
+  "_StencilWriteMask": 255.0,
+  "_UseUIAlphaClip": 0.0
+ },
+ "textures": {
+  "unity_Lightmaps": "UnityTexEnv(m_Offset=Vector2f(0.0, 0.0), m_Scale=Vector2f(1.0, 1.0), m_Texture=PPtr(m_FileID=0, m_PathID=0, assetsfile=<SerializedFile>))",
+  "unity_LightmapsInd": "UnityTexEnv(m_Offset=Vector2f(0.0, 0.0), m_Scale=Vector2f(1.0, 1.0), m_Texture=PPtr(m_FileID=0, m_PathID=0, assetsfile=<SerializedFile>))",
+  "unity_ShadowMasks": "UnityTexEnv(m_Offset=Vector2f(0.0, 0.0), m_Scale=Vector2f(1.0, 1.0), m_Texture=PPtr(m_FileID=0, m_PathID=0, assetsfile=<SerializedFile>))"
+ },
+ "source_asset": "sharedassets2.assets"
+}

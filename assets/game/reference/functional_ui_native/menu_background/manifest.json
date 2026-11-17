@@ -1,0 +1,106 @@
+{
+  "schema": "rustibites.ui.native_menu_background.v1",
+  "screen": {
+    "width": 1920,
+    "height": 1080,
+    "dpi": 96,
+    "fullscreen": true
+  },
+  "frames": [
+    {
+      "name": "menu_background_title",
+      "route": "/d/menu_background",
+      "file": "assets/game/reference/functional_ui_native/menu_background/menu_background_title_1920x1080.png",
+      "sha256": "f3f2eb5ebaf64971ea0a7479009698834dbb9eecb7061f6b7e203c6506f748ea",
+      "size": [
+        1920,
+        1080
+      ],
+      "mean_rgb": [
+        5.623439911265432,
+        35.60262345679013,
+        21.10491512345679
+      ],
+      "unique_colors": 45429
+    },
+    {
+      "name": "menu_background_title_canvas",
+      "route": "/d/ui_overlay",
+      "file": "assets/game/reference/functional_ui_native/menu_background/menu_background_title_canvas_1920x1080.png",
+      "sha256": "f3f2eb5ebaf64971ea0a7479009698834dbb9eecb7061f6b7e203c6506f748ea",
+      "size": [
+        1920,
+        1080
+      ],
+      "mean_rgb": [
+        5.623439911265432,
+        35.60262345679013,
+        21.10491512345679
+      ],
+      "unique_colors": 45429
+    },
+    {
+      "name": "menu_background_settings",
+      "route": "/d/menu_background",
+      "file": "assets/game/reference/functional_ui_native/menu_background/menu_background_settings_1920x1080.png",
+      "sha256": "f3f2eb5ebaf64971ea0a7479009698834dbb9eecb7061f6b7e203c6506f748ea",
+      "size": [
+        1920,
+        1080
+      ],
+      "mean_rgb": [
+        5.623439911265432,
+        35.60262345679013,
+        21.10491512345679
+      ],
+      "unique_colors": 45429
+    }
+  ],
+  "video": {
+    "ok": true,
+    "video_players": [
+      {
+        "path": "BackGround/Video Player",
+        "name": "Video Player",
+        "isPlaying": true,
+        "isPaused": false,
+        "isLooping": true,
+        "frame": 52,
+        "frameCount": "2812",
+        "time": 1.7333333333333334,
+        "timeReference": "Freerun",
+        "renderMode": "RenderTexture",
+        "aspectRatio": "FitInside",
+        "clip": "showOff",
+        "url": "",
+        "targetTexture": "Video"
+      }
+    ],
+    "clips": [
+      {
+        "name": "showOff",
+        "type": "VideoClip"
+      }
+    ],
+    "render_textures": [
+      {
+        "name": "Video",
+        "width": 1920,
+        "height": 1080
+      }
+    ]
+  },
+  "freeze": {
+    "timescale": {
+      "ok": true,
+      "timeScale": 0
+    },
+    "video": {
+      "ok": true,
+      "paused": true,
+      "players": 1
+    }
+  },
+  "ui_hidden_method": "deactivate UI, Title Screen, UI/Popuholder/screenBlocker; BackGround kept active",
+  "paused": "Time.timeScale=0 + VideoPlayer.Pause()"
+}

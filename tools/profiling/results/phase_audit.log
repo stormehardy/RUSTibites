@@ -1,0 +1,109 @@
+running 7 tests
+test body::perf_probe_tests::perf_probe_clustered_and_spread ... ok
+test body::world_perf_probe_tests::perf_probe_world_phase_table ... ok
+test sim::tests::perf_parallel_executor_overhead ... pool 8x1-item chunks: 33.1 us/call
+serial 8x1-item chunks: 0.7 us/call
+ok
+test world::tests::perf_phase_audit ... N=500: ticks=50 wall=19.318 ms/tick=0.386
+  body                 0.182 ms/tick   47.2%
+  physics              0.132 ms/tick   34.4%
+  sensing              0.062 ms/tick   16.0%
+  hash-sync            0.005 ms/tick    1.3%
+  decay                0.002 ms/tick    0.5%
+  deaths               0.001 ms/tick    0.3%
+  zones                0.001 ms/tick    0.1%
+  eggs                 0.000 ms/tick    0.0%
+  tools                0.000 ms/tick    0.0%
+N=2000: ticks=100 wall=286.996 ms/tick=2.870
+  body                 1.499 ms/tick   52.3%
+  physics              1.022 ms/tick   35.6%
+  sensing              0.318 ms/tick   11.1%
+  hash-sync            0.014 ms/tick    0.5%
+  deaths               0.008 ms/tick    0.3%
+  decay                0.003 ms/tick    0.1%
+  zones                0.002 ms/tick    0.1%
+  eggs                 0.001 ms/tick    0.0%
+  tools                0.001 ms/tick    0.0%
+  pheromones           0.000 ms/tick    0.0%
+  producers            0.000 ms/tick    0.0%
+  events-stats         0.000 ms/tick    0.0%
+  red-death            0.000 ms/tick    0.0%
+  animators            0.000 ms/tick    0.0%
+  rad                  0.000 ms/tick    0.0%
+  colour-killers       0.000 ms/tick    0.0%
+N=2000 threads=8: ticks=100 wall=316.539 ms/tick=3.165
+  body                 1.741 ms/tick   55.0%
+  physics              1.144 ms/tick   36.2%
+  sensing              0.242 ms/tick    7.7%
+  hash-sync            0.017 ms/tick    0.5%
+  deaths               0.011 ms/tick    0.4%
+  decay                0.003 ms/tick    0.1%
+  zones                0.002 ms/tick    0.1%
+  eggs                 0.001 ms/tick    0.0%
+  tools                0.001 ms/tick    0.0%
+  pheromones           0.000 ms/tick    0.0%
+  producers            0.000 ms/tick    0.0%
+  red-death            0.000 ms/tick    0.0%
+  events-stats         0.000 ms/tick    0.0%
+  animators            0.000 ms/tick    0.0%
+  rad                  0.000 ms/tick    0.0%
+  colour-killers       0.000 ms/tick    0.0%
+N=5000 non-physics: sensing=15.559 ms, events-stats=0.000 ms, hash-sync=0.100 ms
+N=5000 per-bibite: sensing=3.112 us, events-stats=0.000 us, hash-sync=0.020 us
+N=5000 second sensing (no sense due): 10.747 ms
+ok
+test world::tests::perf_scale_sizes ... sizes: BibiteRecord=1704 Brain=440 SenseOutputs=96 SteeringInputs=32 Entry=32 QueryHit=24
+sizes: BibiteEvent=24 PelletRecord=48 EggRecord=720 StatsSample=576
+starter brain: nodes=48 syns=3
+ok
+test world::tests::perf_sensing_breakdown ... N=2000 masks: plant=2000 meat=0 bibite=0 phero=0 spots=0
+N=2000 threads=1 forced-due sensing: 3.428 ms
+N=2000 threads=8 forced-due sensing: 1.273 ms
+N=2000 herding-off forced-due sensing: 2.782 ms
+N=2000 herding-off/no-spots sensing: 2.437 ms
+N=2000 plant query-only serial pass: 1.131 ms
+N=2000 sort-128-hit buffers: 5.312 ms
+pool 8 no-op jobs: 27.7 us/activation
+ok
+test world::tests::perf_sensing_tick_profile ... threads=1: due_ticks=10 zero_ticks=90 mean_due=200.0 avg_sensing=0.342 ms due_tick_sensing=3.327 ms per_due=1.663 us pop=2000 pellets=86
+threads=1: due-bibite FOV 0.279 us
+threads=1: hash take/restore 0.037 ms
+threads=1: prefilter 0.007 ms/tick
+threads=1: sense_due=2000 phero_needs=0 spots=0
+threads=1: query-only 1.104 ms / 2000 bibites, avg_hits=0.5
+threads=8: due_ticks=10 zero_ticks=90 mean_due=200.0 avg_sensing=0.172 ms due_tick_sensing=1.641 ms per_due=0.821 us pop=2000 pellets=86
+threads=8: due-bibite FOV 0.271 us
+threads=8: hash take/restore 0.035 ms
+threads=8: prefilter 0.007 ms/tick
+threads=8: sense_due=2000 phero_needs=0 spots=0
+threads=8: query-only 1.697 ms / 2000 bibites, avg_hits=0.5
+ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 384 filtered out; finished in 3.59s
+
+
+   Compiling bibites-core v0.1.0 (Z:\RUSTibites\crates\bibites-core)
+    Finished `release` profile [optimized] target(s) in 1m 23s
+     Running unittests src\lib.rs (target\release\deps\bibites_core-96fd8523da9c4538.exe)
+PERF spread2000 bibites=2000 elapsed=1.751ms pairs=109 contacts=138 triggers=105
+PERF spread5000 bibites=5000 elapsed=6.945ms pairs=699 contacts=897 triggers=747
+PERF cluster2000 bibites=2000 elapsed=393.099ms pairs=145227 contacts=183648 triggers=156519
+PERF cluster4000 bibites=4000 elapsed=1523.566ms pairs=577764 contacts=724033 triggers=613462
+PHASE n=2000 clock: 0.000ms
+PHASE n=2000 animators: 0.000ms
+PHASE n=2000 tools: 0.001ms
+PHASE n=2000 zones: 0.002ms
+PHASE n=2000 sensing: 0.036ms
+PHASE n=2000 body: 1.553ms
+PHASE n=2000 eggs: 0.001ms
+PHASE n=2000 phero: 0.000ms
+PHASE n=2000 decay: 0.003ms
+PHASE n=2000 rad: 0.000ms
+PHASE n=2000 red: 0.000ms
+PHASE n=2000 killers: 0.000ms
+PHASE n=2000 producers: 0.000ms
+PHASE n=2000 deaths: 0.014ms
+PHASE n=2000 physics: 1.137ms
+PHASE n=2000 events: 0.000ms
+PHASE n=2000 spawner: 0.015ms
+PHASE n=2000 TOTAL: 2.763ms

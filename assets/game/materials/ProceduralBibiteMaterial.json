@@ -1,0 +1,35 @@
+{
+ "name": "ProceduralBibiteMaterial",
+ "shader": "Shader Graphs/proceduralBibiteShader",
+ "colors": {
+  "_Color": null,
+  "_Dir": null,
+  "_RootPos": null,
+  "_Test": null,
+  "_VirusColor": null
+ },
+ "floats": {
+  "Vector1_1e7790215f0448d2a070ca6771cc5c41": 0.5,
+  "Vector1_e3a0e0f92b6a43b0a108a2b076fa6cbf": 2.0,
+  "_BUILTIN_QueueControl": -1.0,
+  "_BUILTIN_QueueOffset": 0.0,
+  "_BodyWidth": 15.0,
+  "_HurtAmount": 0.0,
+  "_InfectedRatio": 0.0,
+  "_IsKiller": 0.0,
+  "_IsProducer": 0.0,
+  "_IsRainbow": 0.0,
+  "_RainbowScale": 3.0,
+  "_Size": 35.0,
+  "_isProducer": 0.0,
+  "_pixelNum": 9.0,
+  "_upp": 4.980000019073486
+ },
+ "textures": {
+  "_MainTex": "UnityTexEnv(m_Offset=Vector2f(0.0, 0.0), m_Scale=Vector2f(1.0, 1.0), m_Texture=PPtr(m_FileID=3, m_PathID=46, assetsfile=<SerializedFile>))",
+  "unity_Lightmaps": "UnityTexEnv(m_Offset=Vector2f(0.0, 0.0), m_Scale=Vector2f(1.0, 1.0), m_Texture=PPtr(m_FileID=0, m_PathID=0, assetsfile=<SerializedFile>))",
+  "unity_LightmapsInd": "UnityTexEnv(m_Offset=Vector2f(0.0, 0.0), m_Scale=Vector2f(1.0, 1.0), m_Texture=PPtr(m_FileID=0, m_PathID=0, assetsfile=<SerializedFile>))",
+  "unity_ShadowMasks": "UnityTexEnv(m_Offset=Vector2f(0.0, 0.0), m_Scale=Vector2f(1.0, 1.0), m_Texture=PPtr(m_FileID=0, m_PathID=0, assetsfile=<SerializedFile>))"
+ },
+ "source_asset": "sharedassets1.assets"
+}

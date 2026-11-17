@@ -1,0 +1,46 @@
+{
+  "schema": "rustibites.assets.combat_contact_trace.v1",
+  "fixture": "crates/bibites-cli/tests/fixtures/body/combat_attack.zip",
+  "source_trace": "testdata/parity/fixtures/body/game_combat_trace",
+  "csv": "assets/game/reference/body_fixtures/game_combat_contact_trace.csv",
+  "rows": 360,
+  "bibite_ids": [
+    -1055736783,
+    1
+  ],
+  "contact_runs": [
+    {
+      "id": -1055736783,
+      "start_tick": 609,
+      "end_tick": 610,
+      "duration_ticks": 2,
+      "min_health": 115.009651,
+      "max_health": 132.003326
+    },
+    {
+      "id": -1055736783,
+      "start_tick": 755,
+      "end_tick": 755,
+      "duration_ticks": 1,
+      "min_health": 115.535568,
+      "max_health": 115.535568
+    },
+    {
+      "id": 1,
+      "start_tick": 609,
+      "end_tick": 610,
+      "duration_ticks": 2,
+      "min_health": 114.918808,
+      "max_health": 114.997955
+    },
+    {
+      "id": 1,
+      "start_tick": 755,
+      "end_tick": 755,
+      "duration_ticks": 1,
+      "min_health": 98.476913,
+      "max_health": 98.476913
+    }
+  ],
+  "note": "Per-tick game contact/health columns from the parity trace; persistent_contact_count>0 or n_in_mouth>0 marks a bibite contact run. Pair ids are the two fixture bibites; trace does not carry attacker/victim direction."
+}

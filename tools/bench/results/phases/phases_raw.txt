@@ -1,0 +1,240 @@
+================================================================================
+# pop=1000 threads=1 ticks=120 status=ok binary=447506456CD705E3B8771C4EAE023AC5A7E2134718B7CC0DA113948955528ECB
+================================================================================
+synthetic 1000 bibites [rep 1]: 1000 bibites, 120 ticks in 0.108s = 1113 ticks/s, 37.1x realtime, 1113098 bibite-updates/s, 1 threads
+phase                 ms/tick    share
+clock                   0.000     0.0%
+animators               0.000     0.0%
+tools                   0.000     0.0%
+zones                   0.000     0.1%
+sensing                 0.175    19.5%
+body                    0.338    37.6%
+eggs                    0.000     0.0%
+pheromones              0.000     0.0%
+decay                   0.001     0.1%
+rad                     0.000     0.0%
+red-death               0.000     0.0%
+colour-killers          0.000     0.0%
+producers               0.000     0.0%
+deaths                  0.002     0.2%
+physics                 0.376    41.9%
+events-stats            0.000     0.0%
+hash-sync               0.004     0.5%
+best: synthetic 1000 bibites [rep 1]: 1000 bibites, 120 ticks in 0.108s = 1113 ticks/s, 37.1x realtime, 1113098 bibite-updates/s, 1 threads
+
+================================================================================
+# pop=1000 threads=8 ticks=120 status=ok binary=447506456CD705E3B8771C4EAE023AC5A7E2134718B7CC0DA113948955528ECB
+================================================================================
+synthetic 1000 bibites [rep 1]: 1000 bibites, 120 ticks in 0.071s = 1701 ticks/s, 56.7x realtime, 1701382 bibite-updates/s, 8 threads
+phase                 ms/tick    share
+clock                   0.000     0.0%
+animators               0.000     0.0%
+tools                   0.000     0.0%
+zones                   0.000     0.0%
+sensing                 0.064    10.8%
+body                    0.224    38.1%
+eggs                    0.000     0.0%
+pheromones              0.000     0.0%
+decay                   0.001     0.2%
+rad                     0.000     0.0%
+red-death               0.000     0.0%
+colour-killers          0.000     0.0%
+producers               0.000     0.0%
+deaths                  0.001     0.2%
+physics                 0.293    50.0%
+events-stats            0.000     0.0%
+hash-sync               0.003     0.5%
+best: synthetic 1000 bibites [rep 1]: 1000 bibites, 120 ticks in 0.071s = 1701 ticks/s, 56.7x realtime, 1701382 bibite-updates/s, 8 threads
+
+================================================================================
+# pop=2000 threads=1 ticks=120 status=ok binary=447506456CD705E3B8771C4EAE023AC5A7E2134718B7CC0DA113948955528ECB
+================================================================================
+synthetic 2000 bibites [rep 1]: 2000 bibites, 120 ticks in 0.214s = 561 ticks/s, 18.7x realtime, 1121618 bibite-updates/s, 1 threads
+phase                 ms/tick    share
+clock                   0.000     0.0%
+animators               0.000     0.0%
+tools                   0.000     0.0%
+zones                   0.001     0.0%
+sensing                 0.229    12.8%
+body                    0.775    43.5%
+eggs                    0.000     0.0%
+pheromones              0.000     0.0%
+decay                   0.002     0.1%
+rad                     0.000     0.0%
+red-death               0.000     0.0%
+colour-killers          0.000     0.0%
+producers               0.000     0.0%
+deaths                  0.004     0.3%
+physics                 0.760    42.6%
+events-stats            0.000     0.0%
+hash-sync               0.010     0.5%
+best: synthetic 2000 bibites [rep 1]: 2000 bibites, 120 ticks in 0.214s = 561 ticks/s, 18.7x realtime, 1121618 bibite-updates/s, 1 threads
+
+================================================================================
+# pop=2000 threads=8 ticks=120 status=ok binary=447506456CD705E3B8771C4EAE023AC5A7E2134718B7CC0DA113948955528ECB
+================================================================================
+synthetic 2000 bibites [rep 1]: 2000 bibites, 120 ticks in 0.185s = 648 ticks/s, 21.6x realtime, 1296819 bibite-updates/s, 8 threads
+phase                 ms/tick    share
+clock                   0.000     0.0%
+animators               0.000     0.0%
+tools                   0.000     0.0%
+zones                   0.001     0.0%
+sensing                 0.099     6.4%
+body                    0.705    45.7%
+eggs                    0.000     0.0%
+pheromones              0.000     0.0%
+decay                   0.002     0.1%
+rad                     0.000     0.0%
+red-death               0.000     0.0%
+colour-killers          0.000     0.0%
+producers               0.000     0.0%
+deaths                  0.004     0.3%
+physics                 0.721    46.8%
+events-stats            0.000     0.0%
+hash-sync               0.008     0.5%
+best: synthetic 2000 bibites [rep 1]: 2000 bibites, 120 ticks in 0.185s = 648 ticks/s, 21.6x realtime, 1296819 bibite-updates/s, 8 threads
+
+================================================================================
+# pop=5000 threads=1 ticks=120 status=ok binary=447506456CD705E3B8771C4EAE023AC5A7E2134718B7CC0DA113948955528ECB
+================================================================================
+synthetic 5000 bibites [rep 1]: 5000 bibites, 120 ticks in 0.767s = 156 ticks/s, 5.2x realtime, 782311 bibite-updates/s, 1 threads
+phase                 ms/tick    share
+clock                   0.000     0.0%
+animators               0.000     0.0%
+tools                   0.000     0.0%
+zones                   0.001     0.0%
+sensing                 0.645    10.1%
+body                    2.812    44.0%
+eggs                    0.001     0.0%
+pheromones              0.000     0.0%
+decay                   0.006     0.1%
+rad                     0.000     0.0%
+red-death               0.000     0.0%
+colour-killers          0.000     0.0%
+producers               0.000     0.0%
+deaths                  0.036     0.6%
+physics                 2.851    44.6%
+events-stats            0.000     0.0%
+hash-sync               0.035     0.5%
+best: synthetic 5000 bibites [rep 1]: 5000 bibites, 120 ticks in 0.767s = 156 ticks/s, 5.2x realtime, 782311 bibite-updates/s, 1 threads
+
+================================================================================
+# pop=5000 threads=8 ticks=120 status=ok binary=447506456CD705E3B8771C4EAE023AC5A7E2134718B7CC0DA113948955528ECB
+================================================================================
+synthetic 5000 bibites [rep 1]: 5000 bibites, 120 ticks in 0.606s = 198 ticks/s, 6.6x realtime, 989530 bibite-updates/s, 8 threads
+phase                 ms/tick    share
+clock                   0.000     0.0%
+animators               0.000     0.0%
+tools                   0.000     0.0%
+zones                   0.001     0.0%
+sensing                 0.228     4.5%
+body                    2.321    45.9%
+eggs                    0.000     0.0%
+pheromones              0.000     0.0%
+decay                   0.007     0.1%
+rad                     0.000     0.0%
+red-death               0.000     0.0%
+colour-killers          0.000     0.0%
+producers               0.000     0.0%
+deaths                  0.029     0.6%
+physics                 2.432    48.2%
+events-stats            0.000     0.0%
+hash-sync               0.031     0.6%
+best: synthetic 5000 bibites [rep 1]: 5000 bibites, 120 ticks in 0.606s = 198 ticks/s, 6.6x realtime, 989530 bibite-updates/s, 8 threads
+
+================================================================================
+# pop=10000 threads=1 ticks=120 status=ok binary=447506456CD705E3B8771C4EAE023AC5A7E2134718B7CC0DA113948955528ECB
+================================================================================
+synthetic 10000 bibites [rep 1]: 10000 bibites, 120 ticks in 1.655s = 72 ticks/s, 2.4x realtime, 724940 bibite-updates/s, 1 threads
+phase                 ms/tick    share
+clock                   0.000     0.0%
+animators               0.000     0.0%
+tools                   0.000     0.0%
+zones                   0.002     0.0%
+sensing                 1.179     8.6%
+body                    5.762    41.8%
+eggs                    0.001     0.0%
+pheromones              0.000     0.0%
+decay                   0.009     0.1%
+rad                     0.000     0.0%
+red-death               0.000     0.0%
+colour-killers          0.000     0.0%
+producers               0.000     0.0%
+deaths                  0.114     0.8%
+physics                 6.650    48.2%
+events-stats            0.000     0.0%
+hash-sync               0.073     0.5%
+best: synthetic 10000 bibites [rep 1]: 10000 bibites, 120 ticks in 1.655s = 72 ticks/s, 2.4x realtime, 724940 bibite-updates/s, 1 threads
+
+================================================================================
+# pop=10000 threads=8 ticks=120 status=ok binary=447506456CD705E3B8771C4EAE023AC5A7E2134718B7CC0DA113948955528ECB
+================================================================================
+synthetic 10000 bibites [rep 1]: 10000 bibites, 120 ticks in 1.563s = 77 ticks/s, 2.6x realtime, 767790 bibite-updates/s, 8 threads
+phase                 ms/tick    share
+clock                   0.000     0.0%
+animators               0.000     0.0%
+tools                   0.000     0.0%
+zones                   0.001     0.0%
+sensing                 0.542     4.2%
+body                    5.642    43.3%
+eggs                    0.001     0.0%
+pheromones              0.000     0.0%
+decay                   0.010     0.1%
+rad                     0.000     0.0%
+red-death               0.000     0.0%
+colour-killers          0.000     0.0%
+producers               0.000     0.0%
+deaths                  0.112     0.9%
+physics                 6.639    51.0%
+events-stats            0.000     0.0%
+hash-sync               0.073     0.6%
+best: synthetic 10000 bibites [rep 1]: 10000 bibites, 120 ticks in 1.563s = 77 ticks/s, 2.6x realtime, 767790 bibite-updates/s, 8 threads
+
+================================================================================
+# pop=20000 threads=1 ticks=120 status=ok binary=447506456CD705E3B8771C4EAE023AC5A7E2134718B7CC0DA113948955528ECB
+================================================================================
+synthetic 20000 bibites [rep 1]: 20000 bibites, 120 ticks in 3.071s = 39 ticks/s, 1.3x realtime, 781617 bibite-updates/s, 1 threads
+phase                 ms/tick    share
+clock                   0.000     0.0%
+animators               0.000     0.0%
+tools                   0.000     0.0%
+zones                   0.001     0.0%
+sensing                 2.005     7.8%
+body                    9.743    38.1%
+eggs                    0.001     0.0%
+pheromones              0.000     0.0%
+decay                   0.015     0.1%
+rad                     0.000     0.0%
+red-death               0.000     0.0%
+colour-killers          0.000     0.0%
+producers               0.000     0.0%
+deaths                  0.214     0.8%
+physics                13.454    52.6%
+events-stats            0.000     0.0%
+hash-sync               0.152     0.6%
+best: synthetic 20000 bibites [rep 1]: 20000 bibites, 120 ticks in 3.071s = 39 ticks/s, 1.3x realtime, 781617 bibite-updates/s, 1 threads
+
+================================================================================
+# pop=20000 threads=8 ticks=120 status=ok binary=447506456CD705E3B8771C4EAE023AC5A7E2134718B7CC0DA113948955528ECB
+================================================================================
+synthetic 20000 bibites [rep 1]: 20000 bibites, 120 ticks in 4.131s = 29 ticks/s, 1.0x realtime, 580924 bibite-updates/s, 8 threads
+phase                 ms/tick    share
+clock                   0.000     0.0%
+animators               0.000     0.0%
+tools                   0.000     0.0%
+zones                   0.001     0.0%
+sensing                 1.260     3.7%
+body                   15.106    43.9%
+eggs                    0.001     0.0%
+pheromones              0.000     0.0%
+decay                   0.018     0.1%
+rad                     0.000     0.0%
+red-death               0.000     0.0%
+colour-killers          0.000     0.0%
+producers               0.000     0.0%
+deaths                  0.294     0.9%
+physics                17.514    50.9%
+events-stats            0.001     0.0%
+hash-sync               0.230     0.7%
+best: synthetic 20000 bibites [rep 1]: 20000 bibites, 120 ticks in 4.131s = 29 ticks/s, 1.0x realtime, 580924 bibite-updates/s, 8 threads
+

@@ -1,0 +1,23 @@
+[package]
+name = "bibites-core"
+description = "Headless, deterministic simulation core for RUSTibites"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+# The persistent worker pool of the body / physics / sensing stages (a spawn of fresh threads costs 0.4-0.7 ms a
+# stage on the reference machine, a pool 0.02-0.03 ms). The core itself stays free of unsafe code.
+rayon = "1.10"
+# The one `unsafe` call the simulation can use, a cache prefetch hint, lives in its own tiny crate (see the `prefetch` feature).
+bibites-prefetch = { workspace = true, optional = true }
+
+[features]
+default = ["prefetch"]
+# Cache prefetch hints for the passes whose next record is known ahead of time (the dense-order turns of the body tick). The hint
+# is `_mm_prefetch` in `bibites-prefetch`, the only `unsafe` the simulation's crates depend on; `--no-default-features` builds the
+# core without it and without any change of result.
+prefetch = ["dep:bibites-prefetch"]
+
+[dev-dependencies]

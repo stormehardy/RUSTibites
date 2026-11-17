@@ -1,0 +1,40 @@
+# RUSTibites benchmark environment
+
+Captured (UTC):        2026-11-01T09:59:45.6800698Z
+Host:                  DESKTOP
+OS:                    Microsoft Windows 10 Home | version=10.0.19045
+CPU:                   AMD Ryzen 5 3600 6-Core Processor | physical=6 logical=12 | max_clock_mhz=3593
+Memory:                16.0 GB total, 4.72 GB free at capture
+CPU load at capture:   22.0 %
+PowerShell:            5.1.19041.6456
+rustc:                 1.99.1 (58cf8f9c3 2026-10-13) (release 1.99.1, x86_64-pc-windows-msvc)
+cargo:                 1.99.1 (5f94df478 2026-08-27)
+Git HEAD:              718c7616871ab02a7280508e8d444383fce73f24 (main) 2026-11-01T04:59:38-05:00
+Git subject:           docs: compat re-save retry/optional bridge-close behavior
+Git dirty:             True (12 changed paths)
+Git status:
+   M docs/PARITY_ACCEPTANCE.md
+   M scripts/make_shortcut.ps1
+   M tools/assets/build_ui_expectations.py
+   M tools/assets/ui_expectations.json
+  ?? assets/game/reference/ecology/default_36k_contact_normalized.json
+  ?? crates/bibites-io/tests/template_feeding.rs
+  ?? tools/bench/results/freeze-ab-default/
+  ?? tools/bench/results/freeze-ab-serial/
+  ?? tools/bench/results/freeze-frozen-default/
+  ?? tools/bench/results/freeze-frozen-serial/
+  ?? tools/parity/make_game_seed.py
+  ?? tools/parity/plugin/_fix_select.py
+Release profile:
+  opt-level = 3
+  lto = "fat"
+  codegen-units = 1
+  panic = "abort"
+  strip = "debuginfo"
+Benchmark binary:      Z:\RUSTibites\target\release\rustibites.exe
+  sha256:              B9D8E23CDF97CB39C5BD4FA1E7D4C446392A2B83528E56B0DCF6372065B0044F
+  size:                2252800 bytes
+  mtime (UTC):         2026-11-01T09:54:25.4821632Z
+  stable copy:         C:\Users\Storme\AppData\Local\Temp\rustibites-bench\bin\rustibites-B9D8E23CDF97CB39.exe
+Simulator:             30 TPS (fixed_dt = 1/30 s)
+Seed:                  seed = 0x5255535400000000 xor repetition_index (repetition starts at 0)

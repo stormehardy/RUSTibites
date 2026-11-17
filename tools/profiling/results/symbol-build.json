@@ -1,0 +1,17 @@
+{
+    "schema":  "rustibites.profiling.symbol-build/1",
+    "generated_at_utc":  "2026-10-30T07:53:26.6241630Z",
+    "exe_path":  "Z:\\RUSTibites\\target\\profiling\\release\\rustibites.exe",
+    "exe_bytes":  1878528,
+    "exe_mtime_utc":  "2026-10-30T07:53:25.8940628Z",
+    "exe_sha256":  "8B8D6BF417C1EC16A6D5BC7CAF018E71A9F1C884A12B31E2CC8C55634E5E8C71",
+    "pdb_path":  "Z:\\RUSTibites\\target\\profiling\\release\\rustibites.pdb",
+    "pdb_bytes":  22687744,
+    "target_dir":  "Z:\\RUSTibites\\target\\profiling",
+    "overrides":  [
+                      "profile.release.debug=true",
+                      "profile.release.strip=false"
+                  ],
+    "command":  "cargo build --release -p bibites-cli --target-dir Z:\\RUSTibites\\target\\profiling --config profile.release.debug=true --config profile.release.strip=false",
+    "note":  "root Cargo.toml is unchanged; these are cargo --config overrides. A full symbolised symbol server is not set up: PDB next to the exe is what WPA/VS/Windbg consume."
+}

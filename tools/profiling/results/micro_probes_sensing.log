@@ -1,0 +1,29 @@
+running 2 tests
+test world::tests::perf_sensing_breakdown ... N=2000 masks: plant=2000 meat=0 bibite=0 phero=0 spots=0
+N=2000 threads=1 forced-due sensing: 6.923 ms
+N=2000 threads=8 forced-due sensing: 8.376 ms
+N=2000 herding-off forced-due sensing: 2.956 ms
+N=2000 herding-off/no-spots sensing: 2.661 ms
+N=2000 plant query-only serial pass: 1.012 ms
+N=2000 sort-128-hit buffers: 5.133 ms
+pool 8 no-op jobs: 31.4 us/activation
+ok
+test world::tests::perf_sensing_tick_profile ... threads=1: due_ticks=10 zero_ticks=90 mean_due=200.0 avg_sensing=0.331 ms due_tick_sensing=3.228 ms per_due=1.614 us pop=2000 pellets=86
+threads=1: due-bibite FOV 0.278 us
+threads=1: hash take/restore 0.035 ms
+threads=1: prefilter 0.008 ms/tick
+threads=1: sense_due=2000 phero_needs=0 spots=0
+threads=1: query-only 1.211 ms / 2000 bibites, avg_hits=0.5
+threads=8: due_ticks=10 zero_ticks=90 mean_due=200.0 avg_sensing=0.160 ms due_tick_sensing=1.523 ms per_due=0.762 us pop=2000 pellets=86
+threads=8: due-bibite FOV 0.265 us
+threads=8: hash take/restore 0.036 ms
+threads=8: prefilter 0.007 ms/tick
+threads=8: sense_due=2000 phero_needs=0 spots=0
+threads=8: query-only 1.307 ms / 2000 bibites, avg_hits=0.5
+ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 390 filtered out; finished in 0.76s
+
+
+    Finished `release` profile [optimized] target(s) in 0.04s
+     Running unittests src\lib.rs (target\release\deps\bibites_core-96fd8523da9c4538.exe)

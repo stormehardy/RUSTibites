@@ -1,0 +1,355 @@
+{
+  "schema": "rustibites.assets.zone_check.v1",
+  "save": "Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip",
+  "parsed_settings": {
+    "zones": [
+      {
+        "name": "World",
+        "id": 0,
+        "material": "Plant",
+        "distribution": "CentricGradual",
+        "fertility": 0.782791793346405,
+        "biomassDensity": 1.0,
+        "pelletSize": 1.0,
+        "movement": "None",
+        "speed": 0.0010000000474974513,
+        "posX": 0.0,
+        "posY": 0.0,
+        "radiusIsRelative": true,
+        "radius": 1.0
+      }
+    ],
+    "zoneGroups": [],
+    "globalZoneSpeed": {
+      "interactableChanged": {
+        "m_PersistentCalls": {
+          "m_Calls": []
+        }
+      },
+      "Value": 1.0
+    },
+    "showFertility": null,
+    "backgroundKeys": [
+      "backgroundMutationChance",
+      "backgroundMutationVariance"
+    ]
+  },
+  "live_zones": [
+    {
+      "name": "World",
+      "id": 0,
+      "material": "Plant",
+      "distribution": "CentricGradual",
+      "fertility": 0.7827918,
+      "biomassDensity": 1.0,
+      "pelletSize": 1.0,
+      "movement": "None",
+      "speed": 0.001,
+      "posX": 0.0,
+      "posY": 0.0,
+      "radiusIsRelative": true,
+      "radius": 1.0,
+      "worldX": 0.0,
+      "worldY": 0.0
+    }
+  ],
+  "live_zone_material": {
+    "ok": true,
+    "zones": [
+      {
+        "zone": "Zone(Clone)",
+        "id": null,
+        "sprite_renderer": "Zone(Clone)",
+        "material": "PelletSpawnPointMaterial(Clone)",
+        "zone_material": "PelletSpawnPointMaterial",
+        "renderer": {
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1,
+            "a": 1
+          },
+          "sorting_order": 1,
+          "sorting_layer": "BackGround",
+          "enabled": true,
+          "bounds_center": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "bounds_size": {
+            "x": 4000,
+            "y": 4000,
+            "z": 400
+          }
+        },
+        "live_material_props": {
+          "name": "PelletSpawnPointMaterial(Clone)",
+          "shader": "Shader Graphs/PelletSpawnPoint",
+          "render_queue": 3000,
+          "keywords": [],
+          "properties": [
+            {
+              "index": 0,
+              "name": "_PelletSpawnCoefficient",
+              "type": "Float",
+              "property_id": 701,
+              "float": 1,
+              "color": {
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+              }
+            },
+            {
+              "index": 1,
+              "name": "_MainTex",
+              "type": "Texture",
+              "property_id": 7,
+              "float": 0,
+              "color": {
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+              },
+              "texture": "base_circle_icon"
+            },
+            {
+              "index": 2,
+              "name": "_Opacity",
+              "type": "Float",
+              "property_id": 700,
+              "float": 0.8481389,
+              "color": {
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+              }
+            },
+            {
+              "index": 3,
+              "name": "_Ring",
+              "type": "Float",
+              "property_id": 703,
+              "float": 0,
+              "color": {
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+              }
+            },
+            {
+              "index": 4,
+              "name": "_insideRadius",
+              "type": "Range",
+              "property_id": 702,
+              "float": 0.8,
+              "color": {
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+              }
+            },
+            {
+              "index": 5,
+              "name": "_Rect",
+              "type": "Float",
+              "property_id": 41,
+              "float": 0,
+              "color": {
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+              }
+            },
+            {
+              "index": 6,
+              "name": "unity_Lightmaps",
+              "type": "Texture",
+              "property_id": 769,
+              "float": 0,
+              "color": {
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+              }
+            },
+            {
+              "index": 7,
+              "name": "unity_LightmapsInd",
+              "type": "Texture",
+              "property_id": 770,
+              "float": 0,
+              "color": {
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+              }
+            },
+            {
+              "index": 8,
+              "name": "unity_ShadowMasks",
+              "type": "Texture",
+              "property_id": 771,
+              "float": 0,
+              "color": {
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+              }
+            }
+          ],
+          "property_count": 9
+        },
+        "source_material_props": {
+          "name": "PelletSpawnPointMaterial",
+          "shader": "Shader Graphs/PelletSpawnPoint",
+          "render_queue": 3000,
+          "keywords": [],
+          "properties": [
+            {
+              "index": 0,
+              "name": "_PelletSpawnCoefficient",
+              "type": "Float",
+              "property_id": 701,
+              "float": 1.13781583,
+              "color": {
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+              }
+            },
+            {
+              "index": 1,
+              "name": "_MainTex",
+              "type": "Texture",
+              "property_id": 7,
+              "float": 0,
+              "color": {
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+              },
+              "texture": "base_circle_icon"
+            },
+            {
+              "index": 2,
+              "name": "_Opacity",
+              "type": "Float",
+              "property_id": 700,
+              "float": 0.5,
+              "color": {
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+              }
+            },
+            {
+              "index": 3,
+              "name": "_Ring",
+              "type": "Float",
+              "property_id": 703,
+              "float": 0,
+              "color": {
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+              }
+            },
+            {
+              "index": 4,
+              "name": "_insideRadius",
+              "type": "Range",
+              "property_id": 702,
+              "float": 0.818,
+              "color": {
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+              }
+            },
+            {
+              "index": 5,
+              "name": "_Rect",
+              "type": "Float",
+              "property_id": 41,
+              "float": 0,
+              "color": {
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+              }
+            },
+            {
+              "index": 6,
+              "name": "unity_Lightmaps",
+              "type": "Texture",
+              "property_id": 769,
+              "float": 0,
+              "color": {
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+              }
+            },
+            {
+              "index": 7,
+              "name": "unity_LightmapsInd",
+              "type": "Texture",
+              "property_id": 770,
+              "float": 0,
+              "color": {
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+              }
+            },
+            {
+              "index": 8,
+              "name": "unity_ShadowMasks",
+              "type": "Texture",
+              "property_id": 771,
+              "float": 0,
+              "color": {
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 0
+              }
+            }
+          ],
+          "property_count": 9
+        }
+      }
+    ],
+    "zone_count": 1
+  },
+  "camera": {
+    "ok": true,
+    "x": -5.360003,
+    "y": 831.0031,
+    "size": 12.0,
+    "worldHalfSize": 2000.0,
+    "aspect": 1.77777779,
+    "orthographic": true
+  },
+  "reference_png": "assets/game/reference/zone_check/reference_camera_1280x720.png",
+  "note": "Compare parsed zone block against live zones/zone material; the closeup frame is the same camera/ortho as the user's reference for the left-panel zone/background colour."
+}

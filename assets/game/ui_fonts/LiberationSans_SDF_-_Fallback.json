@@ -1,0 +1,54 @@
+{
+  "name": "LiberationSans SDF - Fallback",
+  "faceInfo": {
+    "pointSize": 86,
+    "scale": 1,
+    "lineHeight": 98.8916,
+    "ascentLine": 77.8535156,
+    "descentLine": -18.22461,
+    "unitsPerEM": 2048,
+    "unitsPerEm": null,
+    "padding": null
+  },
+  "characterTable": [],
+  "glyphTable": [],
+  "kerningTable": [],
+  "atlasTextures": [
+    {
+      "name": "LiberationSans SDF Atlas",
+      "width": 1,
+      "height": 1,
+      "format": "Alpha8",
+      "png_base64": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII="
+    }
+  ],
+  "material": {
+    "name": "LiberationSans SDF Material",
+    "shader": "TextMeshPro/Mobile/Distance Field",
+    "_FaceDilate": 0,
+    "_OutlineWidth": 0,
+    "_OutlineSoftness": 0,
+    "_GradientScale": 10,
+    "_ScaleRatioA": 0.9,
+    "_ScaleRatioB": 0.73125,
+    "_ScaleRatioC": 0.73125,
+    "_UnderlayDilate": 0,
+    "_UnderlaySoftness": 0,
+    "_UnderlayOffsetX": 0,
+    "_UnderlayOffsetY": 0,
+    "_FaceColor": {
+      "r": 1,
+      "g": 1,
+      "b": 1,
+      "a": 1
+    },
+    "_OutlineColor": {
+      "r": 0,
+      "g": 0,
+      "b": 0,
+      "a": 1
+    },
+    "_MainTex": "LiberationSans SDF Atlas",
+    "_MainTex_path_id": 4468
+  }
+}

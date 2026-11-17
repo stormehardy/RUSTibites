@@ -1,0 +1,388 @@
+{
+  "schema": "rustibites.assets.ui_save_capture.v1",
+  "sessions": {
+    "default_world": {
+      "save": "Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip",
+      "paused": true,
+      "screen": {
+        "width": 1920,
+        "height": 1080,
+        "dpi": 96,
+        "fullscreen": true
+      },
+      "camera": {
+        "ok": true,
+        "x": 0.0,
+        "y": 0.0,
+        "size": 2080.0,
+        "worldHalfSize": 2000.0,
+        "aspect": 1.77777779,
+        "orthographic": true
+      },
+      "ruler": {
+        "labels": [],
+        "bracket_nodes": []
+      },
+      "overlay": "assets/game/reference/default_save/hud_savestate_overlay_1920x1080.png",
+      "overlay_alpha_pixels": 43608
+    },
+    "default_world_inspector": {
+      "save": "Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip",
+      "paused": true,
+      "camera": {
+        "ok": true,
+        "x": 942.498,
+        "y": 107.319038,
+        "size": 400.0,
+        "worldHalfSize": 2000.0,
+        "aspect": 1.77777779,
+        "orthographic": true
+      },
+      "selected": {
+        "ok": true,
+        "selected_id": "bibite(Clone) (SimulationScripts.BibiteScripts.BibiteID)",
+        "name": "bibite(Clone)",
+        "pos": {
+          "x": 942.498,
+          "y": 107.319038,
+          "z": 0
+        },
+        "requested": ""
+      },
+      "press": {
+        "ok": true,
+        "pressed": "StatsButton",
+        "path": "UICanvas/MainUI/Layer1/Panels/BibiteButtons/StatsButton"
+      },
+      "stats_panels": [
+        {
+          "path": "UICanvas/MainUI/Layer2/StatsPanel",
+          "active_in_hierarchy": false
+        },
+        {
+          "path": "UICanvas/MainUI/Layer2/StatsPanel/DataPage",
+          "active_in_hierarchy": false
+        },
+        {
+          "path": "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel",
+          "active_in_hierarchy": true
+        }
+      ],
+      "ruler": {
+        "labels": [],
+        "bracket_nodes": []
+      },
+      "overlay": "assets/game/reference/default_save/hud_inspector_expanded_overlay_1920x1080.png",
+      "overlay_alpha_pixels": 302708
+    }
+  },
+  "ruler_default_world": {
+    "labels": [],
+    "bracket_nodes": []
+  },
+  "runtime_sessions": [
+    "default_world",
+    "default_world_inspector"
+  ],
+  "ruler": {
+    "value": "200u",
+    "source": "game HUD overlay/hud_savestate (measured from reference frame; RulerHandle is a script/mesh not a UI Image, so the runtime UI dump has no sprite field for the bracket; node rects recorded)",
+    "nodes": [
+      {
+        "path": "UICanvas/MainUI/Layer0/Ruler",
+        "rect": {
+          "anchor_min": {
+            "x": 1,
+            "y": 0
+          },
+          "anchor_max": {
+            "x": 1,
+            "y": 0
+          },
+          "anchored_position": {
+            "x": -15,
+            "y": 15
+          },
+          "size_delta": {
+            "x": 135,
+            "y": 5
+          },
+          "pivot": {
+            "x": 1,
+            "y": 0
+          },
+          "local_position": {
+            "x": 945,
+            "y": -525,
+            "z": 0
+          },
+          "local_rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "local_scale": {
+            "x": 1,
+            "y": 1,
+            "z": 1
+          }
+        },
+        "active_in_hierarchy": true
+      },
+      {
+        "path": "UICanvas/MainUI/Layer0/Ruler/Ruler (1)",
+        "rect": {
+          "anchor_min": {
+            "x": 1,
+            "y": 0
+          },
+          "anchor_max": {
+            "x": 1,
+            "y": 0
+          },
+          "anchored_position": {
+            "x": 0,
+            "y": 0
+          },
+          "size_delta": {
+            "x": 5,
+            "y": 15
+          },
+          "pivot": {
+            "x": 1,
+            "y": 0
+          },
+          "local_position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "local_rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "local_scale": {
+            "x": 1,
+            "y": 1,
+            "z": 1
+          }
+        },
+        "active_in_hierarchy": true
+      },
+      {
+        "path": "UICanvas/MainUI/Layer0/Ruler/Ruler (1)/forefront (1)",
+        "rect": {
+          "anchor_min": {
+            "x": 0,
+            "y": 0
+          },
+          "anchor_max": {
+            "x": 1,
+            "y": 1
+          },
+          "anchored_position": {
+            "x": 0,
+            "y": 0
+          },
+          "size_delta": {
+            "x": -2,
+            "y": -2
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.5
+          },
+          "local_position": {
+            "x": -2.5,
+            "y": 7.5,
+            "z": 0
+          },
+          "local_rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "local_scale": {
+            "x": 1,
+            "y": 1,
+            "z": 1
+          }
+        },
+        "active_in_hierarchy": true
+      },
+      {
+        "path": "UICanvas/MainUI/Layer0/Ruler/Ruler (2)",
+        "rect": {
+          "anchor_min": {
+            "x": 0,
+            "y": 0
+          },
+          "anchor_max": {
+            "x": 0,
+            "y": 0
+          },
+          "anchored_position": {
+            "x": 0,
+            "y": 0
+          },
+          "size_delta": {
+            "x": 5,
+            "y": 15
+          },
+          "pivot": {
+            "x": 0,
+            "y": 0
+          },
+          "local_position": {
+            "x": -135,
+            "y": 0,
+            "z": 0
+          },
+          "local_rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "local_scale": {
+            "x": 1,
+            "y": 1,
+            "z": 1
+          }
+        },
+        "active_in_hierarchy": true
+      },
+      {
+        "path": "UICanvas/MainUI/Layer0/Ruler/Ruler (2)/forefront (1)",
+        "rect": {
+          "anchor_min": {
+            "x": 0,
+            "y": 0
+          },
+          "anchor_max": {
+            "x": 1,
+            "y": 1
+          },
+          "anchored_position": {
+            "x": 0,
+            "y": 0
+          },
+          "size_delta": {
+            "x": -2,
+            "y": -2
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.5
+          },
+          "local_position": {
+            "x": 2.5,
+            "y": 7.5,
+            "z": 0
+          },
+          "local_rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "local_scale": {
+            "x": 1,
+            "y": 1,
+            "z": 1
+          }
+        },
+        "active_in_hierarchy": true
+      },
+      {
+        "path": "UICanvas/MainUI/Layer0/Ruler/forefront",
+        "rect": {
+          "anchor_min": {
+            "x": 0,
+            "y": 0
+          },
+          "anchor_max": {
+            "x": 1,
+            "y": 1
+          },
+          "anchored_position": {
+            "x": 0,
+            "y": 0
+          },
+          "size_delta": {
+            "x": -1.99999619,
+            "y": -2
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 0.5
+          },
+          "local_position": {
+            "x": -67.5,
+            "y": 2.5,
+            "z": 0
+          },
+          "local_rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "local_scale": {
+            "x": 1,
+            "y": 1,
+            "z": 1
+          }
+        },
+        "active_in_hierarchy": true
+      },
+      {
+        "path": "UICanvas/MainUI/Layer0/Ruler/FloatInfoText",
+        "rect": {
+          "anchor_min": {
+            "x": 0,
+            "y": 0
+          },
+          "anchor_max": {
+            "x": 1,
+            "y": 0
+          },
+          "anchored_position": {
+            "x": 0,
+            "y": 24.4
+          },
+          "size_delta": {
+            "x": 0,
+            "y": 0
+          },
+          "pivot": {
+            "x": 0.5,
+            "y": 1
+          },
+          "local_position": {
+            "x": -67.5,
+            "y": 24.4,
+            "z": 0
+          },
+          "local_rotation": {
+            "x": 0,
+            "y": 0,
+            "z": 0,
+            "w": 1
+          },
+          "local_scale": {
+            "x": 1,
+            "y": 1,
+            "z": 1
+          }
+        },
+        "active_in_hierarchy": true
+      }
+    ],
+    "texts_found": []
+  }
+}

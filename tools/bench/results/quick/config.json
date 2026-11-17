@@ -1,0 +1,46 @@
+{
+    "schema":  "rustibites.bench.matrix/1",
+    "mode":  "quick",
+    "run_label":  "quick",
+    "started_at_utc":  "2026-10-30T07:11:52.3195725Z",
+    "scenario":  "",
+    "scenario_label":  "synthetic",
+    "requested_pops":  [
+                           1000,
+                           2000,
+                           5000,
+                           10000,
+                           20000
+                       ],
+    "threads":  [
+                    1,
+                    4,
+                    8
+                ],
+    "ticks_per_run":  30,
+    "repeat_per_cell":  1,
+    "timeout_sec_run":  180,
+    "budget_sec":  0,
+    "min_free_gb":  0.5,
+    "sample_ms":  50,
+    "determinism_check":  true,
+    "binary":  {
+                   "original_path":  "Z:\\RUSTibites\\target\\release\\rustibites.exe",
+                   "measured_copy":  "C:\\Users\\Storme\\AppData\\Local\\Temp\\rustibites-bench\\bin\\rustibites-D80ED2C74CEC7995.exe",
+                   "sha256":  "D80ED2C74CEC79952170AC5D95DE28EAE7389FB176E253098434418960D32F1D"
+               },
+    "artifacts":  {
+                      "runs_csv":  "runs.csv",
+                      "summary_csv":  "summary.csv",
+                      "markdown":  "matrix.md",
+                      "json":  "matrix.json",
+                      "environment":  "environment.json",
+                      "environment_txt":  "environment.txt"
+                  },
+    "notes":  [
+                  "engine wall_secs covers only world.run(ticks); process_wall_secs adds setup/spawn/startup",
+                  "one operating-system process per repetition (--repeat 1) so repetitions are independent",
+                  "synthetic world area scales as 2000*sqrt(N/2000) to keep density constant",
+                  "state_fingerprint should be identical for the same repetition seed regardless of thread count"
+              ]
+}

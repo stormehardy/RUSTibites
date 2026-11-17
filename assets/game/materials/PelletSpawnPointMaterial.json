@@ -1,0 +1,19 @@
+{
+ "name": "PelletSpawnPointMaterial",
+ "shader": "Shader Graphs/PelletSpawnPoint",
+ "colors": {},
+ "floats": {
+  "_Opacity": 0.5,
+  "_PelletSpawnCoefficient": 1.1378158330917358,
+  "_Rect": 0.0,
+  "_Ring": 0.0,
+  "_insideRadius": 0.8180000185966492
+ },
+ "textures": {
+  "_MainTex": "UnityTexEnv(m_Offset=Vector2f(0.0, 0.0), m_Scale=Vector2f(1.0, 1.0), m_Texture=PPtr(m_FileID=4, m_PathID=45, assetsfile=<SerializedFile>))",
+  "unity_Lightmaps": "UnityTexEnv(m_Offset=Vector2f(0.0, 0.0), m_Scale=Vector2f(1.0, 1.0), m_Texture=PPtr(m_FileID=0, m_PathID=0, assetsfile=<SerializedFile>))",
+  "unity_LightmapsInd": "UnityTexEnv(m_Offset=Vector2f(0.0, 0.0), m_Scale=Vector2f(1.0, 1.0), m_Texture=PPtr(m_FileID=0, m_PathID=0, assetsfile=<SerializedFile>))",
+  "unity_ShadowMasks": "UnityTexEnv(m_Offset=Vector2f(0.0, 0.0), m_Scale=Vector2f(1.0, 1.0), m_Texture=PPtr(m_FileID=0, m_PathID=0, assetsfile=<SerializedFile>))"
+ },
+ "source_asset": "sharedassets1.assets"
+}

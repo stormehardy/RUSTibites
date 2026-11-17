@@ -1,0 +1,9 @@
+WPR CPU capture needs an elevated shell (kernel ETW session).
+This session is NOT elevated, so no trace can be started (error 0xc5585011).
+
+Run this action from an elevated PowerShell:
+  powershell -NoProfile -ExecutionPolicy Bypass -File Z:\RUSTibites\tools\profiling\profile.ps1 -Action etw-capture -Pops 2000 -Ticks 400
+
+Then open the .etl in Windows Performance Analyzer (Windows Performance
+Toolkit from the Windows SDK, not installed here) or PerfView. The
+tracerpt CSV conversion is written by this action for grep-level inspection.

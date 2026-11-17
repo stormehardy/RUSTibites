@@ -1,0 +1,1810 @@
+{
+  "schema": "rustibites.assets.functional_ui.challenge_lineage_workshop.v1",
+  "steps": [
+    {
+      "step": "challenge_scenario_panel",
+      "path": "UI/NewGameScenarios/ScenarioSelector/Holder/Scenario Panel"
+    },
+    {
+      "step": "challenge_champion_selection",
+      "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ChampionSelectionPanel"
+    },
+    {
+      "step": "challenge_parameters_editor",
+      "path": "UI/ScenarioEditor/Settings Tuner/Holder/Panels/ChallengeParameters"
+    },
+    {
+      "step": "workshop_panel",
+      "path": "UI/WorkshopItemsPanel"
+    },
+    {
+      "step": "workshop_edit_shared",
+      "path": "UI/WorkshopItemsPanel/EditSharedItemPanel"
+    },
+    {
+      "step": "lineage_species_tabs",
+      "path": "UICanvas/MainUI/Layer2/AncestralLineagePanel/Overlay/SpeciesPanels/Species Tabs"
+    },
+    {
+      "step": "lineage_species_info",
+      "path": "UICanvas/MainUI/Layer2/AncestralLineagePanel/Overlay/SpeciesPanels/Species Info Panel"
+    },
+    {
+      "step": "lineage_species_genes",
+      "path": "UICanvas/MainUI/Layer2/AncestralLineagePanel/Overlay/SpeciesPanels/Species Genes Panel"
+    },
+    {
+      "step": "lineage_species_brain",
+      "path": "UICanvas/MainUI/Layer2/AncestralLineagePanel/Overlay/SpeciesPanels/SpeciesBrainPanel"
+    }
+  ],
+  "challenge_tracker_paths": [],
+  "rung_paths": [],
+  "sessions": {
+    "challenge_selector": {
+      "nodes": 4358,
+      "controls": 5,
+      "texts": [
+        "The Bibites: Digital Life",
+        "Omnia Studios",
+        "the studio Leo Caussan ended up founding",
+        "This is all possible thanks to the amazing patrons supporting the project on Patreon\n\nHelp propel the creation of a new form of life!",
+        "The Bibites",
+        "Continue",
+        "New",
+        "Load",
+        "Bibite Library",
+        "Settings\n",
+        "Achievements",
+        "Additional Tools",
+        "Credits\n",
+        "Quit\n",
+        "The Bibites 0.6.3.1",
+        "Scenarios",
+        "Return to Menu",
+        "No Preview Image \nCould Be Found",
+        "Add a file called \"img.png\" \nto the scenario .zip folder \nto add a preview image",
+        "Full-World",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sit amet dolor congue, Integer sit amet dolor congue, venenatis sem a, egestas ante. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sit amet dolor congue, venenatis sem a, egestas ante. ",
+        "In less than an hour",
+        "In less than an hour",
+        "In less than an hour",
+        "Highscore:",
+        "188555",
+        "With Champion:",
+        "Basic Bibite",
+        "Scenario Modifiers",
+        "TPS settings",
+        "Size of the Simulation Area",
+        "Normal",
+        "Global Biomass Density",
+        "Normal",
+        "Global Fertility",
+        "Normal",
+        "Radioactivity",
+        "Normal",
+        "Limit Bibites",
+        "No",
+        "Start Simulation"
+      ],
+      "buttons": [
+        {
+          "path": "UI/WelcomeScreen/Patreon Holder/Button",
+          "name": "Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Continue",
+          "name": "Continue",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/NewSim",
+          "name": "NewSim",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/LoadSim",
+          "name": "LoadSim",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Editor",
+          "name": "Editor",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Settings",
+          "name": "Settings",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Achievements",
+          "name": "Achievements",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/More",
+          "name": "More",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Credits",
+          "name": "Credits",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Quit",
+          "name": "Quit",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Top/Return",
+          "name": "Return",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/Scenario Panel/Button holder/Challenges Buttons",
+          "name": "Challenges Buttons",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/Scenario Panel/Button holder/New Scenario Button",
+          "name": "New Scenario Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/Scenario Panel/Button holder/Open Folder Button",
+          "name": "Open Folder Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/top/Button holder (1)/EditChallengeButton",
+          "name": "EditChallengeButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/SelectedPanel/ScenarioInfo/Details/Name Line/Edit Button",
+          "name": "Edit Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ParametersPanel/Content/TopLine/ Performance",
+          "name": " Performance",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ParametersPanel/Content/Bottom/StartButton",
+          "name": "StartButton",
+          "enabled": true,
+          "labels": []
+        }
+      ],
+      "panels": [
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel",
+        "UI/NewGameScenarios/ScenarioSelector",
+        "UI/NewGameScenarios/ScenarioSelector/Holder/Scenario Panel",
+        "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/SelectedPanel",
+        "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ParametersPanel"
+      ],
+      "images": []
+    },
+    "challenge_scenario_panel": {
+      "nodes": 4358,
+      "controls": 5,
+      "texts": [
+        "The Bibites: Digital Life",
+        "Omnia Studios",
+        "the studio Leo Caussan ended up founding",
+        "This is all possible thanks to the amazing patrons supporting the project on Patreon\n\nHelp propel the creation of a new form of life!",
+        "The Bibites",
+        "Continue",
+        "New",
+        "Load",
+        "Bibite Library",
+        "Settings\n",
+        "Achievements",
+        "Additional Tools",
+        "Credits\n",
+        "Quit\n",
+        "The Bibites 0.6.3.1",
+        "Scenarios",
+        "Return to Menu",
+        "No Preview Image \nCould Be Found",
+        "Add a file called \"img.png\" \nto the scenario .zip folder \nto add a preview image",
+        "Full-World",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sit amet dolor congue, Integer sit amet dolor congue, venenatis sem a, egestas ante. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sit amet dolor congue, venenatis sem a, egestas ante. ",
+        "In less than an hour",
+        "In less than an hour",
+        "In less than an hour",
+        "Highscore:",
+        "188555",
+        "With Champion:",
+        "Basic Bibite",
+        "Scenario Modifiers",
+        "TPS settings",
+        "Size of the Simulation Area",
+        "Normal",
+        "Global Biomass Density",
+        "Normal",
+        "Global Fertility",
+        "Normal",
+        "Radioactivity",
+        "Normal",
+        "Limit Bibites",
+        "No",
+        "Start Simulation"
+      ],
+      "buttons": [
+        {
+          "path": "UI/WelcomeScreen/Patreon Holder/Button",
+          "name": "Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Continue",
+          "name": "Continue",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/NewSim",
+          "name": "NewSim",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/LoadSim",
+          "name": "LoadSim",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Editor",
+          "name": "Editor",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Settings",
+          "name": "Settings",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Achievements",
+          "name": "Achievements",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/More",
+          "name": "More",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Credits",
+          "name": "Credits",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Quit",
+          "name": "Quit",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Top/Return",
+          "name": "Return",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/Scenario Panel/Button holder/Challenges Buttons",
+          "name": "Challenges Buttons",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/Scenario Panel/Button holder/New Scenario Button",
+          "name": "New Scenario Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/Scenario Panel/Button holder/Open Folder Button",
+          "name": "Open Folder Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/top/Button holder (1)/EditChallengeButton",
+          "name": "EditChallengeButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/SelectedPanel/ScenarioInfo/Details/Name Line/Edit Button",
+          "name": "Edit Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ParametersPanel/Content/TopLine/ Performance",
+          "name": " Performance",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ParametersPanel/Content/Bottom/StartButton",
+          "name": "StartButton",
+          "enabled": true,
+          "labels": []
+        }
+      ],
+      "panels": [
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel",
+        "UI/NewGameScenarios/ScenarioSelector",
+        "UI/NewGameScenarios/ScenarioSelector/Holder/Scenario Panel",
+        "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/SelectedPanel",
+        "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ParametersPanel"
+      ],
+      "images": []
+    },
+    "challenge_champion_selection": {
+      "nodes": 4358,
+      "controls": 5,
+      "texts": [
+        "The Bibites: Digital Life",
+        "Omnia Studios",
+        "the studio Leo Caussan ended up founding",
+        "This is all possible thanks to the amazing patrons supporting the project on Patreon\n\nHelp propel the creation of a new form of life!",
+        "The Bibites",
+        "Continue",
+        "New",
+        "Load",
+        "Bibite Library",
+        "Settings\n",
+        "Achievements",
+        "Additional Tools",
+        "Credits\n",
+        "Quit\n",
+        "The Bibites 0.6.3.1",
+        "Scenarios",
+        "Return to Menu",
+        "No Preview Image \nCould Be Found",
+        "Add a file called \"img.png\" \nto the scenario .zip folder \nto add a preview image",
+        "Full-World",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sit amet dolor congue, Integer sit amet dolor congue, venenatis sem a, egestas ante. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sit amet dolor congue, venenatis sem a, egestas ante. ",
+        "In less than an hour",
+        "In less than an hour",
+        "In less than an hour",
+        "Highscore:",
+        "188555",
+        "With Champion:",
+        "Basic Bibite",
+        "Scenario Modifiers",
+        "TPS settings",
+        "Size of the Simulation Area",
+        "Normal",
+        "Global Biomass Density",
+        "Normal",
+        "Global Fertility",
+        "Normal",
+        "Radioactivity",
+        "Normal",
+        "Limit Bibites",
+        "No",
+        "Start Simulation",
+        "Champion Selection",
+        "Basic Bibitus ",
+        "Start Challenge"
+      ],
+      "buttons": [
+        {
+          "path": "UI/WelcomeScreen/Patreon Holder/Button",
+          "name": "Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Continue",
+          "name": "Continue",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/NewSim",
+          "name": "NewSim",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/LoadSim",
+          "name": "LoadSim",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Editor",
+          "name": "Editor",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Settings",
+          "name": "Settings",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Achievements",
+          "name": "Achievements",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/More",
+          "name": "More",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Credits",
+          "name": "Credits",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Quit",
+          "name": "Quit",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Top/Return",
+          "name": "Return",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/Scenario Panel/Button holder/Challenges Buttons",
+          "name": "Challenges Buttons",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/Scenario Panel/Button holder/New Scenario Button",
+          "name": "New Scenario Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/Scenario Panel/Button holder/Open Folder Button",
+          "name": "Open Folder Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/top/Button holder (1)/EditChallengeButton",
+          "name": "EditChallengeButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/SelectedPanel/ScenarioInfo/Details/Name Line/Edit Button",
+          "name": "Edit Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ParametersPanel/Content/TopLine/ Performance",
+          "name": " Performance",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ParametersPanel/Content/Bottom/StartButton",
+          "name": "StartButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ChampionSelectionPanel/Content/Body/Select Other",
+          "name": "Select Other",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ChampionSelectionPanel/Content/Bottom/StartButton",
+          "name": "StartButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ChampionSelectionPanel/Content/Bottom/spacer (2)/StartButton (1)",
+          "name": "StartButton (1)",
+          "enabled": true,
+          "labels": []
+        }
+      ],
+      "panels": [
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel",
+        "UI/NewGameScenarios/ScenarioSelector",
+        "UI/NewGameScenarios/ScenarioSelector/Holder/Scenario Panel",
+        "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/SelectedPanel",
+        "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ParametersPanel",
+        "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ChampionSelectionPanel"
+      ],
+      "images": []
+    },
+    "challenge_parameters_editor": {
+      "nodes": 4358,
+      "controls": 5,
+      "texts": [
+        "The Bibites: Digital Life",
+        "Omnia Studios",
+        "the studio Leo Caussan ended up founding",
+        "This is all possible thanks to the amazing patrons supporting the project on Patreon\n\nHelp propel the creation of a new form of life!",
+        "The Bibites",
+        "Continue",
+        "New",
+        "Load",
+        "Bibite Library",
+        "Settings\n",
+        "Achievements",
+        "Additional Tools",
+        "Credits\n",
+        "Quit\n",
+        "The Bibites 0.6.3.1",
+        "Scenarios",
+        "Return to Menu",
+        "No Preview Image \nCould Be Found",
+        "Add a file called \"img.png\" \nto the scenario .zip folder \nto add a preview image",
+        "Full-World",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sit amet dolor congue, Integer sit amet dolor congue, venenatis sem a, egestas ante. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sit amet dolor congue, venenatis sem a, egestas ante. ",
+        "In less than an hour",
+        "In less than an hour",
+        "In less than an hour",
+        "Highscore:",
+        "188555",
+        "With Champion:",
+        "Basic Bibite",
+        "Scenario Modifiers",
+        "TPS settings",
+        "Size of the Simulation Area",
+        "Normal",
+        "Global Biomass Density",
+        "Normal",
+        "Global Fertility",
+        "Normal",
+        "Radioactivity",
+        "Normal",
+        "Limit Bibites",
+        "No",
+        "Start Simulation",
+        "Champion Selection",
+        "Basic Bibitus ",
+        "Start Challenge"
+      ],
+      "buttons": [
+        {
+          "path": "UI/WelcomeScreen/Patreon Holder/Button",
+          "name": "Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Continue",
+          "name": "Continue",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/NewSim",
+          "name": "NewSim",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/LoadSim",
+          "name": "LoadSim",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Editor",
+          "name": "Editor",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Settings",
+          "name": "Settings",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Achievements",
+          "name": "Achievements",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/More",
+          "name": "More",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Credits",
+          "name": "Credits",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Quit",
+          "name": "Quit",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Top/Return",
+          "name": "Return",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/Scenario Panel/Button holder/Challenges Buttons",
+          "name": "Challenges Buttons",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/Scenario Panel/Button holder/New Scenario Button",
+          "name": "New Scenario Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/Scenario Panel/Button holder/Open Folder Button",
+          "name": "Open Folder Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/top/Button holder (1)/EditChallengeButton",
+          "name": "EditChallengeButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/SelectedPanel/ScenarioInfo/Details/Name Line/Edit Button",
+          "name": "Edit Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ParametersPanel/Content/TopLine/ Performance",
+          "name": " Performance",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ParametersPanel/Content/Bottom/StartButton",
+          "name": "StartButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ChampionSelectionPanel/Content/Body/Select Other",
+          "name": "Select Other",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ChampionSelectionPanel/Content/Bottom/StartButton",
+          "name": "StartButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ChampionSelectionPanel/Content/Bottom/spacer (2)/StartButton (1)",
+          "name": "StartButton (1)",
+          "enabled": true,
+          "labels": []
+        }
+      ],
+      "panels": [
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel",
+        "UI/NewGameScenarios/ScenarioSelector",
+        "UI/NewGameScenarios/ScenarioSelector/Holder/Scenario Panel",
+        "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/SelectedPanel",
+        "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ParametersPanel",
+        "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ChampionSelectionPanel"
+      ],
+      "images": []
+    },
+    "workshop_panel": {
+      "nodes": 4358,
+      "controls": 5,
+      "texts": [
+        "The Bibites: Digital Life",
+        "Omnia Studios",
+        "the studio Leo Caussan ended up founding",
+        "This is all possible thanks to the amazing patrons supporting the project on Patreon\n\nHelp propel the creation of a new form of life!",
+        "The Bibites",
+        "Continue",
+        "New",
+        "Load",
+        "Bibite Library",
+        "Settings\n",
+        "Achievements",
+        "Additional Tools",
+        "Credits\n",
+        "Quit\n",
+        "The Bibites 0.6.3.1",
+        "Scenarios",
+        "Return to Menu",
+        "No Preview Image \nCould Be Found",
+        "Add a file called \"img.png\" \nto the scenario .zip folder \nto add a preview image",
+        "Full-World",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sit amet dolor congue, Integer sit amet dolor congue, venenatis sem a, egestas ante. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sit amet dolor congue, venenatis sem a, egestas ante. ",
+        "In less than an hour",
+        "In less than an hour",
+        "In less than an hour",
+        "Highscore:",
+        "188555",
+        "With Champion:",
+        "Basic Bibite",
+        "Scenario Modifiers",
+        "TPS settings",
+        "Size of the Simulation Area",
+        "Normal",
+        "Global Biomass Density",
+        "Normal",
+        "Global Fertility",
+        "Normal",
+        "Radioactivity",
+        "Normal",
+        "Limit Bibites",
+        "No",
+        "Start Simulation",
+        "Champion Selection",
+        "Basic Bibitus ",
+        "Start Challenge",
+        "Steam Workshop",
+        "Subscribed Items",
+        "You're not subscribed to any item.\n\nHead to the Steam Workshop to find cool Bibites, Scenarios, or Saves, other players have shared!\n",
+        "Shared Items",
+        "You're not sharing any item.\n\nShare items from the different panels, like from the bibite library for bibite files, or from here! ",
+        "No Preview Image Could Be Found",
+        "Shared Item title",
+        "Type: ",
+        "Bibite ",
+        "Version:",
+        "0.6.1.1",
+        "Author: ",
+        "Naotagrey",
+        "Visibility: ",
+        "Public",
+        "Description:",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nSuspendisse vitae urna vitae risus posuere feugiat.\nNullam vel ligula ac elit scelerisque pharetra at vel magna.\nMauris pulvinar, nunc at ultricies elementum, ex tortor aliquet urna, a egestas odio elit non ipsum.\n\nhf",
+        "Last Updated:",
+        "2025-09-12 12:00:00"
+      ],
+      "buttons": [
+        {
+          "path": "UI/WelcomeScreen/Patreon Holder/Button",
+          "name": "Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Continue",
+          "name": "Continue",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/NewSim",
+          "name": "NewSim",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/LoadSim",
+          "name": "LoadSim",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Editor",
+          "name": "Editor",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Settings",
+          "name": "Settings",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Achievements",
+          "name": "Achievements",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/More",
+          "name": "More",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Credits",
+          "name": "Credits",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Quit",
+          "name": "Quit",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Top/Return",
+          "name": "Return",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/Scenario Panel/Button holder/Challenges Buttons",
+          "name": "Challenges Buttons",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/Scenario Panel/Button holder/New Scenario Button",
+          "name": "New Scenario Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/Scenario Panel/Button holder/Open Folder Button",
+          "name": "Open Folder Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/top/Button holder (1)/EditChallengeButton",
+          "name": "EditChallengeButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/SelectedPanel/ScenarioInfo/Details/Name Line/Edit Button",
+          "name": "Edit Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ParametersPanel/Content/TopLine/ Performance",
+          "name": " Performance",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ParametersPanel/Content/Bottom/StartButton",
+          "name": "StartButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ChampionSelectionPanel/Content/Body/Select Other",
+          "name": "Select Other",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ChampionSelectionPanel/Content/Bottom/StartButton",
+          "name": "StartButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ChampionSelectionPanel/Content/Bottom/spacer (2)/StartButton (1)",
+          "name": "StartButton (1)",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WorkshopItemsPanel/Top/Return",
+          "name": "Return",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WorkshopItemsPanel/Holder/SubscribedList/body/HeaderHolder/Header/OpenWorkshopButton",
+          "name": "OpenWorkshopButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WorkshopItemsPanel/Holder/SharedList/body/HeaderHolder/Header/ShareNewButon",
+          "name": "ShareNewButon",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WorkshopItemsPanel/Holder/SelectedPanel/Item Info/UnsubscribeButton",
+          "name": "UnsubscribeButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WorkshopItemsPanel/Holder/SelectedPanel/Item Info/OpenWorkshopButton",
+          "name": "OpenWorkshopButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WorkshopItemsPanel/Holder/SelectedPanel/Item Info/EditSharedButon",
+          "name": "EditSharedButon",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WorkshopItemsPanel/Holder/SelectedPanel/Item Info/InfoList/Line/LastUpdated/Button",
+          "name": "Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WorkshopItemsPanel/Holder/SelectedPanel/Item Info/InfoList/Line/LastUpdated/refreshButton",
+          "name": "refreshButton",
+          "enabled": true,
+          "labels": []
+        }
+      ],
+      "panels": [
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel",
+        "UI/NewGameScenarios/ScenarioSelector",
+        "UI/NewGameScenarios/ScenarioSelector/Holder/Scenario Panel",
+        "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/SelectedPanel",
+        "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ParametersPanel",
+        "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ChampionSelectionPanel",
+        "UI/WorkshopItemsPanel",
+        "UI/WorkshopItemsPanel/Holder/SelectedPanel"
+      ],
+      "images": []
+    },
+    "workshop_edit_shared": {
+      "nodes": 4361,
+      "controls": 9,
+      "texts": [
+        "The Bibites: Digital Life",
+        "Omnia Studios",
+        "the studio Leo Caussan ended up founding",
+        "This is all possible thanks to the amazing patrons supporting the project on Patreon\n\nHelp propel the creation of a new form of life!",
+        "The Bibites",
+        "Continue",
+        "New",
+        "Load",
+        "Bibite Library",
+        "Settings\n",
+        "Achievements",
+        "Additional Tools",
+        "Credits\n",
+        "Quit\n",
+        "The Bibites 0.6.3.1",
+        "Scenarios",
+        "Return to Menu",
+        "No Preview Image \nCould Be Found",
+        "Add a file called \"img.png\" \nto the scenario .zip folder \nto add a preview image",
+        "Full-World",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sit amet dolor congue, Integer sit amet dolor congue, venenatis sem a, egestas ante. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer sit amet dolor congue, venenatis sem a, egestas ante. ",
+        "In less than an hour",
+        "In less than an hour",
+        "In less than an hour",
+        "Highscore:",
+        "188555",
+        "With Champion:",
+        "Basic Bibite",
+        "Scenario Modifiers",
+        "TPS settings",
+        "Size of the Simulation Area",
+        "Normal",
+        "Global Biomass Density",
+        "Normal",
+        "Global Fertility",
+        "Normal",
+        "Radioactivity",
+        "Normal",
+        "Limit Bibites",
+        "No",
+        "Start Simulation",
+        "Champion Selection",
+        "Basic Bibitus ",
+        "Start Challenge",
+        "Steam Workshop",
+        "Subscribed Items",
+        "You're not subscribed to any item.\n\nHead to the Steam Workshop to find cool Bibites, Scenarios, or Saves, other players have shared!\n",
+        "Shared Items",
+        "You're not sharing any item.\n\nShare items from the different panels, like from the bibite library for bibite files, or from here! ",
+        "No Preview Image Could Be Found",
+        "Shared Item title",
+        "Type: ",
+        "Bibite ",
+        "Version:",
+        "0.6.1.1",
+        "Author: ",
+        "Naotagrey",
+        "Visibility: ",
+        "Public",
+        "Description:",
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nSuspendisse vitae urna vitae risus posuere feugiat.\nNullam vel ligula ac elit scelerisque pharetra at vel magna.\nMauris pulvinar, nunc at ultricies elementum, ex tortor aliquet urna, a egestas odio elit non ipsum.\n\nhf",
+        "Last Updated:",
+        "2025-09-12 12:00:00",
+        "Submit a preview Image",
+        "Item title:",
+        "Enter text...",
+        "\u200b",
+        "Source File:",
+        "~/Bibites/Basic bibite.bb8template",
+        "Type: ",
+        "Bibite ",
+        "Version:",
+        "0.6.1.1",
+        "Last File Sync:",
+        "2025-09-12 12:00:00",
+        "Description:",
+        "Enter text...",
+        "\u200b",
+        "Visibility",
+        "Public"
+      ],
+      "buttons": [
+        {
+          "path": "UI/WelcomeScreen/Patreon Holder/Button",
+          "name": "Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Continue",
+          "name": "Continue",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/NewSim",
+          "name": "NewSim",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/LoadSim",
+          "name": "LoadSim",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Editor",
+          "name": "Editor",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Settings",
+          "name": "Settings",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Achievements",
+          "name": "Achievements",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/More",
+          "name": "More",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Credits",
+          "name": "Credits",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Quit",
+          "name": "Quit",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Top/Return",
+          "name": "Return",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/Scenario Panel/Button holder/Challenges Buttons",
+          "name": "Challenges Buttons",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/Scenario Panel/Button holder/New Scenario Button",
+          "name": "New Scenario Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/Scenario Panel/Button holder/Open Folder Button",
+          "name": "Open Folder Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/top/Button holder (1)/EditChallengeButton",
+          "name": "EditChallengeButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/SelectedPanel/ScenarioInfo/Details/Name Line/Edit Button",
+          "name": "Edit Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ParametersPanel/Content/TopLine/ Performance",
+          "name": " Performance",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ParametersPanel/Content/Bottom/StartButton",
+          "name": "StartButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ChampionSelectionPanel/Content/Body/Select Other",
+          "name": "Select Other",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ChampionSelectionPanel/Content/Bottom/StartButton",
+          "name": "StartButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ChampionSelectionPanel/Content/Bottom/spacer (2)/StartButton (1)",
+          "name": "StartButton (1)",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WorkshopItemsPanel/Top/Return",
+          "name": "Return",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WorkshopItemsPanel/Holder/SubscribedList/body/HeaderHolder/Header/OpenWorkshopButton",
+          "name": "OpenWorkshopButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WorkshopItemsPanel/Holder/SharedList/body/HeaderHolder/Header/ShareNewButon",
+          "name": "ShareNewButon",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WorkshopItemsPanel/Holder/SelectedPanel/Item Info/UnsubscribeButton",
+          "name": "UnsubscribeButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WorkshopItemsPanel/Holder/SelectedPanel/Item Info/OpenWorkshopButton",
+          "name": "OpenWorkshopButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WorkshopItemsPanel/Holder/SelectedPanel/Item Info/EditSharedButon",
+          "name": "EditSharedButon",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WorkshopItemsPanel/Holder/SelectedPanel/Item Info/InfoList/Line/LastUpdated/Button",
+          "name": "Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WorkshopItemsPanel/Holder/SelectedPanel/Item Info/InfoList/Line/LastUpdated/refreshButton",
+          "name": "refreshButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WorkshopItemsPanel/EditSharedItemPanel/Return",
+          "name": "Return",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WorkshopItemsPanel/EditSharedItemPanel/Holder/EditPanel/DeleteItemButton",
+          "name": "DeleteItemButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WorkshopItemsPanel/EditSharedItemPanel/Holder/EditPanel/Item Info/TopImage/Preview Holder/preview/ChangePreviewButton",
+          "name": "ChangePreviewButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WorkshopItemsPanel/EditSharedItemPanel/Holder/EditPanel/Item Info/InfoList/File Line/UpdateFileButton",
+          "name": "UpdateFileButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WorkshopItemsPanel/EditSharedItemPanel/Holder/EditPanel/Item Info/InfoList/Footer/LastUpdated/Button",
+          "name": "Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WorkshopItemsPanel/EditSharedItemPanel/Holder/EditPanel/Item Info/InfoList/Footer/Submit Button",
+          "name": "Submit Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WorkshopItemsPanel/EditSharedItemPanel/SubmitPage/Holder/SubmitPanel/Return",
+          "name": "Return",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UI/WorkshopItemsPanel/EditSharedItemPanel/SubmitPage/Holder/SubmitPanel/Body/Footer/Submit Button",
+          "name": "Submit Button",
+          "enabled": true,
+          "labels": []
+        }
+      ],
+      "panels": [
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel",
+        "UI/NewGameScenarios/ScenarioSelector",
+        "UI/NewGameScenarios/ScenarioSelector/Holder/Scenario Panel",
+        "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/SelectedPanel",
+        "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ParametersPanel",
+        "UI/NewGameScenarios/ScenarioSelector/Holder/RightPanels/RightGroup/ChampionSelectionPanel",
+        "UI/WorkshopItemsPanel",
+        "UI/WorkshopItemsPanel/Holder/SelectedPanel",
+        "UI/WorkshopItemsPanel/EditSharedItemPanel",
+        "UI/WorkshopItemsPanel/EditSharedItemPanel/Holder/EditPanel",
+        "UI/WorkshopItemsPanel/EditSharedItemPanel/SubmitPage/Holder/SubmitPanel"
+      ],
+      "images": []
+    },
+    "lineage_species_panel": {
+      "nodes": 7881,
+      "controls": 1,
+      "texts": [
+        "Species Panel",
+        "Not enough data collected, try again in a few minutes",
+        "OK",
+        "Time: 00:00:20\n0 fps   /  0 tps\nsim/real: x0.00",
+        "X 0.00",
+        "100u",
+        "Info",
+        "+"
+      ],
+      "buttons": [
+        {
+          "path": "UICanvas/MainUI/TopLayer/Popuholder/DialogPopup(Clone)/buttonHolder/Button",
+          "name": "Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/PlacerButton",
+          "name": "PlacerButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/UserActions",
+          "name": "UserActions",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton",
+          "name": "ViewButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/InformationPanelButton",
+          "name": "InformationPanelButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/DynamicParametersButton",
+          "name": "DynamicParametersButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/AncestralLineageButton",
+          "name": "AncestralLineageButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/SettingsButton",
+          "name": "SettingsButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/PauseButton",
+          "name": "PauseButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/PlayButton",
+          "name": "PlayButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/FloatInfoText",
+          "name": "FloatInfoText",
+          "enabled": true,
+          "labels": [
+            "X 0.00"
+          ]
+        },
+        {
+          "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/QuickStatsHolder/OpenButtons/OpenQuickStats",
+          "name": "OpenQuickStats",
+          "enabled": true,
+          "labels": []
+        }
+      ],
+      "panels": [
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel"
+      ],
+      "images": []
+    },
+    "lineage_species_tabs": {
+      "nodes": 7881,
+      "controls": 1,
+      "texts": [
+        "Species Panel",
+        "Not enough data collected, try again in a few minutes",
+        "OK",
+        "Time: 00:00:20\n0 fps   /  0 tps\nsim/real: x0.00",
+        "X 0.00",
+        "100u",
+        "Info",
+        "+"
+      ],
+      "buttons": [
+        {
+          "path": "UICanvas/MainUI/TopLayer/Popuholder/DialogPopup(Clone)/buttonHolder/Button",
+          "name": "Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/PlacerButton",
+          "name": "PlacerButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/UserActions",
+          "name": "UserActions",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton",
+          "name": "ViewButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/InformationPanelButton",
+          "name": "InformationPanelButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/DynamicParametersButton",
+          "name": "DynamicParametersButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/AncestralLineageButton",
+          "name": "AncestralLineageButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/SettingsButton",
+          "name": "SettingsButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/PauseButton",
+          "name": "PauseButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/PlayButton",
+          "name": "PlayButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/FloatInfoText",
+          "name": "FloatInfoText",
+          "enabled": true,
+          "labels": [
+            "X 0.00"
+          ]
+        },
+        {
+          "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/QuickStatsHolder/OpenButtons/OpenQuickStats",
+          "name": "OpenQuickStats",
+          "enabled": true,
+          "labels": []
+        }
+      ],
+      "panels": [
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel"
+      ],
+      "images": []
+    },
+    "lineage_species_info": {
+      "nodes": 7881,
+      "controls": 1,
+      "texts": [
+        "Species Panel",
+        "Not enough data collected, try again in a few minutes",
+        "OK",
+        "Time: 00:00:20\n0 fps   /  0 tps\nsim/real: x0.00",
+        "X 0.00",
+        "100u",
+        "Info",
+        "+"
+      ],
+      "buttons": [
+        {
+          "path": "UICanvas/MainUI/TopLayer/Popuholder/DialogPopup(Clone)/buttonHolder/Button",
+          "name": "Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/PlacerButton",
+          "name": "PlacerButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/UserActions",
+          "name": "UserActions",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton",
+          "name": "ViewButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/InformationPanelButton",
+          "name": "InformationPanelButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/DynamicParametersButton",
+          "name": "DynamicParametersButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/AncestralLineageButton",
+          "name": "AncestralLineageButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/SettingsButton",
+          "name": "SettingsButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/PauseButton",
+          "name": "PauseButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/PlayButton",
+          "name": "PlayButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/FloatInfoText",
+          "name": "FloatInfoText",
+          "enabled": true,
+          "labels": [
+            "X 0.00"
+          ]
+        },
+        {
+          "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/QuickStatsHolder/OpenButtons/OpenQuickStats",
+          "name": "OpenQuickStats",
+          "enabled": true,
+          "labels": []
+        }
+      ],
+      "panels": [
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel"
+      ],
+      "images": []
+    },
+    "lineage_species_genes": {
+      "nodes": 7881,
+      "controls": 1,
+      "texts": [
+        "Species Panel",
+        "Not enough data collected, try again in a few minutes",
+        "OK",
+        "Time: 00:00:20\n0 fps   /  0 tps\nsim/real: x0.00",
+        "X 0.00",
+        "100u",
+        "Info",
+        "+"
+      ],
+      "buttons": [
+        {
+          "path": "UICanvas/MainUI/TopLayer/Popuholder/DialogPopup(Clone)/buttonHolder/Button",
+          "name": "Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/PlacerButton",
+          "name": "PlacerButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/UserActions",
+          "name": "UserActions",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton",
+          "name": "ViewButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/InformationPanelButton",
+          "name": "InformationPanelButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/DynamicParametersButton",
+          "name": "DynamicParametersButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/AncestralLineageButton",
+          "name": "AncestralLineageButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/SettingsButton",
+          "name": "SettingsButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/PauseButton",
+          "name": "PauseButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/PlayButton",
+          "name": "PlayButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/FloatInfoText",
+          "name": "FloatInfoText",
+          "enabled": true,
+          "labels": [
+            "X 0.00"
+          ]
+        },
+        {
+          "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/QuickStatsHolder/OpenButtons/OpenQuickStats",
+          "name": "OpenQuickStats",
+          "enabled": true,
+          "labels": []
+        }
+      ],
+      "panels": [
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel"
+      ],
+      "images": []
+    },
+    "lineage_species_brain": {
+      "nodes": 7881,
+      "controls": 1,
+      "texts": [
+        "Species Panel",
+        "Not enough data collected, try again in a few minutes",
+        "OK",
+        "Time: 00:00:20\n0 fps   /  0 tps\nsim/real: x0.00",
+        "X 0.00",
+        "100u",
+        "Info",
+        "+"
+      ],
+      "buttons": [
+        {
+          "path": "UICanvas/MainUI/TopLayer/Popuholder/DialogPopup(Clone)/buttonHolder/Button",
+          "name": "Button",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/PlacerButton",
+          "name": "PlacerButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/UserActions",
+          "name": "UserActions",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton",
+          "name": "ViewButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/InformationPanelButton",
+          "name": "InformationPanelButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/DynamicParametersButton",
+          "name": "DynamicParametersButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/AncestralLineageButton",
+          "name": "AncestralLineageButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/SettingsButton",
+          "name": "SettingsButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/PauseButton",
+          "name": "PauseButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/PlayButton",
+          "name": "PlayButton",
+          "enabled": true,
+          "labels": []
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/FloatInfoText",
+          "name": "FloatInfoText",
+          "enabled": true,
+          "labels": [
+            "X 0.00"
+          ]
+        },
+        {
+          "path": "UICanvas/MainUI/Layer1/Panels/Right Panels/QuickStatsHolder/OpenButtons/OpenQuickStats",
+          "name": "OpenQuickStats",
+          "enabled": true,
+          "labels": []
+        }
+      ],
+      "panels": [
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel"
+      ],
+      "images": []
+    }
+  },
+  "availability": {
+    "challenge_tracker_end_popup": "No challenge tracker/end-popup/challengeend nodes were present in the local menu UI or lineage overlay.",
+    "rung_history": "No rung-history nodes were present in the captured UI.",
+    "lineage_species": "AncestralLineagePanel opened but the default save has insufficient lineage data; species tabs/info/genes/brain nodes are captured in the session trees (text 'Not enough data collected...').",
+    "workshop": "Local Workshop panel and EditSharedItemPanel captured; subscribed/shared lists show placeholders; edit panel has 9 controls."
+  }
+}

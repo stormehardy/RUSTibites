@@ -1,0 +1,46 @@
+[workspace]
+resolver = "3"
+members = [
+    "crates/bibites-core",
+    "crates/bibites-prefetch",
+    "crates/bibites-brainsort",
+    "crates/bibites-io",
+    "crates/bibites-cli",
+    "crates/bibites-view",
+]
+
+[workspace.package]
+version = "0.2.3"
+edition = "2024"
+rust-version = "1.85"
+license = "MIT OR Apache-2.0"
+authors = ["RUSTibites contributors"]
+
+[workspace.dependencies]
+bibites-core = { path = "crates/bibites-core" }
+bibites-prefetch = { path = "crates/bibites-prefetch" }
+bibites-brainsort = { path = "crates/bibites-brainsort" }
+bibites-io = { path = "crates/bibites-io" }
+
+[profile.release]
+opt-level = 3
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+strip = "debuginfo"
+
+[profile.bench]
+inherits = "release"
+
+# For profiling on a machine that cannot afford `release` (fat LTO, one codegen unit): no LTO and 16 codegen units build in a
+# fraction of the memory and time and run within about 10% of it. `cargo build --profile perf -p bibites-cli`.
+[profile.perf]
+inherits = "release"
+lto = false
+codegen-units = 16
+
+[profile.dev]
+opt-level = 1
+
+[profile.dev.package."*"]
+opt-level = 2

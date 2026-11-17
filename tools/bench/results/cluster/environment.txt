@@ -1,0 +1,49 @@
+# RUSTibites benchmark environment
+
+Captured (UTC):        2026-10-30T14:41:17.4461554Z
+Host:                  DESKTOP
+OS:                    Microsoft Windows 10 Home | version=10.0.19045
+CPU:                   AMD Ryzen 5 3600 6-Core Processor | physical=6 logical=12 | max_clock_mhz=3593
+Memory:                16.0 GB total, 5.48 GB free at capture
+CPU load at capture:   3.0 %
+PowerShell:            5.1.19041.6456
+rustc:                 1.99.1 (58cf8f9c3 2026-10-13) (release 1.99.1, x86_64-pc-windows-msvc)
+cargo:                 1.99.1 (5f94df478 2026-08-27)
+Git HEAD:              2fb2ad4dde9024cac5ac234e3eff558611bc160b (main) 2026-10-30T10:37:00-04:00
+Git subject:           parity: official post-fix §10.4 recapture — acquisition/feeding gap closed
+Git dirty:             True (21 changed paths)
+Git status:
+   M docs/BENCHMARKS.md
+   M docs/spec/01-brain-genetics.md
+   M tools/assets/build_ui_expectations.py
+   M tools/assets/ui_expectations.json
+   M tools/bench/results/final-phases/config.json
+   M tools/bench/results/final-phases/environment.json
+   M tools/bench/results/final-phases/environment.txt
+   M tools/bench/results/final-phases/phases.csv
+   M tools/bench/results/final-phases/phases.md
+   M tools/bench/results/final-phases/phases_raw.txt
+   M tools/bench/results/final/config.json
+   M tools/bench/results/final/determinism.json
+   M tools/bench/results/final/environment.json
+   M tools/bench/results/final/environment.txt
+   M tools/bench/results/final/matrix.json
+   M tools/bench/results/final/matrix.md
+   M tools/bench/results/final/runs.csv
+   M tools/bench/results/final/summary.csv
+  ?? crates/bibites-io/tests/template_feeding.rs
+  ?? tools/parity/make_game_seed.py
+  ?? tools/parity/plugin/_fix_select.py
+Release profile:
+  opt-level = 3
+  lto = "fat"
+  codegen-units = 1
+  panic = "abort"
+  strip = "debuginfo"
+Benchmark binary:      Z:\RUSTibites\target\bench-final\rustibites-3CCB231E.exe
+  sha256:              3CCB231ECC3C9027B83CE998E6BB88FAFA4224D27874547B386F94EA84709D1D
+  size:                2168320 bytes
+  mtime (UTC):         2026-10-30T14:38:42.9058068Z
+  stable copy:         C:\Users\Storme\AppData\Local\Temp\rustibites-bench\bin\rustibites-3CCB231ECC3C9027.exe
+Simulator:             30 TPS (fixed_dt = 1/30 s)
+Seed:                  seed = 0x5255535400000000 xor repetition_index (repetition starts at 0)

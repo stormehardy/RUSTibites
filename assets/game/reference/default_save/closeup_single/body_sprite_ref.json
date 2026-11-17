@@ -1,0 +1,32 @@
+{
+  "schema": "rustibites.assets.body_sprite_ref.v1",
+  "selected_id": -139806670,
+  "sprite": "normal_body_00",
+  "texture": "normal_body",
+  "texture_size": [
+    11,
+    27
+  ],
+  "texture_format": "RGBA32",
+  "sprite_rect": {
+    "x": 0,
+    "y": 0,
+    "w": 11,
+    "h": 9
+  },
+  "sprite_pivot": {
+    "x": 11,
+    "y": 4.5
+  },
+  "pixels_per_unit": 1,
+  "live_cell_nontransparent": 65,
+  "extracted_cell_nontransparent": 65,
+  "full_texture_matches_extracted": true,
+  "cell_matches_extracted": true,
+  "raw_dump": "testdata/parity/default/body_texture/meta.json",
+  "note": "normal_body_00 maps to the live texture cell at sprite_rect; compare extracted sheet/cell.",
+  "small_refs": {
+    "live_full_texture": "assets/game/reference/default_save/closeup_single/body_texture_live.png",
+    "live_cell": "assets/game/reference/default_save/closeup_single/body_cell_live.png"
+  }
+}

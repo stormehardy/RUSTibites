@@ -1,0 +1,27 @@
+{
+ "name": "acidLiquid",
+ "shader": "UI/StomachAcid",
+ "colors": {
+  "Color_4c7cd3e14a604dbba33098b98be227a0": null,
+  "Color_eec523ef4ead4539a352e42f8d32da49": null,
+  "_Color": null,
+  "_StomachDim": null,
+  "_StomachOffset": null,
+  "_Stomach_dim": null,
+  "_center": null,
+  "_dim": null
+ },
+ "floats": {
+  "Vector1_ee5a402adfba4f82be897ac9fe535a84": 0.10000000149011612,
+  "_Fullness": 0.12407725304365158,
+  "_fullness": 0.4033314883708954,
+  "_pixelNum": 1.0,
+  "_radius": 11.0,
+  "_unscaledTime": 112.83341217041016,
+  "_width": 22.799999237060547
+ },
+ "textures": {
+  "_MainTex": "UnityTexEnv(m_Offset=Vector2f(0.0, 0.0), m_Scale=Vector2f(1.0, 1.0), m_Texture=PPtr(m_FileID=0, m_PathID=0, assetsfile=<SerializedFile>))"
+ },
+ "source_asset": "sharedassets2.assets"
+}

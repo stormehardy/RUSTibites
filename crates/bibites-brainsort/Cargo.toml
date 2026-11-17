@@ -1,0 +1,11 @@
+[package]
+name = "bibites-brainsort"
+description = "Pure-Rust port of the Bibites brain-diagram layout algorithm (BrainSorter)"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]
+
+[dev-dependencies]

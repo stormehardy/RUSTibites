@@ -1,0 +1,21 @@
+{
+  "schema": "rustibites.ui.visual_reference_map.v1",
+  "authored_by": "parity-dev",
+  "native_reference_dir": "assets/game/reference/functional_ui_native/in_world",
+  "sessions": {
+    "main_world_toolbar": "assets/game/reference/functional_ui_native/in_world/native_world_toolbar.png",
+    "main_world_tool_placer": "assets/game/reference/functional_ui_native/in_world/native_world_placer.png",
+    "main_world_tool_user_actions": "assets/game/reference/functional_ui_native/in_world/native_world_user_actions.png",
+    "main_world_tool_view": "assets/game/reference/functional_ui_native/in_world/native_world_view.png",
+    "main_world_dynamic_parameters": "assets/game/reference/functional_ui_native/in_world/native_world_dynamic.png",
+    "main_world_lineage": "assets/game/reference/functional_ui_native/in_world/native_world_lineage.png",
+    "main_world_information": "assets/game/reference/functional_ui_native/in_world/native_world_information.png",
+    "main_world_settings_panel": "assets/game/reference/functional_ui_native/in_world/native_world_settings.png",
+    "main_world_tool_placer_pellets": "assets/game/reference/functional_ui_native/in_world/native_world_placer_pellets.png",
+    "default_world_inspector": "assets/game/reference/functional_ui_native/in_world/inspector/native_inspector_stats_ui_only_1920x1080.png",
+    "default_world_genes": "assets/game/reference/functional_ui_native/in_world/inspector/native_inspector_genes_ui_only_1920x1080.png",
+    "default_world_biology": "assets/game/reference/functional_ui_native/in_world/inspector/native_inspector_biology_ui_only_1920x1080.png",
+    "default_world_brain": "assets/game/reference/functional_ui_native/in_world/inspector/native_inspector_brain_ui_only_1920x1080.png"
+  },
+  "notes": "Canonical native in-world map for tools/ui; every path is native 1920 and UI-only from the standalone hidden game. Menu sessions intentionally excluded (legacy/upscaled; isolation blocked). Placer-pellets has no runtime counterpart yet; keep only if the runner has that session."
+}

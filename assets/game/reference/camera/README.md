@@ -1,0 +1,1 @@
+Live CameraManager serialized values for matching Unity CameraZoom(ratio) wheel/gradual zoom. `live_camera_controls.json` includes scrollSpeed, speedScale, scroll drag height, camSize and the main camera state. See Here/ManagementScripts/CameraManager.cs for the gradual-zoom input path.

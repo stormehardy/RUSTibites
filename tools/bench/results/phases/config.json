@@ -1,0 +1,34 @@
+{
+    "schema":  "rustibites.bench.phases/1",
+    "started_at_utc":  "2026-10-30T07:19:45.1587488Z",
+    "scenario":  "",
+    "scenario_label":  "synthetic",
+    "requested_pops":  [
+                           1000,
+                           2000,
+                           5000,
+                           10000,
+                           20000
+                       ],
+    "threads":  [
+                    1,
+                    8
+                ],
+    "ticks_per_run":  120,
+    "timeout_sec_run":  300,
+    "binary":  {
+                   "original_path":  "Z:\\RUSTibites\\target\\release\\rustibites.exe",
+                   "measured_copy":  "C:\\Users\\Storme\\AppData\\Local\\Temp\\rustibites-bench\\bin\\rustibites-447506456CD705E3.exe",
+                   "sha256":  "447506456CD705E3B8771C4EAE023AC5A7E2134718B7CC0DA113948955528ECB"
+               },
+    "artifacts":  {
+                      "phases_csv":  "phases.csv",
+                      "phases_md":  "phases.md",
+                      "raw":  "phases_raw.txt"
+                  },
+    "notes":  [
+                  "each row is one process, one repetition; phase values are means over all measured ticks",
+                  "phase table is printed only by the human bench output (JSON has totals only)",
+                  "phase_total_ms is the sum of the per-phase means; ms_per_tick = 1000 / ticks_per_second"
+              ]
+}

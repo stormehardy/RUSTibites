@@ -1,0 +1,29 @@
+{
+ "name": "internalssections",
+ "shader": "UI/InternalsSections",
+ "colors": {
+  "_Color": null,
+  "_Flip": null,
+  "_RendererColor": null
+ },
+ "floats": {
+  "_ArmorPortion": 0.04210375249385834,
+  "_EnableExternalAlpha": 0.0,
+  "_FatEnd": 0.19672131538391113,
+  "_FatFullness": 0.022883664816617966,
+  "_FatPortion": 0.0,
+  "_FatStart": 0.8196721076965332,
+  "_Height": 39.0,
+  "_InflateFactor": 0.0,
+  "_JawPortion": 0.15745116770267487,
+  "_MusclesPortion": 0.10962594300508499,
+  "_SizeFactor": 3.0,
+  "_StomachFullness": 0.5,
+  "_StomachPortion": 0.20196330547332764,
+  "_ThroatPortion": 0.3000573515892029,
+  "_Width": 61.0,
+  "_WombPortion": 0.04317108914256096
+ },
+ "textures": {},
+ "source_asset": "sharedassets2.assets"
+}

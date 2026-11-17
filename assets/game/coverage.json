@@ -1,0 +1,90 @@
+{
+  "schema": "rustibites.assets.coverage.v1",
+  "in_world": {
+    "part_sheets_expected": 24,
+    "part_sheets_found": 24,
+    "part_sheets_missing": [],
+    "object_sprites_expected": 9,
+    "object_sprites_found": 7,
+    "object_sprites_missing": [
+      "medium_meat",
+      "medium_plant"
+    ],
+    "parameters_present": true,
+    "sprites_decoded": 107,
+    "sheet_textures": 131,
+    "coverage_percent": 94.1
+  },
+  "prefabs": {
+    "roots": [
+      "egg",
+      "plant pellet",
+      "bibite",
+      "Radiation Tower",
+      "ColorKiller",
+      "PheroTower",
+      "Zone",
+      "meat pellet",
+      "FieldOfViewDisplay",
+      "background"
+    ],
+    "root_count": 10,
+    "roots_with_sprite_renderers": 10,
+    "unreadable_components": 0
+  },
+  "here_renderer_references": {
+    "files_scanned": 0,
+    "asset_like_literals_known": 0,
+    "examples": {},
+    "note": "only quoted literals that match an extracted asset name are counted; serialized Sprite fields and enum/size tables are covered by the procedural CSV data instead."
+  },
+  "ui": {
+    "files_scanned": 90,
+    "ui_sprites_extracted": 235,
+    "ui_textures_extracted": 240,
+    "nine_slice_sprites": 21,
+    "ui_asset_literals_known": 0,
+    "brain_icon_sprites": 0,
+    "note": "task-79 ui_expectations.json (spec-dev) is the authoritative UI name list; this manifest exposes every UI Sprite/Texture found in the shipped asset files so the loader can name-match. TMP font assets: 22 Font objects exported as .ttf + atlas textures referenced by their material (2 font-atlas textures are not PNG-exportable)."
+  },
+  "fonts": {
+    "count": 22,
+    "extracted": 22,
+    "names": [
+      "Inconsolata-SemiBold",
+      "PerfectDOSVGA437",
+      "Roboto-Black",
+      "Roboto-Thin",
+      "Roboto-Light",
+      "Roboto-Regular",
+      "Roboto-Bold",
+      "Roboto-Black",
+      "Roboto-LightItalic",
+      "Roboto-Thin",
+      "Roboto-Bold",
+      "Roboto-BoldItalic",
+      "Roboto-ThinItalic",
+      "Roboto-Medium",
+      "Roboto-ThinItalic",
+      "Roboto-Regular",
+      "Roboto-Italic",
+      "Roboto-MediumItalic",
+      "Roboto-BoldItalic",
+      "LiberationSans",
+      "Roboto-BlackItalic",
+      "CONSOLA"
+    ]
+  },
+  "materials": {
+    "count": 84,
+    "with_serialized_properties": 84,
+    "shader_names_unresolved_ids": []
+  },
+  "gaps": [
+    "SharedMaterial name on prefab SpriteRenderers is null in the shipped build (material PPtr is external); per-material properties are in materials/*.json keyed by material name.",
+    "Unity stripped Shader asset names: materials record `shader_<PathID>` (shader_resolution); a runtime plugin dump can map them to the shader names (BibiteSkin/background/zone/FOV).",
+    "22 font-atlas textures are not PNG-exportable by UnityPy (image_export_failed); the .ttf font bytes and the Font objects are exported, which is what the viewer needs for text.",
+    "Prefab components that are MonoBehaviour (Bibite, Zone, towers, effects) are unreadable without script typetrees; prefabs.json still records the readable Transform/SpriteRenderer hierarchy",
+    "UI name coverage against task-79's ui_expectations.json is pending that list; every UI sprite root (237) and UI texture (244) is extracted for name matching."
+  ]
+}

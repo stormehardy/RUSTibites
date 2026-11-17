@@ -1,0 +1,77 @@
+{
+  "pid": 9560,
+  "fonts": [
+    {
+      "name": "LiberationSans SDF",
+      "glyphs": 250,
+      "characters": 250,
+      "atlas_count": 1
+    },
+    {
+      "name": "LiberationSans SDF - Fallback",
+      "glyphs": 0,
+      "characters": 0,
+      "atlas_count": 1
+    },
+    {
+      "name": "Boston Black SDF",
+      "glyphs": 97,
+      "characters": 97,
+      "atlas_count": 1
+    },
+    {
+      "name": "Roboto-Bold SDF NoOutline",
+      "glyphs": 112,
+      "characters": 112,
+      "atlas_count": 1
+    },
+    {
+      "name": "Roboto-Bold SDF WhiteOutline",
+      "glyphs": 98,
+      "characters": 98,
+      "atlas_count": 1
+    },
+    {
+      "name": "Roboto-Regular SDF",
+      "glyphs": 98,
+      "characters": 98,
+      "atlas_count": 1
+    }
+  ],
+  "menu_isolation": [
+    {
+      "step": "title_ui_only",
+      "png": "Z:\\RUSTibites\\assets\\game\\reference\\functional_ui_native\\menu_ui_only_native_1920x1080.png",
+      "sharpness": {
+        "size": [
+          1920,
+          1080
+        ],
+        "alpha_pixels": 0,
+        "alpha_fraction": 0.0,
+        "unique_opaque_colors": 0
+      }
+    },
+    {
+      "step": "settings_ui_only",
+      "png": "Z:\\RUSTibites\\assets\\game\\reference\\functional_ui_native\\settings_ui_only_native_1920x1080.png",
+      "sharpness": {
+        "size": [
+          1920,
+          1080
+        ],
+        "alpha_pixels": 0,
+        "alpha_fraction": 0.0,
+        "unique_opaque_colors": 0
+      }
+    }
+  ],
+  "bridge": true,
+  "plugin": true,
+  "hidden": [
+    2295862,
+    3605594,
+    7931588
+  ],
+  "font_count": 6
+}

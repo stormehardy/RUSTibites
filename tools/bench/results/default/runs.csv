@@ -1,0 +1,5 @@
+mode,requested_population,population,threads_requested,threads_engine,rep,status,exit_code,label,ticks,bibites_start,bibites_end,wall_secs,sim_secs,ticks_per_second,realtime_factor,bibite_updates_per_second,state_fingerprint,process_wall_secs,peak_ws_mb,free_gb_before,cpu_load_pct_before,rustc_procs_before,cargo_procs_before,other_rustibites_before,free_gb_after,cpu_load_pct_after,rustc_procs_after,cargo_procs_after,other_rustibites_after,error
+full,0,1,1,1,1,ok,0,scenario Default [rep 1],600,1,10,0.037712,20.000001,15910.013,530.334,15910.0,7047803292694612210,0.286928,12.8,5.28,18.0,0,0,0,5.29,18.0,0,0,0,
+full,0,1,1,1,2,ok,0,scenario Default [rep 1],600,1,10,0.035981,20.000001,16675.607,555.854,16675.6,7047803292694612210,0.316891,14.8,5.28,18.0,0,0,0,5.29,18.0,0,0,0,
+full,0,1,8,8,1,ok,0,scenario Default [rep 1],600,1,10,0.041926,20.000001,14310.997,477.033,14311.0,7047803292694612210,0.339755,13.9,5.29,5.0,0,0,0,5.29,7.0,0,0,0,
+full,0,1,8,8,2,ok,0,scenario Default [rep 1],600,1,10,0.037227,20.000001,16117.334,537.245,16117.3,7047803292694612210,0.294166,12.0,5.29,5.0,0,0,0,5.29,7.0,0,0,0,

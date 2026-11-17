@@ -1,0 +1,823 @@
+{
+ "schema": "rustibites.assets.ui_runtime_atlas.index.v1",
+ "files": {
+  "joined": "tools\\ui\\ui_runtime_atlas.json.gz",
+  "format": "gzipped JSON (decompress with gzip; schema rustibites.assets.ui_runtime_atlas.v1)",
+  "runtime": "Z:\\RUSTibites\\assets\\game\\ui_runtime.json.gz",
+  "layout": "Z:\\RUSTibites\\assets\\game\\ui_layout.json",
+  "manifest": "Z:\\RUSTibites\\assets\\game\\manifest.json",
+  "atlas": "Z:\\RUSTibites\\tools\\ui\\ui_atlas.json"
+ },
+ "capture": {
+  "method": "hidden BibitesAPI lab window; ParityDump GET /d/ui (reflection on live components)",
+  "game": {
+   "version": "0.6.3.1",
+   "unity": "6000.0.44f1"
+  },
+  "scenario": "Z:\\RUSTibites\\testdata\\real\\Default.zip",
+  "screen": {
+   "width": 1920,
+   "height": 1080,
+   "dpi": 96,
+   "fullscreen": true
+  },
+  "captured_utc": "2026-10-30T12:33:07+00:00",
+  "plugin": "ParityDump (transient; removed after capture)",
+  "save_state_capture": {
+   "method": "hidden game, save loaded paused at t=20 s, fit camera; ParityDump /d/ui",
+   "save": "Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip",
+   "screen": {
+    "width": 1920,
+    "height": 1080,
+    "dpi": 96,
+    "fullscreen": true
+   }
+  },
+  "save_state": {
+   "method": "hidden game, save loaded paused t=20 s, fit camera; ParityDump /d/ui",
+   "save": "Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip",
+   "screen": {
+    "width": 1920,
+    "height": 1080,
+    "dpi": 96,
+    "fullscreen": true
+   }
+  },
+  "main_menu_capture": {
+   "method": "hidden game start; UI root activated/normalized; /d/ui; SettingsPanel activated; screen capture (menu loading frame frozen in hidden lab)",
+   "screen": {
+    "width": 1920,
+    "height": 1080,
+    "dpi": 96,
+    "fullscreen": true
+   }
+  },
+  "inspector_tabs": {
+   "method": "hidden rust_seed_600 paused t=20; selected bibite; StatsButton then Gene/Biology/Brain buttons; /d/ui + /d/ui_overlay + screenshot",
+   "tabs": {
+    "genes": {
+     "save": "Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip",
+     "paused": true,
+     "tab": "genes",
+     "button": "GeneButton",
+     "selected": {
+      "ok": true,
+      "selected_id": "bibite(Clone) (SimulationScripts.BibiteScripts.BibiteID)",
+      "name": "bibite(Clone)",
+      "pos": {
+       "x": 905.651062,
+       "y": -556.5388,
+       "z": 0
+      },
+      "requested": ""
+     },
+     "press": {
+      "ok": true,
+      "pressed": "GeneButton",
+      "path": "UICanvas/MainUI/Layer1/Panels/BibiteButtons/GeneButton"
+     },
+     "camera": {
+      "ok": true,
+      "x": 905.651062,
+      "y": -556.5388,
+      "size": 400.0,
+      "worldHalfSize": 2000.0,
+      "aspect": 1.77777779,
+      "orthographic": true
+     },
+     "active_panels": [
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/SpeciesHolder",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/SpeciesHolder/Title",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/SpeciesHolder/SpeciesText",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/SpeciesHolder/Distance Group",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/SpeciesHolder/Distance Group/para",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/SpeciesHolder/Distance Group/FloatInfoText",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/SpeciesHolder/Distance Group/para (2)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/geneName",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/value",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/difference",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/geneName",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/value",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/difference",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/geneName",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/value",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/difference",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/geneName",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/value",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/difference",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/geneName",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/value",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/difference",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/geneName",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/value",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/difference",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/geneName",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/value",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/difference",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/geneName",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/value",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/difference",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/geneName",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/value",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/difference",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/geneName",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/value",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/difference",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/geneName",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/value",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/difference",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/geneName",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/value",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/difference",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/geneName",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/value",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/difference",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/geneName",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/value",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/difference",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/geneName",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/value",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/difference",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/geneName",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/value",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/difference",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/geneName",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/value",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/difference",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/geneName",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/value",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/difference",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/geneName",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/value",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/difference",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/geneName",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/value",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/difference",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/geneName",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/value",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/difference",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/geneName",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/value",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/difference",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/geneName",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/value",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/difference",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/geneName",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/value",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/difference",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/geneName",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/value",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/difference",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/geneName",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/value",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/difference",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/geneName",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/value",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/difference",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/geneName",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/value",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/difference",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/geneName",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/value",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/difference",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/geneName",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/value",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/difference",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/geneName",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/value",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/difference",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/geneName",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/value",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/difference",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/geneName",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/value",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/difference",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/geneName",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/value",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/difference",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/geneName",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/value",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel/Body/GenesHolder/GeneLine(Clone)/difference"
+     ],
+     "overlay": "assets/game/reference/default_save/inspector_tabs/hud_inspector_genes_overlay_1920x1080.png",
+     "frame": "assets/game/reference/default_save/inspector_tabs/hud_inspector_genes_1920x1080.png",
+     "overlay_alpha_pixels": 456721
+    },
+    "biology": {
+     "save": "Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip",
+     "paused": true,
+     "tab": "biology",
+     "button": "BiologyButton",
+     "selected": {
+      "ok": true,
+      "selected_id": "bibite(Clone) (SimulationScripts.BibiteScripts.BibiteID)",
+      "name": "bibite(Clone)",
+      "pos": {
+       "x": 905.651062,
+       "y": -556.5388,
+       "z": 0
+      },
+      "requested": ""
+     },
+     "press": {
+      "ok": true,
+      "pressed": "BiologyButton",
+      "path": "UICanvas/MainUI/Layer1/Panels/BibiteButtons/BiologyButton"
+     },
+     "camera": {
+      "ok": true,
+      "x": 905.651062,
+      "y": -556.5388,
+      "size": 400.0,
+      "worldHalfSize": 2000.0,
+      "aspect": 1.77777779,
+      "orthographic": true
+     },
+     "active_panels": [
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/Title",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/HealthSliderHolder",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/HealthSliderHolder/Health Title",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/HealthSliderHolder/ValueSlider",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/HealthSliderHolder/ValueSlider/Background",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/HealthSliderHolder/ValueSlider/Fill",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/HealthSliderHolder/ValueSlider/ValueHolder",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/HealthSliderHolder/ValueSlider/ValueHolder/HealthValue",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/HealthSliderHolder/ValueSlider/ValueHolder//",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/HealthSliderHolder/ValueSlider/ValueHolder/MaxHealthValue",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/HealthSliderHolder/MoreIndicator",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/HealthSliderHolder/MoreIndicator/Image",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/EnergySliderHolder",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/EnergySliderHolder/Title",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/EnergySliderHolder/ValueSlider",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/EnergySliderHolder/ValueSlider/Background",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/EnergySliderHolder/ValueSlider/Fill",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/EnergySliderHolder/ValueSlider/ValueHolder",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/EnergySliderHolder/ValueSlider/ValueHolder/EnergyValue",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/EnergySliderHolder/ValueSlider/ValueHolder//",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/EnergySliderHolder/ValueSlider/ValueHolder/MaxEnergyValue",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/EnergySliderHolder/MoreIndicator",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/EnergySliderHolder/MoreIndicator/Image",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/EnergyRateSliderHolder",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/EnergyRateSliderHolder/Title",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/EnergyRateSliderHolder/EnergyFlowInfo",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/EnergyRateSliderHolder/EnergyFlowInfo/Background",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/EnergyRateSliderHolder/EnergyFlowInfo/CenterPoint",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/EnergyRateSliderHolder/EnergyFlowInfo/CenterPoint/NegativeFill",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/EnergyRateSliderHolder/EnergyFlowInfo/CenterPoint/NegativeRateText",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/EnergyRateSliderHolder/EnergyFlowInfo/CenterPoint/divider",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/EnergyRateSliderHolder/MoreIndicator",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/EnergyRateSliderHolder/MoreIndicator/Image",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/MaturitySliderHolder",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/MaturitySliderHolder/Title",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/MaturitySliderHolder/ProgressSlider",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/MaturitySliderHolder/ProgressSlider/Background",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/MaturitySliderHolder/ProgressSlider/Fill",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/MaturitySliderHolder/ProgressSlider/Indicator",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/MaturitySliderHolder/MoreIndicator",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/MaturitySliderHolder/MoreIndicator/Image",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/AgeSliderHolder",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/AgeSliderHolder/Title",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/AgeSliderHolder/ProgressSlider",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/AgeSliderHolder/ProgressSlider/Background",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/AgeSliderHolder/ProgressSlider/Fill",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/AgeSliderHolder/ProgressSlider/Indicator",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/AgeSliderHolder/MoreIndicator",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/BodyInfoHolder/AgeSliderHolder/MoreIndicator/Image",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/InternalInfoHolder",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/InternalInfoHolder/Title",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/InternalInfoHolder/Section",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/InternalInfoHolder/Section/silouhettes",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/InternalInfoHolder/Section/silouhettes/internals preview",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/InternalInfoHolder/Section/silouhettes/internals preview/StomachContainer",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/InternalInfoHolder/Section/silouhettes/internals preview/StomachAcid",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/InternalInfoHolder/Section/silouhettes/internals preview/EggContainer",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/InternalInfoHolder/Section/horizontal spacer",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/InternalInfoHolder/Section/More holder",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/InternalInfoHolder/Section/More holder/moreStomach",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/InternalInfoHolder/Section/More holder/moreStomach/icon",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/InternalInfoHolder/Section/More holder/moreWomb",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/InternalInfoHolder/Section/More holder/moreWomb/icon",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/InternalInfoHolder/Section/More holder/moreMouth",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/InternalInfoHolder/Section/More holder/moreMouth/icon",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/InternalInfoHolder/Section/More holder/moreFat",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/InternalInfoHolder/Section/More holder/moreFat/icon",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/InternalInfoHolder/Section/More holder/moreBody",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel/MainSection/InternalInfoHolder/Section/More holder/moreBody/icon"
+     ],
+     "overlay": "assets/game/reference/default_save/inspector_tabs/hud_inspector_biology_overlay_1920x1080.png",
+     "frame": "assets/game/reference/default_save/inspector_tabs/hud_inspector_biology_1920x1080.png",
+     "overlay_alpha_pixels": 251473
+    },
+    "brain": {
+     "save": "Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip",
+     "paused": true,
+     "tab": "brain",
+     "button": "BrainButton",
+     "selected": {
+      "ok": true,
+      "selected_id": "bibite(Clone) (SimulationScripts.BibiteScripts.BibiteID)",
+      "name": "bibite(Clone)",
+      "pos": {
+       "x": 905.651062,
+       "y": -556.5388,
+       "z": 0
+      },
+      "requested": ""
+     },
+     "press": {
+      "ok": true,
+      "pressed": "BrainButton",
+      "path": "UICanvas/MainUI/Layer1/Panels/BibiteButtons/BrainButton"
+     },
+     "camera": {
+      "ok": true,
+      "x": 905.651062,
+      "y": -556.5388,
+      "size": 400.0,
+      "worldHalfSize": 2000.0,
+      "aspect": 1.77777779,
+      "orthographic": true
+     },
+     "active_panels": [
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Top Section",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Top Section/First Row",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Top Section/First Row/SpeciesHolder",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Top Section/First Row/SpeciesHolder/Title",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Top Section/First Row/SpeciesHolder/SpeciesText",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Top Section/First Row/SpeciesHolder/Distance Group",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Top Section/First Row/SpeciesHolder/Distance Group/para",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Top Section/First Row/SpeciesHolder/Distance Group/FloatInfoText",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Top Section/First Row/SpeciesHolder/Distance Group/para (2)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Top Section/First Row/spacer",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Top Section/First Row/BrainHelpButton",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Top Section/First Row/BrainHelpButton/Text (TMP)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Top Section/Info Row",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Top Section/Info Row/Title",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Top Section/Info Row/Nodes",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Top Section/Info Row/Nodes/Title",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Top Section/Info Row/Nodes/FloatInfoText",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Top Section/Info Row/spacer",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Top Section/Info Row/Connections",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Top Section/Info Row/Connections/Title",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Top Section/Info Row/Connections/FloatInfoText",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/SynapseHolder",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/SynapseHolder/UISynaps(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/SynapseHolder/UISynaps(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/SynapseHolder/UISynaps(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)/icon",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)/Text Holder",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)/Minus",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)/icon",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)/Text Holder",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)/icon",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)/Text Holder",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)/icon",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)/Text Holder",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)/icon",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)/Text Holder",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)/icon",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)/Text Holder",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)/Plus",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)/icon",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)/Text Holder",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)/Plus",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)/icon",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)/Text Holder",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)/icon",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)/Text Holder",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)/icon",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)/Text Holder",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)/icon",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)/Text Holder",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)/icon",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)/Text Holder",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)/icon",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/Body/Holder/NeuronHolder/UINeuron(Clone)/Text Holder",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/BottomLine",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/BottomLine/BrainDiffToggle",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/BottomLine/BrainDiffToggle/Background",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/BottomLine/BrainDiffToggle/Background/Checkmark",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/BottomLine/BrainDiffToggle/Text (TMP)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/BottomLine/spacer",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/BottomLine/SortButton",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/BottomLine/SortButton/Text (TMP)",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/BottomLine/ExpandedViewerButton",
+      "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel/BottomLine/ExpandedViewerButton/Text (TMP)"
+     ],
+     "overlay": "assets/game/reference/default_save/inspector_tabs/hud_inspector_brain_overlay_1920x1080.png",
+     "frame": "assets/game/reference/default_save/inspector_tabs/hud_inspector_brain_1920x1080.png",
+     "overlay_alpha_pixels": 402987
+    }
+   }
+  },
+  "functional_ui": {
+   "method": "hidden menu + rust_seed_600 world; activate menu roots / press toolbar buttons; /d/ui + /d/ui_overlay + 1920x1080 screenshots",
+   "sessions": [
+    "main_menu_functional_title",
+    "main_menu_load_game",
+    "main_menu_settings",
+    "main_menu_new_game",
+    "main_menu_bibite_library",
+    "main_menu_achievements",
+    "main_menu_additional_tools",
+    "main_menu_credits",
+    "main_menu_new_panel",
+    "main_menu_workshop",
+    "main_menu_scenario_editor",
+    "main_menu_settings_graphics",
+    "main_menu_settings_gameplay",
+    "main_menu_settings_hotkeys",
+    "main_menu_bibite_editor_genes",
+    "main_menu_bibite_editor_brain",
+    "main_world_toolbar",
+    "main_world_tool_placer",
+    "main_world_tool_user_actions",
+    "main_world_tool_view",
+    "main_world_dynamic_parameters",
+    "main_world_lineage",
+    "main_world_information",
+    "main_world_settings_panel"
+   ]
+  },
+  "library_newgame": {
+   "sessions": [
+    "library_selector_flow",
+    "library_create_new",
+    "library_editor_genes_flow",
+    "library_editor_brain_flow",
+    "library_editor_brain_after_add",
+    "newgame_scenario_options",
+    "newgame_new_scenario_button",
+    "newgame_new_challenge_button",
+    "scenario_editor_flow",
+    "scenario_editor_zones",
+    "scenario_editor_ChallengeOptions",
+    "scenario_editor_sim"
+   ]
+  },
+  "settings_controls": {
+   "sessions": [
+    "settings_page_graphics_controls",
+    "settings_page_gameplay_controls",
+    "settings_page_hotkeys_controls",
+    "world_dynamic_parameters_controls",
+    "world_settings_controls"
+   ]
+  },
+  "challenge_lineage_workshop": {
+   "sessions": [
+    "challenge_selector",
+    "challenge_scenario_panel",
+    "challenge_champion_selection",
+    "challenge_parameters_editor",
+    "workshop_panel",
+    "workshop_edit_shared",
+    "lineage_species_panel",
+    "lineage_species_tabs",
+    "lineage_species_info",
+    "lineage_species_genes",
+    "lineage_species_brain"
+   ]
+  }
+ },
+ "determinism": {
+  "repeats": 2,
+  "normalised_equal": null,
+  "hashes": [
+   "ade586815614101fd8cd533cde373ce19e9725393f13f211d25f2633c8581430",
+   "ade586815614101fd8cd533cde373ce19e9725393f13f211d25f2633c8581430"
+  ],
+  "structural_equal": true
+ },
+ "sessions": {
+  "main_menu": {
+   "nodes": 4358,
+   "core_panels": 1834
+  },
+  "default_world_newgame": {
+   "nodes": 7874,
+   "core_panels": 3883
+  },
+  "default_world": {
+   "nodes": 7874,
+   "core_panels": 3883
+  },
+  "default_world_inspector": {
+   "nodes": 8025,
+   "core_panels": 3893
+  },
+  "main_menu_title": {
+   "nodes": 4358,
+   "core_panels": 1834
+  },
+  "main_menu_settings": {
+   "nodes": 5403,
+   "core_panels": 2359
+  },
+  "default_world_genes": {
+   "nodes": 7974,
+   "core_panels": 3893
+  },
+  "default_world_biology": {
+   "nodes": 7974,
+   "core_panels": 3893
+  },
+  "default_world_brain": {
+   "nodes": 7974,
+   "core_panels": 3893
+  },
+  "main_menu_functional_title": {
+   "nodes": 4358,
+   "core_panels": 1834
+  },
+  "main_menu_load_game": {
+   "nodes": 4358,
+   "core_panels": 1834
+  },
+  "main_menu_new_game": {
+   "nodes": 5403,
+   "core_panels": 2359
+  },
+  "main_menu_bibite_library": {
+   "nodes": 5403,
+   "core_panels": 2359
+  },
+  "main_menu_achievements": {
+   "nodes": 5423,
+   "core_panels": 2360
+  },
+  "main_menu_additional_tools": {
+   "nodes": 5423,
+   "core_panels": 2360
+  },
+  "main_menu_credits": {
+   "nodes": 5423,
+   "core_panels": 2360
+  },
+  "main_menu_new_panel": {
+   "nodes": 5423,
+   "core_panels": 2360
+  },
+  "main_menu_workshop": {
+   "nodes": 5423,
+   "core_panels": 2360
+  },
+  "main_menu_scenario_editor": {
+   "nodes": 5423,
+   "core_panels": 2360
+  },
+  "main_menu_settings_graphics": {
+   "nodes": 5423,
+   "core_panels": 2360
+  },
+  "main_menu_settings_gameplay": {
+   "nodes": 5423,
+   "core_panels": 2360
+  },
+  "main_menu_settings_hotkeys": {
+   "nodes": 5423,
+   "core_panels": 2360
+  },
+  "main_menu_bibite_editor_genes": {
+   "nodes": 6352,
+   "core_panels": 2392
+  },
+  "main_menu_bibite_editor_brain": {
+   "nodes": 6352,
+   "core_panels": 2392
+  },
+  "main_world_toolbar": {
+   "nodes": 5754,
+   "core_panels": 3631
+  },
+  "main_world_tool_placer": {
+   "nodes": 7874,
+   "core_panels": 3883
+  },
+  "main_world_tool_user_actions": {
+   "nodes": 7874,
+   "core_panels": 3883
+  },
+  "main_world_tool_view": {
+   "nodes": 7874,
+   "core_panels": 3883
+  },
+  "main_world_dynamic_parameters": {
+   "nodes": 7874,
+   "core_panels": 3883
+  },
+  "main_world_lineage": {
+   "nodes": 7881,
+   "core_panels": 3886
+  },
+  "main_world_information": {
+   "nodes": 8159,
+   "core_panels": 3903
+  },
+  "main_world_settings_panel": {
+   "nodes": 8159,
+   "core_panels": 3903
+  },
+  "library_selector_flow": {
+   "nodes": 6844,
+   "core_panels": 1856
+  },
+  "library_create_new": {
+   "nodes": 6844,
+   "core_panels": 1856
+  },
+  "library_editor_genes_flow": {
+   "nodes": 7855,
+   "core_panels": 1896
+  },
+  "library_editor_brain_flow": {
+   "nodes": 7855,
+   "core_panels": 1896
+  },
+  "library_editor_brain_after_add": {
+   "nodes": 7855,
+   "core_panels": 1896
+  },
+  "newgame_scenario_options": {
+   "nodes": 7855,
+   "core_panels": 1896
+  },
+  "newgame_new_scenario_button": {
+   "nodes": 7855,
+   "core_panels": 1896
+  },
+  "newgame_new_challenge_button": {
+   "nodes": 7855,
+   "core_panels": 1896
+  },
+  "scenario_editor_flow": {
+   "nodes": 7855,
+   "core_panels": 1896
+  },
+  "scenario_editor_zones": {
+   "nodes": 7855,
+   "core_panels": 1896
+  },
+  "scenario_editor_ChallengeOptions": {
+   "nodes": 7855,
+   "core_panels": 1896
+  },
+  "scenario_editor_sim": {
+   "nodes": 7855,
+   "core_panels": 1896
+  },
+  "settings_page_graphics_controls": {
+   "nodes": 5403,
+   "core_panels": 2359
+  },
+  "settings_page_gameplay_controls": {
+   "nodes": 5403,
+   "core_panels": 2359
+  },
+  "settings_page_hotkeys_controls": {
+   "nodes": 5403,
+   "core_panels": 2359
+  },
+  "world_dynamic_parameters_controls": {
+   "nodes": 7874,
+   "core_panels": 3883
+  },
+  "world_settings_controls": {
+   "nodes": 7874,
+   "core_panels": 3883
+  },
+  "challenge_selector": {
+   "nodes": 4358,
+   "core_panels": 1834
+  },
+  "challenge_scenario_panel": {
+   "nodes": 4358,
+   "core_panels": 1834
+  },
+  "challenge_champion_selection": {
+   "nodes": 4358,
+   "core_panels": 1834
+  },
+  "challenge_parameters_editor": {
+   "nodes": 4358,
+   "core_panels": 1834
+  },
+  "workshop_panel": {
+   "nodes": 4358,
+   "core_panels": 1834
+  },
+  "workshop_edit_shared": {
+   "nodes": 4361,
+   "core_panels": 1837
+  },
+  "lineage_species_panel": {
+   "nodes": 7881,
+   "core_panels": 3886
+  },
+  "lineage_species_tabs": {
+   "nodes": 7881,
+   "core_panels": 3886
+  },
+  "lineage_species_info": {
+   "nodes": 7881,
+   "core_panels": 3886
+  },
+  "lineage_species_genes": {
+   "nodes": 7881,
+   "core_panels": 3886
+  },
+  "lineage_species_brain": {
+   "nodes": 7881,
+   "core_panels": 3886
+  }
+ },
+ "stats": {
+  "components": 558830,
+  "image_components": 125418,
+  "text_components": 95484,
+  "canvas_scalers": 2506,
+  "layout_components": 220614,
+  "selectable_canvas_components": 66920,
+  "missing_sprites": [
+   "Video"
+  ],
+  "missing_fonts": [
+   "Boston Black SDF",
+   "LiberationSans SDF",
+   "LiberationSans SDF - Fallback",
+   "Roboto-Bold SDF BlackOutline",
+   "Roboto-Bold SDF NoOutline",
+   "Roboto-Bold SDF WhiteOutline",
+   "Roboto-Regular SDF",
+   "UnityEngine.UI.FontData"
+  ],
+  "font_atlas_roles": null
+ },
+ "consumer_schema": {
+  "sessions.<session>.canvases[]": "runtime hierarchy; each node has name/path/rect/children and resolved images[]/texts[]/canvas_scalers[]/layouts[]/controls[]",
+  "node.rect": "anchor_min/anchor_max/anchored_position/size_delta/pivot/local_position/local_rotation/local_scale (runtime values; authored copy in ui_layout.json)",
+  "node.images[]": "{sprite{name,logical,file,manifest rect/pivot/border}, color, image_type, fill_method, fill_amount, preserve_aspect}",
+  "node.texts[]": "{text, font{name,role,logical,file}, font_size, alignment, color, word_wrap}",
+  "node.canvas_scalers[]": "{reference_resolution, screen_match_mode, match_width_or_height, scale_factor}",
+  "node.layouts[]": "LayoutGroup/LayoutElement fields incl padding, spacing, child alignment/control",
+  "missing": "stats.missing_sprites / stats.missing_fonts list names not resolvable in manifest/atlas"
+ }
+}

@@ -1,0 +1,61 @@
+name: Release artifacts (optional)
+
+# Portable Windows artifacts on a tag. Packaging logic lives in
+# tools/release/package.ps1 (single source of truth); this workflow only builds
+# the workspace release binaries and calls that script. See docs/CI.md.
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  windows-portable:
+    name: windows portable
+    runs-on: windows-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install stable Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache cargo registry and target
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-release-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-release-
+
+      # Build both binaries (CLI + viewer) so the portable package can include
+      # the viewer; package.ps1 itself never builds the viewer.
+      - name: Build release binaries
+        run: cargo build --locked --release --bins
+
+      - name: Package portable zip
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $version = if ("${{ github.ref_name }}" -match '^v(.+)$') { $Matches[1] } else { "snapshot-${{ github.run_number }}" }
+          pwsh -NoProfile -File tools/release/package.ps1 -Version $version -SkipBuild
+          Get-ChildItem target/release-package | Format-Table Name, Length
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: rustibites-windows-x64
+          path: |
+            target/release-package/*.zip
+            target/release-package/SHA256SUMS.txt
+          if-no-files-found: error

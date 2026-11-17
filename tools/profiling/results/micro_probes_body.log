@@ -1,0 +1,33 @@
+running 2 tests
+test body::perf_probe_tests::perf_probe_clustered_and_spread ... ok
+test body::world_perf_probe_tests::perf_probe_world_phase_table ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 390 filtered out; finished in 2.48s
+
+
+    Blocking waiting for file lock on build directory
+   Compiling bibites-core v0.1.0 (Z:\RUSTibites\crates\bibites-core)
+    Finished `release` profile [optimized] target(s) in 2m 33s
+     Running unittests src\lib.rs (target\release\deps\bibites_core-96fd8523da9c4538.exe)
+PERF spread2000 bibites=2000 elapsed=1.806ms pairs=109 contacts=138 triggers=105
+PERF spread5000 bibites=5000 elapsed=8.696ms pairs=699 contacts=897 triggers=747
+PERF cluster2000 bibites=2000 elapsed=490.126ms pairs=145227 contacts=183648 triggers=156519
+PERF cluster4000 bibites=4000 elapsed=1746.824ms pairs=577764 contacts=724033 triggers=613462
+PHASE n=2000 clock: 0.000ms
+PHASE n=2000 animators: 0.000ms
+PHASE n=2000 tools: 0.001ms
+PHASE n=2000 zones: 0.002ms
+PHASE n=2000 sensing: 0.032ms
+PHASE n=2000 body: 1.781ms
+PHASE n=2000 eggs: 0.001ms
+PHASE n=2000 phero: 0.000ms
+PHASE n=2000 decay: 0.004ms
+PHASE n=2000 rad: 0.000ms
+PHASE n=2000 red: 0.000ms
+PHASE n=2000 killers: 0.000ms
+PHASE n=2000 producers: 0.000ms
+PHASE n=2000 deaths: 0.008ms
+PHASE n=2000 physics: 0.926ms
+PHASE n=2000 events: 0.000ms
+PHASE n=2000 spawner: 0.016ms
+PHASE n=2000 TOTAL: 2.772ms

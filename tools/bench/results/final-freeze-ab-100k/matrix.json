@@ -1,0 +1,142 @@
+{
+    "schema":  "rustibites.bench.matrix/1",
+    "generated_at_utc":  "2026-11-01T10:44:33.1381341Z",
+    "config":  {
+                   "schema":  "rustibites.bench.matrix/1",
+                   "mode":  "quick",
+                   "run_label":  "final freeze A/B 100k",
+                   "started_at_utc":  "2026-11-01T10:44:22.4691861Z",
+                   "scenario":  "",
+                   "scenario_label":  "synthetic",
+                   "requested_pops":  [
+                                          100000
+                                      ],
+                   "threads":  [
+                                   1,
+                                   4,
+                                   8
+                               ],
+                   "ticks_per_run":  1,
+                   "repeat_per_cell":  1,
+                   "timeout_sec_run":  900,
+                   "budget_sec":  0,
+                   "min_free_gb":  0.5,
+                   "max_load_pct":  0,
+                   "load_wait_sec":  120,
+                   "sample_ms":  50,
+                   "determinism_check":  false,
+                   "binary":  {
+                                  "original_path":  "Z:\\RUSTibites\\target\\release\\rustibites.exe",
+                                  "measured_copy":  "C:\\Users\\Storme\\AppData\\Local\\Temp\\rustibites-bench\\bin\\rustibites-CDC515D5195B5843.exe",
+                                  "sha256":  "CDC515D5195B58434906580E98D3ADB8DC2C9193B5D0A23F95FA427F17445EFE"
+                              },
+                   "artifacts":  {
+                                     "runs_csv":  "runs.csv",
+                                     "summary_csv":  "summary.csv",
+                                     "markdown":  "matrix.md",
+                                     "json":  "matrix.json",
+                                     "environment":  "environment.json",
+                                     "environment_txt":  "environment.txt"
+                                 },
+                   "notes":  [
+                                 "engine wall_secs covers only world.run(ticks); process_wall_secs adds setup/spawn/startup",
+                                 "one operating-system process per repetition (--repeat 1) so repetitions are independent",
+                                 "synthetic world area scales as 2000*sqrt(N/2000) to keep density constant",
+                                 "state_fingerprint should be identical for the same repetition seed regardless of thread count"
+                             ]
+               },
+    "cells":  [
+                  {
+                      "requested_population":  100000,
+                      "population":  100000,
+                      "threads":  1,
+                      "reps_total":  1,
+                      "reps_ok":  1,
+                      "status":  "ok",
+                      "best_wall_secs":  0.148764,
+                      "median_wall_secs":  0.148764,
+                      "best_ticks_per_second":  6.722,
+                      "median_ticks_per_second":  6.722,
+                      "best_realtime_factor":  0.224,
+                      "median_realtime_factor":  0.224,
+                      "best_bibite_updates_per_second":  672205.6,
+                      "median_bibite_updates_per_second":  672205.6,
+                      "peak_ws_mb":  499.6,
+                      "state_fingerprint":  "17260602356828902336",
+                      "serial_ticks_per_second":  6.722,
+                      "speedup_vs_serial":  1,
+                      "best_threads":  4,
+                      "cpu_load_pct_min":  11,
+                      "cpu_load_pct_max":  17,
+                      "error":  null
+                  },
+                  {
+                      "requested_population":  100000,
+                      "population":  100000,
+                      "threads":  4,
+                      "reps_total":  1,
+                      "reps_ok":  1,
+                      "status":  "ok",
+                      "best_wall_secs":  0.147367,
+                      "median_wall_secs":  0.147367,
+                      "best_ticks_per_second":  6.786,
+                      "median_ticks_per_second":  6.786,
+                      "best_realtime_factor":  0.226,
+                      "median_realtime_factor":  0.226,
+                      "best_bibite_updates_per_second":  678579.8,
+                      "median_bibite_updates_per_second":  678579.8,
+                      "peak_ws_mb":  509.5,
+                      "state_fingerprint":  "17260602356828902336",
+                      "serial_ticks_per_second":  6.722,
+                      "speedup_vs_serial":  1.0095209759000296,
+                      "best_threads":  4,
+                      "cpu_load_pct_min":  6,
+                      "cpu_load_pct_max":  9,
+                      "error":  null
+                  },
+                  {
+                      "requested_population":  100000,
+                      "population":  100000,
+                      "threads":  8,
+                      "reps_total":  1,
+                      "reps_ok":  1,
+                      "status":  "ok",
+                      "best_wall_secs":  0.159862,
+                      "median_wall_secs":  0.159862,
+                      "best_ticks_per_second":  6.255,
+                      "median_ticks_per_second":  6.255,
+                      "best_realtime_factor":  0.209,
+                      "median_realtime_factor":  0.209,
+                      "best_bibite_updates_per_second":  625538.4,
+                      "median_bibite_updates_per_second":  625538.4,
+                      "peak_ws_mb":  521.8,
+                      "state_fingerprint":  "17260602356828902336",
+                      "serial_ticks_per_second":  6.722,
+                      "speedup_vs_serial":  0.93052662897947036,
+                      "best_threads":  4,
+                      "cpu_load_pct_min":  7,
+                      "cpu_load_pct_max":  13,
+                      "error":  null
+                  }
+              ],
+    "fingerprint_checks":  [
+                               {
+                                   "population":  100000,
+                                   "unique_fingerprints":  1,
+                                   "consistent":  true,
+                                   "fingerprints":  [
+                                                        "17260602356828902336"
+                                                    ]
+                               }
+                           ],
+    "determinism":  [
+
+                    ],
+    "environment_binary":  {
+                               "original_path":  "Z:\\RUSTibites\\target\\release\\rustibites.exe",
+                               "benchmark_copy":  "C:\\Users\\Storme\\AppData\\Local\\Temp\\rustibites-bench\\bin\\rustibites-CDC515D5195B5843.exe",
+                               "sha256":  "CDC515D5195B58434906580E98D3ADB8DC2C9193B5D0A23F95FA427F17445EFE",
+                               "size_bytes":  2228736,
+                               "last_write_utc":  "2026-11-01T10:41:24.8215836Z"
+                           }
+}

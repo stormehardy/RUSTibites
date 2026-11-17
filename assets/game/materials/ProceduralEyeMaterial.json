@@ -1,0 +1,24 @@
+{
+ "name": "ProceduralEyeMaterial",
+ "shader": "Shader Graphs/proceduralEyeShader",
+ "colors": {
+  "_Color": null,
+  "_VirusColor": null
+ },
+ "floats": {
+  "Vector1_1e7790215f0448d2a070ca6771cc5c41": 0.5,
+  "Vector1_e3a0e0f92b6a43b0a108a2b076fa6cbf": 2.0,
+  "_HurtAmount": 0.0,
+  "_InfectedRatio": 0.0,
+  "_hueShift": 0.10000000149011612,
+  "_pixelNum": 20.0,
+  "_saturationOverride": 1.0
+ },
+ "textures": {
+  "_MainTex": "UnityTexEnv(m_Offset=Vector2f(0.0, 0.0), m_Scale=Vector2f(1.0, 1.0), m_Texture=PPtr(m_FileID=3, m_PathID=25, assetsfile=<SerializedFile>))",
+  "unity_Lightmaps": "UnityTexEnv(m_Offset=Vector2f(0.0, 0.0), m_Scale=Vector2f(1.0, 1.0), m_Texture=PPtr(m_FileID=0, m_PathID=0, assetsfile=<SerializedFile>))",
+  "unity_LightmapsInd": "UnityTexEnv(m_Offset=Vector2f(0.0, 0.0), m_Scale=Vector2f(1.0, 1.0), m_Texture=PPtr(m_FileID=0, m_PathID=0, assetsfile=<SerializedFile>))",
+  "unity_ShadowMasks": "UnityTexEnv(m_Offset=Vector2f(0.0, 0.0), m_Scale=Vector2f(1.0, 1.0), m_Texture=PPtr(m_FileID=0, m_PathID=0, assetsfile=<SerializedFile>))"
+ },
+ "source_asset": "sharedassets1.assets"
+}

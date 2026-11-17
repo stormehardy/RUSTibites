@@ -1,0 +1,50 @@
+{
+  "SimulationSize": {
+    "interactableChanged": {
+      "m_PersistentCalls": {
+        "m_Calls": []
+      }
+    },
+    "Value": 2000.0
+  },
+  "biomassDensity": {
+    "interactableChanged": {
+      "m_PersistentCalls": {
+        "m_Calls": []
+      }
+    },
+    "Value": 0.0075
+  },
+  "pelletGrowth": {
+    "interactableChanged": {
+      "m_PersistentCalls": {
+        "m_Calls": []
+      }
+    },
+    "Value": 1e-05
+  },
+  "simTPS": {
+    "interactableChanged": {
+      "m_PersistentCalls": {
+        "m_Calls": []
+      }
+    },
+    "Value": 30
+  },
+  "backgroundMutationChance": {
+    "interactableChanged": {
+      "m_PersistentCalls": {
+        "m_Calls": []
+      }
+    },
+    "Value": 1.5
+  },
+  "legacyColorR": {
+    "interactableChanged": {
+      "m_PersistentCalls": {
+        "m_Calls": []
+      }
+    },
+    "Value": 0.1
+  }
+}

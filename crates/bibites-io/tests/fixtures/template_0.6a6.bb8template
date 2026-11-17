@@ -1,0 +1,419 @@
+{
+  "name": "Legacy 0.6a6",
+  "speciesName": "Legacy era",
+  "generation": 3,
+  "version": "0.6a6",
+  "nodes": [
+    {
+      "Type": 0,
+      "Index": 0,
+      "Inov": 1,
+      "Desc": "In0",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 0,
+      "Index": 1,
+      "Inov": 2,
+      "Desc": "In1",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 0,
+      "Index": 2,
+      "Inov": 3,
+      "Desc": "In2",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 0,
+      "Index": 3,
+      "Inov": 4,
+      "Desc": "In3",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 0,
+      "Index": 4,
+      "Inov": 5,
+      "Desc": "In4",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 0,
+      "Index": 5,
+      "Inov": 6,
+      "Desc": "In5",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 0,
+      "Index": 6,
+      "Inov": 7,
+      "Desc": "In6",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 0,
+      "Index": 7,
+      "Inov": 8,
+      "Desc": "In7",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 0,
+      "Index": 8,
+      "Inov": 9,
+      "Desc": "In8",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 0,
+      "Index": 9,
+      "Inov": 10,
+      "Desc": "In9",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 0,
+      "Index": 10,
+      "Inov": 11,
+      "Desc": "In10",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 0,
+      "Index": 11,
+      "Inov": 12,
+      "Desc": "In11",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 0,
+      "Index": 12,
+      "Inov": 13,
+      "Desc": "In12",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 0,
+      "Index": 13,
+      "Inov": 14,
+      "Desc": "In13",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 0,
+      "Index": 14,
+      "Inov": 15,
+      "Desc": "In14",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 0,
+      "Index": 15,
+      "Inov": 16,
+      "Desc": "In15",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 0,
+      "Index": 16,
+      "Inov": 17,
+      "Desc": "In16",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 0,
+      "Index": 17,
+      "Inov": 18,
+      "Desc": "In17",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 0,
+      "Index": 18,
+      "Inov": 19,
+      "Desc": "In18",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 0,
+      "Index": 19,
+      "Inov": 20,
+      "Desc": "In19",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 0,
+      "Index": 20,
+      "Inov": 21,
+      "Desc": "In20",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 0,
+      "Index": 21,
+      "Inov": 22,
+      "Desc": "In21",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 0,
+      "Index": 22,
+      "Inov": 23,
+      "Desc": "In22",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 0,
+      "Index": 23,
+      "Inov": 24,
+      "Desc": "In23",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 0,
+      "Index": 24,
+      "Inov": 25,
+      "Desc": "In24",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 0,
+      "Index": 25,
+      "Inov": 26,
+      "Desc": "In25",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 0,
+      "Index": 26,
+      "Inov": 27,
+      "Desc": "In26",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 0,
+      "Index": 27,
+      "Inov": 28,
+      "Desc": "In27",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 0,
+      "Index": 28,
+      "Inov": 29,
+      "Desc": "In28",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 0,
+      "Index": 29,
+      "Inov": 30,
+      "Desc": "In29",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 0,
+      "Index": 30,
+      "Inov": 31,
+      "Desc": "In30",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 0,
+      "Index": 31,
+      "Inov": 32,
+      "Desc": "In31",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 0,
+      "Index": 32,
+      "Inov": 33,
+      "Desc": "In32",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 0,
+      "Index": 33,
+      "Inov": 34,
+      "Desc": "In33",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 1,
+      "Index": 34,
+      "Inov": 35,
+      "Desc": "Out0",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 1,
+      "Index": 35,
+      "Inov": 36,
+      "Desc": "Out1",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 1,
+      "Index": 36,
+      "Inov": 37,
+      "Desc": "Out2",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 1,
+      "Index": 37,
+      "Inov": 38,
+      "Desc": "Out3",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 1,
+      "Index": 38,
+      "Inov": 39,
+      "Desc": "Out4",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 1,
+      "Index": 39,
+      "Inov": 40,
+      "Desc": "Out5",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 1,
+      "Index": 40,
+      "Inov": 41,
+      "Desc": "Out6",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 1,
+      "Index": 41,
+      "Inov": 42,
+      "Desc": "Out7",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 1,
+      "Index": 42,
+      "Inov": 43,
+      "Desc": "Out8",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 1,
+      "Index": 43,
+      "Inov": 44,
+      "Desc": "Out9",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 1,
+      "Index": 44,
+      "Inov": 45,
+      "Desc": "Out10",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 1,
+      "Index": 45,
+      "Inov": 46,
+      "Desc": "Out11",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 1,
+      "Index": 46,
+      "Inov": 47,
+      "Desc": "Out12",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 1,
+      "Index": 47,
+      "Inov": 48,
+      "Desc": "Out13",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 1,
+      "Index": 48,
+      "Inov": 49,
+      "Desc": "Out14",
+      "baseActivation": 0.0
+    },
+    {
+      "Type": 1,
+      "Index": 49,
+      "Inov": 50,
+      "Desc": "Out15",
+      "baseActivation": 0.0
+    }
+  ],
+  "synapses": [
+    {
+      "Inov": 1,
+      "NodeIn": 0,
+      "NodeOut": 37,
+      "Weight": 2.0,
+      "En": true
+    },
+    {
+      "Inov": 2,
+      "NodeIn": 0,
+      "NodeOut": 40,
+      "Weight": 1.0,
+      "En": false
+    },
+    {
+      "Inov": 3,
+      "NodeIn": 13,
+      "NodeOut": 34,
+      "Weight": 0.5,
+      "En": true
+    }
+  ],
+  "genes": {
+    "LayTime": 15.0,
+    "BroodTime": 20.0,
+    "HatchTime": 10.0,
+    "SizeRatio": 1.0,
+    "SpeedRatio": 0.75,
+    "ColorR": 0.1,
+    "ColorG": 0.1,
+    "ColorB": 0.1,
+    "MutationAmountSigma": 0.05,
+    "AverageMutationNumber": 2.0,
+    "BrainMutationSigma": 0.1,
+    "BrainAverageMutation": 1.0,
+    "ViewAngle": 75.0,
+    "ViewRadius": 180.0,
+    "ClockSpeed": 1.0,
+    "PheroSense": 150.0,
+    "Diet": 0.2,
+    "HerdSeparationWeight": 1.0,
+    "HerdAlignmentWeight": 1.5,
+    "HerdCohesionWeight": 0.75,
+    "HerdVelocityWeight": 0.25,
+    "HerdSeparationDistance": 35.0,
+    "GrowthScale": 0.15,
+    "GrowthMaturityFactor": 2.0,
+    "GrowthMaturityExponent": 1.0,
+    "EyeOffset": 0.5,
+    "WombWAG": 1.0,
+    "FatWAG": 1.0,
+    "ArmorWAG": 0.15,
+    "ThroatWAG": 1.0,
+    "MouthMusclesWAG": 1.0,
+    "MoveMusclesWAG": 1.0,
+    "FatStorageThreshold": 0.5,
+    "FatStorageDeadband": 0.25,
+    "Strength": 8.0,
+    "Defence": 3.0
+  }
+}

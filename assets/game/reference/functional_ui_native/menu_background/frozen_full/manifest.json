@@ -1,0 +1,24 @@
+{
+  "schema": "rustibites.ui.menu_full_frozen.v1",
+  "frames": [
+    {
+      "name": "title_full_frozen",
+      "file": "assets/game/reference/functional_ui_native/menu_background/frozen_full/title_full_frozen_1920x1080.png",
+      "sha256": "f9b82b2ae7e77d9ebc27a93b849df6fbeb5bb15028961196907b98b0a8449868"
+    }
+  ],
+  "freeze": {
+    "timescale": {
+      "ok": true,
+      "timeScale": 0
+    },
+    "video": {
+      "ok": true,
+      "paused": true,
+      "players": 1
+    }
+  },
+  "route": "/d/ui_overlay (full canvas composite, not ui_only)",
+  "state": "Time.timeScale=0, VideoPlayer.Pause(); Title Screen/LoadingPanel/screenBlocker hidden; UI+BackGround active; Settings pressed after freeze",
+  "note": "Title full frozen frame is valid (frozen video + UI). Settings full frame was not captured: pressing Settings after freezing/hiding Title produced the title menu state, not SettingsPanel; use the UI-only settings overlay + shared background instead."
+}

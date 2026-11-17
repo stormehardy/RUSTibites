@@ -1,0 +1,130 @@
+{
+  "schema": "rustibites.ui_visual_reference_native.v1",
+  "source": "standalone The Bibites launch at -screen-width 1920 -screen-height 1080 -window-mode windowed, window hidden via Win32; BepInEx bridge + parity plugin; /d/ui_overlay routes",
+  "screen": {
+    "width": 1920,
+    "height": 1080,
+    "dpi": 96,
+    "fullscreen": true
+  },
+  "standalone_launch": true,
+  "notes": [
+    "Native 1920 overlays are crisp: title/settings full overlays have tens of thousands of unique colors and down/up residual ~0.11; the in-world toolbar overlay is transparent with 347 unique colors.",
+    "Menu overlays are still opaque full-screen because the game's Title Screen/BackGround canvas composition covers the UI; /d/ui_overlay_ui_only excluding BackGround+Title Screen returned an opaque 310-color frame, so transparent UI-only menu references need a different canvas/background isolation step.",
+    "World overlay is a native transparent UI-only overlay suitable for alpha-IoU/MAE A/B."
+  ],
+  "references": {
+    "title_full": {
+      "path": "assets/game/reference/functional_ui_native/probe_title_native_1920x1080.png",
+      "role": "full",
+      "alpha": "opaque",
+      "sharpness": {
+        "size": [
+          1920,
+          1080
+        ],
+        "alpha_pixels": 2073600,
+        "unique_opaque_colors": 310,
+        "downup_mae": 2.298597125771605
+      }
+    },
+    "settings_full": {
+      "path": "assets/game/reference/functional_ui_native/probe_settings_native_1920x1080.png",
+      "role": "full",
+      "alpha": "opaque",
+      "sharpness": {
+        "size": [
+          1920,
+          1080
+        ],
+        "alpha_pixels": 2073600,
+        "unique_opaque_colors": 56458,
+        "downup_mae": 11.06567210005144
+      }
+    },
+    "world_ui_only": {
+      "path": "assets/game/reference/functional_ui_native/probe_world_native_1920x1080.png",
+      "role": "overlay",
+      "alpha": "transparent",
+      "sharpness": {
+        "size": [
+          1920,
+          1080
+        ],
+        "alpha_pixels": 43813,
+        "unique_opaque_colors": 347,
+        "downup_mae": 20.291405138505315
+      }
+    }
+  },
+  "tmp_fonts": {
+    "manifest": "assets/game/ui_fonts/fonts_manifest.json",
+    "docs": "docs/TMP_FONTS.md",
+    "report": "assets/game/ui_fonts/fonts_report.json"
+  },
+  "menu_isolation_blocker": "Title Screen/BackGround exclusion leaves opaque menu; UI/Popuholder/screenBlocker + fullscreen suppression yields alpha0 menu overlay.",
+  "in_world_refs": {
+    "manifest": "assets/game/reference/functional_ui_native/in_world/manifest.json",
+    "sessions": [
+      "native_world_toolbar",
+      "native_world_placer",
+      "native_world_user_actions",
+      "native_world_view",
+      "native_world_dynamic",
+      "native_world_lineage",
+      "native_world_information",
+      "native_world_settings",
+      "native_world_placer_pellets",
+      "native_inspector_stats",
+      "native_inspector_genes",
+      "native_inspector_biology",
+      "native_inspector_brain"
+    ],
+    "note": "Native 1920 transparent UI-only in-world refs; toolbar/placer/dynamic/lineage are partial alpha, Stats/Genes/Biology/Brain/Information/Settings panels include their opaque full-panel backdrop (alpha 1) as the game renders them."
+  },
+  "in_world_capture": {
+    "method": "standalone hidden 1920 window, bridge load rust_seed_600 paused; /d/ui_overlay",
+    "screen": {
+      "width": 1920,
+      "height": 1080,
+      "dpi": 96,
+      "fullscreen": true
+    }
+  },
+  "native_runtime_atlas": {
+    "runtime": "assets/game/ui_runtime_native.json.gz",
+    "index": "assets/game/ui_runtime_native.index.json",
+    "sessions": 60,
+    "screen": "1920x1080",
+    "schema": "rustibites.assets.ui_runtime.v2",
+    "node_rects": "each active node has screen_bbox + world_corners (1920 px space)",
+    "title_buttons_panel_bbox": [
+      1374.7,
+      132.51,
+      1870.0,
+      848.6
+    ]
+  },
+  "sprite_manifest": {
+    "json": "assets/game/reference/functional_ui_native/sprite_manifest.json",
+    "dir": "assets/game/reference/functional_ui_native/sprites/",
+    "mapped": 213
+  },
+  "ui_geometry": "assets/game/reference/functional_ui_native/ui_geometry.json",
+  "menu_ui_on_black": {
+    "dir": "assets/game/reference/functional_ui_native/menu_ui/",
+    "manifest": "assets/game/reference/functional_ui_native/menu_ui/native_runtime_manifest.json",
+    "count": 60
+  },
+  "menu_background": {
+    "manifest": "assets/game/reference/functional_ui_native/menu_background/manifest.json",
+    "frames": [
+      "menu_background_title",
+      "menu_background_title_canvas",
+      "menu_background_settings"
+    ],
+    "video_clip": "showOff",
+    "render_texture": "Video 1920x1080",
+    "note": "UI hidden (UI/Title Screen/screenBlocker off, BackGround on); Time.timeScale=0 + VideoPlayer.Pause(); title and settings share the same frame."
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "pid": 1484,
+  "screen": {
+    "width": 1920,
+    "height": 1080,
+    "dpi": 96,
+    "fullscreen": true
+  },
+  "sessions": {
+    "native_menu_title_ui_on_black": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/native_menu_title_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_bbox": [
+        25,
+        76,
+        1869,
+        1054
+      ],
+      "nonblack_pixels": 424071,
+      "source": "probe_title_bg_off (BackGround/Title Screen hidden, native 1920)"
+    },
+    "native_menu_settings_ui_on_black": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/native_menu_settings_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_bbox": [
+        0,
+        0,
+        1919,
+        1079
+      ],
+      "nonblack_pixels": 2062999
+    },
+    "native_world_ui_overlay": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/native_world_ui_overlay_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 0.021199363425925925,
+      "nonblack_bbox": [
+        10,
+        10,
+        1909,
+        1069
+      ],
+      "nonblack_pixels": 42492
+    }
+  },
+  "geometry": {
+    "buttons_panel_node": {
+      "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel",
+      "rect": {
+        "anchor_min": {
+          "x": 0,
+          "y": 1
+        },
+        "anchor_max": {
+          "x": 0,
+          "y": 1
+        },
+        "anchored_position": {
+          "x": 495.3,
+          "y": -513.345032
+        },
+        "size_delta": {
+          "x": 495.3,
+          "y": 716.09
+        },
+        "pivot": {
+          "x": 1,
+          "y": 0.5
+        },
+        "local_position": {
+          "x": 0,
+          "y": -49.4450378,
+          "z": 0
+        },
+        "local_rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "w": 1
+        },
+        "local_scale": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        }
+      }
+    },
+    "title_ui_on_black": {
+      "file": "assets/game/reference/functional_ui_native/menu_ui/native_menu_title_ui_on_black_1920x1080.png",
+      "size": [
+        1920,
+        1080
+      ],
+      "alpha_fraction": 1.0,
+      "nonblack_bbox": null,
+      "nonblack_pixels": 0
+    },
+    "buttons_panel_image_bbox": [
+      25,
+      76,
+      1869,
+      1054
+    ],
+    "expected_title_panel_x": [
+      1366,
+      1877
+    ],
+    "node_rect_note": "ButtonsPanel node raw rect: anchored_position.x=495.3, size_delta=(495.3,716.09), pivot=(1,0.5); screenshot-derived panel bbox from UI-on-black is above. Native screen=1920x1080; old atlas was captured at 320x240."
+  }
+}

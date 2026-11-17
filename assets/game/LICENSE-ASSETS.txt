@@ -1,0 +1,16 @@
+The Bibites - data extracted from the game
+==========================================
+
+This folder holds METADATA extracted from the installed game **The Bibites** (version 0.6.3.1, Unity 6000.0.44f1): layouts, sprite rectangles and
+pivots, material values, prefab hierarchy, parameter tables and UI text dumps (JSON, compressed JSON, CSV). The RUSTibites viewer uses it to lay out
+and draw the game's interface the way the game does.
+
+* The RUSTibites **source code** is MIT / Apache-2.0 licensed (see the repository's LICENSE files).
+* **No picture, texture, sprite, font or sound of the game is in this repository.** `tools/release/extract_art.py` (or `tools/assets/extract.py`)
+  builds them on your machine from your own copy of the game, into this folder, where `.gitignore` keeps them out of the repository.
+* **The metadata files in this folder are NOT MIT / Apache-2.0 licensed.** They come from The Bibites and remain the property of its creator (and its
+  contributors). They are here so this personal, non-commercial fan build can reproduce the game's interface layout.
+* The extraction tools only *read* the locally installed game; the game itself is unmodified.
+* **Attribution:** The Bibites and all game content are by the game's creator; see the game's own credits / EULA.
+* **Takedown:** if the rights-holder objects to the metadata being present here, delete this folder (and `tools/ui/*.json*`); the viewer then needs
+  its data regenerated from your own copy of the game, or runs with its procedural fallback renderer.

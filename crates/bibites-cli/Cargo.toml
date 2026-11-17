@@ -1,0 +1,18 @@
+[package]
+name = "bibites-cli"
+description = "Headless runner and benchmark harness for RUSTibites"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "rustibites"
+path = "src/main.rs"
+
+[dependencies]
+bibites-core.workspace = true
+bibites-io.workspace = true
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"

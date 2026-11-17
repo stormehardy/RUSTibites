@@ -1,0 +1,842 @@
+{
+  "title": {
+    "ok": true,
+    "screen": {
+      "width": 1920,
+      "height": 1080
+    },
+    "canvases": [
+      {
+        "path": "Title Screen",
+        "name": "Title Screen",
+        "render_mode": "ScreenSpaceOverlay",
+        "world_camera": "UI Camera",
+        "sorting_order": 10,
+        "rect_size": {
+          "x": 1920,
+          "y": 1080
+        },
+        "size_delta": {
+          "x": 1920,
+          "y": 1080
+        },
+        "pivot": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "anchor_min": {
+          "x": 0,
+          "y": 0
+        },
+        "anchor_max": {
+          "x": 0,
+          "y": 0
+        },
+        "local_scale": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        },
+        "position": {
+          "x": 960,
+          "y": 540,
+          "z": 0
+        },
+        "world_corners": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 1080
+          },
+          {
+            "x": 1920,
+            "y": 1080
+          },
+          {
+            "x": 1920,
+            "y": 0
+          }
+        ],
+        "screen_bbox": {
+          "x0": 0,
+          "y0": 0,
+          "x1": 1920,
+          "y1": 1080
+        },
+        "canvas_scaler": {
+          "uiScaleMode": "ConstantPixelSize",
+          "referenceResolution": {
+            "x": 800,
+            "y": 600
+          },
+          "screenMatchMode": "MatchWidthOrHeight",
+          "matchWidthOrHeight": 0,
+          "scaleFactor": 1,
+          "referencePixelsPerUnit": 100
+        }
+      },
+      {
+        "path": "BackGround",
+        "name": "BackGround",
+        "render_mode": "ScreenSpaceCamera",
+        "world_camera": "Main Camera",
+        "sorting_order": 0,
+        "rect_size": {
+          "x": 1920,
+          "y": 1080
+        },
+        "size_delta": {
+          "x": 1920,
+          "y": 1080
+        },
+        "pivot": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "anchor_min": {
+          "x": 0,
+          "y": 0
+        },
+        "anchor_max": {
+          "x": 0,
+          "y": 0
+        },
+        "local_scale": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        },
+        "position": {
+          "x": 960,
+          "y": 540,
+          "z": -107.570007
+        },
+        "world_corners": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 1080
+          },
+          {
+            "x": 1920,
+            "y": 1080
+          },
+          {
+            "x": 1920,
+            "y": 0
+          }
+        ],
+        "screen_bbox": {
+          "x0": 0,
+          "y0": 0,
+          "x1": 1920,
+          "y1": 1080
+        },
+        "canvas_scaler": {
+          "uiScaleMode": "ConstantPixelSize",
+          "referenceResolution": {
+            "x": 800,
+            "y": 600
+          },
+          "screenMatchMode": "MatchWidthOrHeight",
+          "matchWidthOrHeight": 0,
+          "scaleFactor": 1,
+          "referencePixelsPerUnit": 100
+        }
+      },
+      {
+        "path": "LoadingPanel",
+        "name": "LoadingPanel",
+        "render_mode": "ScreenSpaceOverlay",
+        "world_camera": "UI Camera",
+        "sorting_order": 11,
+        "rect_size": {
+          "x": 1920,
+          "y": 1080
+        },
+        "size_delta": {
+          "x": 1920,
+          "y": 1080
+        },
+        "pivot": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "anchor_min": {
+          "x": 0,
+          "y": 0
+        },
+        "anchor_max": {
+          "x": 0,
+          "y": 0
+        },
+        "local_scale": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        },
+        "position": {
+          "x": 960,
+          "y": 540,
+          "z": 0
+        },
+        "world_corners": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 1080
+          },
+          {
+            "x": 1920,
+            "y": 1080
+          },
+          {
+            "x": 1920,
+            "y": 0
+          }
+        ],
+        "screen_bbox": {
+          "x0": 0,
+          "y0": 0,
+          "x1": 1920,
+          "y1": 1080
+        },
+        "canvas_scaler": {
+          "uiScaleMode": "ConstantPixelSize",
+          "referenceResolution": {
+            "x": 800,
+            "y": 600
+          },
+          "screenMatchMode": "MatchWidthOrHeight",
+          "matchWidthOrHeight": 0,
+          "scaleFactor": 1,
+          "referencePixelsPerUnit": 100
+        }
+      }
+    ],
+    "key_rects": []
+  },
+  "settings": {
+    "ok": true,
+    "screen": {
+      "width": 1920,
+      "height": 1080
+    },
+    "canvases": [
+      {
+        "path": "Title Screen",
+        "name": "Title Screen",
+        "render_mode": "ScreenSpaceOverlay",
+        "world_camera": "UI Camera",
+        "sorting_order": 10,
+        "rect_size": {
+          "x": 1920,
+          "y": 1080
+        },
+        "size_delta": {
+          "x": 1920,
+          "y": 1080
+        },
+        "pivot": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "anchor_min": {
+          "x": 0,
+          "y": 0
+        },
+        "anchor_max": {
+          "x": 0,
+          "y": 0
+        },
+        "local_scale": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        },
+        "position": {
+          "x": 960,
+          "y": 540,
+          "z": 0
+        },
+        "world_corners": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 1080
+          },
+          {
+            "x": 1920,
+            "y": 1080
+          },
+          {
+            "x": 1920,
+            "y": 0
+          }
+        ],
+        "screen_bbox": {
+          "x0": 0,
+          "y0": 0,
+          "x1": 1920,
+          "y1": 1080
+        },
+        "canvas_scaler": {
+          "uiScaleMode": "ConstantPixelSize",
+          "referenceResolution": {
+            "x": 800,
+            "y": 600
+          },
+          "screenMatchMode": "MatchWidthOrHeight",
+          "matchWidthOrHeight": 0,
+          "scaleFactor": 1,
+          "referencePixelsPerUnit": 100
+        }
+      },
+      {
+        "path": "BackGround",
+        "name": "BackGround",
+        "render_mode": "ScreenSpaceCamera",
+        "world_camera": "Main Camera",
+        "sorting_order": 0,
+        "rect_size": {
+          "x": 1920,
+          "y": 1080
+        },
+        "size_delta": {
+          "x": 1920,
+          "y": 1080
+        },
+        "pivot": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "anchor_min": {
+          "x": 0,
+          "y": 0
+        },
+        "anchor_max": {
+          "x": 0,
+          "y": 0
+        },
+        "local_scale": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        },
+        "position": {
+          "x": 960,
+          "y": 540,
+          "z": -107.570007
+        },
+        "world_corners": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 1080
+          },
+          {
+            "x": 1920,
+            "y": 1080
+          },
+          {
+            "x": 1920,
+            "y": 0
+          }
+        ],
+        "screen_bbox": {
+          "x0": 0,
+          "y0": 0,
+          "x1": 1920,
+          "y1": 1080
+        },
+        "canvas_scaler": {
+          "uiScaleMode": "ConstantPixelSize",
+          "referenceResolution": {
+            "x": 800,
+            "y": 600
+          },
+          "screenMatchMode": "MatchWidthOrHeight",
+          "matchWidthOrHeight": 0,
+          "scaleFactor": 1,
+          "referencePixelsPerUnit": 100
+        }
+      },
+      {
+        "path": "LoadingPanel",
+        "name": "LoadingPanel",
+        "render_mode": "ScreenSpaceOverlay",
+        "world_camera": "UI Camera",
+        "sorting_order": 11,
+        "rect_size": {
+          "x": 1920,
+          "y": 1080
+        },
+        "size_delta": {
+          "x": 1920,
+          "y": 1080
+        },
+        "pivot": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "anchor_min": {
+          "x": 0,
+          "y": 0
+        },
+        "anchor_max": {
+          "x": 0,
+          "y": 0
+        },
+        "local_scale": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        },
+        "position": {
+          "x": 960,
+          "y": 540,
+          "z": 0
+        },
+        "world_corners": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 1080
+          },
+          {
+            "x": 1920,
+            "y": 1080
+          },
+          {
+            "x": 1920,
+            "y": 0
+          }
+        ],
+        "screen_bbox": {
+          "x0": 0,
+          "y0": 0,
+          "x1": 1920,
+          "y1": 1080
+        },
+        "canvas_scaler": {
+          "uiScaleMode": "ConstantPixelSize",
+          "referenceResolution": {
+            "x": 800,
+            "y": 600
+          },
+          "screenMatchMode": "MatchWidthOrHeight",
+          "matchWidthOrHeight": 0,
+          "scaleFactor": 1,
+          "referencePixelsPerUnit": 100
+        }
+      }
+    ],
+    "key_rects": []
+  },
+  "world": {
+    "ok": true,
+    "screen": {
+      "width": 1920,
+      "height": 1080
+    },
+    "canvases": [
+      {
+        "path": "UICanvas/MainUI/TopLayer",
+        "name": "TopLayer",
+        "render_mode": "ScreenSpaceCamera",
+        "world_camera": "UICamera",
+        "sorting_order": 20,
+        "rect_size": {
+          "x": 1920,
+          "y": 1080
+        },
+        "size_delta": {
+          "x": 0,
+          "y": 0
+        },
+        "pivot": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "anchor_min": {
+          "x": 0,
+          "y": 0
+        },
+        "anchor_max": {
+          "x": 1,
+          "y": 1
+        },
+        "local_scale": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        },
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "world_corners": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 1080
+          },
+          {
+            "x": 1920,
+            "y": 1080
+          },
+          {
+            "x": 1920,
+            "y": 0
+          }
+        ],
+        "screen_bbox": {
+          "x0": 0,
+          "y0": 0,
+          "x1": 1920,
+          "y1": 1080
+        }
+      },
+      {
+        "path": "UICanvas/MainUI/Layer2",
+        "name": "Layer2",
+        "render_mode": "ScreenSpaceCamera",
+        "world_camera": "UICamera",
+        "sorting_order": 5,
+        "rect_size": {
+          "x": 1920,
+          "y": 1080
+        },
+        "size_delta": {
+          "x": 0,
+          "y": 0
+        },
+        "pivot": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "anchor_min": {
+          "x": 0,
+          "y": 0
+        },
+        "anchor_max": {
+          "x": 1,
+          "y": 1
+        },
+        "local_scale": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        },
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "world_corners": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 1080
+          },
+          {
+            "x": 1920,
+            "y": 1080
+          },
+          {
+            "x": 1920,
+            "y": 0
+          }
+        ],
+        "screen_bbox": {
+          "x0": 0,
+          "y0": 0,
+          "x1": 1920,
+          "y1": 1080
+        }
+      },
+      {
+        "path": "WeightDisplayHolder",
+        "name": "WeightDisplayHolder",
+        "render_mode": "WorldSpace",
+        "world_camera": null,
+        "sorting_order": -1,
+        "rect_size": {
+          "x": 100000,
+          "y": 100000
+        },
+        "size_delta": {
+          "x": 100000,
+          "y": 100000
+        },
+        "pivot": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "anchor_min": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "anchor_max": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "local_scale": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        },
+        "position": {
+          "x": -0.7,
+          "y": 0.32,
+          "z": 0
+        },
+        "world_corners": [
+          {
+            "x": -50000.7,
+            "y": -49999.68
+          },
+          {
+            "x": -50000.7,
+            "y": 50000.32
+          },
+          {
+            "x": 49999.3,
+            "y": 50000.32
+          },
+          {
+            "x": 49999.3,
+            "y": -49999.68
+          }
+        ],
+        "screen_bbox": {
+          "x0": -50000.7,
+          "y0": -49999.68,
+          "x1": 49999.3,
+          "y1": 50000.32
+        }
+      },
+      {
+        "path": "UICanvas/MainUI/TopLayer/Popuholder",
+        "name": "Popuholder",
+        "render_mode": "ScreenSpaceCamera",
+        "world_camera": "UICamera",
+        "sorting_order": 100,
+        "rect_size": {
+          "x": 1920,
+          "y": 1080
+        },
+        "size_delta": {
+          "x": 0,
+          "y": 0
+        },
+        "pivot": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "anchor_min": {
+          "x": 0,
+          "y": 0
+        },
+        "anchor_max": {
+          "x": 1,
+          "y": 1
+        },
+        "local_scale": {
+          "x": 1.35,
+          "y": 1.35,
+          "z": 1.35
+        },
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": -21.73
+        },
+        "world_corners": [
+          {
+            "x": -336.000031,
+            "y": -189.000015
+          },
+          {
+            "x": -336.000031,
+            "y": 1269
+          },
+          {
+            "x": 2256,
+            "y": 1269
+          },
+          {
+            "x": 2256,
+            "y": -189.000015
+          }
+        ],
+        "screen_bbox": {
+          "x0": -336.000031,
+          "y0": -189.000015,
+          "x1": 2256,
+          "y1": 1269
+        }
+      },
+      {
+        "path": "UICanvas",
+        "name": "UICanvas",
+        "render_mode": "ScreenSpaceCamera",
+        "world_camera": "UICamera",
+        "sorting_order": 0,
+        "rect_size": {
+          "x": 1920,
+          "y": 1080
+        },
+        "size_delta": {
+          "x": 1920,
+          "y": 1080
+        },
+        "pivot": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "anchor_min": {
+          "x": 0,
+          "y": 0
+        },
+        "anchor_max": {
+          "x": 0,
+          "y": 0
+        },
+        "local_scale": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        },
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "world_corners": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 1080
+          },
+          {
+            "x": 1920,
+            "y": 1080
+          },
+          {
+            "x": 1920,
+            "y": 0
+          }
+        ],
+        "screen_bbox": {
+          "x0": 0,
+          "y0": 0,
+          "x1": 1920,
+          "y1": 1080
+        },
+        "canvas_scaler": {
+          "uiScaleMode": "ConstantPixelSize",
+          "referenceResolution": {
+            "x": 1920,
+            "y": 1080
+          },
+          "screenMatchMode": "MatchWidthOrHeight",
+          "matchWidthOrHeight": 0,
+          "scaleFactor": 1,
+          "referencePixelsPerUnit": 100
+        }
+      },
+      {
+        "path": "UICanvas/MainUI/TopLayer/TooltipCanvas",
+        "name": "TooltipCanvas",
+        "render_mode": "ScreenSpaceCamera",
+        "world_camera": "UICamera",
+        "sorting_order": 150,
+        "rect_size": {
+          "x": 1920,
+          "y": 1080
+        },
+        "size_delta": {
+          "x": 3.05175781e-05,
+          "y": 0
+        },
+        "pivot": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "anchor_min": {
+          "x": 0,
+          "y": 0
+        },
+        "anchor_max": {
+          "x": 1,
+          "y": 1
+        },
+        "local_scale": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        },
+        "position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "world_corners": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 0,
+            "y": 1080
+          },
+          {
+            "x": 1920,
+            "y": 1080
+          },
+          {
+            "x": 1920,
+            "y": 0
+          }
+        ],
+        "screen_bbox": {
+          "x0": 0,
+          "y0": 0,
+          "x1": 1920,
+          "y1": 1080
+        }
+      }
+    ],
+    "key_rects": []
+  },
+  "schema": "rustibites.ui.native_geometry.v1"
+}

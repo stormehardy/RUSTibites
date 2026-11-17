@@ -1,0 +1,191 @@
+{
+  "schema": "rustibites.ui.visual_diff.v1",
+  "config": {
+    "reference_dir": "assets\\game\\reference\\functional_ui",
+    "viewer": "Z:\\RUSTibites\\target\\release\\rustibites-view.exe",
+    "world": "Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip",
+    "viewer_args": "--ui-text sdf",
+    "sessions": 2,
+    "width": 1920,
+    "height": 1080,
+    "render_background": "black",
+    "thresholds": {
+      "min_iou": 0.98,
+      "max_mae": 3.0,
+      "min_exact_pct": 90.0
+    }
+  },
+  "aggregate": {
+    "sessions": 2,
+    "rendered": 2,
+    "missing_reference": 0,
+    "mean_alpha_iou": 1.0,
+    "median_alpha_iou": 1.0,
+    "mean_rgb_mae_opaque": 15.097251639660492,
+    "mean_exact_pixel_pct": 56.29714023919753,
+    "threshold_failures": 2,
+    "legacy_references": 0,
+    "rescale_blur_suspects": 0
+  },
+  "sessions": [
+    {
+      "session": "main_menu_settings",
+      "reference": "Z:\\RUSTibites\\assets\\game\\reference\\functional_ui_native\\menu_ui\\main_menu_settings_ui_on_black_1920x1080.png",
+      "reference_kind": "mapped",
+      "reference_quality": {
+        "native_reference": true,
+        "pixel_authoritative": true,
+        "ref_sharpness": 2.7694,
+        "ref_sharpness_normalized": 2.7694,
+        "ref_alpha_fraction": 1.0,
+        "rescale_blur_suspect": false
+      },
+      "native_reference": true,
+      "pixel_authoritative": true,
+      "ref_sharpness": 2.7694,
+      "ref_sharpness_normalized": 2.7694,
+      "ref_alpha_fraction": 1.0,
+      "rescale_blur_suspect": false,
+      "render_png": "Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\main_menu_settings.png",
+      "viewer_cmd": "Z:\\RUSTibites\\target\\release\\rustibites-view.exe Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip --ui-text sdf --ui-session main_menu_settings --ui-only --screenshot Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\main_menu_settings.png --width 1920 --height 1080",
+      "render_ok": true,
+      "render_source": "Z:\\RUSTibites\\target\\release\\rustibites-view.exe Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip --ui-text sdf --ui-session main_menu_settings --ui-only --screenshot Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\main_menu_settings.png --width 1920 --height 1080",
+      "alpha_iou": 1.0,
+      "rgb_mae_opaque": 21.060962416409463,
+      "exact_pixel_pct": 20.865644290123456,
+      "exact_pixels": 432670,
+      "opaque_compared_pixels": 2073600,
+      "alpha_pixels_ref": 2073600,
+      "alpha_pixels_render": 2073600,
+      "bbox_ref": [
+        0,
+        0,
+        1919,
+        1079
+      ],
+      "bbox_render": [
+        0,
+        0,
+        1919,
+        1079
+      ],
+      "bbox_offset": {
+        "dx0": 0,
+        "dy0": 0,
+        "dx1": 0,
+        "dy1": 0,
+        "dwidth": 0,
+        "dheight": 0
+      },
+      "heatmap": "diffs/main_menu_settings.png",
+      "ref_diagnostics": {
+        "alpha_pixels": 2073600,
+        "alpha_bbox": [
+          0,
+          0,
+          1919,
+          1079
+        ],
+        "unique_opaque_colors": 602,
+        "edge_pixels": 93376,
+        "edge_density": 0.045031,
+        "sharpness": 2.7694
+      },
+      "render_diagnostics": {
+        "alpha_pixels": 2073600,
+        "alpha_bbox": [
+          0,
+          0,
+          1919,
+          1079
+        ],
+        "unique_opaque_colors": 559,
+        "edge_pixels": 132758,
+        "edge_density": 0.064023,
+        "sharpness": 2.6594
+      },
+      "sharpness_ratio": 0.96,
+      "threshold_fail": "mae>3.0 exact<90.0"
+    },
+    {
+      "session": "main_menu_title",
+      "reference": "Z:\\RUSTibites\\assets\\game\\reference\\functional_ui_native\\menu_ui\\main_menu_title_ui_on_black_1920x1080.png",
+      "reference_kind": "mapped",
+      "reference_quality": {
+        "native_reference": true,
+        "pixel_authoritative": true,
+        "ref_sharpness": 1.8023,
+        "ref_sharpness_normalized": 1.8023,
+        "ref_alpha_fraction": 1.0,
+        "rescale_blur_suspect": false
+      },
+      "native_reference": true,
+      "pixel_authoritative": true,
+      "ref_sharpness": 1.8023,
+      "ref_sharpness_normalized": 1.8023,
+      "ref_alpha_fraction": 1.0,
+      "rescale_blur_suspect": false,
+      "render_png": "Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\main_menu_title.png",
+      "viewer_cmd": "Z:\\RUSTibites\\target\\release\\rustibites-view.exe Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip --ui-text sdf --ui-session main_menu_title --ui-only --screenshot Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\main_menu_title.png --width 1920 --height 1080",
+      "render_ok": true,
+      "render_source": "Z:\\RUSTibites\\target\\release\\rustibites-view.exe Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip --ui-text sdf --ui-session main_menu_title --ui-only --screenshot Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\main_menu_title.png --width 1920 --height 1080",
+      "alpha_iou": 1.0,
+      "rgb_mae_opaque": 9.133540862911522,
+      "exact_pixel_pct": 91.72863618827161,
+      "exact_pixels": 1902085,
+      "opaque_compared_pixels": 2073600,
+      "alpha_pixels_ref": 2073600,
+      "alpha_pixels_render": 2073600,
+      "bbox_ref": [
+        0,
+        0,
+        1919,
+        1079
+      ],
+      "bbox_render": [
+        0,
+        0,
+        1919,
+        1079
+      ],
+      "bbox_offset": {
+        "dx0": 0,
+        "dy0": 0,
+        "dx1": 0,
+        "dy1": 0,
+        "dwidth": 0,
+        "dheight": 0
+      },
+      "heatmap": "diffs/main_menu_title.png",
+      "ref_diagnostics": {
+        "alpha_pixels": 2073600,
+        "alpha_bbox": [
+          0,
+          0,
+          1919,
+          1079
+        ],
+        "unique_opaque_colors": 310,
+        "edge_pixels": 55006,
+        "edge_density": 0.026527,
+        "sharpness": 1.8023
+      },
+      "render_diagnostics": {
+        "alpha_pixels": 2073600,
+        "alpha_bbox": [
+          0,
+          0,
+          1919,
+          1079
+        ],
+        "unique_opaque_colors": 330,
+        "edge_pixels": 90546,
+        "edge_density": 0.043666,
+        "sharpness": 1.8045
+      },
+      "sharpness_ratio": 1.001,
+      "threshold_fail": "mae>3.0"
+    }
+  ],
+  "missing_references": []
+}

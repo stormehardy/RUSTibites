@@ -1,0 +1,44 @@
+# RUSTibites benchmark environment
+
+Captured (UTC):        2026-11-01T09:35:29.9147160Z
+Host:                  DESKTOP
+OS:                    Microsoft Windows 10 Home | version=10.0.19045
+CPU:                   AMD Ryzen 5 3600 6-Core Processor | physical=6 logical=12 | max_clock_mhz=3593
+Memory:                16.0 GB total, 4.83 GB free at capture
+CPU load at capture:   22.0 %
+PowerShell:            5.1.19041.6456
+rustc:                 1.99.1 (58cf8f9c3 2026-10-13) (release 1.99.1, x86_64-pc-windows-msvc)
+cargo:                 1.99.1 (5f94df478 2026-08-27)
+Git HEAD:              15cac67b576f8edfa5b165a792bc48582570bba9 (main) 2026-11-01T04:33:28-05:00
+Git subject:           capture: per-bibite death-budget fields
+Git dirty:             True (16 changed paths)
+Git status:
+   M scripts/make_shortcut.ps1
+   M tools/assets/build_ui_expectations.py
+   M tools/assets/ui_expectations.json
+   M tools/parity/capture_36k_contact_ext.py
+  ?? assets/game/reference/ecology/default_36k_foraging.json
+  ?? assets/game/reference/ecology/default_36k_occupancy.json
+  ?? crates/bibites-io/tests/template_feeding.rs
+  ?? tools/bench/results/interim-100k/
+  ?? tools/bench/results/interim-cluster/
+  ?? tools/bench/results/interim-default/
+  ?? tools/bench/results/interim-frozen-serial/
+  ?? tools/bench/results/interim-serial/
+  ?? tools/bench/results/interim/
+  ?? tools/parity/make_game_seed.py
+  ?? tools/parity/plugin/_fix_select.py
+  ?? tools/roundtrip/verify_compat_one.py
+Release profile:
+  opt-level = 3
+  lto = "fat"
+  codegen-units = 1
+  panic = "abort"
+  strip = "debuginfo"
+Benchmark binary:      Z:\RUSTibites\target\release\rustibites.exe
+  sha256:              0B46AC9F22974FB64B6FAA2B9581E3078F815E6BF0CB3D4F4A2D42D02C90A1E6
+  size:                2226688 bytes
+  mtime (UTC):         2026-11-01T09:34:41.6874280Z
+  stable copy:         C:\Users\Storme\AppData\Local\Temp\rustibites-bench\bin\rustibites-0B46AC9F22974FB6.exe
+Simulator:             30 TPS (fixed_dt = 1/30 s)
+Seed:                  seed = 0x5255535400000000 xor repetition_index (repetition starts at 0)

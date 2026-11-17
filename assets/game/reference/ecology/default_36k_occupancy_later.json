@@ -1,0 +1,108 @@
+{
+ "window": "tick600-27000 (game samples_fast coverage; lead reports extension to35992)",
+ "game": {
+  "records": 4546,
+  "ids": 31,
+  "offzone_frac": 0.1958,
+  "r": {
+   "p50": 804.75,
+   "p90": 2923.73,
+   "max": 4009.8
+  },
+  "nearest": {
+   "p50": 10.95,
+   "p90": 980.91,
+   "n": 4546
+  },
+  "nearest_inzone": {
+   "p50": 6.35,
+   "p90": 100.45,
+   "n": 3656
+  },
+  "nearest_offzone": {
+   "p50": 996.45,
+   "p90": 1869.45,
+   "n": 890
+  },
+  "radial_drift_mean": 2.592,
+  "radial_drift_positive_frac": 0.644,
+  "speed_mean": 10.798,
+  "speed_median": 4.306,
+  "exits": 11,
+  "returns": 1,
+  "records_per_exit": 413.3,
+  "records_per_return": 4546.0,
+  "inzone_energy_mean": 94.26,
+  "offzone_energy_mean": 41.23
+ },
+ "rust_seed12345": {
+  "records": 8197,
+  "ids": 26,
+  "offzone_frac": 0.2395,
+  "r": {
+   "p50": 1502.69,
+   "p90": 3133.5,
+   "max": 4013.1
+  },
+  "nearest": {
+   "p50": 92.93,
+   "p90": 1339.45,
+   "n": 8197
+  },
+  "nearest_inzone": {
+   "p50": 25.18,
+   "p90": 212.22,
+   "n": 6234
+  },
+  "nearest_offzone": {
+   "p50": 1166.59,
+   "p90": 1949.56,
+   "n": 1963
+  },
+  "radial_drift_mean": 2.491,
+  "radial_drift_positive_frac": 0.68,
+  "speed_mean": 9.109,
+  "speed_median": 4.834,
+  "exits": 13,
+  "returns": 0,
+  "records_per_exit": 630.5,
+  "records_per_return": null,
+  "inzone_energy_mean": 87.51,
+  "offzone_energy_mean": 40.46
+ },
+ "rust_seed67890": {
+  "records": 7333,
+  "ids": 25,
+  "offzone_frac": 0.21,
+  "r": {
+   "p50": 975.93,
+   "p90": 3024.17,
+   "max": 4014.8
+  },
+  "nearest": {
+   "p50": 22.26,
+   "p90": 1240.34,
+   "n": 7333
+  },
+  "nearest_inzone": {
+   "p50": 9.43,
+   "p90": 118.51,
+   "n": 5793
+  },
+  "nearest_offzone": {
+   "p50": 1179.82,
+   "p90": 2011.05,
+   "n": 1540
+  },
+  "radial_drift_mean": 2.434,
+  "radial_drift_positive_frac": 0.683,
+  "speed_mean": 11.2,
+  "speed_median": 4.076,
+  "exits": 8,
+  "returns": 0,
+  "records_per_exit": 916.6,
+  "records_per_return": null,
+  "inzone_energy_mean": 104.37,
+  "offzone_energy_mean": 35.43
+ }
+}

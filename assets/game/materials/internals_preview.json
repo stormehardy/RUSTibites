@@ -1,0 +1,32 @@
+{
+ "name": "internals_preview",
+ "shader": "",
+ "colors": {
+  "_Color": null,
+  "_Flip": null,
+  "_RendererColor": null
+ },
+ "floats": {
+  "_ArmorPortion": 0.04210375249385834,
+  "_EnableExternalAlpha": 0.0,
+  "_FatEnd": 0.0,
+  "_FatFullness": 0.0,
+  "_FatPortion": 0.0,
+  "_FatStart": 1.0,
+  "_Height": 39.0,
+  "_InflateFactor": 0.0,
+  "_JawPortion": 0.15745116770267487,
+  "_MusclesPortion": 0.10962594300508499,
+  "_SizeFactor": 3.0,
+  "_StomachFullness": 0.5,
+  "_StomachPortion": 0.20196330547332764,
+  "_ThroatPortion": 0.3000573515892029,
+  "_Width": 61.0,
+  "_WombPortion": 0.04317108914256096
+ },
+ "textures": {
+  "_MainTex": "UnityTexEnv(m_Offset=Vector2f(0.0, 0.0), m_Scale=Vector2f(1.0, 1.0), m_Texture=PPtr(m_FileID=0, m_PathID=31, assetsfile=<SerializedFile>))"
+ },
+ "source_asset": "sharedassets2.assets",
+ "shader_external_file": 1
+}

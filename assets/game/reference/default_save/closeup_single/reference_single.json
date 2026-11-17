@@ -1,0 +1,1532 @@
+{
+  "schema": "rustibites.assets.closeup_single.v1",
+  "capture": {
+    "method": "single hidden game load, paused at save t=20 s, one /d/bibite_layers query then bridge /camera + /screenshot; no simulation between",
+    "save": "Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip",
+    "paused": true,
+    "counts": {
+      "bibites": 11,
+      "corpses": 0,
+      "eggs": 0
+    },
+    "screen": {
+      "width": 1280,
+      "height": 720
+    },
+    "camera": {
+      "ok": true,
+      "x": -5.360003,
+      "y": 831.0031,
+      "size": 12.0,
+      "worldHalfSize": 2000.0,
+      "aspect": 1.77777779,
+      "orthographic": true
+    },
+    "requested_camera": {
+      "x": -5.360003,
+      "y": 831.0031,
+      "ortho_size": 12.0,
+      "width": 1280,
+      "height": 720
+    },
+    "pixels_per_world_unit": 30.0,
+    "pixel_formula": "x_px = 640 + (x - cam.x)*30; y_px_up = 360 + (y - cam.y)*30; image_y = 720 - y_px_up (top-left origin)"
+  },
+  "selected_id": -1920841852,
+  "selected": {
+    "id": -1920841852,
+    "body_name": "bibite(Clone)",
+    "body_position": {
+      "x": -5.360003,
+      "y": 831.0031,
+      "z": -0.01
+    },
+    "body_rotation": {
+      "x": 0,
+      "y": 0,
+      "z": 39.97922
+    },
+    "body_scale": {
+      "x": 1.14955354,
+      "y": 1.14955354,
+      "z": 1.14955354
+    },
+    "layers": [
+      {
+        "path": "BibiteHolder/bibite(Clone)/Eyes",
+        "name": "Eyes",
+        "sorting_order": 0,
+        "sorting_layer": "Default",
+        "enabled": true,
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "flip_x": false,
+        "flip_y": false,
+        "draw_mode": "Simple",
+        "world_position": {
+          "x": -5.360003,
+          "y": 831.0031,
+          "z": -2.309107
+        },
+        "world_rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 129.979233
+        },
+        "lossy_scale": {
+          "x": 1.149554,
+          "y": 1.149554,
+          "z": 1.14955354
+        },
+        "local_position": {
+          "x": 0,
+          "y": 0,
+          "z": -2
+        },
+        "local_rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 90
+        },
+        "local_scale": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        },
+        "bounds_center": {
+          "x": -6.098603,
+          "y": 831.884,
+          "z": -2.309107
+        },
+        "bounds_size": {
+          "x": 13.83669,
+          "y": 13.6944122,
+          "z": 0.229910716
+        },
+        "sprite": "normal_eyes_21",
+        "sprite_rect": {
+          "x": 16,
+          "y": 9,
+          "w": 8,
+          "h": 9
+        },
+        "sprite_pivot": {
+          "x": 3,
+          "y": 4.5
+        },
+        "pixels_per_unit": 1,
+        "sprite_texture": "normal_eyes",
+        "sprite_texture_size": {
+          "w": 40,
+          "h": 27
+        },
+        "sprite_region_nontransparent": 8,
+        "sprite_region_pixels": 72,
+        "world_corners": [
+          {
+            "x": 48.0419,
+            "y": 839.7753,
+            "z": -2.309107
+          },
+          {
+            "x": 42.1331062,
+            "y": 846.8224,
+            "z": -2.309107
+          },
+          {
+            "x": 40.1140137,
+            "y": 833.1279,
+            "z": -2.309107
+          },
+          {
+            "x": 34.20521,
+            "y": 840.175,
+            "z": -2.309107
+          }
+        ]
+      },
+      {
+        "path": "BibiteHolder/bibite(Clone)/Exoskelton",
+        "name": "Exoskelton",
+        "sorting_order": 0,
+        "sorting_layer": "Default",
+        "enabled": true,
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "flip_x": false,
+        "flip_y": false,
+        "draw_mode": "Simple",
+        "world_position": {
+          "x": -5.360003,
+          "y": 831.0031,
+          "z": -1.15955353
+        },
+        "world_rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 129.979233
+        },
+        "lossy_scale": {
+          "x": 1.149554,
+          "y": 1.149554,
+          "z": 1.14955354
+        },
+        "local_position": {
+          "x": 0,
+          "y": 0,
+          "z": -1
+        },
+        "local_rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 90
+        },
+        "local_scale": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        },
+        "bounds_center": {
+          "x": -3.14420414,
+          "y": 828.3605,
+          "z": -1.15955353
+        },
+        "bounds_size": {
+          "x": 19.7454872,
+          "y": 20.7414284,
+          "z": 0.229910716
+        },
+        "sprite": "normal_exoskeleton_00",
+        "sprite_rect": {
+          "x": 0,
+          "y": 0,
+          "w": 16,
+          "h": 9
+        },
+        "sprite_pivot": {
+          "x": 11,
+          "y": 4.5
+        },
+        "pixels_per_unit": 1,
+        "sprite_texture": "normal_exoskeleton",
+        "sprite_texture_size": {
+          "w": 112,
+          "h": 27
+        },
+        "sprite_region_nontransparent": 0,
+        "sprite_region_pixels": 144,
+        "world_corners": [
+          {
+            "x": 160.309052,
+            "y": 705.8821,
+            "z": -1.15955353
+          },
+          {
+            "x": 148.49147,
+            "y": 719.9761,
+            "z": -1.15955353
+          },
+          {
+            "x": 152.381149,
+            "y": 699.2346,
+            "z": -1.15955353
+          },
+          {
+            "x": 140.563568,
+            "y": 713.3287,
+            "z": -1.15955353
+          }
+        ]
+      },
+      {
+        "path": "BibiteHolder/bibite(Clone)/Body",
+        "name": "Body",
+        "sorting_order": 0,
+        "sorting_layer": "Default",
+        "enabled": true,
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "flip_x": false,
+        "flip_y": false,
+        "draw_mode": "Simple",
+        "world_position": {
+          "x": -5.360003,
+          "y": 831.0031,
+          "z": -0.01
+        },
+        "world_rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 129.979233
+        },
+        "lossy_scale": {
+          "x": 1.149554,
+          "y": 1.149554,
+          "z": 1.14955354
+        },
+        "local_position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "local_rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 90
+        },
+        "local_scale": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        },
+        "bounds_center": {
+          "x": -1.29770517,
+          "y": 826.158264,
+          "z": -0.01
+        },
+        "bounds_size": {
+          "x": 16.0524883,
+          "y": 16.3370438,
+          "z": 0.229910716
+        },
+        "sprite": "normal_body_00",
+        "sprite_rect": {
+          "x": 0,
+          "y": 0,
+          "w": 11,
+          "h": 9
+        },
+        "sprite_pivot": {
+          "x": 11,
+          "y": 4.5
+        },
+        "pixels_per_unit": 1,
+        "sprite_texture": "normal_body",
+        "sprite_texture_size": {
+          "w": 11,
+          "h": 27
+        },
+        "sprite_region_nontransparent": 65,
+        "sprite_region_pixels": 99,
+        "world_corners": [
+          {
+            "x": 119.686081,
+            "y": 754.330261,
+            "z": -0.01
+          },
+          {
+            "x": 111.561485,
+            "y": 764.0199,
+            "z": -0.01
+          },
+          {
+            "x": 111.758179,
+            "y": 747.682861,
+            "z": -0.01
+          },
+          {
+            "x": 103.633591,
+            "y": 757.372559,
+            "z": -0.01
+          }
+        ]
+      },
+      {
+        "path": "BibiteHolder/bibite(Clone)/Mouth",
+        "name": "Mouth",
+        "sorting_order": 0,
+        "sorting_layer": "Default",
+        "enabled": true,
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "flip_x": false,
+        "flip_y": false,
+        "draw_mode": "Simple",
+        "world_position": {
+          "x": -5.360003,
+          "y": 831.0031,
+          "z": -0.01
+        },
+        "world_rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 129.979233
+        },
+        "lossy_scale": {
+          "x": 1.149554,
+          "y": 1.149554,
+          "z": 1.14955354
+        },
+        "local_position": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "local_rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 90
+        },
+        "local_scale": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        },
+        "bounds_center": {
+          "x": -7.206502,
+          "y": 833.2053,
+          "z": -0.01
+        },
+        "bounds_size": {
+          "x": 11.6208916,
+          "y": 11.0517817,
+          "z": 0.229910716
+        },
+        "sprite": "normal_mouth_00",
+        "sprite_rect": {
+          "x": 0,
+          "y": 0,
+          "w": 5,
+          "h": 9
+        },
+        "sprite_pivot": {
+          "x": 0,
+          "y": 4.5
+        },
+        "pixels_per_unit": 1,
+        "sprite_texture": "normal_mouth",
+        "sprite_texture_size": {
+          "w": 15,
+          "h": 9
+        },
+        "sprite_region_nontransparent": 24,
+        "sprite_region_pixels": 45,
+        "world_corners": [
+          {
+            "x": 30.3155155,
+            "y": 860.9164,
+            "z": -0.01
+          },
+          {
+            "x": 26.6225185,
+            "y": 865.3208,
+            "z": -0.01
+          },
+          {
+            "x": 22.3876228,
+            "y": 854.269,
+            "z": -0.01
+          },
+          {
+            "x": 18.6946239,
+            "y": 858.6734,
+            "z": -0.01
+          }
+        ]
+      },
+      {
+        "path": "BibiteHolder/bibite(Clone)/RightArm",
+        "name": "RightArm",
+        "sorting_order": 0,
+        "sorting_layer": "Default",
+        "enabled": true,
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "flip_x": false,
+        "flip_y": true,
+        "draw_mode": "Simple",
+        "world_position": {
+          "x": -1.39605665,
+          "y": 834.3268,
+          "z": -0.01
+        },
+        "world_rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 129.979233
+        },
+        "lossy_scale": {
+          "x": 1.149554,
+          "y": 1.149554,
+          "z": 1.14955354
+        },
+        "local_position": {
+          "x": 4.5,
+          "y": 0,
+          "z": 0
+        },
+        "local_rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 90
+        },
+        "local_scale": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        },
+        "bounds_center": {
+          "x": 3.24895716,
+          "y": 831.470764,
+          "z": -0.01
+        },
+        "bounds_size": {
+          "x": 9.290028,
+          "y": 10.143692,
+          "z": 0.229910716
+        },
+        "sprite": "normal_arms_10",
+        "sprite_rect": {
+          "x": 9,
+          "y": 0,
+          "w": 9,
+          "h": 3
+        },
+        "sprite_pivot": {
+          "x": 9,
+          "y": 0
+        },
+        "pixels_per_unit": 1,
+        "sprite_texture": "normal_arms",
+        "sprite_texture_size": {
+          "w": 36,
+          "h": 3
+        },
+        "sprite_region_nontransparent": 4,
+        "sprite_region_pixels": 27,
+        "world_corners": [
+          {
+            "x": 58.43051,
+            "y": 762.975769,
+            "z": -0.01
+          },
+          {
+            "x": 51.78311,
+            "y": 770.9037,
+            "z": -0.01
+          },
+          {
+            "x": 55.78788,
+            "y": 760.759949,
+            "z": -0.01
+          },
+          {
+            "x": 49.14048,
+            "y": 768.687866,
+            "z": -0.01
+          }
+        ]
+      },
+      {
+        "path": "BibiteHolder/bibite(Clone)/Left Arm",
+        "name": "Left Arm",
+        "sorting_order": 0,
+        "sorting_layer": "Default",
+        "enabled": true,
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "flip_x": false,
+        "flip_y": false,
+        "draw_mode": "Simple",
+        "world_position": {
+          "x": -9.32395,
+          "y": 827.679443,
+          "z": -1.15955353
+        },
+        "world_rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 129.979233
+        },
+        "lossy_scale": {
+          "x": 1.149554,
+          "y": 1.149554,
+          "z": 1.14955354
+        },
+        "local_position": {
+          "x": -4.5,
+          "y": 0,
+          "z": -1
+        },
+        "local_rotation": {
+          "x": 0,
+          "y": 0,
+          "z": 90
+        },
+        "local_scale": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        },
+        "bounds_center": {
+          "x": -7.321567,
+          "y": 822.6076,
+          "z": -1.15955353
+        },
+        "bounds_size": {
+          "x": 9.290028,
+          "y": 10.143692,
+          "z": 0.229910716
+        },
+        "sprite": "normal_arms_10",
+        "sprite_rect": {
+          "x": 9,
+          "y": 0,
+          "w": 9,
+          "h": 3
+        },
+        "sprite_pivot": {
+          "x": 9,
+          "y": 0
+        },
+        "pixels_per_unit": 1,
+        "sprite_texture": "normal_arms",
+        "sprite_texture_size": {
+          "w": 36,
+          "h": 3
+        },
+        "sprite_region_nontransparent": 4,
+        "sprite_region_pixels": 27,
+        "world_corners": [
+          {
+            "x": 50.5026169,
+            "y": 756.328369,
+            "z": -1.15955353
+          },
+          {
+            "x": 43.855217,
+            "y": 764.2563,
+            "z": -1.15955353
+          },
+          {
+            "x": 47.8599854,
+            "y": 754.112549,
+            "z": -1.15955353
+          },
+          {
+            "x": 41.2125854,
+            "y": 762.040466,
+            "z": -1.15955353
+          }
+        ]
+      }
+    ],
+    "composited_bbox": {
+      "x0": -13.0169477,
+      "y0": 817.535767,
+      "x1": 7.893971,
+      "y1": 838.7312,
+      "w": 20.91092,
+      "h": 21.1954346,
+      "cx": -2.56148839,
+      "cy": 828.1335
+    }
+  },
+  "selected_table_row": {
+    "h": -37510,
+    "id": -1920841852,
+    "species": 1,
+    "generation": 0,
+    "age": 0.005555566,
+    "energy": 111.064941,
+    "maxEnergy": 158.5768,
+    "health": 132.147339,
+    "maxHealth": 132.147339,
+    "x": -5.360003,
+    "y": 831.0031,
+    "nodes": 6,
+    "synapses": 3,
+    "tag": "",
+    "parent1": 0,
+    "size": 1.14955354,
+    "speed": 2.027134418487549
+  },
+  "selected_genes": {
+    "LayTime": 15.0,
+    "BroodTime": 20.0,
+    "HatchTime": 10.0,
+    "SizeRatio": 1.0,
+    "SpeedRatio": 1.0,
+    "ColorR": 0.10000000149011612,
+    "ColorG": 0.10000000149011612,
+    "ColorB": 0.10000000149011612,
+    "MutationAmountSigma": 0.02500000037252903,
+    "AverageMutationNumber": 4.0,
+    "BrainMutationSigma": 0.10000000149011612,
+    "BrainAverageMutation": 2.0,
+    "ViewAngle": 180.0,
+    "ViewRadius": 75.0,
+    "ClockSpeed": 1.0,
+    "PheroSense": 160.0,
+    "Diet": 0.30000001192092896,
+    "HerdSeparationWeight": 1.0,
+    "HerdAlignmentWeight": 1.5,
+    "HerdCohesionWeight": 1.0,
+    "HerdVelocityWeight": 0.25,
+    "HerdSeparationDistance": 35.0,
+    "GrowthScale": 0.3499999940395355,
+    "GrowthMaturityFactor": 2.0,
+    "GrowthMaturityExponent": 1.0,
+    "EyeOffset": 0.5,
+    "StomachWAG": 5.0,
+    "WombWAG": 2.5,
+    "FatWAG": 2.5,
+    "ArmorWAG": 0.06684492528438568,
+    "ThroatWAG": 1.3101603984832764,
+    "MouthMusclesWAG": 1.069518804550171,
+    "MoveMusclesWAG": 0.6550801992416382,
+    "FatStorageThreshold": 0.5,
+    "FatStorageDeadband": 0.25
+  },
+  "genes_block_names": [
+    "ArmorWAG",
+    "AverageMutationNumber",
+    "BrainAverageMutation",
+    "BrainMutationSigma",
+    "BroodTime",
+    "ClockSpeed",
+    "ColorB",
+    "ColorG",
+    "ColorR",
+    "Diet",
+    "EyeOffset",
+    "FatStorageDeadband",
+    "FatStorageThreshold",
+    "FatWAG",
+    "GrowthMaturityExponent",
+    "GrowthMaturityFactor",
+    "GrowthScale",
+    "HatchTime",
+    "HerdAlignmentWeight",
+    "HerdCohesionWeight",
+    "HerdSeparationDistance",
+    "HerdSeparationWeight",
+    "HerdVelocityWeight",
+    "LayTime",
+    "MouthMusclesWAG",
+    "MoveMusclesWAG",
+    "MutationAmountSigma",
+    "PheroSense",
+    "SizeRatio",
+    "SpeedRatio",
+    "StomachWAG",
+    "ThroatWAG",
+    "ViewAngle",
+    "ViewRadius",
+    "WombWAG"
+  ],
+  "genome": {
+    "ok": true,
+    "h": -37510,
+    "kind": "bibite",
+    "data": {
+      "transform": {
+        "position": [
+          -5.360003,
+          831.0031
+        ],
+        "rotation": 39.97922,
+        "scale": 1.14955354
+      },
+      "rb2d": {
+        "px": -5.360003,
+        "py": 831.0031,
+        "vx": -1.68861651,
+        "vy": 1.12153816,
+        "r": 39.97922
+      },
+      "genes": {
+        "speciesID": 1,
+        "isReady": true,
+        "gen": 0,
+        "genes": {
+          "LayTime": 15.0,
+          "BroodTime": 20.0,
+          "HatchTime": 10.0,
+          "SizeRatio": 1.0,
+          "SpeedRatio": 1.0,
+          "ColorR": 0.1,
+          "ColorG": 0.1,
+          "ColorB": 0.1,
+          "MutationAmountSigma": 0.025,
+          "AverageMutationNumber": 4.0,
+          "BrainMutationSigma": 0.1,
+          "BrainAverageMutation": 2.0,
+          "ViewAngle": 180.0,
+          "ViewRadius": 75.0,
+          "ClockSpeed": 1.0,
+          "PheroSense": 160.0,
+          "Diet": 0.3,
+          "HerdSeparationWeight": 1.0,
+          "HerdAlignmentWeight": 1.5,
+          "HerdCohesionWeight": 1.0,
+          "HerdVelocityWeight": 0.25,
+          "HerdSeparationDistance": 35.0,
+          "GrowthScale": 0.35,
+          "GrowthMaturityFactor": 2.0,
+          "GrowthMaturityExponent": 1.0,
+          "EyeOffset": 0.5,
+          "StomachWAG": 5.0,
+          "WombWAG": 2.5,
+          "FatWAG": 2.5,
+          "ArmorWAG": 0.0668449253,
+          "ThroatWAG": 1.3101604,
+          "MouthMusclesWAG": 1.0695188,
+          "MoveMusclesWAG": 0.6550802,
+          "FatStorageThreshold": 0.5,
+          "FatStorageDeadband": 0.25
+        }
+      },
+      "body": {
+        "mouth": {
+          "attackedLastFrame": false,
+          "biteProgress": 1.512056,
+          "bibitesBitten": 0,
+          "totalDamageDealt": 0.0,
+          "totalMurders": 0,
+          "murderedArea": 0.0
+        },
+        "stomach": {
+          "content": [
+            {
+              "material": "Plant",
+              "amount": 5.29053545,
+              "averageChunkAmount": 2.65382838
+            }
+          ]
+        },
+        "phero": {
+          "progress": 7.15255737e-06
+        },
+        "health": 132.147339,
+        "energy": 111.064941,
+        "eggLayer": {
+          "eggProgress": 0.07431463,
+          "nEggsLaid": 0
+        },
+        "control": {
+          "totalTravel": 114.548607
+        },
+        "fatReservesAmount": 0.5236341,
+        "id": -1920841852,
+        "d2Size": 1.32147336,
+        "dying": false,
+        "dead": false,
+        "attackedDmg": 0.0,
+        "timesAttacked": 0,
+        "totalDamageSuffered": 0.0,
+        "brainTicksCount": 0.0,
+        "visionLookupCount": 0.0,
+        "visionSensingCount": 0.0,
+        "corpseEnergyOffset": 0.0
+      },
+      "clock": {
+        "tic": 0,
+        "ticProgress": 7.15255737e-06,
+        "timeAlive": 20.0000381,
+        "chronoTime": 20.0000381
+      },
+      "brain": {
+        "isReady": true,
+        "Nodes": [
+          {
+            "Type": 0,
+            "baseActivation": 0.0,
+            "TypeName": "Input",
+            "Index": 0,
+            "Inov": 1,
+            "Desc": "EnergyRatio",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 0
+          },
+          {
+            "Type": 0,
+            "baseActivation": 0.0,
+            "TypeName": "Input",
+            "Index": 1,
+            "Inov": 2,
+            "Desc": "Maturity",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 0
+          },
+          {
+            "Type": 0,
+            "baseActivation": 0.0,
+            "TypeName": "Input",
+            "Index": 2,
+            "Inov": 3,
+            "Desc": "LifeRatio",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 0
+          },
+          {
+            "Type": 0,
+            "baseActivation": 0.0,
+            "TypeName": "Input",
+            "Index": 3,
+            "Inov": 4,
+            "Desc": "Fullness",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 0
+          },
+          {
+            "Type": 0,
+            "baseActivation": 0.0,
+            "TypeName": "Input",
+            "Index": 4,
+            "Inov": 5,
+            "Desc": "Speed",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 0
+          },
+          {
+            "Type": 0,
+            "baseActivation": 0.0,
+            "TypeName": "Input",
+            "Index": 5,
+            "Inov": 6,
+            "Desc": "RotationSpeed",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 0
+          },
+          {
+            "Type": 0,
+            "baseActivation": 0.0,
+            "TypeName": "Input",
+            "Index": 6,
+            "Inov": 7,
+            "Desc": "IsGrabbing",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 0
+          },
+          {
+            "Type": 0,
+            "baseActivation": 0.0,
+            "TypeName": "Input",
+            "Index": 7,
+            "Inov": 8,
+            "Desc": "AttackedDamage",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 0
+          },
+          {
+            "Type": 0,
+            "baseActivation": 0.0,
+            "TypeName": "Input",
+            "Index": 8,
+            "Inov": 9,
+            "Desc": "EggStored",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 0
+          },
+          {
+            "Type": 0,
+            "baseActivation": 0.0,
+            "TypeName": "Input",
+            "Index": 9,
+            "Inov": 10,
+            "Desc": "BibiteCloseness",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 0
+          },
+          {
+            "Type": 0,
+            "baseActivation": 0.0,
+            "TypeName": "Input",
+            "Index": 10,
+            "Inov": 11,
+            "Desc": "BibiteAngle",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 0
+          },
+          {
+            "Type": 0,
+            "baseActivation": 0.0,
+            "TypeName": "Input",
+            "Index": 11,
+            "Inov": 12,
+            "Desc": "NBibites",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 0
+          },
+          {
+            "Type": 0,
+            "baseActivation": 0.0,
+            "TypeName": "Input",
+            "Index": 12,
+            "Inov": 13,
+            "Desc": "PlantCloseness",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 0
+          },
+          {
+            "Type": 0,
+            "baseActivation": 0.0,
+            "TypeName": "Input",
+            "Index": 13,
+            "Inov": 14,
+            "Desc": "PlantAngle",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 0
+          },
+          {
+            "Type": 0,
+            "baseActivation": 0.0,
+            "TypeName": "Input",
+            "Index": 14,
+            "Inov": 15,
+            "Desc": "NPlants",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 0
+          },
+          {
+            "Type": 0,
+            "baseActivation": 0.0,
+            "TypeName": "Input",
+            "Index": 15,
+            "Inov": 16,
+            "Desc": "MeatCloseness",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 0
+          },
+          {
+            "Type": 0,
+            "baseActivation": 0.0,
+            "TypeName": "Input",
+            "Index": 16,
+            "Inov": 17,
+            "Desc": "MeatAngle",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 0
+          },
+          {
+            "Type": 0,
+            "baseActivation": 0.0,
+            "TypeName": "Input",
+            "Index": 17,
+            "Inov": 18,
+            "Desc": "NMeats",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 0
+          },
+          {
+            "Type": 0,
+            "baseActivation": 0.0,
+            "TypeName": "Input",
+            "Index": 18,
+            "Inov": 19,
+            "Desc": "RedBibite",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 0
+          },
+          {
+            "Type": 0,
+            "baseActivation": 0.0,
+            "TypeName": "Input",
+            "Index": 19,
+            "Inov": 20,
+            "Desc": "GreenBibite",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 0
+          },
+          {
+            "Type": 0,
+            "baseActivation": 0.0,
+            "TypeName": "Input",
+            "Index": 20,
+            "Inov": 21,
+            "Desc": "BlueBibite",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 0
+          },
+          {
+            "Type": 0,
+            "baseActivation": 0.0,
+            "TypeName": "Input",
+            "Index": 21,
+            "Inov": 22,
+            "Desc": "Tic",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 0
+          },
+          {
+            "Type": 0,
+            "baseActivation": 0.0,
+            "TypeName": "Input",
+            "Index": 22,
+            "Inov": 23,
+            "Desc": "Minute",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 0
+          },
+          {
+            "Type": 0,
+            "baseActivation": 0.0,
+            "TypeName": "Input",
+            "Index": 23,
+            "Inov": 24,
+            "Desc": "TimeAlive",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 0
+          },
+          {
+            "Type": 0,
+            "baseActivation": 0.0,
+            "TypeName": "Input",
+            "Index": 24,
+            "Inov": 25,
+            "Desc": "PheroSense1",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 0
+          },
+          {
+            "Type": 0,
+            "baseActivation": 0.0,
+            "TypeName": "Input",
+            "Index": 25,
+            "Inov": 26,
+            "Desc": "PheroSense2",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 0
+          },
+          {
+            "Type": 0,
+            "baseActivation": 0.0,
+            "TypeName": "Input",
+            "Index": 26,
+            "Inov": 27,
+            "Desc": "PheroSense3",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 0
+          },
+          {
+            "Type": 0,
+            "baseActivation": 0.0,
+            "TypeName": "Input",
+            "Index": 27,
+            "Inov": 28,
+            "Desc": "Phero1Angle",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 0
+          },
+          {
+            "Type": 0,
+            "baseActivation": 0.0,
+            "TypeName": "Input",
+            "Index": 28,
+            "Inov": 29,
+            "Desc": "Phero2Angle",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 0
+          },
+          {
+            "Type": 0,
+            "baseActivation": 0.0,
+            "TypeName": "Input",
+            "Index": 29,
+            "Inov": 30,
+            "Desc": "Phero3Angle",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 0
+          },
+          {
+            "Type": 0,
+            "baseActivation": 0.0,
+            "TypeName": "Input",
+            "Index": 30,
+            "Inov": 31,
+            "Desc": "Phero1Heading",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 0
+          },
+          {
+            "Type": 0,
+            "baseActivation": 0.0,
+            "TypeName": "Input",
+            "Index": 31,
+            "Inov": 32,
+            "Desc": "Phero2Heading",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 0
+          },
+          {
+            "Type": 0,
+            "baseActivation": 0.0,
+            "TypeName": "Input",
+            "Index": 32,
+            "Inov": 33,
+            "Desc": "Phero3Heading",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 0
+          },
+          {
+            "Type": 3,
+            "baseActivation": 0.0,
+            "TypeName": "TanH",
+            "Index": 33,
+            "Inov": 34,
+            "Desc": "Accelerate",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 1
+          },
+          {
+            "Type": 3,
+            "baseActivation": 0.4535929,
+            "TypeName": "TanH",
+            "Index": 34,
+            "Inov": 35,
+            "Desc": "Rotate",
+            "Value": 0.4248479,
+            "LastInput": 0.4535929,
+            "LastOutput": 0.4248479,
+            "archetype": 1
+          },
+          {
+            "Type": 3,
+            "baseActivation": 0.0,
+            "TypeName": "TanH",
+            "Index": 35,
+            "Inov": 36,
+            "Desc": "Herding",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 1
+          },
+          {
+            "Type": 3,
+            "baseActivation": 0.0,
+            "TypeName": "TanH",
+            "Index": 36,
+            "Inov": 37,
+            "Desc": "EggProduction",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 1
+          },
+          {
+            "Type": 1,
+            "baseActivation": 0.2,
+            "TypeName": "Sigmoid",
+            "Index": 37,
+            "Inov": 38,
+            "Desc": "Want2Lay",
+            "Value": 0.549834,
+            "LastInput": 0.2,
+            "LastOutput": 0.549834,
+            "archetype": 1
+          },
+          {
+            "Type": 3,
+            "baseActivation": 0.0,
+            "TypeName": "TanH",
+            "Index": 38,
+            "Inov": 39,
+            "Desc": "Want2Eat",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 1
+          },
+          {
+            "Type": 1,
+            "baseActivation": 1.228,
+            "TypeName": "Sigmoid",
+            "Index": 39,
+            "Inov": 40,
+            "Desc": "Digestion",
+            "Value": 0.7734683,
+            "LastInput": 1.228,
+            "LastOutput": 0.7734683,
+            "archetype": 1
+          },
+          {
+            "Type": 3,
+            "baseActivation": -2.06689548,
+            "TypeName": "TanH",
+            "Index": 40,
+            "Inov": 41,
+            "Desc": "Grab",
+            "Value": -0.9684613,
+            "LastInput": -2.06689548,
+            "LastOutput": -0.9684613,
+            "archetype": 1
+          },
+          {
+            "Type": 1,
+            "baseActivation": 0.0,
+            "TypeName": "Sigmoid",
+            "Index": 41,
+            "Inov": 42,
+            "Desc": "ClkReset",
+            "Value": 0.5,
+            "LastInput": 0.0,
+            "LastOutput": 0.5,
+            "archetype": 1
+          },
+          {
+            "Type": 5,
+            "baseActivation": 0.0,
+            "TypeName": "ReLu",
+            "Index": 42,
+            "Inov": 43,
+            "Desc": "PhereOut1",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 1
+          },
+          {
+            "Type": 5,
+            "baseActivation": 0.0,
+            "TypeName": "ReLu",
+            "Index": 43,
+            "Inov": 44,
+            "Desc": "PhereOut2",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 1
+          },
+          {
+            "Type": 5,
+            "baseActivation": 0.0,
+            "TypeName": "ReLu",
+            "Index": 44,
+            "Inov": 45,
+            "Desc": "PhereOut3",
+            "Value": 0.0,
+            "LastInput": 0.0,
+            "LastOutput": 0.0,
+            "archetype": 1
+          },
+          {
+            "Type": 1,
+            "baseActivation": 0.0,
+            "TypeName": "Sigmoid",
+            "Index": 45,
+            "Inov": 46,
+            "Desc": "Want2Grow",
+            "Value": 0.5,
+            "LastInput": 0.0,
+            "LastOutput": 0.5,
+            "archetype": 1
+          },
+          {
+            "Type": 1,
+            "baseActivation": 0.0,
+            "TypeName": "Sigmoid",
+            "Index": 46,
+            "Inov": 47,
+            "Desc": "Want2Heal",
+            "Value": 0.5,
+            "LastInput": 0.0,
+            "LastOutput": 0.5,
+            "archetype": 1
+          },
+          {
+            "Type": 1,
+            "baseActivation": 0.0,
+            "TypeName": "Sigmoid",
+            "Index": 47,
+            "Inov": 48,
+            "Desc": "Want2Attack",
+            "Value": 0.5,
+            "LastInput": 0.0,
+            "LastOutput": 0.5,
+            "archetype": 1
+          }
+        ],
+        "Synapses": [
+          {
+            "Inov": 1,
+            "NodeIn": 3,
+            "NodeOut": 40,
+            "Weight": 4.07295752,
+            "En": true
+          },
+          {
+            "Inov": 2,
+            "NodeIn": 14,
+            "NodeOut": 35,
+            "Weight": 1.15925133,
+            "En": true
+          },
+          {
+            "Inov": 3,
+            "NodeIn": 13,
+            "NodeOut": 34,
+            "Weight": -0.401356,
+            "En": true
+          }
+        ]
+      }
+    }
+  },
+  "bibite_ids_in_session": [
+    412023971,
+    9,
+    8,
+    7,
+    6,
+    5,
+    4,
+    3,
+    2,
+    1,
+    -1920841852
+  ],
+  "spawner_caveat": "Save contains 10 bibites; the game load runs the fresh spawner and adds one extra virgin bibite, so 11 live ids appear. The selected id is the bibite nearest the canonical closeup camera (a saved entity); the extra spawner id is not selected. Ids are runtime ids and can change on reload.",
+  "reference_png": "assets/game/reference/default_save/closeup_single/reference_single.png",
+  "png_sha256": "9216cdc9c3fa06019906d604fd8d738be9cf912569877c2a5e8df650b75ce1f9",
+  "composited_bbox_world": {
+    "x0": -13.0169477,
+    "y0": 817.535767,
+    "x1": 7.893971,
+    "y1": 838.7312,
+    "w": 20.91092,
+    "h": 21.1954346,
+    "cx": -2.56148839,
+    "cy": 828.1335
+  },
+  "composited_bbox_pixels": {
+    "x0": 410.291659,
+    "x1": 1037.61922,
+    "y0": 128.1570000000022,
+    "y1": 764.0199900000016
+  },
+  "verification": {
+    "camera_centered_on_selected": [
+      -5.360003,
+      831.0031
+    ],
+    "selected_body_position": {
+      "x": -5.360003,
+      "y": 831.0031,
+      "z": -0.01
+    },
+    "center_pixel": [
+      640.0,
+      360.0
+    ],
+    "move_diff": {
+      "move_response": {
+        "ok": true,
+        "moved": 1
+      },
+      "diff_bbox_pixels": [
+        459,
+        177,
+        900,
+        662
+      ],
+      "diff_pixels": 115365,
+      "verification_png": "assets/game/reference/default_save/closeup_single/verification_moved.png",
+      "note": "selected handle moved 2000 world units (offscreen) after the reference capture; diff bbox shows the entity's sprites at the reference position and the moved position."
+    },
+    "note": "camera was set to the selected body position from the same paused layer dump; a frame after moving the selected handle 200 units verifies the selected entity at the camera centre (diff bbox above). Selected id/pose/bbox are atomic with the screenshot."
+  },
+  "visible_alpha_bbox_pixels": [
+    459,
+    177,
+    900,
+    662
+  ],
+  "visible_alpha_bbox_size": [
+    441,
+    485
+  ]
+}

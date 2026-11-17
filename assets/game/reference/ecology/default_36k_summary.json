@@ -1,0 +1,202 @@
+{
+  "schema": "rustibites.assets.ecology_36k.v1",
+  "capture": {
+    "save": "Default.zip newgame",
+    "seed": 12345,
+    "requested_speed": 8,
+    "stop": "run until simTime 1200 s; rows/events/feeding filtered to tick<=36000",
+    "actual_final": {
+      "ok": true,
+      "id": "17b096d6",
+      "state": "done",
+      "reason": "simTime",
+      "error": null,
+      "startSimTime": 0.1750000026077032,
+      "simTime": 1200.0000178813934,
+      "elapsedSim": 1199.8250178787857,
+      "triggerSimTime": 1200.0000178813934,
+      "wallSeconds": 346.8530462,
+      "ticks": 47993,
+      "achievedSpeed": 3.45917393842622,
+      "rows": 601,
+      "firstSeq": 0,
+      "nextSeq": 601,
+      "events": 65,
+      "nextEvent": 65,
+      "scheduleFired": 0,
+      "scheduleTotal": 0,
+      "startGeneration": 0,
+      "errors": [],
+      "schedule": [],
+      "paused": true,
+      "targetTimeScale": 8.0,
+      "engineTimeScale": 0.0,
+      "generation": 1
+    },
+    "rows_total": 601,
+    "rows_used": 451,
+    "events_total": 65,
+    "events_used": 65,
+    "feeding_polls_total": 308,
+    "feeding_polls_used": 308,
+    "tick_first_last": [
+      1,
+      36000
+    ],
+    "simtime_first_last": [
+      0.20000000298023224,
+      900.1750134136528
+    ],
+    "note": "The game achieved effective ~3.46x/40 ticks-per-s and overshot to 47,993 ticks; the tracked 36,000-tick subset is the first rows/events up to tick 36,000 (raw keeps the full run)."
+  },
+  "rows_first": {
+    "seq": 0,
+    "t": 0.20000000298023224,
+    "tick": 1,
+    "wall": 0.0725603,
+    "bibites": 1,
+    "eggs": 0,
+    "corpses": 0,
+    "plantN": 444,
+    "plantBiomass": 94412.16499328613,
+    "meatN": 0,
+    "meatBiomass": 0.0,
+    "freeBiomass": 31251.5234375,
+    "bibiteBiomass": 580.7592163085938,
+    "energyMean": 156.01324462890625,
+    "healthMean": 131.01605224609375,
+    "ageMean": 4.8611113015795127e-05,
+    "ageMax": 4.8611113015795127e-05,
+    "genMax": 0,
+    "genMean": 0.0,
+    "nSpecies": 1,
+    "species": {
+      "1": 1
+    },
+    "births": 0,
+    "deaths": 0
+  },
+  "rows_last": {
+    "seq": 450,
+    "t": 900.1750134136528,
+    "tick": 36000,
+    "wall": 257.4687772,
+    "bibites": 19,
+    "eggs": 0,
+    "corpses": 6,
+    "plantN": 650,
+    "plantBiomass": 125170.90222144127,
+    "meatN": 11,
+    "meatBiomass": 3320.376979827881,
+    "freeBiomass": 227.6171875,
+    "bibiteBiomass": 10580.935333251953,
+    "energyMean": 68.63448800538715,
+    "healthMean": 93.78521256697805,
+    "ageMean": 0.16057097539305687,
+    "ageMax": 0.24982352554798126,
+    "genMax": 1,
+    "genMean": 0.631578947368421,
+    "nSpecies": 1,
+    "species": {
+      "1": 19
+    },
+    "births": 0,
+    "deaths": 1
+  },
+  "counts_minmax": {
+    "bibites": [
+      1,
+      24
+    ],
+    "eggs": [
+      0,
+      6
+    ],
+    "corpses": [
+      0,
+      6
+    ],
+    "plantN": [
+      444,
+      656
+    ],
+    "plantBiomass": [
+      94412.16499328613,
+      125429.6433403492
+    ],
+    "meatN": [
+      0,
+      11
+    ],
+    "meatBiomass": [
+      0.0,
+      3320.376979827881
+    ],
+    "freeBiomass": [
+      0.0,
+      31251.5234375
+    ],
+    "bibiteBiomass": [
+      580.7592163085938,
+      11375.660415649414
+    ],
+    "energyMean": [
+      57.11917298773061,
+      156.01324462890625
+    ],
+    "healthMean": [
+      77.10833358764648,
+      143.0498779296875
+    ],
+    "ageMean": [
+      4.8611113015795127e-05,
+      0.16057097539305687
+    ],
+    "ageMax": [
+      4.8611113015795127e-05,
+      0.24982352554798126
+    ],
+    "genMax": [
+      0,
+      1
+    ],
+    "genMean": [
+      0.0,
+      0.7083333333333334
+    ],
+    "nSpecies": [
+      1,
+      1
+    ]
+  },
+  "events": {
+    "births": 39,
+    "deaths": 25,
+    "death_causes": {
+      "starved": 23,
+      "killed": 2
+    },
+    "initial": 1
+  },
+  "feeding": {
+    "polls_used": 308,
+    "fields": [
+      "_tick",
+      "bibites",
+      "counters",
+      "gameVersion",
+      "material_properties",
+      "plugin",
+      "schema",
+      "t",
+      "totals",
+      "zones"
+    ]
+  },
+  "raw": {
+    "series": "testdata/parity/default/ecology_36k/series.json",
+    "events": "testdata/parity/default/ecology_36k/events.json",
+    "feeding": "testdata/parity/default/ecology_36k/feeding.json",
+    "final_state": "testdata/parity/default/ecology_36k/final_state.json"
+  }
+}

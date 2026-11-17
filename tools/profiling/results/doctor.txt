@@ -1,0 +1,26 @@
+profiling doctor - 2026-10-30T07:44:39.2279040Z
+elevated shell: False
+
+tools:
+  wpr                found  C:\Windows\system32\wpr.exe
+  wpa                missing 
+  xperf              missing 
+  tracerpt           found  C:\Windows\system32\tracerpt.exe
+  samply             missing 
+  perf               missing 
+  perfview           missing 
+  procdump           missing 
+  cargo-flamegraph   missing 
+  dotnet-trace       missing 
+  VS 2022 install    found  C:\Program Files (x86)\Microsoft Visual Studio\2022
+
+release binary: Z:\RUSTibites\target\release\rustibites.exe
+  sha256: 511F62F70C62869CC931B70A8CEF3826B188765BB9D911E8961971979CEF6442
+  pdb:    True  (bytes: 1347584, mtime: 2026-10-30T07:38:11.4937685Z)
+  strip=debuginfo in Cargo.toml: True -> use -Action build-symbols for a profiling build
+
+recommended now: phase audits + bench phase tables (WPR/ETW needs an elevated shell)
+
+notes:
+  ETW capture (wpr) requires an elevated shell: True
+  wpa/xperf/PerfView/samply/procdump are not installed on this machine.

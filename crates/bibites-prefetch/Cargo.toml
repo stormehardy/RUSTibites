@@ -1,0 +1,9 @@
+[package]
+name = "bibites-prefetch"
+description = "A cache-line prefetch hint for RUSTibites' passes over large arrays of records"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[dependencies]

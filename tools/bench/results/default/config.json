@@ -1,0 +1,43 @@
+{
+    "schema":  "rustibites.bench.matrix/1",
+    "mode":  "full",
+    "run_label":  "full",
+    "started_at_utc":  "2026-10-30T14:42:02.9436368Z",
+    "scenario":  "Z:\\RUSTibites\\testdata\\real\\Default.zip",
+    "scenario_label":  "Default.zip",
+    "requested_pops":  [
+                           0
+                       ],
+    "threads":  [
+                    1,
+                    8
+                ],
+    "ticks_per_run":  600,
+    "repeat_per_cell":  2,
+    "timeout_sec_run":  900,
+    "budget_sec":  0,
+    "min_free_gb":  0.5,
+    "max_load_pct":  45,
+    "load_wait_sec":  300,
+    "sample_ms":  50,
+    "determinism_check":  true,
+    "binary":  {
+                   "original_path":  "Z:\\RUSTibites\\target\\bench-final\\rustibites-3CCB231E.exe",
+                   "measured_copy":  "C:\\Users\\Storme\\AppData\\Local\\Temp\\rustibites-bench\\bin\\rustibites-3CCB231ECC3C9027.exe",
+                   "sha256":  "3CCB231ECC3C9027B83CE998E6BB88FAFA4224D27874547B386F94EA84709D1D"
+               },
+    "artifacts":  {
+                      "runs_csv":  "runs.csv",
+                      "summary_csv":  "summary.csv",
+                      "markdown":  "matrix.md",
+                      "json":  "matrix.json",
+                      "environment":  "environment.json",
+                      "environment_txt":  "environment.txt"
+                  },
+    "notes":  [
+                  "engine wall_secs covers only world.run(ticks); process_wall_secs adds setup/spawn/startup",
+                  "one operating-system process per repetition (--repeat 1) so repetitions are independent",
+                  "synthetic world area scales as 2000*sqrt(N/2000) to keep density constant",
+                  "state_fingerprint should be identical for the same repetition seed regardless of thread count"
+              ]
+}

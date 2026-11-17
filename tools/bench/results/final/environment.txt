@@ -1,0 +1,57 @@
+# RUSTibites benchmark environment
+
+Captured (UTC):        2026-11-01T10:52:11.4980543Z
+Host:                  DESKTOP
+OS:                    Microsoft Windows 10 Home | version=10.0.19045
+CPU:                   AMD Ryzen 5 3600 6-Core Processor | physical=6 logical=12 | max_clock_mhz=3593
+Memory:                16.0 GB total, 5.25 GB free at capture
+CPU load at capture:   6.0 %
+PowerShell:            5.1.19041.6456
+rustc:                 1.99.1 (58cf8f9c3 2026-10-13) (release 1.99.1, x86_64-pc-windows-msvc)
+cargo:                 1.99.1 (5f94df478 2026-08-27)
+Git HEAD:              903f1b26f9c23d6ca7466bfe4def5a9d1c5ee77f (main) 2026-11-01T05:42:06-05:00
+Git subject:           docs: current-tree checkpoint fingerprints (100k 8688404363908086484, 36k 9113407757480872428, 10k 1750137736440958460); old values superseded
+Git dirty:             True (29 changed paths)
+Git status:
+   M crates/bibites-cli/src/capture.rs
+   M scripts/make_shortcut.ps1
+   M tools/assets/build_ui_expectations.py
+   M tools/assets/ui_expectations.json
+   M tools/bench/results/final-100k/config.json
+   M tools/bench/results/final-100k/environment.json
+   M tools/bench/results/final-100k/environment.txt
+   M tools/bench/results/final-100k/matrix.json
+   M tools/bench/results/final-100k/matrix.md
+   M tools/bench/results/final-100k/runs.csv
+   M tools/bench/results/final-100k/summary.csv
+   M tools/bench/results/final/config.json
+   M tools/bench/results/final/determinism.json
+   M tools/bench/results/final/environment.json
+   M tools/bench/results/final/environment.txt
+   M tools/bench/results/final/matrix.json
+   M tools/bench/results/final/matrix.md
+   M tools/bench/results/final/runs.csv
+   M tools/bench/results/final/summary.csv
+  ?? assets/game/reference/ecology/default_36k_contact_normalized.json
+  ?? crates/bibites-io/tests/template_feeding.rs
+  ?? tools/bench/results/final-cluster/
+  ?? tools/bench/results/final-default/
+  ?? tools/bench/results/final-freeze-ab-100k/
+  ?? tools/bench/results/final-freeze-ab-cluster/
+  ?? tools/bench/results/final-freeze-ab-default/
+  ?? tools/bench/results/final-freeze-ab-serial/
+  ?? tools/parity/make_game_seed.py
+  ?? tools/parity/plugin/_fix_select.py
+Release profile:
+  opt-level = 3
+  lto = "fat"
+  codegen-units = 1
+  panic = "abort"
+  strip = "debuginfo"
+Benchmark binary:      Z:\RUSTibites\target\bench-final\rustibites-818B7595.exe
+  sha256:              818B759504E2172108459334CAE79668120BA1FEE924E5A4C756B819EE43B858
+  size:                2228736 bytes
+  mtime (UTC):         2026-11-01T10:50:26.0000000Z
+  stable copy:         C:\Users\Storme\AppData\Local\Temp\rustibites-bench\bin\rustibites-818B759504E21721.exe
+Simulator:             30 TPS (fixed_dt = 1/30 s)
+Seed:                  seed = 0x5255535400000000 xor repetition_index (repetition starts at 0)

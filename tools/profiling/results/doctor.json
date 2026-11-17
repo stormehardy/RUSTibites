@@ -1,0 +1,96 @@
+{
+    "schema":  "rustibites.profiling.doctor/1",
+    "generated":  "2026-10-30T07:44:39.2279040Z",
+    "elevated":  false,
+    "tools":  [
+                  {
+                      "tool":  "wpr",
+                      "found":  true,
+                      "path":  "C:\\Windows\\system32\\wpr.exe",
+                      "note":  ""
+                  },
+                  {
+                      "tool":  "wpa",
+                      "found":  false,
+                      "path":  null,
+                      "note":  ""
+                  },
+                  {
+                      "tool":  "xperf",
+                      "found":  false,
+                      "path":  null,
+                      "note":  ""
+                  },
+                  {
+                      "tool":  "tracerpt",
+                      "found":  true,
+                      "path":  "C:\\Windows\\system32\\tracerpt.exe",
+                      "note":  ""
+                  },
+                  {
+                      "tool":  "samply",
+                      "found":  false,
+                      "path":  null,
+                      "note":  ""
+                  },
+                  {
+                      "tool":  "perf",
+                      "found":  false,
+                      "path":  null,
+                      "note":  ""
+                  },
+                  {
+                      "tool":  "perfview",
+                      "found":  false,
+                      "path":  null,
+                      "note":  ""
+                  },
+                  {
+                      "tool":  "procdump",
+                      "found":  false,
+                      "path":  null,
+                      "note":  ""
+                  },
+                  {
+                      "tool":  "cargo-flamegraph",
+                      "found":  false,
+                      "path":  null,
+                      "note":  ""
+                  },
+                  {
+                      "tool":  "dotnet-trace",
+                      "found":  false,
+                      "path":  null,
+                      "note":  ""
+                  },
+                  {
+                      "tool":  "VS 2022 install",
+                      "found":  true,
+                      "path":  "C:\\Program Files (x86)\\Microsoft Visual Studio\\2022",
+                      "note":  "BuildTools detected; no IDE profiler"
+                  }
+              ],
+    "tracerpt":  true,
+    "binary":  {
+                   "path":  "Z:\\RUSTibites\\target\\release\\rustibites.exe",
+                   "size_bytes":  1884160,
+                   "mtime_utc":  "2026-10-30T07:38:11.4887680Z",
+                   "sha256":  "511F62F70C62869CC931B70A8CEF3826B188765BB9D911E8961971979CEF6442",
+                   "has_pdb":  true,
+                   "pdb_path":  "Z:\\RUSTibites\\target\\release\\rustibites.pdb",
+                   "pdb_bytes":  1347584,
+                   "pdb_mtime_utc":  "2026-10-30T07:38:11.4937685Z",
+                   "debug_stripped":  true,
+                   "note":  "strip=debuginfo in Cargo.toml means the default release exe is not symbol-friendly even if a stale .pdb exists; use -Action build-symbols for profiling."
+               },
+    "recommendations":  {
+                            "best_available_now":  "phase audits + bench phase tables (WPR/ETW needs an elevated shell)",
+                            "needs_admin":  "Windows Performance Recorder (wpr) kernel ETW sessions",
+                            "needs_install":  [
+                                                  "Windows Performance Toolkit / WPA (Windows SDK installer) for .etl analysis with stacks",
+                                                  "cargo install samply (or perf on Linux) for flamegraphs",
+                                                  "Visual Studio IDE profiling tools (not present: only BuildTools is installed)",
+                                                  "PerfView (Microsoft) as an alternative ETW analyzer"
+                                              ]
+                        }
+}

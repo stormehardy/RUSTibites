@@ -1,0 +1,27 @@
+{
+ "schema": "rustibites.assets.ui_runtime.index.v1",
+ "files": {
+  "runtime": "assets/game/ui_runtime.json.gz"
+ },
+ "sessions": {
+  "main_menu": {
+   "node_count": 4358
+  },
+  "default_world_newgame": {
+   "node_count": 7874
+  },
+  "default_world": {
+   "node_count": 7874
+  },
+  "default_world_inspector": {
+   "node_count": 8025
+  },
+  "main_menu_title": {
+   "node_count": 4358
+  },
+  "main_menu_settings": {
+   "node_count": 5403
+  }
+ },
+ "consumer": "tools/ui/ui_runtime_atlas.json.gz"
+}

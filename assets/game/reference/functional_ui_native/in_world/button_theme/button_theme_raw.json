@@ -1,0 +1,811 @@
+{
+  "ok": true,
+  "buttons": [
+    {
+      "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/DynamicParametersButton",
+      "name": "DynamicParametersButton",
+      "targetGraphic": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/DynamicParametersButton",
+      "target_type": "Image",
+      "transition": "ColorTint",
+      "interactable": true,
+      "colors": {
+        "normalColor": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "highlightedColor": {
+          "r": 0.9607843,
+          "g": 0.9607843,
+          "b": 0.9607843,
+          "a": 1
+        },
+        "pressedColor": {
+          "r": 0.784313738,
+          "g": 0.784313738,
+          "b": 0.784313738,
+          "a": 1
+        },
+        "selectedColor": {
+          "r": 0.9607843,
+          "g": 0.9607843,
+          "b": 0.9607843,
+          "a": 1
+        },
+        "disabledColor": {
+          "r": 0.784313738,
+          "g": 0.784313738,
+          "b": 0.784313738,
+          "a": 0.5019608
+        },
+        "colorMultiplier": 1,
+        "fadeDuration": 0.1
+      },
+      "graphic": {
+        "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/DynamicParametersButton",
+        "type": "Image",
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "raycastTarget": true,
+        "sprite": "base_icon",
+        "sprite_rect": {
+          "x": 0,
+          "y": 0,
+          "w": 35,
+          "h": 35
+        },
+        "sprite_pivot": {
+          "x": 17.5,
+          "y": 17.5
+        },
+        "texture": "base_icon",
+        "texture_width": 35,
+        "texture_height": 35,
+        "canvas_renderer_color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "material": "Default UI Material",
+        "shader": "UI/Default",
+        "material_color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "canvas_groups": [
+          {
+            "path": "UICanvas",
+            "alpha": 1,
+            "interactable": true,
+            "blocks_raycasts": true
+          }
+        ]
+      }
+    },
+    {
+      "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/InformationPanelButton",
+      "name": "InformationPanelButton",
+      "targetGraphic": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/InformationPanelButton",
+      "target_type": "Image",
+      "transition": "ColorTint",
+      "interactable": true,
+      "colors": {
+        "normalColor": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "highlightedColor": {
+          "r": 0.9607843,
+          "g": 0.9607843,
+          "b": 0.9607843,
+          "a": 1
+        },
+        "pressedColor": {
+          "r": 0.784313738,
+          "g": 0.784313738,
+          "b": 0.784313738,
+          "a": 1
+        },
+        "selectedColor": {
+          "r": 0.9607843,
+          "g": 0.9607843,
+          "b": 0.9607843,
+          "a": 1
+        },
+        "disabledColor": {
+          "r": 0.784313738,
+          "g": 0.784313738,
+          "b": 0.784313738,
+          "a": 0.5019608
+        },
+        "colorMultiplier": 1,
+        "fadeDuration": 0.1
+      },
+      "graphic": {
+        "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/InformationPanelButton",
+        "type": "Image",
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "raycastTarget": true,
+        "sprite": "base_icon",
+        "sprite_rect": {
+          "x": 0,
+          "y": 0,
+          "w": 35,
+          "h": 35
+        },
+        "sprite_pivot": {
+          "x": 17.5,
+          "y": 17.5
+        },
+        "texture": "base_icon",
+        "texture_width": 35,
+        "texture_height": 35,
+        "canvas_renderer_color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "material": "Default UI Material",
+        "shader": "UI/Default",
+        "material_color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "canvas_groups": [
+          {
+            "path": "UICanvas",
+            "alpha": 1,
+            "interactable": true,
+            "blocks_raycasts": true
+          }
+        ]
+      }
+    },
+    {
+      "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/UserActions",
+      "name": "UserActions",
+      "targetGraphic": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/UserActions",
+      "target_type": "Image",
+      "transition": "ColorTint",
+      "interactable": true,
+      "colors": {
+        "normalColor": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "highlightedColor": {
+          "r": 0.9607843,
+          "g": 0.9607843,
+          "b": 0.9607843,
+          "a": 1
+        },
+        "pressedColor": {
+          "r": 0.784313738,
+          "g": 0.784313738,
+          "b": 0.784313738,
+          "a": 1
+        },
+        "selectedColor": {
+          "r": 0.9607843,
+          "g": 0.9607843,
+          "b": 0.9607843,
+          "a": 1
+        },
+        "disabledColor": {
+          "r": 0.784313738,
+          "g": 0.784313738,
+          "b": 0.784313738,
+          "a": 0.5019608
+        },
+        "colorMultiplier": 1,
+        "fadeDuration": 0.1
+      },
+      "graphic": {
+        "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/UserActions",
+        "type": "Image",
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "raycastTarget": true,
+        "sprite": "base_icon",
+        "sprite_rect": {
+          "x": 0,
+          "y": 0,
+          "w": 35,
+          "h": 35
+        },
+        "sprite_pivot": {
+          "x": 17.5,
+          "y": 17.5
+        },
+        "texture": "base_icon",
+        "texture_width": 35,
+        "texture_height": 35,
+        "canvas_renderer_color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "material": "Default UI Material",
+        "shader": "UI/Default",
+        "material_color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "canvas_groups": [
+          {
+            "path": "UICanvas",
+            "alpha": 1,
+            "interactable": true,
+            "blocks_raycasts": true
+          }
+        ]
+      }
+    },
+    {
+      "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/SettingsButton",
+      "name": "SettingsButton",
+      "targetGraphic": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/SettingsButton",
+      "target_type": "Image",
+      "transition": "ColorTint",
+      "interactable": true,
+      "colors": {
+        "normalColor": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "highlightedColor": {
+          "r": 0.9607843,
+          "g": 0.9607843,
+          "b": 0.9607843,
+          "a": 1
+        },
+        "pressedColor": {
+          "r": 0.784313738,
+          "g": 0.784313738,
+          "b": 0.784313738,
+          "a": 1
+        },
+        "selectedColor": {
+          "r": 0.9607843,
+          "g": 0.9607843,
+          "b": 0.9607843,
+          "a": 1
+        },
+        "disabledColor": {
+          "r": 0.784313738,
+          "g": 0.784313738,
+          "b": 0.784313738,
+          "a": 0.5019608
+        },
+        "colorMultiplier": 1,
+        "fadeDuration": 0.1
+      },
+      "graphic": {
+        "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/SettingsButton",
+        "type": "Image",
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "raycastTarget": true,
+        "sprite": "base_icon",
+        "sprite_rect": {
+          "x": 0,
+          "y": 0,
+          "w": 35,
+          "h": 35
+        },
+        "sprite_pivot": {
+          "x": 17.5,
+          "y": 17.5
+        },
+        "texture": "base_icon",
+        "texture_width": 35,
+        "texture_height": 35,
+        "canvas_renderer_color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "material": "Default UI Material",
+        "shader": "UI/Default",
+        "material_color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "canvas_groups": [
+          {
+            "path": "UICanvas",
+            "alpha": 1,
+            "interactable": true,
+            "blocks_raycasts": true
+          }
+        ]
+      }
+    },
+    {
+      "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/AncestralLineageButton",
+      "name": "AncestralLineageButton",
+      "targetGraphic": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/AncestralLineageButton",
+      "target_type": "Image",
+      "transition": "ColorTint",
+      "interactable": true,
+      "colors": {
+        "normalColor": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "highlightedColor": {
+          "r": 0.9607843,
+          "g": 0.9607843,
+          "b": 0.9607843,
+          "a": 1
+        },
+        "pressedColor": {
+          "r": 0.784313738,
+          "g": 0.784313738,
+          "b": 0.784313738,
+          "a": 1
+        },
+        "selectedColor": {
+          "r": 0.9607843,
+          "g": 0.9607843,
+          "b": 0.9607843,
+          "a": 1
+        },
+        "disabledColor": {
+          "r": 0.784313738,
+          "g": 0.784313738,
+          "b": 0.784313738,
+          "a": 0.5019608
+        },
+        "colorMultiplier": 1,
+        "fadeDuration": 0.1
+      },
+      "graphic": {
+        "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/AncestralLineageButton",
+        "type": "Image",
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "raycastTarget": true,
+        "sprite": "base_icon",
+        "sprite_rect": {
+          "x": 0,
+          "y": 0,
+          "w": 35,
+          "h": 35
+        },
+        "sprite_pivot": {
+          "x": 17.5,
+          "y": 17.5
+        },
+        "texture": "base_icon",
+        "texture_width": 35,
+        "texture_height": 35,
+        "canvas_renderer_color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "material": "Default UI Material",
+        "shader": "UI/Default",
+        "material_color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "canvas_groups": [
+          {
+            "path": "UICanvas",
+            "alpha": 1,
+            "interactable": true,
+            "blocks_raycasts": true
+          }
+        ]
+      }
+    },
+    {
+      "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton",
+      "name": "ViewButton",
+      "targetGraphic": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton",
+      "target_type": "Image",
+      "transition": "ColorTint",
+      "interactable": true,
+      "colors": {
+        "normalColor": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "highlightedColor": {
+          "r": 0.9607843,
+          "g": 0.9607843,
+          "b": 0.9607843,
+          "a": 1
+        },
+        "pressedColor": {
+          "r": 0.784313738,
+          "g": 0.784313738,
+          "b": 0.784313738,
+          "a": 1
+        },
+        "selectedColor": {
+          "r": 0.9607843,
+          "g": 0.9607843,
+          "b": 0.9607843,
+          "a": 1
+        },
+        "disabledColor": {
+          "r": 0.784313738,
+          "g": 0.784313738,
+          "b": 0.784313738,
+          "a": 0.5019608
+        },
+        "colorMultiplier": 1,
+        "fadeDuration": 0.1
+      },
+      "graphic": {
+        "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton",
+        "type": "Image",
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "raycastTarget": true,
+        "sprite": "base_icon",
+        "sprite_rect": {
+          "x": 0,
+          "y": 0,
+          "w": 35,
+          "h": 35
+        },
+        "sprite_pivot": {
+          "x": 17.5,
+          "y": 17.5
+        },
+        "texture": "base_icon",
+        "texture_width": 35,
+        "texture_height": 35,
+        "canvas_renderer_color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "material": "Default UI Material",
+        "shader": "UI/Default",
+        "material_color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "canvas_groups": [
+          {
+            "path": "UICanvas",
+            "alpha": 1,
+            "interactable": true,
+            "blocks_raycasts": true
+          }
+        ]
+      }
+    },
+    {
+      "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/PlacerButton",
+      "name": "PlacerButton",
+      "targetGraphic": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/PlacerButton",
+      "target_type": "Image",
+      "transition": "ColorTint",
+      "interactable": true,
+      "colors": {
+        "normalColor": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "highlightedColor": {
+          "r": 0.9607843,
+          "g": 0.9607843,
+          "b": 0.9607843,
+          "a": 1
+        },
+        "pressedColor": {
+          "r": 0.784313738,
+          "g": 0.784313738,
+          "b": 0.784313738,
+          "a": 1
+        },
+        "selectedColor": {
+          "r": 0.9607843,
+          "g": 0.9607843,
+          "b": 0.9607843,
+          "a": 1
+        },
+        "disabledColor": {
+          "r": 0.784313738,
+          "g": 0.784313738,
+          "b": 0.784313738,
+          "a": 0.5019608
+        },
+        "colorMultiplier": 1,
+        "fadeDuration": 0.1
+      },
+      "graphic": {
+        "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/PlacerButton",
+        "type": "Image",
+        "color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "raycastTarget": true,
+        "sprite": "base_icon",
+        "sprite_rect": {
+          "x": 0,
+          "y": 0,
+          "w": 35,
+          "h": 35
+        },
+        "sprite_pivot": {
+          "x": 17.5,
+          "y": 17.5
+        },
+        "texture": "base_icon",
+        "texture_width": 35,
+        "texture_height": 35,
+        "canvas_renderer_color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "material": "Default UI Material",
+        "shader": "UI/Default",
+        "material_color": {
+          "r": 1,
+          "g": 1,
+          "b": 1,
+          "a": 1
+        },
+        "canvas_groups": [
+          {
+            "path": "UICanvas",
+            "alpha": 1,
+            "interactable": true,
+            "blocks_raycasts": true
+          }
+        ]
+      }
+    }
+  ],
+  "active_images": [
+    {
+      "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/DynamicParametersButton",
+      "name": "DynamicParametersButton",
+      "color": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "sprite": "base_icon",
+      "texture": "base_icon"
+    },
+    {
+      "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/SettingsButton/Image",
+      "name": "Image",
+      "color": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "sprite": "settings_icon",
+      "texture": "settings_icon"
+    },
+    {
+      "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/InformationPanelButton",
+      "name": "InformationPanelButton",
+      "color": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "sprite": "base_icon",
+      "texture": "base_icon"
+    },
+    {
+      "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/UserActions",
+      "name": "UserActions",
+      "color": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "sprite": "base_icon",
+      "texture": "base_icon"
+    },
+    {
+      "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/InformationPanelButton/Image",
+      "name": "Image",
+      "color": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "sprite": "stats_icon",
+      "texture": "stats_icon"
+    },
+    {
+      "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+      "name": "timePanel",
+      "color": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "sprite": "base_icon",
+      "texture": "base_icon"
+    },
+    {
+      "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/SettingsButton",
+      "name": "SettingsButton",
+      "color": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "sprite": "base_icon",
+      "texture": "base_icon"
+    },
+    {
+      "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/Image",
+      "name": "Image",
+      "color": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "sprite": "feedback_icon",
+      "texture": "feedback_icon"
+    },
+    {
+      "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/PlacerButton/Image",
+      "name": "Image",
+      "color": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "sprite": "simulation_icon",
+      "texture": "simulation_icon"
+    },
+    {
+      "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/AncestralLineageButton",
+      "name": "AncestralLineageButton",
+      "color": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "sprite": "base_icon",
+      "texture": "base_icon"
+    },
+    {
+      "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/UserActions/Image",
+      "name": "Image",
+      "color": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "sprite": "energy_icon",
+      "texture": "energy_icon"
+    },
+    {
+      "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/AncestralLineageButton/Image",
+      "name": "Image",
+      "color": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "sprite": "luca_import_tool",
+      "texture": "luca_import_tool"
+    },
+    {
+      "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton",
+      "name": "ViewButton",
+      "color": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "sprite": "base_icon",
+      "texture": "base_icon"
+    },
+    {
+      "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/DynamicParametersButton/Image",
+      "name": "Image",
+      "color": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "sprite": "rename_icon",
+      "texture": "rename_icon"
+    },
+    {
+      "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/PlacerButton",
+      "name": "PlacerButton",
+      "color": {
+        "r": 1,
+        "g": 1,
+        "b": 1,
+        "a": 1
+      },
+      "sprite": "base_icon",
+      "texture": "base_icon"
+    }
+  ],
+  "textures_png": {}
+}

@@ -1,0 +1,13 @@
+running 1 test
+test body::perf_probe_tests::perf_probe_clustered_and_spread ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 443 filtered out; finished in 0.23s
+
+
+   Compiling bibites-core v0.1.0 (Z:\RUSTibites\crates\bibites-core)
+    Finished `release` profile [optimized] target(s) in 54.73s
+     Running unittests src\lib.rs (target\release\deps\bibites_core-96fd8523da9c4538.exe)
+PERF spread2000 bibites=2000 elapsed=1.419ms pairs=117 contacts=126 triggers=95
+PERF spread5000 bibites=5000 elapsed=3.730ms pairs=727 contacts=883 triggers=638
+PERF cluster2000 bibites=2000 elapsed=47.998ms pairs=31747 contacts=71712 triggers=47839
+PERF cluster4000 bibites=4000 elapsed=122.927ms pairs=51490 contacts=120092 triggers=79092

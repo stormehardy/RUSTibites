@@ -1,0 +1,3 @@
+requested_population,population,threads,reps_ok,reps_total,status,best_wall_secs,median_wall_secs,best_ticks_per_second,median_ticks_per_second,best_realtime_factor,median_realtime_factor,best_bibite_updates_per_second,median_bibite_updates_per_second,serial_ticks_per_second,speedup_vs_serial,best_threads,peak_ws_mb,state_fingerprint,cpu_load_pct_min,cpu_load_pct_max,error
+0,1,1,2,2,ok,0.038376,0.037811,15634.894,15871.917,521.163,529.064,15634.9,15871.9,15634.894,1.000,8,17.5,4956299379330743132,9.0,10.0,
+0,1,8,2,2,ok,0.037505,0.049655,15997.654,12852.788,533.255,428.426,15997.7,12852.8,15634.894,1.023,8,13.8,4956299379330743132,7.0,8.0,

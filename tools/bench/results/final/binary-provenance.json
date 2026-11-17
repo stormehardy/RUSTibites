@@ -1,0 +1,19 @@
+﻿{
+    "schema":  "rustibites.bench.fixed-binary/1",
+    "copied_at_utc":  "2026-10-30T14:47:57Z",
+    "source_path":  "target/bench-head-target/release/rustibites.exe",
+    "fixed_path":  "target/bench-final/rustibites-3CCB231E.exe",
+    "sha256":  "3CCB231ECC3C9027B83CE998E6BB88FAFA4224D27874547B386F94EA84709D1D",
+    "size_bytes":  2168320,
+    "source_mtime_utc":  "2026-10-30T14:38:42.9058068Z",
+    "git_head":  "2fb2ad4dde9024cac5ac234e3eff558611bc160b",
+    "git_head_short":  "2fb2ad4",
+    "git_dirty":  false,
+    "git_dirty_files":  0,
+    "git_subject":  "parity: official post-fix §10.4 recapture — acquisition/feeding gap closed",
+    "rustc":  "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+    "viewer_sha256":  "9945D8396E5C3047C58608B6AD7200FFD14507D6C5308D67D284C9B88B94388C",
+    "viewer_size_bytes":  2266624,
+    "build_worktree":  "target/bench-head (detached at 2fb2ad4)",
+    "note":  "task-131 final clean-HEAD binary: built from a dedicated clean worktree so the binary contains no uncommitted changes; main checkout had only non-Rust docs/results dirty at capture"
+}

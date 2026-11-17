@@ -1,0 +1,483 @@
+{
+  "standalone_launch": true,
+  "args": [
+    "-screen-width",
+    "1920",
+    "-screen-height",
+    "1080",
+    "-window-mode",
+    "windowed"
+  ],
+  "steps": [
+    {
+      "step": "title",
+      "png": "Z:\\RUSTibites\\assets\\game\\reference\\functional_ui_native\\probe_title_native_1920x1080.png",
+      "sharpness": {
+        "size": [
+          1920,
+          1080
+        ],
+        "alpha_pixels": 2073600,
+        "unique_opaque_colors": 310,
+        "downup_mae": 2.298597125771605
+      }
+    },
+    {
+      "step": "settings",
+      "png": "Z:\\RUSTibites\\assets\\game\\reference\\functional_ui_native\\probe_settings_native_1920x1080.png",
+      "sharpness": {
+        "size": [
+          1920,
+          1080
+        ],
+        "alpha_pixels": 2073600,
+        "unique_opaque_colors": 57170,
+        "downup_mae": 11.063520126028807
+      }
+    },
+    {
+      "step": "world",
+      "png": "Z:\\RUSTibites\\assets\\game\\reference\\functional_ui_native\\probe_world_native_1920x1080.png",
+      "sharpness": {
+        "size": [
+          1920,
+          1080
+        ],
+        "alpha_pixels": 43813,
+        "unique_opaque_colors": 347,
+        "downup_mae": 20.280495134625188
+      }
+    },
+    {
+      "step": "world_full",
+      "png": "Z:\\RUSTibites\\assets\\game\\reference\\functional_ui_native\\probe_world_full_native_1920x1080.png",
+      "sharpness": {
+        "size": [
+          1920,
+          1080
+        ],
+        "alpha_pixels": 0,
+        "unique_opaque_colors": 1,
+        "downup_mae": 0.0
+      }
+    }
+  ],
+  "pid": 20144,
+  "bridge_ready": true,
+  "plugin_ready": true,
+  "hide": {
+    "hidden_hwnds": [
+      3146842,
+      3474204,
+      2098310
+    ]
+  },
+  "status": {
+    "ok": true,
+    "bridge": "0.7.0",
+    "gameVersion": "0.6.3.1",
+    "scene": "_Source",
+    "sceneLoads": 1,
+    "loadsDone": 0,
+    "inSimulation": false,
+    "spritesReady": false
+  },
+  "screen": {
+    "width": 1920,
+    "height": 1080,
+    "dpi": 96,
+    "fullscreen": true
+  },
+  "hide_fullscreen": {
+    "ok": true,
+    "action": "hide",
+    "hidden": 0,
+    "candidates": [
+      {
+        "path": "UI/WelcomeScreen/Patreon Holder/Button",
+        "name": "Button",
+        "type": "Image",
+        "alpha": 1,
+        "screen_rect": {
+          "x": 25.00002,
+          "y": 25.0000019,
+          "w": 90,
+          "h": 90.0000153
+        },
+        "fullscreen": false
+      },
+      {
+        "path": "UI/WelcomeScreen/Patreon Holder/Button/Image",
+        "name": "Image",
+        "type": "Image",
+        "alpha": 1,
+        "screen_rect": {
+          "x": 34.99998,
+          "y": 34.9999962,
+          "w": 70.0000153,
+          "h": 69.9999847
+        },
+        "fullscreen": false
+      },
+      {
+        "path": "UI/WelcomeScreen/Main Holder/Title",
+        "name": "Title",
+        "type": "Image",
+        "alpha": 0.9490196,
+        "screen_rect": {
+          "x": 1374.7,
+          "y": 868.6,
+          "w": 495.300171,
+          "h": 135.299988
+        },
+        "fullscreen": false
+      },
+      {
+        "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel",
+        "name": "ButtonsPanel",
+        "type": "Image",
+        "alpha": 0.9490196,
+        "screen_rect": {
+          "x": 1374.7,
+          "y": 132.509949,
+          "w": 495.300171,
+          "h": 716.09
+        },
+        "fullscreen": false
+      },
+      {
+        "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Continue",
+        "name": "Continue",
+        "type": "Image",
+        "alpha": 1,
+        "screen_rect": {
+          "x": 1404.7,
+          "y": 764.5899,
+          "w": 435.300171,
+          "h": 54.01007
+        },
+        "fullscreen": false
+      },
+      {
+        "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/NewSim",
+        "name": "NewSim",
+        "type": "Image",
+        "alpha": 1,
+        "screen_rect": {
+          "x": 1404.7,
+          "y": 690.579956,
+          "w": 435.300171,
+          "h": 54.00995
+        },
+        "fullscreen": false
+      },
+      {
+        "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/LoadSim",
+        "name": "LoadSim",
+        "type": "Image",
+        "alpha": 1,
+        "screen_rect": {
+          "x": 1404.7,
+          "y": 616.569946,
+          "w": 435.300171,
+          "h": 54.01001
+        },
+        "fullscreen": false
+      },
+      {
+        "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Editor",
+        "name": "Editor",
+        "type": "Image",
+        "alpha": 1,
+        "screen_rect": {
+          "x": 1404.7,
+          "y": 542.56,
+          "w": 435.300171,
+          "h": 54.00995
+        },
+        "fullscreen": false
+      },
+      {
+        "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Settings",
+        "name": "Settings",
+        "type": "Image",
+        "alpha": 1,
+        "screen_rect": {
+          "x": 1404.7,
+          "y": 468.55,
+          "w": 435.300171,
+          "h": 54.01001
+        },
+        "fullscreen": false
+      },
+      {
+        "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Achievements",
+        "name": "Achievements",
+        "type": "Image",
+        "alpha": 1,
+        "screen_rect": {
+          "x": 1424.70007,
+          "y": 389.539978,
+          "w": 395.299927,
+          "h": 54.01001
+        },
+        "fullscreen": false
+      },
+      {
+        "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/More",
+        "name": "More",
+        "type": "Image",
+        "alpha": 1,
+        "screen_rect": {
+          "x": 1424.70007,
+          "y": 315.53,
+          "w": 395.299927,
+          "h": 54.01001
+        },
+        "fullscreen": false
+      },
+      {
+        "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Credits",
+        "name": "Credits",
+        "type": "Image",
+        "alpha": 1,
+        "screen_rect": {
+          "x": 1424.70007,
+          "y": 241.519958,
+          "w": 395.299927,
+          "h": 54.01004
+        },
+        "fullscreen": false
+      },
+      {
+        "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Quit",
+        "name": "Quit",
+        "type": "Image",
+        "alpha": 1,
+        "screen_rect": {
+          "x": 1404.7,
+          "y": 162.51,
+          "w": 435.300171,
+          "h": 54.0099945
+        },
+        "fullscreen": false
+      }
+    ]
+  },
+  "hide_candidates": [
+    {
+      "path": "UI/WelcomeScreen/Patreon Holder/Button",
+      "name": "Button",
+      "type": "Image",
+      "alpha": 1,
+      "screen_rect": {
+        "x": 25.00002,
+        "y": 25.0000019,
+        "w": 90,
+        "h": 90.0000153
+      },
+      "fullscreen": false
+    },
+    {
+      "path": "UI/WelcomeScreen/Patreon Holder/Button/Image",
+      "name": "Image",
+      "type": "Image",
+      "alpha": 1,
+      "screen_rect": {
+        "x": 34.99998,
+        "y": 34.9999962,
+        "w": 70.0000153,
+        "h": 69.9999847
+      },
+      "fullscreen": false
+    },
+    {
+      "path": "UI/WelcomeScreen/Main Holder/Title",
+      "name": "Title",
+      "type": "Image",
+      "alpha": 0.9490196,
+      "screen_rect": {
+        "x": 1374.7,
+        "y": 868.6,
+        "w": 495.300171,
+        "h": 135.299988
+      },
+      "fullscreen": false
+    },
+    {
+      "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel",
+      "name": "ButtonsPanel",
+      "type": "Image",
+      "alpha": 0.9490196,
+      "screen_rect": {
+        "x": 1374.7,
+        "y": 132.509949,
+        "w": 495.300171,
+        "h": 716.09
+      },
+      "fullscreen": false
+    },
+    {
+      "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Continue",
+      "name": "Continue",
+      "type": "Image",
+      "alpha": 1,
+      "screen_rect": {
+        "x": 1404.7,
+        "y": 764.5899,
+        "w": 435.300171,
+        "h": 54.01007
+      },
+      "fullscreen": false
+    },
+    {
+      "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/NewSim",
+      "name": "NewSim",
+      "type": "Image",
+      "alpha": 1,
+      "screen_rect": {
+        "x": 1404.7,
+        "y": 690.579956,
+        "w": 435.300171,
+        "h": 54.00995
+      },
+      "fullscreen": false
+    },
+    {
+      "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/LoadSim",
+      "name": "LoadSim",
+      "type": "Image",
+      "alpha": 1,
+      "screen_rect": {
+        "x": 1404.7,
+        "y": 616.569946,
+        "w": 435.300171,
+        "h": 54.01001
+      },
+      "fullscreen": false
+    },
+    {
+      "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Editor",
+      "name": "Editor",
+      "type": "Image",
+      "alpha": 1,
+      "screen_rect": {
+        "x": 1404.7,
+        "y": 542.56,
+        "w": 435.300171,
+        "h": 54.00995
+      },
+      "fullscreen": false
+    },
+    {
+      "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Settings",
+      "name": "Settings",
+      "type": "Image",
+      "alpha": 1,
+      "screen_rect": {
+        "x": 1404.7,
+        "y": 468.55,
+        "w": 435.300171,
+        "h": 54.01001
+      },
+      "fullscreen": false
+    },
+    {
+      "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Achievements",
+      "name": "Achievements",
+      "type": "Image",
+      "alpha": 1,
+      "screen_rect": {
+        "x": 1424.70007,
+        "y": 389.539978,
+        "w": 395.299927,
+        "h": 54.01001
+      },
+      "fullscreen": false
+    },
+    {
+      "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/More",
+      "name": "More",
+      "type": "Image",
+      "alpha": 1,
+      "screen_rect": {
+        "x": 1424.70007,
+        "y": 315.53,
+        "w": 395.299927,
+        "h": 54.01001
+      },
+      "fullscreen": false
+    },
+    {
+      "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Credits",
+      "name": "Credits",
+      "type": "Image",
+      "alpha": 1,
+      "screen_rect": {
+        "x": 1424.70007,
+        "y": 241.519958,
+        "w": 395.299927,
+        "h": 54.01004
+      },
+      "fullscreen": false
+    },
+    {
+      "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Quit",
+      "name": "Quit",
+      "type": "Image",
+      "alpha": 1,
+      "screen_rect": {
+        "x": 1404.7,
+        "y": 162.51,
+        "w": 435.300171,
+        "h": 54.0099945
+      },
+      "fullscreen": false
+    }
+  ],
+  "active_canvases": [
+    {
+      "name": "BackGround",
+      "path": "BackGround",
+      "active": true
+    },
+    {
+      "name": "Popuholder",
+      "path": "UI/Popuholder",
+      "active": true
+    },
+    {
+      "name": "UI",
+      "path": "UI",
+      "active": true
+    }
+  ],
+  "extra": [
+    {
+      "step": "title_full_overlay",
+      "png": "Z:\\RUSTibites\\assets\\game\\reference\\functional_ui_native\\probe_title_full_overlay_1920x1080.png",
+      "sharpness": {
+        "size": [
+          1920,
+          1080
+        ],
+        "alpha_pixels": 2073600,
+        "unique_opaque_colors": 60087,
+        "downup_mae": 0.1128491512345679
+      }
+    },
+    {
+      "step": "title_background_off",
+      "png": "Z:\\RUSTibites\\assets\\game\\reference\\functional_ui_native\\probe_title_bg_off_1920x1080.png",
+      "sharpness": {
+        "size": [
+          1920,
+          1080
+        ],
+        "alpha_pixels": 2073600,
+        "unique_opaque_colors": 310,
+        "downup_mae": 2.298597125771605
+      }
+    }
+  ]
+}

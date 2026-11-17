@@ -1,0 +1,60 @@
+# Rust build artifacts
+/target/
+
+# Decompiled original game source (proprietary reference material, not ours to redistribute)
+/Here/
+
+# Editor / IDE
+.idea/
+.vscode/
+*.swp
+*~
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Temporary extraction of save/data files during format work
+docs/spec/_tmp/
+
+# Local copies of real game data used for validation (not redistributable)
+testdata/
+
+# Local parity captures (large; store outside the repo)
+tools/parity/captures/
+
+# Parity harness build artifacts and scratch experiment scripts
+tools/parity/__pycache__/
+tools/parity/plugin/bin/
+tools/parity/plugin/obj/
+tools/parity/_*.py
+
+# Unverified reference notes kept locally, superseded by docs/spec/
+/bibites_brain_reference (4).md
+
+# Extracted game artwork (local reference only; the tinted icon itself is tracked)
+assets/icon/original.ico
+
+# Python bytecode
+**/__pycache__/
+*.pyc
+
+# Viewer data written relative to the working directory, light-profile build output
+/userdata/
+/target_light/
+/target_perf/
+/screenshots/
+/target_alpha/
+/target_perfcore/
+
+# Extracted game art and fonts: built locally from your own copy of the game (tools/release/extract_art.py); never committed
+/assets/game/**/*.png
+/assets/game/**/*.jpg
+/assets/game/**/*.jpeg
+/assets/game/**/*.ttf
+/assets/game/**/*.otf
+# Screenshots of the game (they show its art)
+/docs/images/
+/assets/viewer/banner.png
+# Build output of a crate
+/crates/*/target/

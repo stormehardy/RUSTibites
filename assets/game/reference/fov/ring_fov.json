@@ -1,0 +1,510 @@
+{
+  "schema": "rustibites.assets.ring_fov_capture.v1",
+  "capture": {
+    "fixture": "Z:\\RUSTibites\\testdata\\parity\\bases\\ring.base.zip",
+    "seed": 12345,
+    "speed": 1,
+    "until_simTime": 20,
+    "samples": 196,
+    "poll_s": 0.05
+  },
+  "initial_load": {
+    "ok": true,
+    "fov": [
+      {
+        "id": -2115961727,
+        "needToSee": true,
+        "viewRadius": 85.84667,
+        "viewAngle": 180,
+        "nPlants": 0,
+        "nMeat": 0,
+        "nBibite": 0,
+        "nPlantsInRange": 0,
+        "nMeatsInRange": 0,
+        "nBibitesInRange": 0,
+        "nCorpsesInRange": 0,
+        "plantWeightSum": 0,
+        "meatWeightSum": 0,
+        "bibiteWeightSum": 0,
+        "seenBibites_n": 0,
+        "seenBibites_ids": [],
+        "seenCorpses_n": 0,
+        "seenCorpses_ids": [],
+        "seenPlantPellets_n": 0,
+        "seenPlantPellets_ids": [],
+        "seenMeatPellets_n": 0,
+        "seenMeatPellets_ids": []
+      },
+      {
+        "id": 1737637368,
+        "needToSee": true,
+        "viewRadius": 85.8505,
+        "viewAngle": 180,
+        "nPlants": 0,
+        "nMeat": 0,
+        "nBibite": 0,
+        "nPlantsInRange": 0,
+        "nMeatsInRange": 0,
+        "nBibitesInRange": 0,
+        "nCorpsesInRange": 0,
+        "plantWeightSum": 0,
+        "meatWeightSum": 0,
+        "bibiteWeightSum": 0,
+        "seenBibites_n": 0,
+        "seenBibites_ids": [],
+        "seenCorpses_n": 0,
+        "seenCorpses_ids": [],
+        "seenPlantPellets_n": 0,
+        "seenPlantPellets_ids": [],
+        "seenMeatPellets_n": 0,
+        "seenMeatPellets_ids": []
+      }
+    ],
+    "stomachs": [
+      {
+        "id": -2115961727,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      {
+        "id": 1737637368,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      }
+    ],
+    "fov_count": 2,
+    "stomach_count": 2
+  },
+  "cadence": {
+    "first_sample": {
+      "tick": 6,
+      "simTime": 0.20000001788139343,
+      "state": "running",
+      "fov": [
+        {
+          "id": -2115961727,
+          "needToSee": true,
+          "viewRadius": 85.84667,
+          "viewAngle": 180,
+          "nPlants": 0,
+          "nMeat": 0,
+          "nBibite": 0,
+          "nPlantsInRange": 0,
+          "nMeatsInRange": 0,
+          "nBibitesInRange": 0,
+          "nCorpsesInRange": 0,
+          "plantWeightSum": 0,
+          "meatWeightSum": 0,
+          "bibiteWeightSum": 0,
+          "seenBibites_n": 0,
+          "seenBibites_ids": [],
+          "seenCorpses_n": 0,
+          "seenCorpses_ids": [],
+          "seenPlantPellets_n": 0,
+          "seenPlantPellets_ids": [],
+          "seenMeatPellets_n": 0,
+          "seenMeatPellets_ids": []
+        },
+        {
+          "id": 1737637368,
+          "needToSee": true,
+          "viewRadius": 85.8505,
+          "viewAngle": 180,
+          "nPlants": 0,
+          "nMeat": 0,
+          "nBibite": 0,
+          "nPlantsInRange": 0,
+          "nMeatsInRange": 0,
+          "nBibitesInRange": 0,
+          "nCorpsesInRange": 0,
+          "plantWeightSum": 0,
+          "meatWeightSum": 0,
+          "bibiteWeightSum": 0,
+          "seenBibites_n": 0,
+          "seenBibites_ids": [],
+          "seenCorpses_n": 0,
+          "seenCorpses_ids": [],
+          "seenPlantPellets_n": 0,
+          "seenPlantPellets_ids": [],
+          "seenMeatPellets_n": 0,
+          "seenMeatPellets_ids": []
+        }
+      ],
+      "stomachs": [
+        {
+          "id": -2115961727,
+          "nContent": 0,
+          "totalContent": 0,
+          "acidLevel": 0,
+          "acidRatio": 0,
+          "digestionEffectiveness": 0,
+          "digestionPotentialBonus": 0,
+          "efficiencyMalus": 0,
+          "energyGainRate": null,
+          "contents": [],
+          "contents_n": 0
+        },
+        {
+          "id": 1737637368,
+          "nContent": 0,
+          "totalContent": 0,
+          "acidLevel": 0,
+          "acidRatio": 0,
+          "digestionEffectiveness": 0,
+          "digestionPotentialBonus": 0,
+          "efficiencyMalus": 0,
+          "energyGainRate": null,
+          "contents": [],
+          "contents_n": 0
+        }
+      ]
+    },
+    "first_nonempty": {
+      "-2115961727": 44
+    },
+    "change_ticks": {
+      "-2115961727": [
+        6,
+        44
+      ],
+      "1737637368": [
+        6
+      ],
+      "1640160412": [
+        36
+      ],
+      "2073603771": [
+        68
+      ],
+      "-666112322": [
+        96
+      ],
+      "-811128069": [
+        126
+      ],
+      "1807877109": [
+        158
+      ],
+      "-1112978784": [
+        186
+      ],
+      "1634970363": [
+        218
+      ],
+      "606278327": [
+        246
+      ]
+    },
+    "sample_count": 196
+  },
+  "digestion": {
+    "-2115961727": {
+      "first": {
+        "id": -2115961727,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      "last": {
+        "id": -2115961727,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      "contents_max": 0
+    },
+    "1737637368": {
+      "first": {
+        "id": 1737637368,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      "last": {
+        "id": 1737637368,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      "contents_max": 0
+    },
+    "1640160412": {
+      "first": {
+        "id": 1640160412,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      "last": {
+        "id": 1640160412,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      "contents_max": 0
+    },
+    "2073603771": {
+      "first": {
+        "id": 2073603771,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      "last": {
+        "id": 2073603771,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      "contents_max": 0
+    },
+    "-666112322": {
+      "first": {
+        "id": -666112322,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      "last": {
+        "id": -666112322,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      "contents_max": 0
+    },
+    "-811128069": {
+      "first": {
+        "id": -811128069,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      "last": {
+        "id": -811128069,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      "contents_max": 0
+    },
+    "1807877109": {
+      "first": {
+        "id": 1807877109,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      "last": {
+        "id": 1807877109,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      "contents_max": 0
+    },
+    "-1112978784": {
+      "first": {
+        "id": -1112978784,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      "last": {
+        "id": -1112978784,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      "contents_max": 0
+    },
+    "1634970363": {
+      "first": {
+        "id": 1634970363,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      "last": {
+        "id": 1634970363,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      "contents_max": 0
+    },
+    "606278327": {
+      "first": {
+        "id": 606278327,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      "last": {
+        "id": 606278327,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      "contents_max": 0
+    }
+  },
+  "raw": "testdata/parity/fov/ring_fov/samples.jsonl",
+  "note": "Post-task-128 FOV lookup/sense cadence and seen-cache: arrays/ids per bibite over 600 ticks; first/empty load state included. Digestion fields are native per-tick stomach amounts/rates (no cumulative game digestion counter exists in the component)."
+}

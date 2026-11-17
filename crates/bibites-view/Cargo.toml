@@ -1,0 +1,31 @@
+[package]
+name = "bibites-view"
+description = "Windowed 2D viewer for RUSTibites (first playable alpha)"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "rustibites-view"
+path = "src/main.rs"
+
+[dependencies]
+bibites-core.workspace = true
+bibites-brainsort.workspace = true
+bibites-io.workspace = true
+macroquad = "0.4"
+# PNG encoder for headless screenshots. Kept explicit (rather than relying on a
+# transitive dependency) so the software rasteriser has a stable, documented
+# output format.
+png = "0.17"
+# `assets/game/manifest.json` (game-faithful sprite mode) is data-driven JSON.
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["raw_value"] }
+# CPU TTF rasterisation for the headless (no-GPU) screenshot path. Also used
+# transitively by macroquad's text renderer, so it adds no new build cost.
+fontdue = "0.9"
+# Gzip decoder for the committed runtime-UI dump
+# (`tools/ui/ui_runtime_atlas.json.gz`, exact game UI layout). Already in the
+# workspace lock via `png`, so no new dependency tree.
+flate2 = "1"

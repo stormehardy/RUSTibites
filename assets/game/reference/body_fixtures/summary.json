@@ -1,0 +1,89 @@
+{
+  "schema": "rustibites.assets.body_fixtures.summary.v1",
+  "capture": {
+    "game": "tools/parity/capture.py --save fixture --seed12345 simTPS30 --feeding",
+    "rust": "target/release/rustibites.exe run fixture --ticks N --seed12345",
+    "ticks": {
+      "egg_lay_hatch": 210,
+      "combat_attack": 180,
+      "fat_armor_inflate": 3,
+      "starvation_death": 300
+    }
+  },
+  "fixtures": {
+    "egg_lay_hatch": {
+      "game_birth_ticks": [
+        31,
+        61,
+        91,
+        121,
+        151,
+        181
+      ],
+      "rust_birth_ticks": [
+        30,
+        60,
+        90,
+        120,
+        150,
+        180,
+        210
+      ],
+      "game_births": 6,
+      "rust_births": 7,
+      "game_first_birth": 31,
+      "rust_first_birth": 30,
+      "game_final": {
+        "bibites": 1,
+        "eggs": 1,
+        "corpses": 6
+      },
+      "rust_final": {
+        "bibites": 2,
+        "eggs": 0,
+        "corpses": 6
+      },
+      "expected": ">=1 egg laid and child hatches (birth); LayTime/HatchTime 1 s"
+    },
+    "combat_attack": {
+      "game_health_mean": [
+        132.0,
+        98.61019897460938
+      ],
+      "game_health_drop": 33.389801025390625,
+      "rust_health_mean": [
+        132.0,
+        97.2305908203125
+      ],
+      "rust_health_drop": 34.7694091796875,
+      "game_damage_events": [],
+      "expected": "total health drops by >1 HP over 180 ticks (bite/damage path)"
+    },
+    "fat_armor_inflate": {
+      "game_d2_size": 1.32182324,
+      "game_entity_size": 1.14970577,
+      "rust_entity_size": 1.1497057676315308,
+      "expected": "fat inflates; Tail collider offset beyond -4.7*d1; size 5->8.5 / 7->10.5 lerp",
+      "note": "capture schema lacks Tail transform/offset fields; d2/size available."
+    },
+    "starvation_death": {
+      "game_death_ticks": [
+        248
+      ],
+      "rust_death_ticks": [
+        249
+      ],
+      "game_final_counts": {
+        "bibites": 0,
+        "eggs": 0,
+        "corpses": 1
+      },
+      "rust_final_counts": {
+        "bibites": 0,
+        "eggs": 0,
+        "corpses": 1
+      },
+      "expected": "dies by ~tick 249; world 0 bibites + corpse handoff"
+    }
+  }
+}

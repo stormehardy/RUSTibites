@@ -1,0 +1,31 @@
+{
+ "name": "flatMat",
+ "shader": "Unlit/flatMat",
+ "colors": {
+  "_ClipRect": null,
+  "_Color": null
+ },
+ "floats": {
+  "_ColorMask": 15.0,
+  "_CullMode": 0.0,
+  "_Cutoff": 0.5,
+  "_QueueControl": -1.0,
+  "_QueueOffset": 0.0,
+  "_Stencil": 0.0,
+  "_StencilComp": 8.0,
+  "_StencilOp": 0.0,
+  "_StencilReadMask": 255.0,
+  "_StencilWriteMask": 255.0,
+  "_Stencil_OP": 0.0,
+  "_Stencil_Op": 0.0,
+  "_Strength": 0.20000000298023224,
+  "_UseUIAlphaClip": 0.0
+ },
+ "textures": {
+  "_MainTex": "UnityTexEnv(m_Offset=Vector2f(0.0, 0.0), m_Scale=Vector2f(1.0, 1.0), m_Texture=PPtr(m_FileID=0, m_PathID=37, assetsfile=<SerializedFile>))",
+  "unity_Lightmaps": "UnityTexEnv(m_Offset=Vector2f(0.0, 0.0), m_Scale=Vector2f(1.0, 1.0), m_Texture=PPtr(m_FileID=0, m_PathID=0, assetsfile=<SerializedFile>))",
+  "unity_LightmapsInd": "UnityTexEnv(m_Offset=Vector2f(0.0, 0.0), m_Scale=Vector2f(1.0, 1.0), m_Texture=PPtr(m_FileID=0, m_PathID=0, assetsfile=<SerializedFile>))",
+  "unity_ShadowMasks": "UnityTexEnv(m_Offset=Vector2f(0.0, 0.0), m_Scale=Vector2f(1.0, 1.0), m_Texture=PPtr(m_FileID=0, m_PathID=0, assetsfile=<SerializedFile>))"
+ },
+ "source_asset": "sharedassets0.assets"
+}

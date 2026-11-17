@@ -1,0 +1,10 @@
+running 1 test
+test sim::tests::perf_parallel_executor_overhead ... pool 8x1-item chunks: 34.1 us/call
+serial 8x1-item chunks: 0.8 us/call
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 391 filtered out; finished in 0.05s
+
+
+    Finished `release` profile [optimized] target(s) in 0.05s
+     Running unittests src\lib.rs (target\release\deps\bibites_core-96fd8523da9c4538.exe)

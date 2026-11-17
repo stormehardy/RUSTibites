@@ -1,0 +1,81 @@
+{
+    "schema":  "rustibites.bench.environment/1",
+    "captured_at_utc":  "2026-11-01T10:44:20.7068983Z",
+    "hostname":  "DESKTOP",
+    "os":  {
+               "description":  "Microsoft Windows 10 Home",
+               "version":  "10.0.19045",
+               "architecture":  "AMD64",
+               "build":  "19045"
+           },
+    "cpu":  {
+                "name":  "AMD Ryzen 5 3600 6-Core Processor",
+                "physical_cores":  6,
+                "logical_cores":  12,
+                "max_clock_mhz":  3593
+            },
+    "logical_processors":  12,
+    "memory_total_gb":  15.95,
+    "memory_free_gb":  5.24,
+    "cpu_load_pct":  17,
+    "powershell":  "5.1.19041.6456",
+    "rust":  {
+                 "rustc":  "1.99.1 (58cf8f9c3 2026-10-13)",
+                 "cargo":  "1.99.1 (5f94df478 2026-08-27)",
+                 "release":  "1.99.1",
+                 "commit_hash":  "58cf8f9c35b355199727627d07ae34a4e2846d67",
+                 "host":  "x86_64-pc-windows-msvc",
+                 "llvm":  "23.1.1"
+             },
+    "git":  {
+                "head":  "903f1b26f9c23d6ca7466bfe4def5a9d1c5ee77f",
+                "head_short":  "903f1b26f9c2",
+                "branch":  "main",
+                "subject":  "docs: current-tree checkpoint fingerprints (100k 8688404363908086484, 36k 9113407757480872428, 10k 1750137736440958460); old values superseded",
+                "commit_date":  "2026-11-01T05:42:06-05:00",
+                "describe":  "903f1b2-dirty",
+                "dirty":  true,
+                "dirty_files":  11,
+                "status_lines":  [
+                                     " M crates/bibites-cli/src/capture.rs",
+                                     " M scripts/make_shortcut.ps1",
+                                     " M tools/assets/build_ui_expectations.py",
+                                     " M tools/assets/ui_expectations.json",
+                                     "?? assets/game/reference/ecology/default_36k_contact_normalized.json",
+                                     "?? crates/bibites-io/tests/template_feeding.rs",
+                                     "?? tools/bench/results/final-freeze-ab-cluster/",
+                                     "?? tools/bench/results/final-freeze-ab-default/",
+                                     "?? tools/bench/results/final-freeze-ab-serial/",
+                                     "?? tools/parity/make_game_seed.py",
+                                     "?? tools/parity/plugin/_fix_select.py"
+                                 ]
+            },
+    "release_profile":  {
+                            "manifest":  "Cargo.toml",
+                            "entries":  {
+                                            "opt-level":  "3",
+                                            "lto":  "\"fat\"",
+                                            "codegen-units":  "1",
+                                            "panic":  "\"abort\"",
+                                            "strip":  "\"debuginfo\""
+                                        },
+                            "raw":  "[profile.release]\nopt-level = 3\nlto = \"fat\"\ncodegen-units = 1\npanic = \"abort\"\nstrip = \"debuginfo\""
+                        },
+    "binary":  {
+                   "original_path":  "Z:\\RUSTibites\\target\\release\\rustibites.exe",
+                   "benchmark_copy":  "C:\\Users\\Storme\\AppData\\Local\\Temp\\rustibites-bench\\bin\\rustibites-CDC515D5195B5843.exe",
+                   "sha256":  "CDC515D5195B58434906580E98D3ADB8DC2C9193B5D0A23F95FA427F17445EFE",
+                   "size_bytes":  2228736,
+                   "last_write_utc":  "2026-11-01T10:41:24.8215836Z"
+               },
+    "simulator":  {
+                      "default_sim_tps":  30,
+                      "note":  "SimSettings::game_defaults() fixed_dt = 1/30 s; bench reports sim_secs = ticks * fixed_dt"
+                  },
+    "benchmark":  {
+                      "engine_wall_secs_excludes":  "world construction/spawn and state_fingerprint sampling; process_wall_secs includes them",
+                      "seed_base":  "0x5255535400000000",
+                      "seed_formula":  "seed = 0x5255535400000000 xor repetition_index (repetition starts at 0)",
+                      "metric":  "bibite_updates_per_second = ticks_per_second * bibites_start (primary throughput)"
+                  }
+}

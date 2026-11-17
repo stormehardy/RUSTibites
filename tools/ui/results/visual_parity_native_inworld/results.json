@@ -1,0 +1,982 @@
+{
+  "schema": "rustibites.ui.visual_diff.v1",
+  "config": {
+    "reference_dir": "assets\\game\\reference\\functional_ui",
+    "viewer": "Z:\\RUSTibites\\target\\release\\rustibites-view.exe",
+    "world": "Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip",
+    "viewer_args": "--ui-text sdf",
+    "sessions": 12,
+    "width": 1920,
+    "height": 1080,
+    "render_background": null,
+    "viewer_compose": false,
+    "thresholds": {
+      "min_iou": 0.98,
+      "max_mae": 3.0,
+      "min_exact_pct": 90.0
+    }
+  },
+  "aggregate": {
+    "sessions": 12,
+    "rendered": 12,
+    "missing_reference": 0,
+    "mean_alpha_iou": 0.5135977062968219,
+    "median_alpha_iou": 0.3418123070987654,
+    "mean_rgb_mae_opaque": 50.60298260004388,
+    "mean_exact_pixel_pct": 37.744629859140666,
+    "threshold_failures": 12,
+    "legacy_references": 0,
+    "rescale_blur_suspects": 0
+  },
+  "sessions": [
+    {
+      "session": "default_world_biology",
+      "reference": "assets\\game\\reference\\functional_ui_native\\in_world\\inspector\\native_inspector_biology_ui_only_1920x1080.png",
+      "reference_kind": "mapped",
+      "reference_quality": {
+        "native_reference": true,
+        "pixel_authoritative": true,
+        "ref_sharpness": 1.2189,
+        "ref_sharpness_normalized": 10.1063,
+        "ref_alpha_fraction": 0.120608,
+        "rescale_blur_suspect": false
+      },
+      "native_reference": true,
+      "pixel_authoritative": true,
+      "ref_sharpness": 1.2189,
+      "ref_sharpness_normalized": 10.1063,
+      "ref_alpha_fraction": 0.120608,
+      "rescale_blur_suspect": false,
+      "render_png": "Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\default_world_biology.png",
+      "viewer_cmd": "Z:\\RUSTibites\\target\\release\\rustibites-view.exe Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip --ui-text sdf --ui-session default_world_biology --ui-only --screenshot Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\default_world_biology.png --width 1920 --height 1080",
+      "render_ok": true,
+      "render_source": "Z:\\RUSTibites\\target\\release\\rustibites-view.exe Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip --ui-text sdf --ui-session default_world_biology --ui-only --screenshot Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\default_world_biology.png --width 1920 --height 1080",
+      "alpha_iou": 0.9858215212458623,
+      "rgb_mae_opaque": 65.10889722845899,
+      "exact_pixel_pct": 21.698961226373644,
+      "exact_pixels": 53831,
+      "opaque_compared_pixels": 248081,
+      "alpha_pixels_ref": 250093,
+      "alpha_pixels_render": 249637,
+      "bbox_ref": [
+        10,
+        10,
+        1909,
+        1069
+      ],
+      "bbox_render": [
+        10,
+        10,
+        1909,
+        1069
+      ],
+      "bbox_offset": {
+        "dx0": 0,
+        "dy0": 0,
+        "dx1": 0,
+        "dy1": 0,
+        "dwidth": 0,
+        "dheight": 0
+      },
+      "heatmap": "diffs/default_world_biology.png",
+      "ref_diagnostics": {
+        "alpha_pixels": 250093,
+        "alpha_bbox": [
+          10,
+          10,
+          1909,
+          1069
+        ],
+        "unique_opaque_colors": 959,
+        "edge_pixels": 47428,
+        "edge_density": 0.022872,
+        "sharpness": 1.2189
+      },
+      "render_diagnostics": {
+        "alpha_pixels": 249637,
+        "alpha_bbox": [
+          10,
+          10,
+          1909,
+          1069
+        ],
+        "unique_opaque_colors": 1256,
+        "edge_pixels": 44108,
+        "edge_density": 0.021271,
+        "sharpness": 0.9003
+      },
+      "sharpness_ratio": 0.739,
+      "threshold_fail": "mae>3.0 exact<90.0"
+    },
+    {
+      "session": "default_world_brain",
+      "reference": "assets\\game\\reference\\functional_ui_native\\in_world\\inspector\\native_inspector_brain_ui_only_1920x1080.png",
+      "reference_kind": "mapped",
+      "reference_quality": {
+        "native_reference": true,
+        "pixel_authoritative": true,
+        "ref_sharpness": 1.5547,
+        "ref_sharpness_normalized": 8.0262,
+        "ref_alpha_fraction": 0.193704,
+        "rescale_blur_suspect": false
+      },
+      "native_reference": true,
+      "pixel_authoritative": true,
+      "ref_sharpness": 1.5547,
+      "ref_sharpness_normalized": 8.0262,
+      "ref_alpha_fraction": 0.193704,
+      "rescale_blur_suspect": false,
+      "render_png": "Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\default_world_brain.png",
+      "viewer_cmd": "Z:\\RUSTibites\\target\\release\\rustibites-view.exe Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip --ui-text sdf --ui-session default_world_brain --ui-only --screenshot Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\default_world_brain.png --width 1920 --height 1080",
+      "render_ok": true,
+      "render_source": "Z:\\RUSTibites\\target\\release\\rustibites-view.exe Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip --ui-text sdf --ui-session default_world_brain --ui-only --screenshot Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\default_world_brain.png --width 1920 --height 1080",
+      "alpha_iou": 0.9910098705421359,
+      "rgb_mae_opaque": 44.15083104977123,
+      "exact_pixel_pct": 13.461629900274028,
+      "exact_pixels": 53792,
+      "opaque_compared_pixels": 399595,
+      "alpha_pixels_ref": 401664,
+      "alpha_pixels_render": 401151,
+      "bbox_ref": [
+        4,
+        10,
+        1909,
+        1069
+      ],
+      "bbox_render": [
+        10,
+        10,
+        1909,
+        1069
+      ],
+      "bbox_offset": {
+        "dx0": 6,
+        "dy0": 0,
+        "dx1": 0,
+        "dy1": 0,
+        "dwidth": -6,
+        "dheight": 0
+      },
+      "heatmap": "diffs/default_world_brain.png",
+      "ref_diagnostics": {
+        "alpha_pixels": 401664,
+        "alpha_bbox": [
+          4,
+          10,
+          1909,
+          1069
+        ],
+        "unique_opaque_colors": 687,
+        "edge_pixels": 54884,
+        "edge_density": 0.026468,
+        "sharpness": 1.5547
+      },
+      "render_diagnostics": {
+        "alpha_pixels": 401151,
+        "alpha_bbox": [
+          10,
+          10,
+          1909,
+          1069
+        ],
+        "unique_opaque_colors": 899,
+        "edge_pixels": 55222,
+        "edge_density": 0.026631,
+        "sharpness": 1.1165
+      },
+      "sharpness_ratio": 0.718,
+      "threshold_fail": "mae>3.0 exact<90.0"
+    },
+    {
+      "session": "default_world_genes",
+      "reference": "assets\\game\\reference\\functional_ui_native\\in_world\\inspector\\native_inspector_genes_ui_only_1920x1080.png",
+      "reference_kind": "mapped",
+      "reference_quality": {
+        "native_reference": true,
+        "pixel_authoritative": true,
+        "ref_sharpness": 2.2803,
+        "ref_sharpness_normalized": 10.3844,
+        "ref_alpha_fraction": 0.21959,
+        "rescale_blur_suspect": false
+      },
+      "native_reference": true,
+      "pixel_authoritative": true,
+      "ref_sharpness": 2.2803,
+      "ref_sharpness_normalized": 10.3844,
+      "ref_alpha_fraction": 0.21959,
+      "rescale_blur_suspect": false,
+      "render_png": "Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\default_world_genes.png",
+      "viewer_cmd": "Z:\\RUSTibites\\target\\release\\rustibites-view.exe Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip --ui-text sdf --ui-session default_world_genes --ui-only --screenshot Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\default_world_genes.png --width 1920 --height 1080",
+      "render_ok": true,
+      "render_source": "Z:\\RUSTibites\\target\\release\\rustibites-view.exe Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip --ui-text sdf --ui-session default_world_genes --ui-only --screenshot Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\default_world_genes.png --width 1920 --height 1080",
+      "alpha_iou": 0.9921908001146866,
+      "rgb_mae_opaque": 47.34212018203115,
+      "exact_pixel_pct": 11.033487820104163,
+      "exact_pixels": 50018,
+      "opaque_compared_pixels": 453329,
+      "alpha_pixels_ref": 455341,
+      "alpha_pixels_render": 454885,
+      "bbox_ref": [
+        10,
+        10,
+        1909,
+        1069
+      ],
+      "bbox_render": [
+        10,
+        10,
+        1909,
+        1069
+      ],
+      "bbox_offset": {
+        "dx0": 0,
+        "dy0": 0,
+        "dx1": 0,
+        "dy1": 0,
+        "dwidth": 0,
+        "dheight": 0
+      },
+      "heatmap": "diffs/default_world_genes.png",
+      "ref_diagnostics": {
+        "alpha_pixels": 455341,
+        "alpha_bbox": [
+          10,
+          10,
+          1909,
+          1069
+        ],
+        "unique_opaque_colors": 665,
+        "edge_pixels": 82478,
+        "edge_density": 0.039775,
+        "sharpness": 2.2803
+      },
+      "render_diagnostics": {
+        "alpha_pixels": 454885,
+        "alpha_bbox": [
+          10,
+          10,
+          1909,
+          1069
+        ],
+        "unique_opaque_colors": 898,
+        "edge_pixels": 76834,
+        "edge_density": 0.037053,
+        "sharpness": 1.3493
+      },
+      "sharpness_ratio": 0.592,
+      "threshold_fail": "mae>3.0 exact<90.0"
+    },
+    {
+      "session": "default_world_inspector",
+      "reference": "assets\\game\\reference\\functional_ui_native\\in_world\\inspector\\native_inspector_stats_ui_only_1920x1080.png",
+      "reference_kind": "mapped",
+      "reference_quality": {
+        "native_reference": true,
+        "pixel_authoritative": true,
+        "ref_sharpness": 1.5432,
+        "ref_sharpness_normalized": 10.6146,
+        "ref_alpha_fraction": 0.145384,
+        "rescale_blur_suspect": false
+      },
+      "native_reference": true,
+      "pixel_authoritative": true,
+      "ref_sharpness": 1.5432,
+      "ref_sharpness_normalized": 10.6146,
+      "ref_alpha_fraction": 0.145384,
+      "rescale_blur_suspect": false,
+      "render_png": "Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\default_world_inspector.png",
+      "viewer_cmd": "Z:\\RUSTibites\\target\\release\\rustibites-view.exe Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip --ui-text sdf --ui-session default_world_inspector --ui-only --screenshot Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\default_world_inspector.png --width 1920 --height 1080",
+      "render_ok": true,
+      "render_source": "Z:\\RUSTibites\\target\\release\\rustibites-view.exe Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip --ui-text sdf --ui-session default_world_inspector --ui-only --screenshot Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\default_world_inspector.png --width 1920 --height 1080",
+      "alpha_iou": 0.988225393944394,
+      "rgb_mae_opaque": 51.56420676980891,
+      "exact_pixel_pct": 14.355984331640268,
+      "exact_pixels": 42990,
+      "opaque_compared_pixels": 299457,
+      "alpha_pixels_ref": 301469,
+      "alpha_pixels_render": 301013,
+      "bbox_ref": [
+        10,
+        10,
+        1909,
+        1069
+      ],
+      "bbox_render": [
+        10,
+        10,
+        1909,
+        1069
+      ],
+      "bbox_offset": {
+        "dx0": 0,
+        "dy0": 0,
+        "dx1": 0,
+        "dy1": 0,
+        "dwidth": 0,
+        "dheight": 0
+      },
+      "heatmap": "diffs/default_world_inspector.png",
+      "ref_diagnostics": {
+        "alpha_pixels": 301469,
+        "alpha_bbox": [
+          10,
+          10,
+          1909,
+          1069
+        ],
+        "unique_opaque_colors": 465,
+        "edge_pixels": 53917,
+        "edge_density": 0.026002,
+        "sharpness": 1.5432
+      },
+      "render_diagnostics": {
+        "alpha_pixels": 301013,
+        "alpha_bbox": [
+          10,
+          10,
+          1909,
+          1069
+        ],
+        "unique_opaque_colors": 628,
+        "edge_pixels": 49978,
+        "edge_density": 0.024102,
+        "sharpness": 0.977
+      },
+      "sharpness_ratio": 0.633,
+      "threshold_fail": "mae>3.0 exact<90.0"
+    },
+    {
+      "session": "main_world_dynamic_parameters",
+      "reference": "assets\\game\\reference\\functional_ui_native\\in_world\\native_world_dynamic.png",
+      "reference_kind": "mapped",
+      "reference_quality": {
+        "native_reference": true,
+        "pixel_authoritative": true,
+        "ref_sharpness": 2.7021,
+        "ref_sharpness_normalized": 5.1713,
+        "ref_alpha_fraction": 0.522516,
+        "rescale_blur_suspect": false
+      },
+      "native_reference": true,
+      "pixel_authoritative": true,
+      "ref_sharpness": 2.7021,
+      "ref_sharpness_normalized": 5.1713,
+      "ref_alpha_fraction": 0.522516,
+      "rescale_blur_suspect": false,
+      "render_png": "Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\main_world_dynamic_parameters.png",
+      "viewer_cmd": "Z:\\RUSTibites\\target\\release\\rustibites-view.exe Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip --ui-text sdf --ui-session main_world_dynamic_parameters --ui-only --screenshot Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\main_world_dynamic_parameters.png --width 1920 --height 1080",
+      "render_ok": true,
+      "render_source": "Z:\\RUSTibites\\target\\release\\rustibites-view.exe Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip --ui-text sdf --ui-session main_world_dynamic_parameters --ui-only --screenshot Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\main_world_dynamic_parameters.png --width 1920 --height 1080",
+      "alpha_iou": 0.7357245582773615,
+      "rgb_mae_opaque": 34.04946805269058,
+      "exact_pixel_pct": 13.484924312235805,
+      "exact_pixels": 146042,
+      "opaque_compared_pixels": 1083002,
+      "alpha_pixels_ref": 1083490,
+      "alpha_pixels_render": 1471533,
+      "bbox_ref": [
+        10,
+        10,
+        1919,
+        1079
+      ],
+      "bbox_render": [
+        10,
+        10,
+        1919,
+        1079
+      ],
+      "bbox_offset": {
+        "dx0": 0,
+        "dy0": 0,
+        "dx1": 0,
+        "dy1": 0,
+        "dwidth": 0,
+        "dheight": 0
+      },
+      "heatmap": "diffs/main_world_dynamic_parameters.png",
+      "ref_diagnostics": {
+        "alpha_pixels": 1083490,
+        "alpha_bbox": [
+          10,
+          10,
+          1919,
+          1079
+        ],
+        "unique_opaque_colors": 431,
+        "edge_pixels": 90489,
+        "edge_density": 0.043639,
+        "sharpness": 2.7021
+      },
+      "render_diagnostics": {
+        "alpha_pixels": 1471533,
+        "alpha_bbox": [
+          10,
+          10,
+          1919,
+          1079
+        ],
+        "unique_opaque_colors": 959,
+        "edge_pixels": 171037,
+        "edge_density": 0.082483,
+        "sharpness": 3.5317
+      },
+      "sharpness_ratio": 1.307,
+      "threshold_fail": "iou<0.98 mae>3.0 exact<90.0"
+    },
+    {
+      "session": "main_world_information",
+      "reference": "assets\\game\\reference\\functional_ui_native\\in_world\\native_world_information.png",
+      "reference_kind": "mapped",
+      "reference_quality": {
+        "native_reference": true,
+        "pixel_authoritative": true,
+        "ref_sharpness": 2.8846,
+        "ref_sharpness_normalized": 2.8846,
+        "ref_alpha_fraction": 1.0,
+        "rescale_blur_suspect": false
+      },
+      "native_reference": true,
+      "pixel_authoritative": true,
+      "ref_sharpness": 2.8846,
+      "ref_sharpness_normalized": 2.8846,
+      "ref_alpha_fraction": 1.0,
+      "rescale_blur_suspect": false,
+      "render_png": "Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\main_world_information.png",
+      "viewer_cmd": "Z:\\RUSTibites\\target\\release\\rustibites-view.exe Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip --ui-text sdf --ui-session main_world_information --ui-only --screenshot Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\main_world_information.png --width 1920 --height 1080",
+      "render_ok": true,
+      "render_source": "Z:\\RUSTibites\\target\\release\\rustibites-view.exe Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip --ui-text sdf --ui-session main_world_information --ui-only --screenshot Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\main_world_information.png --width 1920 --height 1080",
+      "alpha_iou": 0.3418123070987654,
+      "rgb_mae_opaque": 105.5420613578411,
+      "exact_pixel_pct": 11.824933477430296,
+      "exact_pixels": 83813,
+      "opaque_compared_pixels": 708782,
+      "alpha_pixels_ref": 2073600,
+      "alpha_pixels_render": 708782,
+      "bbox_ref": [
+        0,
+        0,
+        1919,
+        1079
+      ],
+      "bbox_render": [
+        1,
+        1,
+        1918,
+        1069
+      ],
+      "bbox_offset": {
+        "dx0": 1,
+        "dy0": 1,
+        "dx1": -1,
+        "dy1": -10,
+        "dwidth": -2,
+        "dheight": -11
+      },
+      "heatmap": "diffs/main_world_information.png",
+      "ref_diagnostics": {
+        "alpha_pixels": 2073600,
+        "alpha_bbox": [
+          0,
+          0,
+          1919,
+          1079
+        ],
+        "unique_opaque_colors": 412,
+        "edge_pixels": 128387,
+        "edge_density": 0.061915,
+        "sharpness": 2.8846
+      },
+      "render_diagnostics": {
+        "alpha_pixels": 708782,
+        "alpha_bbox": [
+          1,
+          1,
+          1918,
+          1069
+        ],
+        "unique_opaque_colors": 948,
+        "edge_pixels": 117635,
+        "edge_density": 0.05673,
+        "sharpness": 2.3473
+      },
+      "sharpness_ratio": 0.814,
+      "threshold_fail": "iou<0.98 mae>3.0 exact<90.0"
+    },
+    {
+      "session": "main_world_lineage",
+      "reference": "assets\\game\\reference\\functional_ui_native\\in_world\\native_world_lineage.png",
+      "reference_kind": "mapped",
+      "reference_quality": {
+        "native_reference": true,
+        "pixel_authoritative": true,
+        "ref_sharpness": 1.2738,
+        "ref_sharpness_normalized": 12.3141,
+        "ref_alpha_fraction": 0.103443,
+        "rescale_blur_suspect": false
+      },
+      "native_reference": true,
+      "pixel_authoritative": true,
+      "ref_sharpness": 1.2738,
+      "ref_sharpness_normalized": 12.3141,
+      "ref_alpha_fraction": 0.103443,
+      "rescale_blur_suspect": false,
+      "render_png": "Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\main_world_lineage.png",
+      "viewer_cmd": "Z:\\RUSTibites\\target\\release\\rustibites-view.exe Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip --ui-text sdf --ui-session main_world_lineage --ui-only --screenshot Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\main_world_lineage.png --width 1920 --height 1080",
+      "render_ok": true,
+      "render_source": "Z:\\RUSTibites\\target\\release\\rustibites-view.exe Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip --ui-text sdf --ui-session main_world_lineage --ui-only --screenshot Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\main_world_lineage.png --width 1920 --height 1080",
+      "alpha_iou": 0.17775286125805895,
+      "rgb_mae_opaque": 21.772371158233796,
+      "exact_pixel_pct": 74.52019863105623,
+      "exact_pixels": 88840,
+      "opaque_compared_pixels": 119216,
+      "alpha_pixels_ref": 214499,
+      "alpha_pixels_render": 575401,
+      "bbox_ref": [
+        10,
+        10,
+        1909,
+        1069
+      ],
+      "bbox_render": [
+        10,
+        10,
+        1909,
+        1069
+      ],
+      "bbox_offset": {
+        "dx0": 0,
+        "dy0": 0,
+        "dx1": 0,
+        "dy1": 0,
+        "dwidth": 0,
+        "dheight": 0
+      },
+      "heatmap": "diffs/main_world_lineage.png",
+      "ref_diagnostics": {
+        "alpha_pixels": 214499,
+        "alpha_bbox": [
+          10,
+          10,
+          1909,
+          1069
+        ],
+        "unique_opaque_colors": 468,
+        "edge_pixels": 43557,
+        "edge_density": 0.021005,
+        "sharpness": 1.2738
+      },
+      "render_diagnostics": {
+        "alpha_pixels": 575401,
+        "alpha_bbox": [
+          10,
+          10,
+          1909,
+          1069
+        ],
+        "unique_opaque_colors": 944,
+        "edge_pixels": 85839,
+        "edge_density": 0.041396,
+        "sharpness": 1.7023
+      },
+      "sharpness_ratio": 1.336,
+      "threshold_fail": "iou<0.98 mae>3.0 exact<90.0"
+    },
+    {
+      "session": "main_world_settings_panel",
+      "reference": "assets\\game\\reference\\functional_ui_native\\in_world\\native_world_settings.png",
+      "reference_kind": "mapped",
+      "reference_quality": {
+        "native_reference": true,
+        "pixel_authoritative": true,
+        "ref_sharpness": 2.8846,
+        "ref_sharpness_normalized": 2.8846,
+        "ref_alpha_fraction": 1.0,
+        "rescale_blur_suspect": false
+      },
+      "native_reference": true,
+      "pixel_authoritative": true,
+      "ref_sharpness": 2.8846,
+      "ref_sharpness_normalized": 2.8846,
+      "ref_alpha_fraction": 1.0,
+      "rescale_blur_suspect": false,
+      "render_png": "Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\main_world_settings_panel.png",
+      "viewer_cmd": "Z:\\RUSTibites\\target\\release\\rustibites-view.exe Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip --ui-text sdf --ui-session main_world_settings_panel --ui-only --screenshot Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\main_world_settings_panel.png --width 1920 --height 1080",
+      "render_ok": true,
+      "render_source": "Z:\\RUSTibites\\target\\release\\rustibites-view.exe Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip --ui-text sdf --ui-session main_world_settings_panel --ui-only --screenshot Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\main_world_settings_panel.png --width 1920 --height 1080",
+      "alpha_iou": 0.3418123070987654,
+      "rgb_mae_opaque": 105.5420613578411,
+      "exact_pixel_pct": 11.824933477430296,
+      "exact_pixels": 83813,
+      "opaque_compared_pixels": 708782,
+      "alpha_pixels_ref": 2073600,
+      "alpha_pixels_render": 708782,
+      "bbox_ref": [
+        0,
+        0,
+        1919,
+        1079
+      ],
+      "bbox_render": [
+        1,
+        1,
+        1918,
+        1069
+      ],
+      "bbox_offset": {
+        "dx0": 1,
+        "dy0": 1,
+        "dx1": -1,
+        "dy1": -10,
+        "dwidth": -2,
+        "dheight": -11
+      },
+      "heatmap": "diffs/main_world_settings_panel.png",
+      "ref_diagnostics": {
+        "alpha_pixels": 2073600,
+        "alpha_bbox": [
+          0,
+          0,
+          1919,
+          1079
+        ],
+        "unique_opaque_colors": 412,
+        "edge_pixels": 128387,
+        "edge_density": 0.061915,
+        "sharpness": 2.8846
+      },
+      "render_diagnostics": {
+        "alpha_pixels": 708782,
+        "alpha_bbox": [
+          1,
+          1,
+          1918,
+          1069
+        ],
+        "unique_opaque_colors": 948,
+        "edge_pixels": 117635,
+        "edge_density": 0.05673,
+        "sharpness": 2.3473
+      },
+      "sharpness_ratio": 0.814,
+      "threshold_fail": "iou<0.98 mae>3.0 exact<90.0"
+    },
+    {
+      "session": "main_world_tool_placer",
+      "reference": "assets\\game\\reference\\functional_ui_native\\in_world\\native_world_placer.png",
+      "reference_kind": "mapped",
+      "reference_quality": {
+        "native_reference": true,
+        "pixel_authoritative": true,
+        "ref_sharpness": 0.4996,
+        "ref_sharpness_normalized": 9.992,
+        "ref_alpha_fraction": 0.025048,
+        "rescale_blur_suspect": false
+      },
+      "native_reference": true,
+      "pixel_authoritative": true,
+      "ref_sharpness": 0.4996,
+      "ref_sharpness_normalized": 9.992,
+      "ref_alpha_fraction": 0.025048,
+      "rescale_blur_suspect": false,
+      "render_png": "Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\main_world_tool_placer.png",
+      "viewer_cmd": "Z:\\RUSTibites\\target\\release\\rustibites-view.exe Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip --ui-text sdf --ui-session main_world_tool_placer --ui-only --screenshot Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\main_world_tool_placer.png --width 1920 --height 1080",
+      "render_ok": true,
+      "render_source": "Z:\\RUSTibites\\target\\release\\rustibites-view.exe Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip --ui-text sdf --ui-session main_world_tool_placer --ui-only --screenshot Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\main_world_tool_placer.png --width 1920 --height 1080",
+      "alpha_iou": 0.12423742404706949,
+      "rgb_mae_opaque": 36.75395470804805,
+      "exact_pixel_pct": 68.8011300100053,
+      "exact_pixels": 35070,
+      "opaque_compared_pixels": 50973,
+      "alpha_pixels_ref": 51939,
+      "alpha_pixels_render": 409321,
+      "bbox_ref": [
+        10,
+        10,
+        1909,
+        1069
+      ],
+      "bbox_render": [
+        10,
+        10,
+        1909,
+        1069
+      ],
+      "bbox_offset": {
+        "dx0": 0,
+        "dy0": 0,
+        "dx1": 0,
+        "dy1": 0,
+        "dwidth": 0,
+        "dheight": 0
+      },
+      "heatmap": "diffs/main_world_tool_placer.png",
+      "ref_diagnostics": {
+        "alpha_pixels": 51939,
+        "alpha_bbox": [
+          10,
+          10,
+          1909,
+          1069
+        ],
+        "unique_opaque_colors": 367,
+        "edge_pixels": 15807,
+        "edge_density": 0.007623,
+        "sharpness": 0.4996
+      },
+      "render_diagnostics": {
+        "alpha_pixels": 409321,
+        "alpha_bbox": [
+          10,
+          10,
+          1909,
+          1069
+        ],
+        "unique_opaque_colors": 915,
+        "edge_pixels": 58313,
+        "edge_density": 0.028122,
+        "sharpness": 1.1887
+      },
+      "sharpness_ratio": 2.379,
+      "threshold_fail": "iou<0.98 mae>3.0 exact<90.0"
+    },
+    {
+      "session": "main_world_tool_user_actions",
+      "reference": "assets\\game\\reference\\functional_ui_native\\in_world\\native_world_user_actions.png",
+      "reference_kind": "mapped",
+      "reference_quality": {
+        "native_reference": true,
+        "pixel_authoritative": true,
+        "ref_sharpness": 0.5367,
+        "ref_sharpness_normalized": 10.734,
+        "ref_alpha_fraction": 0.026587,
+        "rescale_blur_suspect": false
+      },
+      "native_reference": true,
+      "pixel_authoritative": true,
+      "ref_sharpness": 0.5367,
+      "ref_sharpness_normalized": 10.734,
+      "ref_alpha_fraction": 0.026587,
+      "rescale_blur_suspect": false,
+      "render_png": "Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\main_world_tool_user_actions.png",
+      "viewer_cmd": "Z:\\RUSTibites\\target\\release\\rustibites-view.exe Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip --ui-text sdf --ui-session main_world_tool_user_actions --ui-only --screenshot Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\main_world_tool_user_actions.png --width 1920 --height 1080",
+      "render_ok": true,
+      "render_source": "Z:\\RUSTibites\\target\\release\\rustibites-view.exe Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip --ui-text sdf --ui-session main_world_tool_user_actions --ui-only --screenshot Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\main_world_tool_user_actions.png --width 1920 --height 1080",
+      "alpha_iou": 0.13097158111339746,
+      "rgb_mae_opaque": 38.858075633096405,
+      "exact_pixel_pct": 67.99409212591156,
+      "exact_pixels": 36829,
+      "opaque_compared_pixels": 54165,
+      "alpha_pixels_ref": 55131,
+      "alpha_pixels_render": 412597,
+      "bbox_ref": [
+        10,
+        10,
+        1909,
+        1069
+      ],
+      "bbox_render": [
+        10,
+        10,
+        1909,
+        1069
+      ],
+      "bbox_offset": {
+        "dx0": 0,
+        "dy0": 0,
+        "dx1": 0,
+        "dy1": 0,
+        "dwidth": 0,
+        "dheight": 0
+      },
+      "heatmap": "diffs/main_world_tool_user_actions.png",
+      "ref_diagnostics": {
+        "alpha_pixels": 55131,
+        "alpha_bbox": [
+          10,
+          10,
+          1909,
+          1069
+        ],
+        "unique_opaque_colors": 368,
+        "edge_pixels": 16766,
+        "edge_density": 0.008085,
+        "sharpness": 0.5367
+      },
+      "render_diagnostics": {
+        "alpha_pixels": 412597,
+        "alpha_bbox": [
+          10,
+          10,
+          1909,
+          1069
+        ],
+        "unique_opaque_colors": 922,
+        "edge_pixels": 59800,
+        "edge_density": 0.028839,
+        "sharpness": 1.2247
+      },
+      "sharpness_ratio": 2.282,
+      "threshold_fail": "iou<0.98 mae>3.0 exact<90.0"
+    },
+    {
+      "session": "main_world_tool_view",
+      "reference": "assets\\game\\reference\\functional_ui_native\\in_world\\native_world_view.png",
+      "reference_kind": "mapped",
+      "reference_quality": {
+        "native_reference": true,
+        "pixel_authoritative": true,
+        "ref_sharpness": 0.9143,
+        "ref_sharpness_normalized": 15.9669,
+        "ref_alpha_fraction": 0.057262,
+        "rescale_blur_suspect": false
+      },
+      "native_reference": true,
+      "pixel_authoritative": true,
+      "ref_sharpness": 0.9143,
+      "ref_sharpness_normalized": 15.9669,
+      "ref_alpha_fraction": 0.057262,
+      "rescale_blur_suspect": false,
+      "render_png": "Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\main_world_tool_view.png",
+      "viewer_cmd": "Z:\\RUSTibites\\target\\release\\rustibites-view.exe Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip --ui-text sdf --ui-session main_world_tool_view --ui-only --screenshot Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\main_world_tool_view.png --width 1920 --height 1080",
+      "render_ok": true,
+      "render_source": "Z:\\RUSTibites\\target\\release\\rustibites-view.exe Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip --ui-text sdf --ui-session main_world_tool_view --ui-only --screenshot Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\main_world_tool_view.png --width 1920 --height 1080",
+      "alpha_iou": 0.24669720715795382,
+      "rgb_mae_opaque": 20.45437126223045,
+      "exact_pixel_pct": 75.42645597887461,
+      "exact_pixels": 88832,
+      "opaque_compared_pixels": 117773,
+      "alpha_pixels_ref": 118739,
+      "alpha_pixels_render": 476433,
+      "bbox_ref": [
+        10,
+        10,
+        1909,
+        1069
+      ],
+      "bbox_render": [
+        10,
+        10,
+        1909,
+        1069
+      ],
+      "bbox_offset": {
+        "dx0": 0,
+        "dy0": 0,
+        "dx1": 0,
+        "dy1": 0,
+        "dwidth": 0,
+        "dheight": 0
+      },
+      "heatmap": "diffs/main_world_tool_view.png",
+      "ref_diagnostics": {
+        "alpha_pixels": 118739,
+        "alpha_bbox": [
+          10,
+          10,
+          1909,
+          1069
+        ],
+        "unique_opaque_colors": 368,
+        "edge_pixels": 30577,
+        "edge_density": 0.014746,
+        "sharpness": 0.9143
+      },
+      "render_diagnostics": {
+        "alpha_pixels": 476433,
+        "alpha_bbox": [
+          10,
+          10,
+          1909,
+          1069
+        ],
+        "unique_opaque_colors": 922,
+        "edge_pixels": 75898,
+        "edge_density": 0.036602,
+        "sharpness": 1.5733
+      },
+      "sharpness_ratio": 1.721,
+      "threshold_fail": "iou<0.98 mae>3.0 exact<90.0"
+    },
+    {
+      "session": "main_world_toolbar",
+      "reference": "assets\\game\\reference\\functional_ui_native\\in_world\\native_world_toolbar.png",
+      "reference_kind": "mapped",
+      "reference_quality": {
+        "native_reference": true,
+        "pixel_authoritative": true,
+        "ref_sharpness": 0.4242,
+        "ref_sharpness_normalized": 8.484,
+        "ref_alpha_fraction": 0.021199,
+        "rescale_blur_suspect": false
+      },
+      "native_reference": true,
+      "pixel_authoritative": true,
+      "ref_sharpness": 0.4242,
+      "ref_sharpness_normalized": 8.484,
+      "ref_alpha_fraction": 0.021199,
+      "rescale_blur_suspect": false,
+      "render_png": "Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\main_world_toolbar.png",
+      "viewer_cmd": "Z:\\RUSTibites\\target\\release\\rustibites-view.exe Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip --ui-text sdf --ui-session main_world_toolbar --ui-only --screenshot Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\main_world_toolbar.png --width 1920 --height 1080",
+      "render_ok": true,
+      "render_source": "Z:\\RUSTibites\\target\\release\\rustibites-view.exe Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip --ui-text sdf --ui-session main_world_toolbar --ui-only --screenshot Z:\\RUSTibites\\target\\ui_visual_diff\\renders\\main_world_toolbar.png --width 1920 --height 1080",
+      "alpha_iou": 0.1069166436634114,
+      "rgb_mae_opaque": 36.09737244047481,
+      "exact_pixel_pct": 68.50882701835182,
+      "exact_pixels": 29454,
+      "opaque_compared_pixels": 42993,
+      "alpha_pixels_ref": 43959,
+      "alpha_pixels_render": 401151,
+      "bbox_ref": [
+        10,
+        10,
+        1909,
+        1069
+      ],
+      "bbox_render": [
+        10,
+        10,
+        1909,
+        1069
+      ],
+      "bbox_offset": {
+        "dx0": 0,
+        "dy0": 0,
+        "dx1": 0,
+        "dy1": 0,
+        "dwidth": 0,
+        "dheight": 0
+      },
+      "heatmap": "diffs/main_world_toolbar.png",
+      "ref_diagnostics": {
+        "alpha_pixels": 43959,
+        "alpha_bbox": [
+          10,
+          10,
+          1909,
+          1069
+        ],
+        "unique_opaque_colors": 363,
+        "edge_pixels": 13220,
+        "edge_density": 0.006375,
+        "sharpness": 0.4242
+      },
+      "render_diagnostics": {
+        "alpha_pixels": 401151,
+        "alpha_bbox": [
+          10,
+          10,
+          1909,
+          1069
+        ],
+        "unique_opaque_colors": 899,
+        "edge_pixels": 55222,
+        "edge_density": 0.026631,
+        "sharpness": 1.1165
+      },
+      "sharpness_ratio": 2.632,
+      "threshold_fail": "iou<0.98 mae>3.0 exact<90.0"
+    }
+  ],
+  "missing_references": []
+}

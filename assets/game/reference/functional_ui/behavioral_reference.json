@@ -1,0 +1,4269 @@
+{
+  "schema": "rustibites.assets.functional_ui.behavior.v1",
+  "capture": {
+    "save": "Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip",
+    "menu": "hidden Welcome UI activated/normalized",
+    "world": "hidden rust_seed_600 paused t=20s",
+    "method": "plugin /d/press_label, /d/press_button, /d/slider_set, /d/ui; before/after state"
+  },
+  "actions": [
+    {
+      "action": "menu:Settings",
+      "hit": {
+        "ok": true,
+        "label": "Settings",
+        "hits": [
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Settings",
+            "name": "Settings",
+            "label": "Settings",
+            "clicked": true
+          }
+        ],
+        "count": 1
+      },
+      "before": {
+        "tick": 0,
+        "counts": null,
+        "tools": null,
+        "zones": null,
+        "simTime": null,
+        "state": "none",
+        "tools_error": "not_in_simulation: no simulation is running",
+        "zones_error": "not_in_simulation: no simulation is running"
+      },
+      "after": {
+        "tick": 0,
+        "counts": null,
+        "tools": null,
+        "zones": null,
+        "simTime": null,
+        "state": "none",
+        "tools_error": "not_in_simulation: no simulation is running",
+        "zones_error": "not_in_simulation: no simulation is running"
+      },
+      "active_panels_before": [
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel"
+      ],
+      "active_panels_after": [
+        "UI/SettingsPanel",
+        "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel",
+        "UI/SettingsPanel/SelectorPanel",
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel"
+      ],
+      "new_panels": [
+        "UI/SettingsPanel",
+        "UI/SettingsPanel/PagesPanels/Graphics/Scroll View/Viewport/Content/GraphicsHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel",
+        "UI/SettingsPanel/SelectorPanel"
+      ],
+      "gone_panels": [],
+      "new_texts": [
+        "Graphics Settings",
+        "Fullscreen",
+        "Automatically Detect Screen Resolution",
+        "Screen Resolution",
+        "1080p",
+        "UI Scale",
+        "Normal (1.0)",
+        "Pheromones Strength",
+        "10%",
+        "Procedural Size",
+        "Genetic",
+        "UI Preferences",
+        "Fertility Color",
+        "#E79B00FF",
+        "Background",
+        "Background Color",
+        "#000000",
+        "Show Grid",
+        "Show Experimental Background",
+        "Show Node Names",
+        "Graphic Settings",
+        "Game Settings",
+        "Hotkeys",
+        "Reset Warnings"
+      ],
+      "dialogs_after": [
+        "Quit"
+      ],
+      "changed": true,
+      "diff": {}
+    },
+    {
+      "action": "menu:Bibite Library",
+      "hit": {
+        "ok": false,
+        "label": "Bibite Library",
+        "hits": [],
+        "count": 0
+      },
+      "before": {
+        "tick": 0,
+        "counts": null,
+        "tools": null,
+        "zones": null,
+        "simTime": null,
+        "state": "none",
+        "tools_error": "not_in_simulation: no simulation is running",
+        "zones_error": "not_in_simulation: no simulation is running"
+      },
+      "after": {
+        "tick": 0,
+        "counts": null,
+        "tools": null,
+        "zones": null,
+        "simTime": null,
+        "state": "none",
+        "tools_error": "not_in_simulation: no simulation is running",
+        "zones_error": "not_in_simulation: no simulation is running"
+      },
+      "active_panels_before": [
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel"
+      ],
+      "active_panels_after": [
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel"
+      ],
+      "new_panels": [],
+      "gone_panels": [],
+      "new_texts": [],
+      "dialogs_after": [
+        "Quit"
+      ],
+      "changed": false,
+      "diff": {}
+    },
+    {
+      "action": "menu:Achievements",
+      "hit": {
+        "ok": true,
+        "label": "Achievements",
+        "hits": [
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Achievements",
+            "name": "Achievements",
+            "label": "Achievements",
+            "clicked": true
+          }
+        ],
+        "count": 1
+      },
+      "before": {
+        "tick": 0,
+        "counts": null,
+        "tools": null,
+        "zones": null,
+        "simTime": null,
+        "state": "none",
+        "tools_error": "not_in_simulation: no simulation is running",
+        "zones_error": "not_in_simulation: no simulation is running"
+      },
+      "after": {
+        "tick": 0,
+        "counts": null,
+        "tools": null,
+        "zones": null,
+        "simTime": null,
+        "state": "none",
+        "tools_error": "not_in_simulation: no simulation is running",
+        "zones_error": "not_in_simulation: no simulation is running"
+      },
+      "active_panels_before": [
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel"
+      ],
+      "active_panels_after": [
+        "UI/WelcomeScreen/AchievementsPanel",
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel"
+      ],
+      "new_panels": [
+        "UI/WelcomeScreen/AchievementsPanel"
+      ],
+      "gone_panels": [],
+      "new_texts": [],
+      "dialogs_after": [
+        "Quit"
+      ],
+      "changed": true,
+      "diff": {}
+    },
+    {
+      "action": "menu:Additional Tools",
+      "hit": {
+        "ok": false,
+        "label": "Additional Tools",
+        "hits": [],
+        "count": 0
+      },
+      "before": {
+        "tick": 0,
+        "counts": null,
+        "tools": null,
+        "zones": null,
+        "simTime": null,
+        "state": "none",
+        "tools_error": "not_in_simulation: no simulation is running",
+        "zones_error": "not_in_simulation: no simulation is running"
+      },
+      "after": {
+        "tick": 0,
+        "counts": null,
+        "tools": null,
+        "zones": null,
+        "simTime": null,
+        "state": "none",
+        "tools_error": "not_in_simulation: no simulation is running",
+        "zones_error": "not_in_simulation: no simulation is running"
+      },
+      "active_panels_before": [
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel"
+      ],
+      "active_panels_after": [
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel"
+      ],
+      "new_panels": [],
+      "gone_panels": [],
+      "new_texts": [],
+      "dialogs_after": [
+        "Quit"
+      ],
+      "changed": false,
+      "diff": {}
+    },
+    {
+      "action": "menu:Credits",
+      "hit": {
+        "ok": true,
+        "label": "Credits",
+        "hits": [
+          {
+            "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/Credits",
+            "name": "Credits",
+            "label": "Credits",
+            "clicked": true
+          }
+        ],
+        "count": 1
+      },
+      "before": {
+        "tick": 0,
+        "counts": null,
+        "tools": null,
+        "zones": null,
+        "simTime": null,
+        "state": "none",
+        "tools_error": "not_in_simulation: no simulation is running",
+        "zones_error": "not_in_simulation: no simulation is running"
+      },
+      "after": {
+        "tick": 0,
+        "counts": null,
+        "tools": null,
+        "zones": null,
+        "simTime": null,
+        "state": "none",
+        "tools_error": "not_in_simulation: no simulation is running",
+        "zones_error": "not_in_simulation: no simulation is running"
+      },
+      "active_panels_before": [
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel"
+      ],
+      "active_panels_after": [
+        "UI/WelcomeScreen/CreditsPanel",
+        "UI/WelcomeScreen/CreditsPanel/CreditsTab/Viewport/Content/Credits Section/Collaborator Memoriam/TitlePanel",
+        "UI/WelcomeScreen/CreditsPanel/CreditsTab/Viewport/Content/Credits Section/Collaborator Team/TitlePanel",
+        "UI/WelcomeScreen/CreditsPanel/CreditsTab/Viewport/Content/Credits Section/Special Thanks/TitlePanel",
+        "UI/WelcomeScreen/CreditsPanel/CreditsTab/Viewport/Content/Credits Section/TitlePanel"
+      ],
+      "new_panels": [
+        "UI/WelcomeScreen/CreditsPanel",
+        "UI/WelcomeScreen/CreditsPanel/CreditsTab/Viewport/Content/Credits Section/Collaborator Memoriam/TitlePanel",
+        "UI/WelcomeScreen/CreditsPanel/CreditsTab/Viewport/Content/Credits Section/Collaborator Team/TitlePanel",
+        "UI/WelcomeScreen/CreditsPanel/CreditsTab/Viewport/Content/Credits Section/Special Thanks/TitlePanel",
+        "UI/WelcomeScreen/CreditsPanel/CreditsTab/Viewport/Content/Credits Section/TitlePanel"
+      ],
+      "gone_panels": [
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel"
+      ],
+      "new_texts": [
+        "All of this is possible thanks to all the amazing patrons supporting this project on Patreon. I truly can't thank you enough for all this <3",
+        "Go To Patreon Simulation",
+        "Development Team",
+        "Code",
+        "L\u00e9o Caussan",
+        "-",
+        "Creator & Crazy Scientist",
+        "Alex Sawyer",
+        "-",
+        "Collaborator Turned Dev",
+        "Art",
+        "Braxiations",
+        "-",
+        "Art Prodigy",
+        "Active Collaborators",
+        "PhatSauce",
+        "-",
+        "Dev (Balance and Tests)",
+        "Aleo",
+        "-",
+        "Dev (Optimization Specialist)",
+        "Grimmethy",
+        "-",
+        "Dev (Professional Bug-fixer)",
+        "Collaborators in-memoriam",
+        "Piotr",
+        "AntonK",
+        "blennerhassett",
+        "mcglovino",
+        "MrTin",
+        "Daniel Majonica",
+        "Eric (eschurma)",
+        "-",
+        "First Collab & enum Teacher",
+        "Special Thanks to",
+        "RadNugget",
+        "BibiteBoi",
+        "Altus-TheDev",
+        "Fireballme",
+        "Storme"
+      ],
+      "dialogs_after": [],
+      "changed": true,
+      "diff": {}
+    },
+    {
+      "action": "menu:Load",
+      "hit": {
+        "ok": false,
+        "label": "Load",
+        "hits": [],
+        "count": 0
+      },
+      "before": {
+        "tick": 0,
+        "counts": null,
+        "tools": null,
+        "zones": null,
+        "simTime": null,
+        "state": "none",
+        "tools_error": "not_in_simulation: no simulation is running",
+        "zones_error": "not_in_simulation: no simulation is running"
+      },
+      "after": {
+        "tick": 0,
+        "counts": null,
+        "tools": null,
+        "zones": null,
+        "simTime": null,
+        "state": "none",
+        "tools_error": "not_in_simulation: no simulation is running",
+        "zones_error": "not_in_simulation: no simulation is running"
+      },
+      "active_panels_before": [],
+      "active_panels_after": [],
+      "new_panels": [],
+      "gone_panels": [],
+      "new_texts": [],
+      "dialogs_after": [],
+      "changed": false,
+      "diff": {}
+    },
+    {
+      "action": "settings:Settings",
+      "hit": {
+        "ok": false,
+        "label": "Settings",
+        "hits": [],
+        "count": 0
+      },
+      "before": {
+        "tick": 0,
+        "counts": null,
+        "tools": null,
+        "zones": null,
+        "simTime": null,
+        "state": "none",
+        "tools_error": "not_in_simulation: no simulation is running",
+        "zones_error": "not_in_simulation: no simulation is running"
+      },
+      "after": {
+        "tick": 0,
+        "counts": null,
+        "tools": null,
+        "zones": null,
+        "simTime": null,
+        "state": "none",
+        "tools_error": "not_in_simulation: no simulation is running",
+        "zones_error": "not_in_simulation: no simulation is running"
+      },
+      "active_panels_before": [],
+      "active_panels_after": [],
+      "new_panels": [],
+      "gone_panels": [],
+      "new_texts": [],
+      "dialogs_after": [],
+      "changed": false,
+      "diff": {}
+    },
+    {
+      "action": "settings:Graphic Settings",
+      "hit": {
+        "ok": false,
+        "label": "Graphic Settings",
+        "hits": [],
+        "count": 0
+      },
+      "before": {
+        "tick": 0,
+        "counts": null,
+        "tools": null,
+        "zones": null,
+        "simTime": null,
+        "state": "none",
+        "tools_error": "not_in_simulation: no simulation is running",
+        "zones_error": "not_in_simulation: no simulation is running"
+      },
+      "after": {
+        "tick": 0,
+        "counts": null,
+        "tools": null,
+        "zones": null,
+        "simTime": null,
+        "state": "none",
+        "tools_error": "not_in_simulation: no simulation is running",
+        "zones_error": "not_in_simulation: no simulation is running"
+      },
+      "active_panels_before": [],
+      "active_panels_after": [],
+      "new_panels": [],
+      "gone_panels": [],
+      "new_texts": [],
+      "dialogs_after": [],
+      "changed": false,
+      "diff": {}
+    },
+    {
+      "action": "settings:Game Settings",
+      "hit": {
+        "ok": false,
+        "label": "Game Settings",
+        "hits": [],
+        "count": 0
+      },
+      "before": {
+        "tick": 0,
+        "counts": null,
+        "tools": null,
+        "zones": null,
+        "simTime": null,
+        "state": "none",
+        "tools_error": "not_in_simulation: no simulation is running",
+        "zones_error": "not_in_simulation: no simulation is running"
+      },
+      "after": {
+        "tick": 0,
+        "counts": null,
+        "tools": null,
+        "zones": null,
+        "simTime": null,
+        "state": "none",
+        "tools_error": "not_in_simulation: no simulation is running",
+        "zones_error": "not_in_simulation: no simulation is running"
+      },
+      "active_panels_before": [],
+      "active_panels_after": [],
+      "new_panels": [],
+      "gone_panels": [],
+      "new_texts": [],
+      "dialogs_after": [],
+      "changed": false,
+      "diff": {}
+    },
+    {
+      "action": "settings:Hotkeys",
+      "hit": {
+        "ok": false,
+        "label": "Hotkeys",
+        "hits": [],
+        "count": 0
+      },
+      "before": {
+        "tick": 0,
+        "counts": null,
+        "tools": null,
+        "zones": null,
+        "simTime": null,
+        "state": "none",
+        "tools_error": "not_in_simulation: no simulation is running",
+        "zones_error": "not_in_simulation: no simulation is running"
+      },
+      "after": {
+        "tick": 0,
+        "counts": null,
+        "tools": null,
+        "zones": null,
+        "simTime": null,
+        "state": "none",
+        "tools_error": "not_in_simulation: no simulation is running",
+        "zones_error": "not_in_simulation: no simulation is running"
+      },
+      "active_panels_before": [],
+      "active_panels_after": [],
+      "new_panels": [],
+      "gone_panels": [],
+      "new_texts": [],
+      "dialogs_after": [],
+      "changed": false,
+      "diff": {}
+    },
+    {
+      "action": "world:load",
+      "before": null,
+      "after": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [],
+          "pheroTowers": [],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "active_panels": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel"
+      ],
+      "changed": true
+    },
+    {
+      "action": "world:PlacerButton",
+      "hit": {
+        "ok": true,
+        "pressed": "PlacerButton",
+        "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/PlacerButton"
+      },
+      "before": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [],
+          "pheroTowers": [],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "after": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [],
+          "pheroTowers": [],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "active_panels_before": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel"
+      ],
+      "active_panels_after": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel"
+      ],
+      "new_panels": [],
+      "gone_panels": [],
+      "new_texts": [],
+      "dialogs_after": [],
+      "changed": false,
+      "diff": {}
+    },
+    {
+      "action": "placer:PheroTower",
+      "hit": {
+        "ok": true,
+        "label": "PheroTower",
+        "hits": [
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/PlacerButton/Placers/PheroTower",
+            "name": "PheroTower",
+            "label": "PheroTower",
+            "clicked": true
+          }
+        ],
+        "count": 1
+      },
+      "before": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [],
+          "pheroTowers": [],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "after": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "active_panels_before": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel"
+      ],
+      "active_panels_after": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel"
+      ],
+      "new_panels": [],
+      "gone_panels": [],
+      "new_texts": [],
+      "dialogs_after": [],
+      "changed": true,
+      "diff": {
+        "tools": {
+          "before": {
+            "ok": true,
+            "radTowers": [],
+            "pheroTowers": [],
+            "colorSelectors": []
+          },
+          "after": {
+            "ok": true,
+            "radTowers": [],
+            "pheroTowers": [
+              {
+                "id": 1,
+                "x": -609.6297,
+                "y": -400.0,
+                "r": 0.0,
+                "g": 0.0,
+                "b": 0.0,
+                "dir": 0.0
+              }
+            ],
+            "colorSelectors": []
+          }
+        }
+      }
+    },
+    {
+      "action": "placer:PlacePellets",
+      "hit": {
+        "ok": true,
+        "label": "PlacePellets",
+        "hits": [
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/PlacerButton/Placers/PlacePellets",
+            "name": "PlacePellets",
+            "label": "PlacePellets",
+            "clicked": true
+          }
+        ],
+        "count": 1
+      },
+      "before": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "after": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "active_panels_before": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel"
+      ],
+      "active_panels_after": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider (1)/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider/NormalSecton/SliderPanel"
+      ],
+      "new_panels": [
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider (1)/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider/NormalSecton/SliderPanel"
+      ],
+      "gone_panels": [],
+      "new_texts": [
+        "You can place pellets by left mouse click.",
+        "Material",
+        "Plant",
+        "Pellet Size Factor",
+        "1.0",
+        "Pellet Number",
+        "1",
+        "Press close button to exit placement mode."
+      ],
+      "dialogs_after": [
+        "Press close button to exit placement mode."
+      ],
+      "changed": true,
+      "diff": {}
+    },
+    {
+      "action": "placer:PlacerButton",
+      "hit": {
+        "ok": true,
+        "label": "PlacerButton",
+        "hits": [
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/PlacerButton",
+            "name": "PlacerButton",
+            "label": "PlacerButton",
+            "clicked": true
+          }
+        ],
+        "count": 1
+      },
+      "before": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "after": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "active_panels_before": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider (1)/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider/NormalSecton/SliderPanel"
+      ],
+      "active_panels_after": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider (1)/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider/NormalSecton/SliderPanel"
+      ],
+      "new_panels": [],
+      "gone_panels": [],
+      "new_texts": [],
+      "dialogs_after": [
+        "Press close button to exit placement mode."
+      ],
+      "changed": false,
+      "diff": {}
+    },
+    {
+      "action": "placer:RadTower",
+      "hit": {
+        "ok": true,
+        "label": "RadTower",
+        "hits": [
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/PlacerButton/Placers/RadTower",
+            "name": "RadTower",
+            "label": "RadTower",
+            "clicked": true
+          }
+        ],
+        "count": 1
+      },
+      "before": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "after": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "active_panels_before": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider (1)/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider/NormalSecton/SliderPanel"
+      ],
+      "active_panels_after": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider (1)/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider/NormalSecton/SliderPanel"
+      ],
+      "new_panels": [],
+      "gone_panels": [],
+      "new_texts": [],
+      "dialogs_after": [
+        "Press close button to exit placement mode."
+      ],
+      "changed": true,
+      "diff": {
+        "tools": {
+          "before": {
+            "ok": true,
+            "radTowers": [],
+            "pheroTowers": [
+              {
+                "id": 1,
+                "x": -609.6297,
+                "y": -400.0,
+                "r": 0.0,
+                "g": 0.0,
+                "b": 0.0,
+                "dir": 0.0
+              }
+            ],
+            "colorSelectors": []
+          },
+          "after": {
+            "ok": true,
+            "radTowers": [
+              {
+                "id": 2,
+                "x": -609.6297,
+                "y": -400.0,
+                "count": 0.001,
+                "intensity": 0.001,
+                "radius": 250.0,
+                "taper": 1.0
+              }
+            ],
+            "pheroTowers": [
+              {
+                "id": 1,
+                "x": -609.6297,
+                "y": -400.0,
+                "r": 0.0,
+                "g": 0.0,
+                "b": 0.0,
+                "dir": 0.0
+              }
+            ],
+            "colorSelectors": []
+          }
+        }
+      }
+    },
+    {
+      "action": "world:UserActions",
+      "hit": {
+        "ok": true,
+        "pressed": "UserActions",
+        "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/UserActions"
+      },
+      "before": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "after": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "active_panels_before": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider (1)/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider/NormalSecton/SliderPanel"
+      ],
+      "active_panels_after": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider (1)/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider/NormalSecton/SliderPanel"
+      ],
+      "new_panels": [],
+      "gone_panels": [],
+      "new_texts": [],
+      "dialogs_after": [
+        "Press close button to exit placement mode."
+      ],
+      "changed": false,
+      "diff": {}
+    },
+    {
+      "action": "world:ViewButton",
+      "hit": {
+        "ok": true,
+        "pressed": "ViewButton",
+        "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton"
+      },
+      "before": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "after": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "active_panels_before": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider (1)/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider/NormalSecton/SliderPanel"
+      ],
+      "active_panels_after": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider (1)/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider/NormalSecton/SliderPanel"
+      ],
+      "new_panels": [
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel"
+      ],
+      "gone_panels": [],
+      "new_texts": [
+        "Show Fertility Zones",
+        "Show Pheromones",
+        "Show Ruler",
+        "Show Grid",
+        "Show Status Bars",
+        "Show Bibite Field Of View",
+        "Show Bibite Focus Weights"
+      ],
+      "dialogs_after": [
+        "Press close button to exit placement mode."
+      ],
+      "changed": true,
+      "diff": {}
+    },
+    {
+      "action": "world:DynamicParametersButton",
+      "hit": {
+        "ok": true,
+        "pressed": "DynamicParametersButton",
+        "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/DynamicParametersButton"
+      },
+      "before": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "after": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "active_panels_before": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider (1)/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider/NormalSecton/SliderPanel"
+      ],
+      "active_panels_after": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider (1)/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel",
+        "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/TabButtons/ClosePanel"
+      ],
+      "new_panels": [
+        "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel",
+        "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/TabButtons/ClosePanel"
+      ],
+      "gone_panels": [],
+      "new_texts": [
+        "Simulation Options",
+        "Corpses",
+        "Prevent Mutations",
+        "Pellet Collision",
+        "Disable Herding",
+        "Add Shaded Bounds",
+        "The Red Death Bloom",
+        "Prevent Red Pheromones Production",
+        "Prevent Green Pheromones Production",
+        "Prevent Blue Pheromones Production",
+        "Cheat Options",
+        "Void-No-Mo'",
+        "Simulation Performance Parameters",
+        "Ticks Per Second",
+        "30 tps",
+        "Brain Update Factor",
+        "2 X",
+        "Decay Update Factor",
+        "2 X",
+        "Vision Lookup Factor",
+        "10 X",
+        "Vision Sensing Factor",
+        "5 X",
+        "Minimum Pellet Size",
+        "100 mu\u00b2",
+        "Physics Parameters",
+        "Drag Coefficient",
+        "5.00 Nu/s",
+        "Disable Drag On Held Pellet"
+      ],
+      "dialogs_after": [
+        "Press close button to exit placement mode."
+      ],
+      "changed": true,
+      "diff": {}
+    },
+    {
+      "action": "world:AncestralLineageButton",
+      "hit": {
+        "ok": true,
+        "pressed": "AncestralLineageButton",
+        "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/AncestralLineageButton"
+      },
+      "before": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "after": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "active_panels_before": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider (1)/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel",
+        "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/TabButtons/ClosePanel"
+      ],
+      "active_panels_after": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider (1)/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider/NormalSecton/SliderPanel"
+      ],
+      "new_panels": [],
+      "gone_panels": [
+        "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel",
+        "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/SimulationSettings/SimulationSettings/Viewport/Content/SimulationParameterHolder/SettingGroupPrefab(Clone)/SettingsHolder/SettingSlider(Clone)/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/TabButtons/ClosePanel"
+      ],
+      "new_texts": [
+        "Species Panel",
+        "Not enough data collected, try again in a few minutes",
+        "OK",
+        "Info",
+        "+"
+      ],
+      "dialogs_after": [
+        "Press close button to exit placement mode."
+      ],
+      "changed": true,
+      "diff": {}
+    },
+    {
+      "action": "world:InformationPanelButton",
+      "hit": {
+        "ok": true,
+        "pressed": "InformationPanelButton",
+        "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/InformationPanelButton"
+      },
+      "before": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "after": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "active_panels_before": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider (1)/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider/NormalSecton/SliderPanel"
+      ],
+      "active_panels_after": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider (1)/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer2/StatsPanel"
+      ],
+      "new_panels": [
+        "UICanvas/MainUI/Layer2/StatsPanel"
+      ],
+      "gone_panels": [],
+      "new_texts": [
+        "Go To Gene Analysis",
+        "Stats and Analysis Panel",
+        "Data:",
+        "Biomass Data",
+        "Curves:",
+        "All",
+        "1h",
+        "10h",
+        "2 days",
+        "2 weeks",
+        "4 months",
+        "2 years",
+        "0.00 E",
+        "10.00 kE",
+        "20.00 kE",
+        "30.00 kE",
+        "40.00 kE",
+        "50.00 kE",
+        "60.00 kE",
+        "70.00 kE",
+        "80.00 kE",
+        "90.00 kE",
+        "100.00 kE",
+        "0.00 h",
+        "0.04 h",
+        "0.08 h",
+        "0.12 h",
+        "0.16 h",
+        "0.20 h",
+        "0.24 h",
+        "0.28 h",
+        "0.32 h",
+        "0.36 h",
+        "0.40 h",
+        "0.44 h",
+        "0.48 h",
+        "0.52 h",
+        "0.56 h",
+        "0.60 h",
+        "0.64 h"
+      ],
+      "dialogs_after": [
+        "Press close button to exit placement mode."
+      ],
+      "changed": true,
+      "diff": {}
+    },
+    {
+      "action": "world:SettingsButton",
+      "hit": {
+        "ok": true,
+        "pressed": "SettingsButton",
+        "path": "UICanvas/MainUI/Layer2/ExpandedBrainPanel/Top Bar/TopLeft/SettingsButton"
+      },
+      "before": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "after": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "active_panels_before": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider (1)/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer2/StatsPanel"
+      ],
+      "active_panels_after": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider (1)/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer2/StatsPanel"
+      ],
+      "new_panels": [],
+      "gone_panels": [],
+      "new_texts": [],
+      "dialogs_after": [
+        "Press close button to exit placement mode."
+      ],
+      "changed": false,
+      "diff": {}
+    },
+    {
+      "action": "world:PauseButton",
+      "hit": {
+        "ok": true,
+        "pressed": "PauseButton",
+        "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/PauseButton"
+      },
+      "before": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "after": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "active_panels_before": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider (1)/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer2/StatsPanel"
+      ],
+      "active_panels_after": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider (1)/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer2/StatsPanel"
+      ],
+      "new_panels": [],
+      "gone_panels": [],
+      "new_texts": [],
+      "dialogs_after": [
+        "Press close button to exit placement mode."
+      ],
+      "changed": false,
+      "diff": {}
+    },
+    {
+      "action": "slider:UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel/Slider",
+      "hit": {
+        "ok": true,
+        "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel/Slider",
+        "value": 0.5
+      },
+      "before": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "after": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "active_panels_before": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider (1)/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer2/StatsPanel"
+      ],
+      "active_panels_after": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider (1)/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer2/StatsPanel"
+      ],
+      "new_panels": [],
+      "gone_panels": [],
+      "new_texts": [
+        "X 2.24"
+      ],
+      "dialogs_after": [
+        "Press close button to exit placement mode."
+      ],
+      "changed": true,
+      "diff": {}
+    },
+    {
+      "action": "inspector:Kill",
+      "hit": {
+        "ok": true,
+        "label": "Kill",
+        "hits": [
+          {
+            "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/UserActions/container/KillHalf",
+            "name": "KillHalf",
+            "label": "KillHalf",
+            "clicked": true
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel/ButtonHolder/KillBibiteButton",
+            "name": "KillBibiteButton",
+            "label": "KillBibiteButton",
+            "clicked": true
+          }
+        ],
+        "count": 2
+      },
+      "before": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "after": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "active_panels_before": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider (1)/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer2/StatsPanel"
+      ],
+      "active_panels_after": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider (1)/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer2/StatsPanel"
+      ],
+      "new_panels": [],
+      "gone_panels": [],
+      "new_texts": [
+        "Killing half the population",
+        "You're about to kill half of all bibites (each bibites will have a 50% chance of being killed, results may vary). \n\rAre you sure???",
+        "Cancel",
+        "YES",
+        "Time: 00:00:25\n820 fps  /  61 tps\nsim/real: x2.05"
+      ],
+      "dialogs_after": [
+        "Killing half the population",
+        "You're about to kill half of all bibites (each bibites will have a 50% chance of being killed, results may vary). \n\rAre you sure???",
+        "KILL",
+        "SAVE",
+        "Press close button to exit placement mode."
+      ],
+      "changed": true,
+      "diff": {}
+    },
+    {
+      "action": "inspector:dismiss",
+      "hit": {
+        "hits": [
+          {
+            "ok": false,
+            "label": "No",
+            "hits": [],
+            "count": 0
+          },
+          {
+            "ok": true,
+            "label": "Cancel",
+            "hits": [
+              {
+                "path": "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/CancelPelletPlacement",
+                "name": "CancelPelletPlacement",
+                "label": "CancelPelletPlacement",
+                "clicked": true
+              }
+            ],
+            "count": 1
+          },
+          {
+            "ok": false,
+            "label": "Close",
+            "hits": [],
+            "count": 0
+          }
+        ]
+      },
+      "before": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "after": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "active_panels_before": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider (1)/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer2/StatsPanel"
+      ],
+      "active_panels_after": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel",
+        "UICanvas/MainUI/Layer2/StatsPanel"
+      ],
+      "new_panels": [],
+      "gone_panels": [
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider (1)/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer1/Panels/PlacerPanels/PlacePelletPanel/Holder/BasicSlider/NormalSecton/SliderPanel"
+      ],
+      "new_texts": [
+        "Time: 00:00:34\n600 fps  /  70 tps\nsim/real: x2.32"
+      ],
+      "dialogs_after": [
+        "Killing half the population",
+        "You're about to kill half of all bibites (each bibites will have a 50% chance of being killed, results may vary). \n\rAre you sure???",
+        "KILL",
+        "SAVE"
+      ],
+      "changed": true,
+      "diff": {}
+    },
+    {
+      "action": "inspector:Lay Egg",
+      "hit": {
+        "ok": false,
+        "label": "Lay Egg",
+        "hits": [],
+        "count": 0
+      },
+      "before": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "after": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "active_panels_before": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel",
+        "UICanvas/MainUI/Layer2/StatsPanel"
+      ],
+      "active_panels_after": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel",
+        "UICanvas/MainUI/Layer2/StatsPanel"
+      ],
+      "new_panels": [],
+      "gone_panels": [],
+      "new_texts": [
+        "Time: 00:00:37\n585 fps  /  70 tps\nsim/real: x2.32"
+      ],
+      "dialogs_after": [
+        "Killing half the population",
+        "You're about to kill half of all bibites (each bibites will have a 50% chance of being killed, results may vary). \n\rAre you sure???",
+        "KILL",
+        "SAVE"
+      ],
+      "changed": true,
+      "diff": {}
+    },
+    {
+      "action": "inspector:dismiss",
+      "hit": {
+        "hits": [
+          {
+            "ok": false,
+            "label": "No",
+            "hits": [],
+            "count": 0
+          },
+          {
+            "ok": false,
+            "label": "Cancel",
+            "hits": [],
+            "count": 0
+          },
+          {
+            "ok": false,
+            "label": "Close",
+            "hits": [],
+            "count": 0
+          }
+        ]
+      },
+      "before": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "after": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "active_panels_before": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel",
+        "UICanvas/MainUI/Layer2/StatsPanel"
+      ],
+      "active_panels_after": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel",
+        "UICanvas/MainUI/Layer2/StatsPanel"
+      ],
+      "new_panels": [],
+      "gone_panels": [],
+      "new_texts": [
+        "Time: 00:00:45\n586 fps  /  71 tps\nsim/real: x2.37"
+      ],
+      "dialogs_after": [
+        "Killing half the population",
+        "You're about to kill half of all bibites (each bibites will have a 50% chance of being killed, results may vary). \n\rAre you sure???",
+        "KILL",
+        "SAVE"
+      ],
+      "changed": true,
+      "diff": {}
+    },
+    {
+      "action": "inspector:Lay",
+      "hit": {
+        "ok": true,
+        "label": "Lay",
+        "hits": [
+          {
+            "path": "UICanvas/MainUI/Layer0/Controls/TopCenter/PlayButton",
+            "name": "PlayButton",
+            "label": "PlayButton",
+            "clicked": true
+          },
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel/ButtonHolder/LayBibiteEggButton",
+            "name": "LayBibiteEggButton",
+            "label": "LayBibiteEggButton",
+            "clicked": false,
+            "error": "TargetInvocationException: Exception has been thrown by the target of an invocation."
+          }
+        ],
+        "count": 2
+      },
+      "before": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "after": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "active_panels_before": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel",
+        "UICanvas/MainUI/Layer2/StatsPanel"
+      ],
+      "active_panels_after": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel",
+        "UICanvas/MainUI/Layer2/StatsPanel"
+      ],
+      "new_panels": [],
+      "gone_panels": [],
+      "new_texts": [
+        "Time: 00:00:48\n779 fps  /  70 tps\nsim/real: x2.33",
+        "X 1.00"
+      ],
+      "dialogs_after": [
+        "Killing half the population",
+        "You're about to kill half of all bibites (each bibites will have a 50% chance of being killed, results may vary). \n\rAre you sure???",
+        "KILL",
+        "SAVE"
+      ],
+      "changed": true,
+      "diff": {}
+    },
+    {
+      "action": "inspector:dismiss",
+      "hit": {
+        "hits": [
+          {
+            "ok": false,
+            "label": "No",
+            "hits": [],
+            "count": 0
+          },
+          {
+            "ok": false,
+            "label": "Cancel",
+            "hits": [],
+            "count": 0
+          },
+          {
+            "ok": false,
+            "label": "Close",
+            "hits": [],
+            "count": 0
+          }
+        ]
+      },
+      "before": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "after": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "active_panels_before": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel",
+        "UICanvas/MainUI/Layer2/StatsPanel"
+      ],
+      "active_panels_after": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel",
+        "UICanvas/MainUI/Layer2/StatsPanel"
+      ],
+      "new_panels": [],
+      "gone_panels": [],
+      "new_texts": [
+        "Time: 00:00:51\n1028 fps  /  32 tps\nsim/real: x1.07"
+      ],
+      "dialogs_after": [
+        "Killing half the population",
+        "You're about to kill half of all bibites (each bibites will have a 50% chance of being killed, results may vary). \n\rAre you sure???",
+        "KILL",
+        "SAVE"
+      ],
+      "changed": true,
+      "diff": {}
+    },
+    {
+      "action": "inspector:Save",
+      "hit": {
+        "ok": true,
+        "label": "Save",
+        "hits": [
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel/ButtonHolder/Save",
+            "name": "Save",
+            "label": "Save",
+            "clicked": true
+          }
+        ],
+        "count": 1
+      },
+      "before": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "after": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "active_panels_before": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel",
+        "UICanvas/MainUI/Layer2/StatsPanel"
+      ],
+      "active_panels_after": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel",
+        "UICanvas/MainUI/Layer2/StatsPanel"
+      ],
+      "new_panels": [],
+      "gone_panels": [],
+      "new_texts": [
+        "Time: 00:00:53\n1049 fps  /  32 tps\nsim/real: x1.06"
+      ],
+      "dialogs_after": [
+        "Killing half the population",
+        "You're about to kill half of all bibites (each bibites will have a 50% chance of being killed, results may vary). \n\rAre you sure???",
+        "KILL",
+        "SAVE"
+      ],
+      "changed": true,
+      "diff": {}
+    },
+    {
+      "action": "inspector:dismiss",
+      "hit": {
+        "hits": [
+          {
+            "ok": false,
+            "label": "No",
+            "hits": [],
+            "count": 0
+          },
+          {
+            "ok": false,
+            "label": "Cancel",
+            "hits": [],
+            "count": 0
+          },
+          {
+            "ok": false,
+            "label": "Close",
+            "hits": [],
+            "count": 0
+          }
+        ]
+      },
+      "before": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "after": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "active_panels_before": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel",
+        "UICanvas/MainUI/Layer2/StatsPanel"
+      ],
+      "active_panels_after": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel",
+        "UICanvas/MainUI/Layer2/StatsPanel"
+      ],
+      "new_panels": [],
+      "gone_panels": [],
+      "new_texts": [
+        "Time: 00:00:56\n1008 fps  /  30 tps\nsim/real: x1.00"
+      ],
+      "dialogs_after": [
+        "Killing half the population",
+        "You're about to kill half of all bibites (each bibites will have a 50% chance of being killed, results may vary). \n\rAre you sure???",
+        "KILL",
+        "SAVE"
+      ],
+      "changed": true,
+      "diff": {}
+    },
+    {
+      "action": "inspector:Edit",
+      "hit": {
+        "ok": true,
+        "label": "Edit",
+        "hits": [
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel/ButtonHolder/Edit",
+            "name": "Edit",
+            "label": "Edit",
+            "clicked": false,
+            "error": "TargetInvocationException: Exception has been thrown by the target of an invocation."
+          }
+        ],
+        "count": 1
+      },
+      "before": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "after": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "active_panels_before": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel",
+        "UICanvas/MainUI/Layer2/StatsPanel"
+      ],
+      "active_panels_after": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel",
+        "UICanvas/MainUI/Layer2/StatsPanel"
+      ],
+      "new_panels": [],
+      "gone_panels": [],
+      "new_texts": [
+        "Time: 00:00:57\n1072 fps  /  30 tps\nsim/real: x1.00"
+      ],
+      "dialogs_after": [
+        "Killing half the population",
+        "You're about to kill half of all bibites (each bibites will have a 50% chance of being killed, results may vary). \n\rAre you sure???",
+        "KILL",
+        "SAVE"
+      ],
+      "changed": true,
+      "diff": {}
+    },
+    {
+      "action": "inspector:dismiss",
+      "hit": {
+        "hits": [
+          {
+            "ok": false,
+            "label": "No",
+            "hits": [],
+            "count": 0
+          },
+          {
+            "ok": false,
+            "label": "Cancel",
+            "hits": [],
+            "count": 0
+          },
+          {
+            "ok": false,
+            "label": "Close",
+            "hits": [],
+            "count": 0
+          }
+        ]
+      },
+      "before": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "after": {
+        "tick": 0,
+        "counts": null,
+        "tools": {
+          "ok": true,
+          "radTowers": [
+            {
+              "id": 2,
+              "x": -609.6297,
+              "y": -400.0,
+              "count": 0.001,
+              "intensity": 0.001,
+              "radius": 250.0,
+              "taper": 1.0
+            }
+          ],
+          "pheroTowers": [
+            {
+              "id": 1,
+              "x": -609.6297,
+              "y": -400.0,
+              "r": 0.0,
+              "g": 0.0,
+              "b": 0.0,
+              "dir": 0.0
+            }
+          ],
+          "colorSelectors": []
+        },
+        "zones": [
+          {
+            "name": "World",
+            "id": 0,
+            "material": "Plant",
+            "distribution": "CentricGradual",
+            "fertility": 0.7827918,
+            "biomassDensity": 1.0,
+            "pelletSize": 1.0,
+            "movement": "None",
+            "speed": 0.001,
+            "posX": 0.0,
+            "posY": 0.0,
+            "radiusIsRelative": true,
+            "radius": 1.0,
+            "worldX": 0.0,
+            "worldY": 0.0
+          }
+        ],
+        "simTime": null,
+        "state": "none"
+      },
+      "active_panels_before": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel",
+        "UICanvas/MainUI/Layer2/StatsPanel"
+      ],
+      "active_panels_after": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel",
+        "UICanvas/MainUI/Layer2/StatsPanel"
+      ],
+      "new_panels": [],
+      "gone_panels": [],
+      "new_texts": [
+        "Time: 00:01:00\n222 fps  /  6 tps\nsim/real: x0.22"
+      ],
+      "dialogs_after": [
+        "Killing half the population",
+        "You're about to kill half of all bibites (each bibites will have a 50% chance of being killed, results may vary). \n\rAre you sure???",
+        "KILL",
+        "SAVE"
+      ],
+      "changed": true,
+      "diff": {}
+    }
+  ],
+  "refined_actions": [
+    {
+      "action": "menu:Bibite Library (path)",
+      "hit": {
+        "ok": true,
+        "pressed": "Editor",
+        "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Editor"
+      },
+      "before": {
+        "tick": 0,
+        "counts": null
+      },
+      "after": {
+        "tick": 0,
+        "counts": null
+      },
+      "active_panels_before": [
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel"
+      ],
+      "active_panels_after": [
+        "UI/BibiteSelector/SelectionPanel",
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel"
+      ],
+      "new_panels": [
+        "UI/BibiteSelector/SelectionPanel"
+      ],
+      "gone_panels": [],
+      "new_texts": [
+        "Create New",
+        "Template Bibites",
+        "Accept",
+        "0.6.3.1",
+        "Arborea Magna",
+        "0.6.3.1",
+        "Arrietty 5",
+        "0.6.3.1",
+        "Arrietty 6",
+        "0.6.3.1",
+        "Arrietty 6",
+        "0.6.3.1",
+        "Arrietty 7",
+        "0.6.3.1",
+        "Arrietty 7",
+        "0.6.3.1",
+        "Arrietty 7",
+        "0.6.3.1",
+        "Avarus Nyx",
+        "0.6.3.1",
+        "Avarus Sumo",
+        "0.6.3.1",
+        "Backy food",
+        "0.6.3.1",
+        "Basic bibite",
+        "0.6.0",
+        "Basic knowsonionus",
+        "0.6.3.1",
+        "Basic knowsonionus",
+        "0.6.3.1",
+        "Fixture Sample",
+        "0.6.3.1",
+        "Basicad bibite",
+        "0.6.3.1",
+        "Battery",
+        "0.6.3.1",
+        "Bibitus Basicus (R-Selection)",
+        "0.6.3.1",
+        "Bibitus Basicus (R-Selection)",
+        "0.6.3.1"
+      ],
+      "dialogs_after": [],
+      "changed": true,
+      "note": "pressed by node path/name"
+    },
+    {
+      "action": "menu:Additional Tools (path)",
+      "hit": {
+        "ok": true,
+        "pressed": "More",
+        "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/Section/More"
+      },
+      "before": {
+        "tick": 0,
+        "counts": null
+      },
+      "after": {
+        "tick": 0,
+        "counts": null
+      },
+      "active_panels_before": [
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel"
+      ],
+      "active_panels_after": [
+        "UI/WelcomeScreen/ToolsPanel"
+      ],
+      "new_panels": [
+        "UI/WelcomeScreen/ToolsPanel"
+      ],
+      "gone_panels": [
+        "UI/WelcomeScreen/Main Holder/ButtonsPanel"
+      ],
+      "new_texts": [
+        "There are many additional tools available that allow you to expand your understanding of The Bibites or add a few functionalities that are not yet present in-game. Here, I'll try to link you to a few of those.",
+        "The Bibites' Wikipedia",
+        "The wiki is a treasure trove of information regarding the inner workings of the simulation and will allow you to get a far deeper understanding of the mechanics at play. It's by no means complete; I basically just added the first basic information myself, and I expect the community to take the ball and maintain, deepen, and bolster it.",
+        "The Bibite Research Conglomerate",
+        "This is a link to the Bibite Research Conglomerate, an un-official Discord server that is centered around exploring The Bibites under all its facets. \nThis is 100% a public fan-made and fan-maintained server, and the devs are not there themselves, but we mentioned it in a couple videos and people keep asking for the link\n\nSo if you want to interact with an awesome community of moders, researchers, and share your discoveries and creations, I'm sure they'll welcome you with open arms!",
+        "The Bibites Patreon Simulation",
+        "And again, of course, I want to reiterate my eternal gratitude toward my patrons who are supporting the project on Patreon. You allow me to keep working on the project full-time, and I'll be forever grateful for this reason alone.",
+        "The Custom Sprite Editor",
+        "As the bibites have procedural appearances, allowing the bibites to adopt a wide variety of appearances depending on their genes, and as I often have to show an image of a particular bibite in my videos, I developed a custom sprite editor that allows you to export an image of a bibite defined by a set of genes. I might as well make it available to users!"
+      ],
+      "dialogs_after": [
+        "The wiki is a treasure trove of information regarding the inner workings of the simulation and will allow you to get a far deeper understanding of the mechanics at play. It's by no means complete; I basically just added the first basic information myself, and I expect the community to take the ball and maintain, deepen, and bolster it.",
+        "This is a link to the Bibite Research Conglomerate, an un-official Discord server that is centered around exploring The Bibites under all its facets. \nThis is 100% a public fan-made and fan-maintained server, and the devs are not there themselves, but we mentioned it in a couple videos and people keep asking for the link\n\nSo if you want to interact with an awesome community of moders, researchers, and share your discoveries and creations, I'm sure they'll welcome you with open arms!"
+      ],
+      "changed": true,
+      "note": "pressed by node path/name"
+    },
+    {
+      "action": "menu:Load (path)",
+      "hit": {
+        "ok": true,
+        "pressed": "LoadSim",
+        "path": "UI/WelcomeScreen/Main Holder/ButtonsPanel/LoadSim"
+      },
+      "before": {
+        "tick": 0,
+        "counts": null
+      },
+      "after": {
+        "tick": 0,
+        "counts": null
+      },
+      "active_panels_before": [],
+      "active_panels_after": [
+        "UI/LoadGamePanel",
+        "UI/LoadGamePanel/SelectedPanel"
+      ],
+      "new_panels": [
+        "UI/LoadGamePanel",
+        "UI/LoadGamePanel/SelectedPanel"
+      ],
+      "gone_panels": [],
+      "new_texts": [
+        "Include autosaves",
+        "ozymandias",
+        "25-10-2026 21:14",
+        "autosave_20261008004410",
+        "08-10-2026 00:44",
+        "autosave_20261008004310",
+        "08-10-2026 00:43",
+        "autosave_20261008004210",
+        "08-10-2026 00:42",
+        "autosave_20261008004103",
+        "08-10-2026 00:41",
+        "autosave_20261008003413",
+        "08-10-2026 00:34",
+        "autosave_20261008003313",
+        "08-10-2026 00:33",
+        "autosave_20261008003213",
+        "08-10-2026 00:32",
+        "autosave_20261008002328",
+        "08-10-2026 00:23",
+        "autosave_20261008002228",
+        "08-10-2026 00:22",
+        "autosave_20261008002128",
+        "08-10-2026 00:21",
+        "autosave_20261008001229",
+        "08-10-2026 00:12",
+        "autosave_20261008000848",
+        "08-10-2026 00:08",
+        "autosave_20261008000748",
+        "08-10-2026 00:07",
+        "autosave_20261008000648",
+        "08-10-2026 00:06",
+        "autosave_20261007220433",
+        "07-10-2026 22:04",
+        "autosave_20261007220333",
+        "07-10-2026 22:03",
+        "autosave_20261007220233",
+        "07-10-2026 22:02",
+        "autosave_20261007220012",
+        "07-10-2026 22:00",
+        "autosave_20261007215912"
+      ],
+      "dialogs_after": [],
+      "changed": true,
+      "note": "pressed by node path/name"
+    },
+    {
+      "action": "inspector:Kill(clean)",
+      "hit": {
+        "ok": true,
+        "label": "Kill",
+        "hits": [
+          {
+            "path": "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel/ButtonHolder/KillBibiteButton",
+            "name": "KillBibiteButton",
+            "label": "KillBibiteButton",
+            "clicked": true
+          }
+        ],
+        "count": 1
+      },
+      "before": {
+        "tick": 0,
+        "counts": null
+      },
+      "after": {
+        "tick": 0,
+        "counts": null
+      },
+      "active_panels_before": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel",
+        "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel"
+      ],
+      "active_panels_after": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel"
+      ],
+      "new_panels": [],
+      "gone_panels": [
+        "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel"
+      ],
+      "new_texts": [],
+      "dialogs_after": [],
+      "changed": true,
+      "note": null
+    },
+    {
+      "action": "inspector:Kill dismiss",
+      "hit": {
+        "ok": true,
+        "path": "UICanvas/MainUI/TopLayer/Popuholder",
+        "active": false,
+        "active_in_hierarchy": false
+      },
+      "before": {
+        "tick": 0,
+        "counts": null
+      },
+      "after": {
+        "tick": 0,
+        "counts": null
+      },
+      "active_panels_before": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel"
+      ],
+      "active_panels_after": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel"
+      ],
+      "new_panels": [],
+      "gone_panels": [],
+      "new_texts": [],
+      "dialogs_after": [],
+      "changed": false,
+      "note": null
+    },
+    {
+      "action": "inspector:Lay Egg(clean)",
+      "hit": {
+        "ok": false,
+        "label": "Lay Egg",
+        "hits": [],
+        "count": 0
+      },
+      "before": {
+        "tick": 0,
+        "counts": null
+      },
+      "after": {
+        "tick": 0,
+        "counts": null
+      },
+      "active_panels_before": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel"
+      ],
+      "active_panels_after": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel"
+      ],
+      "new_panels": [],
+      "gone_panels": [],
+      "new_texts": [],
+      "dialogs_after": [],
+      "changed": false,
+      "note": null
+    },
+    {
+      "action": "inspector:Save(clean)",
+      "hit": {
+        "ok": false,
+        "label": "Save",
+        "hits": [],
+        "count": 0
+      },
+      "before": {
+        "tick": 0,
+        "counts": null
+      },
+      "after": {
+        "tick": 0,
+        "counts": null
+      },
+      "active_panels_before": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel"
+      ],
+      "active_panels_after": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel"
+      ],
+      "new_panels": [],
+      "gone_panels": [],
+      "new_texts": [],
+      "dialogs_after": [],
+      "changed": false,
+      "note": null
+    },
+    {
+      "action": "inspector:Edit(clean)",
+      "hit": {
+        "ok": false,
+        "label": "Edit",
+        "hits": [],
+        "count": 0
+      },
+      "before": {
+        "tick": 0,
+        "counts": null
+      },
+      "after": {
+        "tick": 0,
+        "counts": null
+      },
+      "active_panels_before": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel"
+      ],
+      "active_panels_after": [
+        "UICanvas/MainUI/Layer0/Controls/TopCenter/sliderHolder/BasicSlider/NormalSecton/SliderPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton/VisibilityPanel",
+        "UICanvas/MainUI/Layer0/UI Buttons/TopRight/timePanel"
+      ],
+      "new_panels": [],
+      "gone_panels": [],
+      "new_texts": [],
+      "dialogs_after": [],
+      "changed": false,
+      "note": null
+    }
+  ],
+  "refined_note": "Path/name-pressed menu rows and inspector actions after dismissing the KILL confirmation."
+}

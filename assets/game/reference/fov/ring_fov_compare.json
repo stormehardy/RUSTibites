@@ -1,0 +1,29 @@
+{
+  "schema": "rustibites.assets.ring_fov_compare.v1",
+  "fixture": "testdata/parity/bases/ring.base.zip",
+  "ticks": 600,
+  "commands": {
+    "game": "python tools/parity/capture.py --base testdata/parity/bases/ring.base.zip --ticks 600 --seed 12345 --feeding --out testdata/parity/fov/ring_game_600",
+    "rust": "target/release/rustibites.exe run testdata/parity/bases/ring.base.zip --ticks 600 --seed 12345 --capture testdata/parity/fov/ring_rust_600 --stats json",
+    "compare": "python tools/parity/compare.py testdata/parity/fov/ring_game_600 testdata/parity/fov/ring_rust_600 --profile default"
+  },
+  "fov_cadence": {
+    "capture": "assets/game/reference/fov/ring_fov.json",
+    "initial_fov_bibites": 2,
+    "initial_seen_arrays": "all seen arrays empty at load (nPlants/nMeat/nBibite=0)",
+    "first_nonempty_plan_seen_tick": 44,
+    "sample_count": 196,
+    "cadence_changes": "per-id seen-array signature changes recorded; first change at tick44 for -2115961727, then roughly every 30 ticks per id (see ring_fov.json)"
+  },
+  "compare": {
+    "brain_outputs_exact": "9000/9000 over 15 nodes",
+    "entity_digests": "sense/output/species/generation/tag/nodes/synapses exact 2/2",
+    "position_mae": 0.001953,
+    "position_max": 0.003906,
+    "energy_exact": "1/2 (max abs 3.052e-05)",
+    "health_mae": 2.289e-05,
+    "overall": "FAIL exit1 only from ecology_curves/entity_energy (game events 10 vs Rust 1); FOV/brain-IO evaluator evidence itself is exact (9000/9000).",
+    "raw_compare": "target/ring_fov_compare.json"
+  },
+  "note": "Focused post-task-128 Ring/identical-base FOV recapture: load-time empty seen cache then first non-empty plant-visible sample at tick44; game/Rust brain outputs exact on the overlapping stable entity. The generic comparator's ecology/energy gates fail from event/population divergence, not FOV counters."
+}

@@ -1,0 +1,2286 @@
+{
+  "name": "Boston Black SDF",
+  "faceInfo": {
+    "pointSize": 68,
+    "scale": 1,
+    "lineHeight": 88.4,
+    "ascentLine": 68,
+    "descentLine": -20.4,
+    "unitsPerEM": 0,
+    "unitsPerEm": null,
+    "padding": null
+  },
+  "characterTable": [
+    {
+      "unicode": "32",
+      "glyphIndex": "501",
+      "scale": 1
+    },
+    {
+      "unicode": "33",
+      "glyphIndex": "460",
+      "scale": 1
+    },
+    {
+      "unicode": "34",
+      "glyphIndex": "466",
+      "scale": 1
+    },
+    {
+      "unicode": "35",
+      "glyphIndex": "462",
+      "scale": 1
+    },
+    {
+      "unicode": "36",
+      "glyphIndex": "506",
+      "scale": 1
+    },
+    {
+      "unicode": "37",
+      "glyphIndex": "521",
+      "scale": 1
+    },
+    {
+      "unicode": "38",
+      "glyphIndex": "524",
+      "scale": 1
+    },
+    {
+      "unicode": "39",
+      "glyphIndex": "467",
+      "scale": 1
+    },
+    {
+      "unicode": "40",
+      "glyphIndex": "475",
+      "scale": 1
+    },
+    {
+      "unicode": "41",
+      "glyphIndex": "476",
+      "scale": 1
+    },
+    {
+      "unicode": "42",
+      "glyphIndex": "453",
+      "scale": 1
+    },
+    {
+      "unicode": "43",
+      "glyphIndex": "509",
+      "scale": 1
+    },
+    {
+      "unicode": "44",
+      "glyphIndex": "458",
+      "scale": 1
+    },
+    {
+      "unicode": "45",
+      "glyphIndex": "479",
+      "scale": 1
+    },
+    {
+      "unicode": "46",
+      "glyphIndex": "463",
+      "scale": 1
+    },
+    {
+      "unicode": "47",
+      "glyphIndex": "469",
+      "scale": 1
+    },
+    {
+      "unicode": "48",
+      "glyphIndex": "425",
+      "scale": 1
+    },
+    {
+      "unicode": "49",
+      "glyphIndex": "426",
+      "scale": 1
+    },
+    {
+      "unicode": "50",
+      "glyphIndex": "427",
+      "scale": 1
+    },
+    {
+      "unicode": "51",
+      "glyphIndex": "428",
+      "scale": 1
+    },
+    {
+      "unicode": "52",
+      "glyphIndex": "429",
+      "scale": 1
+    },
+    {
+      "unicode": "53",
+      "glyphIndex": "430",
+      "scale": 1
+    },
+    {
+      "unicode": "54",
+      "glyphIndex": "431",
+      "scale": 1
+    },
+    {
+      "unicode": "55",
+      "glyphIndex": "432",
+      "scale": 1
+    },
+    {
+      "unicode": "56",
+      "glyphIndex": "433",
+      "scale": 1
+    },
+    {
+      "unicode": "57",
+      "glyphIndex": "434",
+      "scale": 1
+    },
+    {
+      "unicode": "58",
+      "glyphIndex": "457",
+      "scale": 1
+    },
+    {
+      "unicode": "59",
+      "glyphIndex": "468",
+      "scale": 1
+    },
+    {
+      "unicode": "60",
+      "glyphIndex": "516",
+      "scale": 1
+    },
+    {
+      "unicode": "61",
+      "glyphIndex": "513",
+      "scale": 1
+    },
+    {
+      "unicode": "62",
+      "glyphIndex": "515",
+      "scale": 1
+    },
+    {
+      "unicode": "63",
+      "glyphIndex": "464",
+      "scale": 1
+    },
+    {
+      "unicode": "64",
+      "glyphIndex": "523",
+      "scale": 1
+    },
+    {
+      "unicode": "65",
+      "glyphIndex": "1",
+      "scale": 1
+    },
+    {
+      "unicode": "66",
+      "glyphIndex": "13",
+      "scale": 1
+    },
+    {
+      "unicode": "67",
+      "glyphIndex": "14",
+      "scale": 1
+    },
+    {
+      "unicode": "68",
+      "glyphIndex": "19",
+      "scale": 1
+    },
+    {
+      "unicode": "69",
+      "glyphIndex": "23",
+      "scale": 1
+    },
+    {
+      "unicode": "70",
+      "glyphIndex": "32",
+      "scale": 1
+    },
+    {
+      "unicode": "71",
+      "glyphIndex": "33",
+      "scale": 1
+    },
+    {
+      "unicode": "72",
+      "glyphIndex": "37",
+      "scale": 1
+    },
+    {
+      "unicode": "73",
+      "glyphIndex": "39",
+      "scale": 1
+    },
+    {
+      "unicode": "74",
+      "glyphIndex": "49",
+      "scale": 1
+    },
+    {
+      "unicode": "75",
+      "glyphIndex": "50",
+      "scale": 1
+    },
+    {
+      "unicode": "76",
+      "glyphIndex": "52",
+      "scale": 1
+    },
+    {
+      "unicode": "77",
+      "glyphIndex": "58",
+      "scale": 1
+    },
+    {
+      "unicode": "78",
+      "glyphIndex": "59",
+      "scale": 1
+    },
+    {
+      "unicode": "79",
+      "glyphIndex": "65",
+      "scale": 1
+    },
+    {
+      "unicode": "80",
+      "glyphIndex": "77",
+      "scale": 1
+    },
+    {
+      "unicode": "81",
+      "glyphIndex": "79",
+      "scale": 1
+    },
+    {
+      "unicode": "82",
+      "glyphIndex": "80",
+      "scale": 1
+    },
+    {
+      "unicode": "83",
+      "glyphIndex": "84",
+      "scale": 1
+    },
+    {
+      "unicode": "84",
+      "glyphIndex": "90",
+      "scale": 1
+    },
+    {
+      "unicode": "85",
+      "glyphIndex": "95",
+      "scale": 1
+    },
+    {
+      "unicode": "86",
+      "glyphIndex": "105",
+      "scale": 1
+    },
+    {
+      "unicode": "87",
+      "glyphIndex": "106",
+      "scale": 1
+    },
+    {
+      "unicode": "88",
+      "glyphIndex": "111",
+      "scale": 1
+    },
+    {
+      "unicode": "89",
+      "glyphIndex": "112",
+      "scale": 1
+    },
+    {
+      "unicode": "90",
+      "glyphIndex": "118",
+      "scale": 1
+    },
+    {
+      "unicode": "91",
+      "glyphIndex": "473",
+      "scale": 1
+    },
+    {
+      "unicode": "92",
+      "glyphIndex": "454",
+      "scale": 1
+    },
+    {
+      "unicode": "93",
+      "glyphIndex": "474",
+      "scale": 1
+    },
+    {
+      "unicode": "94",
+      "glyphIndex": "535",
+      "scale": 1
+    },
+    {
+      "unicode": "95",
+      "glyphIndex": "470",
+      "scale": 1
+    },
+    {
+      "unicode": "96",
+      "glyphIndex": "598",
+      "scale": 1
+    },
+    {
+      "unicode": "97",
+      "glyphIndex": "141",
+      "scale": 1
+    },
+    {
+      "unicode": "98",
+      "glyphIndex": "153",
+      "scale": 1
+    },
+    {
+      "unicode": "99",
+      "glyphIndex": "154",
+      "scale": 1
+    },
+    {
+      "unicode": "100",
+      "glyphIndex": "159",
+      "scale": 1
+    },
+    {
+      "unicode": "101",
+      "glyphIndex": "163",
+      "scale": 1
+    },
+    {
+      "unicode": "102",
+      "glyphIndex": "172",
+      "scale": 1
+    },
+    {
+      "unicode": "103",
+      "glyphIndex": "173",
+      "scale": 1
+    },
+    {
+      "unicode": "104",
+      "glyphIndex": "177",
+      "scale": 1
+    },
+    {
+      "unicode": "105",
+      "glyphIndex": "179",
+      "scale": 1
+    },
+    {
+      "unicode": "106",
+      "glyphIndex": "189",
+      "scale": 1
+    },
+    {
+      "unicode": "107",
+      "glyphIndex": "191",
+      "scale": 1
+    },
+    {
+      "unicode": "108",
+      "glyphIndex": "194",
+      "scale": 1
+    },
+    {
+      "unicode": "109",
+      "glyphIndex": "200",
+      "scale": 1
+    },
+    {
+      "unicode": "110",
+      "glyphIndex": "201",
+      "scale": 1
+    },
+    {
+      "unicode": "111",
+      "glyphIndex": "208",
+      "scale": 1
+    },
+    {
+      "unicode": "112",
+      "glyphIndex": "220",
+      "scale": 1
+    },
+    {
+      "unicode": "113",
+      "glyphIndex": "222",
+      "scale": 1
+    },
+    {
+      "unicode": "114",
+      "glyphIndex": "223",
+      "scale": 1
+    },
+    {
+      "unicode": "115",
+      "glyphIndex": "227",
+      "scale": 1
+    },
+    {
+      "unicode": "116",
+      "glyphIndex": "233",
+      "scale": 1
+    },
+    {
+      "unicode": "117",
+      "glyphIndex": "238",
+      "scale": 1
+    },
+    {
+      "unicode": "118",
+      "glyphIndex": "248",
+      "scale": 1
+    },
+    {
+      "unicode": "119",
+      "glyphIndex": "249",
+      "scale": 1
+    },
+    {
+      "unicode": "120",
+      "glyphIndex": "254",
+      "scale": 1
+    },
+    {
+      "unicode": "121",
+      "glyphIndex": "255",
+      "scale": 1
+    },
+    {
+      "unicode": "122",
+      "glyphIndex": "261",
+      "scale": 1
+    },
+    {
+      "unicode": "123",
+      "glyphIndex": "471",
+      "scale": 1
+    },
+    {
+      "unicode": "124",
+      "glyphIndex": "531",
+      "scale": 1
+    },
+    {
+      "unicode": "125",
+      "glyphIndex": "472",
+      "scale": 1
+    },
+    {
+      "unicode": "126",
+      "glyphIndex": "519",
+      "scale": 1
+    },
+    {
+      "unicode": "160",
+      "glyphIndex": "502",
+      "scale": 1
+    },
+    {
+      "unicode": "8230",
+      "glyphIndex": "459",
+      "scale": 1
+    }
+  ],
+  "glyphTable": [
+    {
+      "index": "1",
+      "glyphIndex": "1",
+      "scale": 1,
+      "atlasRect": {
+        "x": 353,
+        "y": 65,
+        "w": 50,
+        "h": 48
+      },
+      "metrics": {
+        "width": 48.953125,
+        "height": 47.796875,
+        "bearingX": -0.265625,
+        "bearingY": 47.796875,
+        "advance": 48.546875
+      }
+    },
+    {
+      "index": "13",
+      "glyphIndex": "13",
+      "scale": 1,
+      "atlasRect": {
+        "x": 208,
+        "y": 108,
+        "w": 39,
+        "h": 48
+      },
+      "metrics": {
+        "width": 38.625,
+        "height": 47.796875,
+        "bearingX": 5.375,
+        "bearingY": 47.796875,
+        "advance": 46.78125
+      }
+    },
+    {
+      "index": "14",
+      "glyphIndex": "14",
+      "scale": 1,
+      "atlasRect": {
+        "x": 464,
+        "y": 142,
+        "w": 42,
+        "h": 50
+      },
+      "metrics": {
+        "width": 41.34375,
+        "height": 49.03125,
+        "bearingX": 2.65625,
+        "bearingY": 48.421875,
+        "advance": 45.5625
+      }
+    },
+    {
+      "index": "19",
+      "glyphIndex": "19",
+      "scale": 1,
+      "atlasRect": {
+        "x": 352,
+        "y": 185,
+        "w": 45,
+        "h": 48
+      },
+      "metrics": {
+        "width": 44.609375,
+        "height": 47.796875,
+        "bearingX": 5.296875,
+        "bearingY": 47.796875,
+        "advance": 52.703125
+      }
+    },
+    {
+      "index": "23",
+      "glyphIndex": "23",
+      "scale": 1,
+      "atlasRect": {
+        "x": 52,
+        "y": 330,
+        "w": 35,
+        "h": 48
+      },
+      "metrics": {
+        "width": 33.9375,
+        "height": 47.796875,
+        "bearingX": 5.296875,
+        "bearingY": 47.796875,
+        "advance": 42.765625
+      }
+    },
+    {
+      "index": "32",
+      "glyphIndex": "32",
+      "scale": 1,
+      "atlasRect": {
+        "x": 307,
+        "y": 222,
+        "w": 34,
+        "h": 48
+      },
+      "metrics": {
+        "width": 33.53125,
+        "height": 47.796875,
+        "bearingX": 5.296875,
+        "bearingY": 47.796875,
+        "advance": 41
+      }
+    },
+    {
+      "index": "33",
+      "glyphIndex": "33",
+      "scale": 1,
+      "atlasRect": {
+        "x": 352,
+        "y": 124,
+        "w": 45,
+        "h": 50
+      },
+      "metrics": {
+        "width": 43.984375,
+        "height": 49.03125,
+        "bearingX": 2.65625,
+        "bearingY": 48.421875,
+        "advance": 49.984375
+      }
+    },
+    {
+      "index": "37",
+      "glyphIndex": "37",
+      "scale": 1,
+      "atlasRect": {
+        "x": 408,
+        "y": 187,
+        "w": 45,
+        "h": 48
+      },
+      "metrics": {
+        "width": 44.484375,
+        "height": 47.796875,
+        "bearingX": 5.296875,
+        "bearingY": 47.796875,
+        "advance": 55.078125
+      }
+    },
+    {
+      "index": "39",
+      "glyphIndex": "39",
+      "scale": 1,
+      "atlasRect": {
+        "x": 329,
+        "y": 163,
+        "w": 12,
+        "h": 48
+      },
+      "metrics": {
+        "width": 11.4375,
+        "height": 47.796875,
+        "bearingX": 5.296875,
+        "bearingY": 47.796875,
+        "advance": 22.03125
+      }
+    },
+    {
+      "index": "49",
+      "glyphIndex": "49",
+      "scale": 1,
+      "atlasRect": {
+        "x": 144,
+        "y": 387,
+        "w": 30,
+        "h": 49
+      },
+      "metrics": {
+        "width": 28.84375,
+        "height": 48.40625,
+        "bearingX": 0.265625,
+        "bearingY": 47.796875,
+        "advance": 33.9375
+      }
+    },
+    {
+      "index": "50",
+      "glyphIndex": "50",
+      "scale": 1,
+      "atlasRect": {
+        "x": 6,
+        "y": 129,
+        "w": 44,
+        "h": 48
+      },
+      "metrics": {
+        "width": 42.71875,
+        "height": 47.796875,
+        "bearingX": 5.296875,
+        "bearingY": 47.796875,
+        "advance": 46.515625
+      }
+    },
+    {
+      "index": "52",
+      "glyphIndex": "52",
+      "scale": 1,
+      "atlasRect": {
+        "x": 52,
+        "y": 389,
+        "w": 34,
+        "h": 48
+      },
+      "metrics": {
+        "width": 33.1875,
+        "height": 47.796875,
+        "bearingX": 5.296875,
+        "bearingY": 47.796875,
+        "advance": 39.03125
+      }
+    },
+    {
+      "index": "58",
+      "glyphIndex": "58",
+      "scale": 1,
+      "atlasRect": {
+        "x": 356,
+        "y": 6,
+        "w": 54,
+        "h": 48
+      },
+      "metrics": {
+        "width": 52.5,
+        "height": 47.796875,
+        "bearingX": 4.828125,
+        "bearingY": 47.796875,
+        "advance": 62.15625
+      }
+    },
+    {
+      "index": "59",
+      "glyphIndex": "59",
+      "scale": 1,
+      "atlasRect": {
+        "x": 408,
+        "y": 126,
+        "w": 45,
+        "h": 50
+      },
+      "metrics": {
+        "width": 44.328125,
+        "height": 48.890625,
+        "bearingX": 5.375,
+        "bearingY": 48.28125,
+        "advance": 55.078125
+      }
+    },
+    {
+      "index": "65",
+      "glyphIndex": "65",
+      "scale": 1,
+      "atlasRect": {
+        "x": 421,
+        "y": 6,
+        "w": 52,
+        "h": 50
+      },
+      "metrics": {
+        "width": 50.65625,
+        "height": 49.03125,
+        "bearingX": 2.65625,
+        "bearingY": 48.421875,
+        "advance": 55.96875
+      }
+    },
+    {
+      "index": "77",
+      "glyphIndex": "77",
+      "scale": 1,
+      "atlasRect": {
+        "x": 401,
+        "y": 246,
+        "w": 38,
+        "h": 48
+      },
+      "metrics": {
+        "width": 37.40625,
+        "height": 47.796875,
+        "bearingX": 5.296875,
+        "bearingY": 47.796875,
+        "advance": 44.34375
+      }
+    },
+    {
+      "index": "79",
+      "glyphIndex": "79",
+      "scale": 1,
+      "atlasRect": {
+        "x": 290,
+        "y": 31,
+        "w": 52,
+        "h": 61
+      },
+      "metrics": {
+        "width": 50.65625,
+        "height": 59.640625,
+        "bearingX": 2.65625,
+        "bearingY": 48.421875,
+        "advance": 55.890625
+      }
+    },
+    {
+      "index": "80",
+      "glyphIndex": "80",
+      "scale": 1,
+      "atlasRect": {
+        "x": 58,
+        "y": 194,
+        "w": 40,
+        "h": 48
+      },
+      "metrics": {
+        "width": 38.828125,
+        "height": 47.796875,
+        "bearingX": 5.296875,
+        "bearingY": 47.796875,
+        "advance": 45.484375
+      }
+    },
+    {
+      "index": "84",
+      "glyphIndex": "84",
+      "scale": 1,
+      "atlasRect": {
+        "x": 352,
+        "y": 244,
+        "w": 38,
+        "h": 50
+      },
+      "metrics": {
+        "width": 36.515625,
+        "height": 49.03125,
+        "bearingX": 1.765625,
+        "bearingY": 48.421875,
+        "advance": 41.140625
+      }
+    },
+    {
+      "index": "90",
+      "glyphIndex": "90",
+      "scale": 1,
+      "atlasRect": {
+        "x": 61,
+        "y": 135,
+        "w": 44,
+        "h": 48
+      },
+      "metrics": {
+        "width": 42.625,
+        "height": 47.796875,
+        "bearingX": 0.6875,
+        "bearingY": 47.796875,
+        "advance": 44
+      }
+    },
+    {
+      "index": "95",
+      "glyphIndex": "95",
+      "scale": 1,
+      "atlasRect": {
+        "x": 76,
+        "y": 75,
+        "w": 44,
+        "h": 49
+      },
+      "metrics": {
+        "width": 43.25,
+        "height": 48.40625,
+        "bearingX": 4.6875,
+        "bearingY": 47.796875,
+        "advance": 52.625
+      }
+    },
+    {
+      "index": "105",
+      "glyphIndex": "105",
+      "scale": 1,
+      "atlasRect": {
+        "x": 414,
+        "y": 67,
+        "w": 47,
+        "h": 48
+      },
+      "metrics": {
+        "width": 46.375,
+        "height": 47.796875,
+        "bearingX": 0.265625,
+        "bearingY": 47.796875,
+        "advance": 46.921875
+      }
+    },
+    {
+      "index": "106",
+      "glyphIndex": "106",
+      "scale": 1,
+      "atlasRect": {
+        "x": 6,
+        "y": 6,
+        "w": 67,
+        "h": 48
+      },
+      "metrics": {
+        "width": 65.890625,
+        "height": 47.796875,
+        "bearingX": 0.203125,
+        "bearingY": 47.796875,
+        "advance": 66.296875
+      }
+    },
+    {
+      "index": "111",
+      "glyphIndex": "111",
+      "scale": 1,
+      "atlasRect": {
+        "x": 157,
+        "y": 49,
+        "w": 47,
+        "h": 48
+      },
+      "metrics": {
+        "width": 45.890625,
+        "height": 47.796875,
+        "bearingX": 1.703125,
+        "bearingY": 47.796875,
+        "advance": 48.21875
+      }
+    },
+    {
+      "index": "112",
+      "glyphIndex": "112",
+      "scale": 1,
+      "atlasRect": {
+        "x": 215,
+        "y": 49,
+        "w": 47,
+        "h": 48
+      },
+      "metrics": {
+        "width": 45.5625,
+        "height": 47.796875,
+        "bearingX": 0.75,
+        "bearingY": 47.796875,
+        "advance": 46.921875
+      }
+    },
+    {
+      "index": "118",
+      "glyphIndex": "118",
+      "scale": 1,
+      "atlasRect": {
+        "x": 156,
+        "y": 108,
+        "w": 41,
+        "h": 48
+      },
+      "metrics": {
+        "width": 39.921875,
+        "height": 47.796875,
+        "bearingX": 2.3125,
+        "bearingY": 47.796875,
+        "advance": 44.953125
+      }
+    },
+    {
+      "index": "141",
+      "glyphIndex": "141",
+      "scale": 1,
+      "atlasRect": {
+        "x": 249,
+        "y": 286,
+        "w": 35,
+        "h": 33
+      },
+      "metrics": {
+        "width": 34.265625,
+        "height": 32.5,
+        "bearingX": 2.3125,
+        "bearingY": 31.890625,
+        "advance": 40.390625
+      }
+    },
+    {
+      "index": "153",
+      "glyphIndex": "153",
+      "scale": 1,
+      "atlasRect": {
+        "x": 204,
+        "y": 187,
+        "w": 36,
+        "h": 50
+      },
+      "metrics": {
+        "width": 34.203125,
+        "height": 49.15625,
+        "bearingX": 3.8125,
+        "bearingY": 48.546875,
+        "advance": 40.328125
+      }
+    },
+    {
+      "index": "154",
+      "glyphIndex": "154",
+      "scale": 1,
+      "atlasRect": {
+        "x": 258,
+        "y": 395,
+        "w": 30,
+        "h": 33
+      },
+      "metrics": {
+        "width": 28.96875,
+        "height": 32.5,
+        "bearingX": 2.25,
+        "bearingY": 31.890625,
+        "advance": 33.109375
+      }
+    },
+    {
+      "index": "159",
+      "glyphIndex": "159",
+      "scale": 1,
+      "atlasRect": {
+        "x": 6,
+        "y": 309,
+        "w": 35,
+        "h": 50
+      },
+      "metrics": {
+        "width": 34.203125,
+        "height": 49.15625,
+        "bearingX": 2.3125,
+        "bearingY": 48.546875,
+        "advance": 40.328125
+      }
+    },
+    {
+      "index": "163",
+      "glyphIndex": "163",
+      "scale": 1,
+      "atlasRect": {
+        "x": 243,
+        "y": 330,
+        "w": 33,
+        "h": 33
+      },
+      "metrics": {
+        "width": 32.640625,
+        "height": 32.5,
+        "bearingX": 2.25,
+        "bearingY": 31.890625,
+        "advance": 37.0625
+      }
+    },
+    {
+      "index": "172",
+      "glyphIndex": "172",
+      "scale": 1,
+      "atlasRect": {
+        "x": 116,
+        "y": 447,
+        "w": 30,
+        "h": 50
+      },
+      "metrics": {
+        "width": 29.3125,
+        "height": 49.15625,
+        "bearingX": 1.5625,
+        "bearingY": 49.15625,
+        "advance": 28.28125
+      }
+    },
+    {
+      "index": "173",
+      "glyphIndex": "173",
+      "scale": 1,
+      "atlasRect": {
+        "x": 6,
+        "y": 370,
+        "w": 35,
+        "h": 46
+      },
+      "metrics": {
+        "width": 34.0625,
+        "height": 45.765625,
+        "bearingX": 2.3125,
+        "bearingY": 31.890625,
+        "advance": 40.1875
+      }
+    },
+    {
+      "index": "177",
+      "glyphIndex": "177",
+      "scale": 1,
+      "atlasRect": {
+        "x": 472,
+        "y": 82,
+        "w": 34,
+        "h": 49
+      },
+      "metrics": {
+        "width": 33.109375,
+        "height": 48.546875,
+        "bearingX": 3.8125,
+        "bearingY": 48.546875,
+        "advance": 40.328125
+      }
+    },
+    {
+      "index": "179",
+      "glyphIndex": "179",
+      "scale": 1,
+      "atlasRect": {
+        "x": 157,
+        "y": 447,
+        "w": 14,
+        "h": 50
+      },
+      "metrics": {
+        "width": 13.59375,
+        "height": 49.234375,
+        "bearingX": 2.3125,
+        "bearingY": 49.234375,
+        "advance": 18.359375
+      }
+    },
+    {
+      "index": "189",
+      "glyphIndex": "189",
+      "scale": 1,
+      "atlasRect": {
+        "x": 469,
+        "y": 323,
+        "w": 23,
+        "h": 64
+      },
+      "metrics": {
+        "width": 22.375,
+        "height": 63.109375,
+        "bearingX": -5.984375,
+        "bearingY": 49.234375,
+        "advance": 18.90625
+      }
+    },
+    {
+      "index": "191",
+      "glyphIndex": "191",
+      "scale": 1,
+      "atlasRect": {
+        "x": 151,
+        "y": 284,
+        "w": 35,
+        "h": 49
+      },
+      "metrics": {
+        "width": 33.859375,
+        "height": 48.546875,
+        "bearingX": 3.8125,
+        "bearingY": 48.546875,
+        "advance": 37.53125
+      }
+    },
+    {
+      "index": "194",
+      "glyphIndex": "194",
+      "scale": 1,
+      "atlasRect": {
+        "x": 329,
+        "y": 103,
+        "w": 12,
+        "h": 49
+      },
+      "metrics": {
+        "width": 10.734375,
+        "height": 48.546875,
+        "bearingX": 3.8125,
+        "bearingY": 48.546875,
+        "advance": 18.359375
+      }
+    },
+    {
+      "index": "200",
+      "glyphIndex": "200",
+      "scale": 1,
+      "atlasRect": {
+        "x": 224,
+        "y": 6,
+        "w": 55,
+        "h": 32
+      },
+      "metrics": {
+        "width": 53.4375,
+        "height": 31.890625,
+        "bearingX": 3.8125,
+        "bearingY": 31.890625,
+        "advance": 60.65625
+      }
+    },
+    {
+      "index": "201",
+      "glyphIndex": "201",
+      "scale": 1,
+      "atlasRect": {
+        "x": 6,
+        "y": 427,
+        "w": 34,
+        "h": 32
+      },
+      "metrics": {
+        "width": 33.109375,
+        "height": 31.890625,
+        "bearingX": 3.8125,
+        "bearingY": 31.890625,
+        "advance": 40.328125
+      }
+    },
+    {
+      "index": "208",
+      "glyphIndex": "208",
+      "scale": 1,
+      "atlasRect": {
+        "x": 197,
+        "y": 308,
+        "w": 35,
+        "h": 33
+      },
+      "metrics": {
+        "width": 34.328125,
+        "height": 32.5,
+        "bearingX": 2.25,
+        "bearingY": 31.890625,
+        "advance": 38.828125
+      }
+    },
+    {
+      "index": "220",
+      "glyphIndex": "220",
+      "scale": 1,
+      "atlasRect": {
+        "x": 104,
+        "y": 262,
+        "w": 36,
+        "h": 46
+      },
+      "metrics": {
+        "width": 34.203125,
+        "height": 45.15625,
+        "bearingX": 3.8125,
+        "bearingY": 31.890625,
+        "advance": 40.328125
+      }
+    },
+    {
+      "index": "222",
+      "glyphIndex": "222",
+      "scale": 1,
+      "atlasRect": {
+        "x": 297,
+        "y": 281,
+        "w": 35,
+        "h": 46
+      },
+      "metrics": {
+        "width": 34.203125,
+        "height": 45.15625,
+        "bearingX": 2.3125,
+        "bearingY": 31.890625,
+        "advance": 40.328125
+      }
+    },
+    {
+      "index": "223",
+      "glyphIndex": "223",
+      "scale": 1,
+      "atlasRect": {
+        "x": 380,
+        "y": 380,
+        "w": 23,
+        "h": 32
+      },
+      "metrics": {
+        "width": 22.09375,
+        "height": 31.890625,
+        "bearingX": 3.8125,
+        "bearingY": 31.890625,
+        "advance": 26.921875
+      }
+    },
+    {
+      "index": "227",
+      "glyphIndex": "227",
+      "scale": 1,
+      "atlasRect": {
+        "x": 299,
+        "y": 393,
+        "w": 29,
+        "h": 33
+      },
+      "metrics": {
+        "width": 28.421875,
+        "height": 32.5,
+        "bearingX": 2.046875,
+        "bearingY": 31.890625,
+        "advance": 32.984375
+      }
+    },
+    {
+      "index": "233",
+      "glyphIndex": "233",
+      "scale": 1,
+      "atlasRect": {
+        "x": 287,
+        "y": 338,
+        "w": 31,
+        "h": 44
+      },
+      "metrics": {
+        "width": 30.046875,
+        "height": 42.640625,
+        "bearingX": 1.09375,
+        "bearingY": 42.03125,
+        "advance": 31.6875
+      }
+    },
+    {
+      "index": "238",
+      "glyphIndex": "238",
+      "scale": 1,
+      "atlasRect": {
+        "x": 195,
+        "y": 352,
+        "w": 33,
+        "h": 33
+      },
+      "metrics": {
+        "width": 32.5625,
+        "height": 31.890625,
+        "bearingX": 3.40625,
+        "bearingY": 31.28125,
+        "advance": 39.78125
+      }
+    },
+    {
+      "index": "248",
+      "glyphIndex": "248",
+      "scale": 1,
+      "atlasRect": {
+        "x": 56,
+        "y": 253,
+        "w": 37,
+        "h": 32
+      },
+      "metrics": {
+        "width": 36.25,
+        "height": 31.21875,
+        "bearingX": 0.609375,
+        "bearingY": 31.28125,
+        "advance": 37.46875
+      }
+    },
+    {
+      "index": "249",
+      "glyphIndex": "249",
+      "scale": 1,
+      "atlasRect": {
+        "x": 157,
+        "y": 6,
+        "w": 56,
+        "h": 32
+      },
+      "metrics": {
+        "width": 55.078125,
+        "height": 31.890625,
+        "bearingX": 0.75,
+        "bearingY": 31.890625,
+        "advance": 56.578125
+      }
+    },
+    {
+      "index": "254",
+      "glyphIndex": "254",
+      "scale": 1,
+      "atlasRect": {
+        "x": 149,
+        "y": 344,
+        "w": 35,
+        "h": 32
+      },
+      "metrics": {
+        "width": 34.265625,
+        "height": 31.28125,
+        "bearingX": 1.296875,
+        "bearingY": 31.28125,
+        "advance": 36.984375
+      }
+    },
+    {
+      "index": "255",
+      "glyphIndex": "255",
+      "scale": 1,
+      "atlasRect": {
+        "x": 156,
+        "y": 167,
+        "w": 37,
+        "h": 46
+      },
+      "metrics": {
+        "width": 35.828125,
+        "height": 44.546875,
+        "bearingX": 0.75,
+        "bearingY": 31.28125,
+        "advance": 37.125
+      }
+    },
+    {
+      "index": "261",
+      "glyphIndex": "261",
+      "scale": 1,
+      "atlasRect": {
+        "x": 339,
+        "y": 391,
+        "w": 30,
+        "h": 32
+      },
+      "metrics": {
+        "width": 28.96875,
+        "height": 31.28125,
+        "bearingX": 2.65625,
+        "bearingY": 31.28125,
+        "advance": 34.265625
+      }
+    },
+    {
+      "index": "425",
+      "glyphIndex": "425",
+      "scale": 1,
+      "atlasRect": {
+        "x": 6,
+        "y": 188,
+        "w": 41,
+        "h": 50
+      },
+      "metrics": {
+        "width": 40.796875,
+        "height": 49.03125,
+        "bearingX": 3.203125,
+        "bearingY": 48.421875,
+        "advance": 47.125
+      }
+    },
+    {
+      "index": "426",
+      "glyphIndex": "426",
+      "scale": 1,
+      "atlasRect": {
+        "x": 182,
+        "y": 447,
+        "w": 25,
+        "h": 48
+      },
+      "metrics": {
+        "width": 23.734375,
+        "height": 47.796875,
+        "bearingX": 0.34375,
+        "bearingY": 47.796875,
+        "advance": 29.375
+      }
+    },
+    {
+      "index": "427",
+      "glyphIndex": "427",
+      "scale": 1,
+      "atlasRect": {
+        "x": 156,
+        "y": 224,
+        "w": 36,
+        "h": 49
+      },
+      "metrics": {
+        "width": 34.140625,
+        "height": 48.421875,
+        "bearingX": 1.96875,
+        "bearingY": 48.421875,
+        "advance": 39.296875
+      }
+    },
+    {
+      "index": "428",
+      "glyphIndex": "428",
+      "scale": 1,
+      "atlasRect": {
+        "x": 251,
+        "y": 226,
+        "w": 35,
+        "h": 49
+      },
+      "metrics": {
+        "width": 34.0625,
+        "height": 48.40625,
+        "bearingX": 1.09375,
+        "bearingY": 47.796875,
+        "advance": 37.9375
+      }
+    },
+    {
+      "index": "429",
+      "glyphIndex": "429",
+      "scale": 1,
+      "atlasRect": {
+        "x": 6,
+        "y": 249,
+        "w": 39,
+        "h": 49
+      },
+      "metrics": {
+        "width": 37.75,
+        "height": 48.21875,
+        "bearingX": 1.421875,
+        "bearingY": 48.21875,
+        "advance": 41.203125
+      }
+    },
+    {
+      "index": "430",
+      "glyphIndex": "430",
+      "scale": 1,
+      "atlasRect": {
+        "x": 203,
+        "y": 248,
+        "w": 35,
+        "h": 49
+      },
+      "metrics": {
+        "width": 34.34375,
+        "height": 48.40625,
+        "bearingX": 2.3125,
+        "bearingY": 47.796875,
+        "advance": 38.625
+      }
+    },
+    {
+      "index": "431",
+      "glyphIndex": "431",
+      "scale": 1,
+      "atlasRect": {
+        "x": 450,
+        "y": 262,
+        "w": 37,
+        "h": 50
+      },
+      "metrics": {
+        "width": 35.765625,
+        "height": 48.890625,
+        "bearingX": 2.71875,
+        "bearingY": 48.28125,
+        "advance": 40.9375
+      }
+    },
+    {
+      "index": "432",
+      "glyphIndex": "432",
+      "scale": 1,
+      "atlasRect": {
+        "x": 103,
+        "y": 319,
+        "w": 35,
+        "h": 48
+      },
+      "metrics": {
+        "width": 34.46875,
+        "height": 47.796875,
+        "bearingX": 1.09375,
+        "bearingY": 47.796875,
+        "advance": 36.25
+      }
+    },
+    {
+      "index": "433",
+      "glyphIndex": "433",
+      "scale": 1,
+      "atlasRect": {
+        "x": 258,
+        "y": 165,
+        "w": 38,
+        "h": 50
+      },
+      "metrics": {
+        "width": 36.3125,
+        "height": 49.03125,
+        "bearingX": 2.859375,
+        "bearingY": 48.421875,
+        "advance": 42.03125
+      }
+    },
+    {
+      "index": "434",
+      "glyphIndex": "434",
+      "scale": 1,
+      "atlasRect": {
+        "x": 109,
+        "y": 201,
+        "w": 36,
+        "h": 50
+      },
+      "metrics": {
+        "width": 35.828125,
+        "height": 48.890625,
+        "bearingX": 2.109375,
+        "bearingY": 48.421875,
+        "advance": 40.59375
+      }
+    },
+    {
+      "index": "453",
+      "glyphIndex": "453",
+      "scale": 1,
+      "atlasRect": {
+        "x": 402,
+        "y": 339,
+        "w": 23,
+        "h": 24
+      },
+      "metrics": {
+        "width": 22.78125,
+        "height": 23.046875,
+        "bearingX": 3.125,
+        "bearingY": 49.5,
+        "advance": 29.03125
+      }
+    },
+    {
+      "index": "454",
+      "glyphIndex": "454",
+      "scale": 1,
+      "atlasRect": {
+        "x": 354,
+        "y": 434,
+        "w": 26,
+        "h": 64
+      },
+      "metrics": {
+        "width": 24.6875,
+        "height": 62.34375,
+        "bearingX": 1.90625,
+        "bearingY": 51.265625,
+        "advance": 28.421875
+      }
+    },
+    {
+      "index": "457",
+      "glyphIndex": "457",
+      "scale": 1,
+      "atlasRect": {
+        "x": 97,
+        "y": 401,
+        "w": 14,
+        "h": 35
+      },
+      "metrics": {
+        "width": 12.84375,
+        "height": 34.078125,
+        "bearingX": 3.609375,
+        "bearingY": 32.78125,
+        "advance": 20.0625
+      }
+    },
+    {
+      "index": "458",
+      "glyphIndex": "458",
+      "scale": 1,
+      "atlasRect": {
+        "x": 343,
+        "y": 305,
+        "w": 14,
+        "h": 21
+      },
+      "metrics": {
+        "width": 13.125,
+        "height": 20.125,
+        "bearingX": 2.859375,
+        "bearingY": 11.15625,
+        "advance": 18.90625
+      }
+    },
+    {
+      "index": "459",
+      "glyphIndex": "459",
+      "scale": 1,
+      "atlasRect": {
+        "x": 290,
+        "y": 6,
+        "w": 55,
+        "h": 14
+      },
+      "metrics": {
+        "width": 53.515625,
+        "height": 12.859375,
+        "bearingX": 2.78125,
+        "bearingY": 12.171875,
+        "advance": 59.09375
+      }
+    },
+    {
+      "index": "460",
+      "glyphIndex": "460",
+      "scale": 1,
+      "atlasRect": {
+        "x": 131,
+        "y": 75,
+        "w": 14,
+        "h": 52
+      },
+      "metrics": {
+        "width": 12.859375,
+        "height": 50.59375,
+        "bearingX": 3.53125,
+        "bearingY": 50.046875,
+        "advance": 19.71875
+      }
+    },
+    {
+      "index": "462",
+      "glyphIndex": "462",
+      "scale": 1,
+      "atlasRect": {
+        "x": 464,
+        "y": 203,
+        "w": 42,
+        "h": 48
+      },
+      "metrics": {
+        "width": 41.6875,
+        "height": 47.8125,
+        "bearingX": 2.3125,
+        "bearingY": 47.875,
+        "advance": 47.734375
+      }
+    },
+    {
+      "index": "463",
+      "glyphIndex": "463",
+      "scale": 1,
+      "atlasRect": {
+        "x": 445,
+        "y": 398,
+        "w": 14,
+        "h": 14
+      },
+      "metrics": {
+        "width": 12.859375,
+        "height": 12.84375,
+        "bearingX": 2.78125,
+        "bearingY": 12.234375,
+        "advance": 18.421875
+      }
+    },
+    {
+      "index": "464",
+      "glyphIndex": "464",
+      "scale": 1,
+      "atlasRect": {
+        "x": 116,
+        "y": 138,
+        "w": 29,
+        "h": 52
+      },
+      "metrics": {
+        "width": 28.296875,
+        "height": 50.71875,
+        "bearingX": 1.015625,
+        "bearingY": 50.109375,
+        "advance": 31.484375
+      }
+    },
+    {
+      "index": "466",
+      "glyphIndex": "466",
+      "scale": 1,
+      "atlasRect": {
+        "x": 436,
+        "y": 339,
+        "w": 22,
+        "h": 15
+      },
+      "metrics": {
+        "width": 21.078125,
+        "height": 14.203125,
+        "bearingX": 3.125,
+        "bearingY": 48.953125,
+        "advance": 27.34375
+      }
+    },
+    {
+      "index": "467",
+      "glyphIndex": "467",
+      "scale": 1,
+      "atlasRect": {
+        "x": 307,
+        "y": 165,
+        "w": 10,
+        "h": 15
+      },
+      "metrics": {
+        "width": 8.984375,
+        "height": 14.203125,
+        "bearingX": 3.125,
+        "bearingY": 48.953125,
+        "advance": 15.234375
+      }
+    },
+    {
+      "index": "468",
+      "glyphIndex": "468",
+      "scale": 1,
+      "atlasRect": {
+        "x": 329,
+        "y": 338,
+        "w": 14,
+        "h": 42
+      },
+      "metrics": {
+        "width": 13.125,
+        "height": 41.21875,
+        "bearingX": 4.828125,
+        "bearingY": 31.625,
+        "advance": 22.84375
+      }
+    },
+    {
+      "index": "469",
+      "glyphIndex": "469",
+      "scale": 1,
+      "atlasRect": {
+        "x": 284,
+        "y": 439,
+        "w": 26,
+        "h": 66
+      },
+      "metrics": {
+        "width": 24.609375,
+        "height": 64.53125,
+        "bearingX": 1.90625,
+        "bearingY": 53.453125,
+        "advance": 28.421875
+      }
+    },
+    {
+      "index": "470",
+      "glyphIndex": "470",
+      "scale": 1,
+      "atlasRect": {
+        "x": 204,
+        "y": 167,
+        "w": 37,
+        "h": 9
+      },
+      "metrics": {
+        "width": 35.5,
+        "height": 8.296875,
+        "bearingX": 3.671875,
+        "bearingY": 5.984375,
+        "advance": 42.84375
+      }
+    },
+    {
+      "index": "471",
+      "glyphIndex": "471",
+      "scale": 1,
+      "atlasRect": {
+        "x": 484,
+        "y": 6,
+        "w": 22,
+        "h": 65
+      },
+      "metrics": {
+        "width": 20.9375,
+        "height": 63.4375,
+        "bearingX": 1.84375,
+        "bearingY": 55.140625,
+        "advance": 25.4375
+      }
+    },
+    {
+      "index": "472",
+      "glyphIndex": "472",
+      "scale": 1,
+      "atlasRect": {
+        "x": 321,
+        "y": 437,
+        "w": 22,
+        "h": 65
+      },
+      "metrics": {
+        "width": 20.9375,
+        "height": 63.4375,
+        "bearingX": 2.65625,
+        "bearingY": 55.140625,
+        "advance": 25.4375
+      }
+    },
+    {
+      "index": "473",
+      "glyphIndex": "473",
+      "scale": 1,
+      "atlasRect": {
+        "x": 218,
+        "y": 445,
+        "w": 22,
+        "h": 61
+      },
+      "metrics": {
+        "width": 20.40625,
+        "height": 60.1875,
+        "bearingX": 4.625,
+        "bearingY": 53.453125,
+        "advance": 26.921875
+      }
+    },
+    {
+      "index": "474",
+      "glyphIndex": "474",
+      "scale": 1,
+      "atlasRect": {
+        "x": 251,
+        "y": 445,
+        "w": 22,
+        "h": 61
+      },
+      "metrics": {
+        "width": 20.390625,
+        "height": 60.1875,
+        "bearingX": 1.90625,
+        "bearingY": 53.453125,
+        "advance": 26.921875
+      }
+    },
+    {
+      "index": "475",
+      "glyphIndex": "475",
+      "scale": 1,
+      "atlasRect": {
+        "x": 368,
+        "y": 305,
+        "w": 23,
+        "h": 64
+      },
+      "metrics": {
+        "width": 21.890625,
+        "height": 63.703125,
+        "bearingX": 2.453125,
+        "bearingY": 55.890625,
+        "advance": 25.03125
+      }
+    },
+    {
+      "index": "476",
+      "glyphIndex": "476",
+      "scale": 1,
+      "atlasRect": {
+        "x": 391,
+        "y": 423,
+        "w": 23,
+        "h": 64
+      },
+      "metrics": {
+        "width": 21.90625,
+        "height": 63.703125,
+        "bearingX": 0.609375,
+        "bearingY": 55.890625,
+        "advance": 24.953125
+      }
+    },
+    {
+      "index": "479",
+      "glyphIndex": "479",
+      "scale": 1,
+      "atlasRect": {
+        "x": 239,
+        "y": 374,
+        "w": 19,
+        "h": 10
+      },
+      "metrics": {
+        "width": 18.296875,
+        "height": 8.703125,
+        "bearingX": 3.265625,
+        "bearingY": 21.078125,
+        "advance": 24.8125
+      }
+    },
+    {
+      "index": "501",
+      "glyphIndex": "501",
+      "scale": 1,
+      "atlasRect": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      },
+      "metrics": {
+        "width": 0,
+        "height": 0,
+        "bearingX": 0,
+        "bearingY": 0,
+        "advance": 15.234375
+      }
+    },
+    {
+      "index": "502",
+      "glyphIndex": "502",
+      "scale": 1,
+      "atlasRect": {
+        "x": 0,
+        "y": 0,
+        "w": 0,
+        "h": 0
+      },
+      "metrics": {
+        "width": 0,
+        "height": 0,
+        "bearingX": 0,
+        "bearingY": 0,
+        "advance": 15.234375
+      }
+    },
+    {
+      "index": "506",
+      "glyphIndex": "506",
+      "scale": 1,
+      "atlasRect": {
+        "x": 72,
+        "y": 448,
+        "w": 33,
+        "h": 55
+      },
+      "metrics": {
+        "width": 31.953125,
+        "height": 53.71875,
+        "bearingX": 2.515625,
+        "bearingY": 51.203125,
+        "advance": 37.46875
+      }
+    },
+    {
+      "index": "509",
+      "glyphIndex": "509",
+      "scale": 1,
+      "atlasRect": {
+        "x": 6,
+        "y": 470,
+        "w": 33,
+        "h": 34
+      },
+      "metrics": {
+        "width": 32.5,
+        "height": 32.515625,
+        "bearingX": 2.3125,
+        "bearingY": 36.25,
+        "advance": 37.125
+      }
+    },
+    {
+      "index": "513",
+      "glyphIndex": "513",
+      "scale": 1,
+      "atlasRect": {
+        "x": 56,
+        "y": 296,
+        "w": 36,
+        "h": 23
+      },
+      "metrics": {
+        "width": 35.234375,
+        "height": 22.78125,
+        "bearingX": 4.140625,
+        "bearingY": 30.9375,
+        "advance": 43.515625
+      }
+    },
+    {
+      "index": "515",
+      "glyphIndex": "515",
+      "scale": 1,
+      "atlasRect": {
+        "x": 222,
+        "y": 396,
+        "w": 25,
+        "h": 38
+      },
+      "metrics": {
+        "width": 24.484375,
+        "height": 37.125,
+        "bearingX": 4.28125,
+        "bearingY": 38.28125,
+        "advance": 31.484375
+      }
+    },
+    {
+      "index": "516",
+      "glyphIndex": "516",
+      "scale": 1,
+      "atlasRect": {
+        "x": 185,
+        "y": 396,
+        "w": 26,
+        "h": 38
+      },
+      "metrics": {
+        "width": 24.484375,
+        "height": 37.125,
+        "bearingX": 2.71875,
+        "bearingY": 38.28125,
+        "advance": 31.484375
+      }
+    },
+    {
+      "index": "519",
+      "glyphIndex": "519",
+      "scale": 1,
+      "atlasRect": {
+        "x": 98,
+        "y": 378,
+        "w": 35,
+        "h": 12
+      },
+      "metrics": {
+        "width": 33.796875,
+        "height": 11.421875,
+        "bearingX": 4.28125,
+        "bearingY": 23.734375,
+        "advance": 42.359375
+      }
+    },
+    {
+      "index": "521",
+      "glyphIndex": "521",
+      "scale": 1,
+      "atlasRect": {
+        "x": 6,
+        "y": 65,
+        "w": 59,
+        "h": 53
+      },
+      "metrics": {
+        "width": 58.609375,
+        "height": 52.90625,
+        "bearingX": 2.046875,
+        "bearingY": 51.953125,
+        "advance": 62.703125
+      }
+    },
+    {
+      "index": "523",
+      "glyphIndex": "523",
+      "scale": 1,
+      "atlasRect": {
+        "x": 84,
+        "y": 6,
+        "w": 62,
+        "h": 58
+      },
+      "metrics": {
+        "width": 60.65625,
+        "height": 56.859375,
+        "bearingX": 1.96875,
+        "bearingY": 46.109375,
+        "advance": 65.625
+      }
+    },
+    {
+      "index": "524",
+      "glyphIndex": "524",
+      "scale": 1,
+      "atlasRect": {
+        "x": 273,
+        "y": 103,
+        "w": 45,
+        "h": 51
+      },
+      "metrics": {
+        "width": 44.203125,
+        "height": 49.71875,
+        "bearingX": 2.515625,
+        "bearingY": 48.421875,
+        "advance": 48.078125
+      }
+    },
+    {
+      "index": "531",
+      "glyphIndex": "531",
+      "scale": 1,
+      "atlasRect": {
+        "x": 51,
+        "y": 448,
+        "w": 10,
+        "h": 57
+      },
+      "metrics": {
+        "width": 9.171875,
+        "height": 56.03125,
+        "bearingX": 4.625,
+        "bearingY": 48.546875,
+        "advance": 18.421875
+      }
+    },
+    {
+      "index": "535",
+      "glyphIndex": "535",
+      "scale": 1,
+      "atlasRect": {
+        "x": 402,
+        "y": 305,
+        "w": 32,
+        "h": 23
+      },
+      "metrics": {
+        "width": 31.078125,
+        "height": 21.28125,
+        "bearingX": 3.0625,
+        "bearingY": 47.125,
+        "advance": 37.203125
+      }
+    },
+    {
+      "index": "598",
+      "glyphIndex": "598",
+      "scale": 1,
+      "atlasRect": {
+        "x": 414,
+        "y": 374,
+        "w": 20,
+        "h": 16
+      },
+      "metrics": {
+        "width": 18.421875,
+        "height": 15.03125,
+        "bearingX": 0.953125,
+        "bearingY": 50.046875,
+        "advance": 20.265625
+      }
+    }
+  ],
+  "kerningTable": [],
+  "atlasTextures": [
+    {
+      "name": "Boston Black SDF Atlas",
+      "width": 512,
+      "height": 512,
+      "format": "Alpha8"
+    }
+  ],
+  "material": {
+    "name": "Boston Black SDF Material",
+    "shader": "TextMeshPro/Distance Field",
+    "_FaceDilate": 0,
+    "_OutlineWidth": 0,
+    "_OutlineSoftness": 0,
+    "_GradientScale": 6,
+    "_ScaleRatioA": 0.8333333,
+    "_ScaleRatioB": 0.6770833,
+    "_ScaleRatioC": 0.6770833,
+    "_UnderlayDilate": 0,
+    "_UnderlaySoftness": 0,
+    "_UnderlayOffsetX": 0,
+    "_UnderlayOffsetY": 0,
+    "_FaceColor": {
+      "r": 1,
+      "g": 1,
+      "b": 1,
+      "a": 1
+    },
+    "_OutlineColor": {
+      "r": 0,
+      "g": 0,
+      "b": 0,
+      "a": 1
+    },
+    "_MainTex": "Boston Black SDF Atlas",
+    "_MainTex_path_id": 8234
+  }
+}

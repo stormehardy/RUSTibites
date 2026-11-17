@@ -1,0 +1,15 @@
+case,binary,pair,best_ticks_per_second,seconds_per_tick,notes
+synthetic5000,frozen,1,175.740,0.005694,load=-; alternating order frozen->current
+synthetic5000,frozen,2,169.056,0.005916,load=31
+synthetic5000,frozen,3,175.482,0.005699,load=34
+synthetic5000,interim,1,167.389,0.005976,load=48
+synthetic5000,interim,2,161.115,0.006207,load=31
+synthetic5000,interim,3,151.975,0.006580,load=34
+cluster2000_box100,frozen,1,23.926,0.041795,load=20; frozen->current
+cluster2000_box100,frozen,2,24.311,0.041133,load=28
+cluster2000_box100,frozen,3,22.911,0.043647,load=33; current->frozen
+cluster2000_box100,frozen,4,23.401,0.042733,load=31
+cluster2000_box100,interim,1,14.207,0.070388,load=20
+cluster2000_box100,interim,2,14.485,0.069037,load=28
+cluster2000_box100,interim,3,14.582,0.068578,load=33
+cluster2000_box100,interim,4,15.498,0.064525,load=31

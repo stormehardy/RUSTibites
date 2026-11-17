@@ -1,0 +1,444 @@
+{
+  "schema": "rustibites.assets.digestion_native.v1",
+  "capture": {
+    "save": "Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip",
+    "seed": 12345,
+    "ticks": 600,
+    "samples": 2,
+    "poll_s": 0.2,
+    "plugin": "0.1.0"
+  },
+  "fields": [
+    "id",
+    "nContent",
+    "totalContent",
+    "acidLevel",
+    "acidRatio",
+    "digestionEffectiveness",
+    "digestionPotentialBonus",
+    "efficiencyMalus",
+    "EnergyGainRate",
+    "contents[material,amount,digestionRate,lastConversionEfficiency,averageChunkAmount]"
+  ],
+  "per_bibite": {
+    "2010565332": {
+      "first": {
+        "id": 2010565332,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      "last": {
+        "id": 2010565332,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      "samples": 2,
+      "nonzero_content": 0,
+      "materials": [],
+      "max_totalContent": 0.0,
+      "max_energyGainRate": null
+    },
+    "9": {
+      "first": {
+        "id": 9,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      "last": {
+        "id": 9,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      "samples": 2,
+      "nonzero_content": 0,
+      "materials": [],
+      "max_totalContent": 0.0,
+      "max_energyGainRate": null
+    },
+    "8": {
+      "first": {
+        "id": 8,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      "last": {
+        "id": 8,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      "samples": 2,
+      "nonzero_content": 0,
+      "materials": [],
+      "max_totalContent": 0.0,
+      "max_energyGainRate": null
+    },
+    "7": {
+      "first": {
+        "id": 7,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      "last": {
+        "id": 7,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      "samples": 2,
+      "nonzero_content": 0,
+      "materials": [],
+      "max_totalContent": 0.0,
+      "max_energyGainRate": null
+    },
+    "6": {
+      "first": {
+        "id": 6,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      "last": {
+        "id": 6,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      "samples": 2,
+      "nonzero_content": 0,
+      "materials": [],
+      "max_totalContent": 0.0,
+      "max_energyGainRate": null
+    },
+    "5": {
+      "first": {
+        "id": 5,
+        "nContent": 1,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [
+          {
+            "material": "Plant(Clone) (SimulationScripts.MatterMaterial)",
+            "amount": 5.147818,
+            "digestionRate": 0,
+            "lastConversionEfficiency": 0,
+            "averageChunkAmount": 2.58187246
+          }
+        ],
+        "contents_n": 1
+      },
+      "last": {
+        "id": 5,
+        "nContent": 1,
+        "totalContent": 5.147818,
+        "acidLevel": 0.7734683,
+        "acidRatio": 6.049123,
+        "digestionEffectiveness": 1.64560378,
+        "digestionPotentialBonus": 0.6456038,
+        "efficiencyMalus": 0.3228019,
+        "energyGainRate": null,
+        "contents": [
+          {
+            "material": "Plant(Clone) (SimulationScripts.MatterMaterial)",
+            "amount": 5.129146,
+            "digestionRate": 0.560161,
+            "lastConversionEfficiency": 0.186229467,
+            "averageChunkAmount": 2.57250762
+          }
+        ],
+        "contents_n": 1
+      },
+      "samples": 2,
+      "nonzero_content": 2,
+      "materials": [
+        "Plant(Clone) (SimulationScripts.MatterMaterial)"
+      ],
+      "max_totalContent": 5.147818,
+      "max_energyGainRate": null
+    },
+    "4": {
+      "first": {
+        "id": 4,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      "last": {
+        "id": 4,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      "samples": 2,
+      "nonzero_content": 0,
+      "materials": [],
+      "max_totalContent": 0.0,
+      "max_energyGainRate": null
+    },
+    "3": {
+      "first": {
+        "id": 3,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      "last": {
+        "id": 3,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      "samples": 2,
+      "nonzero_content": 0,
+      "materials": [],
+      "max_totalContent": 0.0,
+      "max_energyGainRate": null
+    },
+    "2": {
+      "first": {
+        "id": 2,
+        "nContent": 1,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [
+          {
+            "material": "Plant(Clone) (SimulationScripts.MatterMaterial)",
+            "amount": 5.72699261,
+            "digestionRate": 0,
+            "lastConversionEfficiency": 0,
+            "averageChunkAmount": 2.87268424
+          }
+        ],
+        "contents_n": 1
+      },
+      "last": {
+        "id": 2,
+        "nContent": 1,
+        "totalContent": 5.72699261,
+        "acidLevel": 0.7734683,
+        "acidRatio": 5.44458437,
+        "digestionEffectiveness": 1.63140631,
+        "digestionPotentialBonus": 0.631406367,
+        "efficiencyMalus": 0.315703183,
+        "energyGainRate": null,
+        "contents": [
+          {
+            "material": "Plant(Clone) (SimulationScripts.MatterMaterial)",
+            "amount": 5.707468,
+            "digestionRate": 0.58573395,
+            "lastConversionEfficiency": 0.188181609,
+            "averageChunkAmount": 2.86289072
+          }
+        ],
+        "contents_n": 1
+      },
+      "samples": 2,
+      "nonzero_content": 2,
+      "materials": [
+        "Plant(Clone) (SimulationScripts.MatterMaterial)"
+      ],
+      "max_totalContent": 5.72699261,
+      "max_energyGainRate": null
+    },
+    "1": {
+      "first": {
+        "id": 1,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      "last": {
+        "id": 1,
+        "nContent": 0,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [],
+        "contents_n": 0
+      },
+      "samples": 2,
+      "nonzero_content": 0,
+      "materials": [],
+      "max_totalContent": 0.0,
+      "max_energyGainRate": null
+    },
+    "-634943349": {
+      "first": {
+        "id": -634943349,
+        "nContent": 1,
+        "totalContent": 0,
+        "acidLevel": 0,
+        "acidRatio": 0,
+        "digestionEffectiveness": 0,
+        "digestionPotentialBonus": 0,
+        "efficiencyMalus": 0,
+        "energyGainRate": null,
+        "contents": [
+          {
+            "material": "Plant(Clone) (SimulationScripts.MatterMaterial)",
+            "amount": 5.29053545,
+            "digestionRate": 0,
+            "lastConversionEfficiency": 0,
+            "averageChunkAmount": 2.65382838
+          }
+        ],
+        "contents_n": 1
+      },
+      "last": {
+        "id": -634943349,
+        "nContent": 1,
+        "totalContent": 5.29053545,
+        "acidLevel": 0.7734683,
+        "acidRatio": 5.89843559,
+        "digestionEffectiveness": 1.6423372,
+        "digestionPotentialBonus": 0.6423372,
+        "efficiencyMalus": 0.3211686,
+        "energyGainRate": null,
+        "contents": [
+          {
+            "material": "Plant(Clone) (SimulationScripts.MatterMaterial)",
+            "amount": 5.271645,
+            "digestionRate": 0.566713452,
+            "lastConversionEfficiency": 0.186678618,
+            "averageChunkAmount": 2.64435267
+          }
+        ],
+        "contents_n": 1
+      },
+      "samples": 2,
+      "nonzero_content": 2,
+      "materials": [
+        "Plant(Clone) (SimulationScripts.MatterMaterial)"
+      ],
+      "max_totalContent": 5.29053545,
+      "max_energyGainRate": null
+    }
+  },
+  "raw": "testdata/parity/digestion/samples.jsonl",
+  "availability": "BibiteStomach exposes per-tick stomach amount/rate fields but no native cumulative digested/gained-energy counter; raw per-tick fields are the available evidence. Rust digestion can be compared against these rates/contents, not a cumulative counter."
+}

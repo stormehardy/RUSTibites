@@ -1,0 +1,12 @@
+{
+    "population":  2000,
+    "box":  100,
+    "world_content_sha256":  "fbccc12fd684f8ee19ab0bc1b4edca4ef6a19f71a87985edbc948d929a2cbc77",
+    "regenerated_sha256":  "fbccc12fd684f8ee19ab0bc1b4edca4ef6a19f71a87985edbc948d929a2cbc77",
+    "world_identical":  true,
+    "fingerprints":  [
+                         "9658808989975454964",
+                         "9658808989975454964"
+                     ],
+    "fingerprint_identical":  true
+}

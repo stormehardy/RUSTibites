@@ -1,0 +1,106 @@
+{
+  "schema": "rustibites.assets.reference.v1",
+  "game": {
+    "title": "The Bibites",
+    "version": "0.6.3.1",
+    "unity": "6000.0.44f1"
+  },
+  "capture_method": "BibitesBridge GET /screenshot (main camera -> offscreen RenderTexture); game window hidden via BibitesAPI lab harness",
+  "input": "Z:\\RUSTibites\\testdata\\real\\Default.zip",
+  "input_kind": "scenario_newgame",
+  "captured_utc": "2026-10-30T12:00:56+00:00",
+  "frames": [
+    {
+      "file": "assets/game/reference/default/full_world.png",
+      "width": 1920,
+      "height": 1080,
+      "camera": {
+        "ok": true,
+        "x": 0.0,
+        "y": 0.0,
+        "size": 2080.0,
+        "worldHalfSize": 2000.0,
+        "aspect": 1.77777779,
+        "orthographic": true
+      },
+      "asked": {
+        "fit": true
+      }
+    },
+    {
+      "file": "assets/game/reference/default/population.png",
+      "width": 1920,
+      "height": 1080,
+      "camera": {
+        "ok": true,
+        "x": 0.0,
+        "y": 0.0,
+        "size": 120.0,
+        "worldHalfSize": 2000.0,
+        "aspect": 1.77777779,
+        "orthographic": true
+      },
+      "asked": {
+        "x": 0.0,
+        "y": 0.0,
+        "size": 120.0
+      }
+    },
+    {
+      "file": "assets/game/reference/default/zone_pellets_eggs.png",
+      "width": 1920,
+      "height": 1080,
+      "camera": {
+        "ok": true,
+        "x": 0.0,
+        "y": 0.0,
+        "size": 230.0,
+        "worldHalfSize": 2000.0,
+        "aspect": 1.77777779,
+        "orthographic": true
+      },
+      "asked": {
+        "x": 0.0,
+        "y": 0.0,
+        "size": 230.0
+      }
+    },
+    {
+      "file": "assets/game/reference/default/bibite_closeup.png",
+      "width": 1280,
+      "height": 720,
+      "camera": {
+        "ok": true,
+        "x": 1018.39941,
+        "y": -471.2087,
+        "size": 12.0,
+        "worldHalfSize": 2000.0,
+        "aspect": 1.77777779,
+        "orthographic": true
+      },
+      "asked": {
+        "x": 1018.39941,
+        "y": -471.2087,
+        "size": 12.0
+      },
+      "bibite": {
+        "id": 623103527,
+        "x": 1018.39941,
+        "y": -471.2087,
+        "species": 1,
+        "generation": 0,
+        "size": 1.14467335
+      }
+    }
+  ],
+  "world": {
+    "simulated_time_s": 0.2500000037252903,
+    "paused": true,
+    "counts": {
+      "bibites": 1,
+      "corpses": 0,
+      "eggs": 0
+    },
+    "sim_tps": 40
+  }
+}

@@ -1,0 +1,269 @@
+{
+  "schema": "rustibites.ui_visual_reference_native.in_world.v1",
+  "screen": {
+    "width": 1920,
+    "height": 1080,
+    "dpi": 96,
+    "fullscreen": true
+  },
+  "standalone_launch": true,
+  "sessions": [
+    {
+      "session": "native_world_toolbar",
+      "file": "assets/game/reference/functional_ui_native/in_world/native_world_toolbar_hud_1920x1080.png",
+      "source": "standalone native 1920 hidden game /d/ui_overlay",
+      "role": "overlay",
+      "sharpness": {
+        "width": 1920,
+        "height": 1080,
+        "alpha_pixels": 43959,
+        "alpha_fraction": 0.021199363425925925,
+        "unique_opaque_colors": 363
+      }
+    },
+    {
+      "session": "native_world_placer",
+      "file": "assets/game/reference/functional_ui_native/in_world/native_world_placer.png",
+      "source": "standalone native 1920 hidden game /d/ui_overlay",
+      "role": "overlay",
+      "sharpness": {
+        "width": 1920,
+        "height": 1080,
+        "alpha_pixels": 51939,
+        "alpha_fraction": 0.025047743055555554,
+        "unique_opaque_colors": 367
+      },
+      "button": "PlacerButton",
+      "press": {
+        "ok": true,
+        "pressed": "PlacerButton",
+        "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/PlacerButton"
+      }
+    },
+    {
+      "session": "native_world_user_actions",
+      "file": "assets/game/reference/functional_ui_native/in_world/native_world_user_actions.png",
+      "source": "standalone native 1920 hidden game /d/ui_overlay",
+      "role": "overlay",
+      "sharpness": {
+        "width": 1920,
+        "height": 1080,
+        "alpha_pixels": 55131,
+        "alpha_fraction": 0.026587094907407408,
+        "unique_opaque_colors": 368
+      },
+      "button": "UserActions",
+      "press": {
+        "ok": true,
+        "pressed": "UserActions",
+        "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/UserActions"
+      }
+    },
+    {
+      "session": "native_world_view",
+      "file": "assets/game/reference/functional_ui_native/in_world/native_world_view.png",
+      "source": "standalone native 1920 hidden game /d/ui_overlay",
+      "role": "overlay",
+      "sharpness": {
+        "width": 1920,
+        "height": 1080,
+        "alpha_pixels": 118739,
+        "alpha_fraction": 0.05726224922839506,
+        "unique_opaque_colors": 368
+      },
+      "button": "ViewButton",
+      "press": {
+        "ok": true,
+        "pressed": "ViewButton",
+        "path": "UICanvas/MainUI/Layer0/UI Buttons/BottomLeft/ViewButton"
+      }
+    },
+    {
+      "session": "native_world_dynamic",
+      "file": "assets/game/reference/functional_ui_native/in_world/native_world_dynamic.png",
+      "source": "standalone native 1920 hidden game /d/ui_overlay",
+      "role": "overlay",
+      "sharpness": {
+        "width": 1920,
+        "height": 1080,
+        "alpha_pixels": 1083490,
+        "alpha_fraction": 0.5225163966049383,
+        "unique_opaque_colors": 431
+      },
+      "button": "DynamicParametersButton",
+      "press": {
+        "ok": true,
+        "pressed": "DynamicParametersButton",
+        "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/DynamicParametersButton"
+      }
+    },
+    {
+      "session": "native_world_lineage",
+      "file": "assets/game/reference/functional_ui_native/in_world/native_world_lineage.png",
+      "source": "standalone native 1920 hidden game /d/ui_overlay",
+      "role": "overlay",
+      "sharpness": {
+        "width": 1920,
+        "height": 1080,
+        "alpha_pixels": 214499,
+        "alpha_fraction": 0.10344280478395061,
+        "unique_opaque_colors": 468
+      },
+      "button": "AncestralLineageButton",
+      "press": {
+        "ok": true,
+        "pressed": "AncestralLineageButton",
+        "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/AncestralLineageButton"
+      }
+    },
+    {
+      "session": "native_world_information",
+      "file": "assets/game/reference/functional_ui_native/in_world/native_world_information.png",
+      "source": "standalone native 1920 hidden game /d/ui_overlay",
+      "role": "overlay",
+      "sharpness": {
+        "width": 1920,
+        "height": 1080,
+        "alpha_pixels": 2073600,
+        "alpha_fraction": 1.0,
+        "unique_opaque_colors": 412
+      },
+      "button": "InformationPanelButton",
+      "press": {
+        "ok": true,
+        "pressed": "InformationPanelButton",
+        "path": "UICanvas/MainUI/Layer0/UI Buttons/TopRight/InformationPanelButton"
+      }
+    },
+    {
+      "session": "native_world_settings",
+      "file": "assets/game/reference/functional_ui_native/in_world/native_world_settings.png",
+      "source": "standalone native 1920 hidden game /d/ui_overlay",
+      "role": "overlay",
+      "sharpness": {
+        "width": 1920,
+        "height": 1080,
+        "alpha_pixels": 2073600,
+        "alpha_fraction": 1.0,
+        "unique_opaque_colors": 412
+      },
+      "button": "SettingsButton",
+      "press": {
+        "ok": true,
+        "pressed": "SettingsButton",
+        "path": "UICanvas/MainUI/Layer2/ExpandedBrainPanel/Top Bar/TopLeft/SettingsButton"
+      }
+    },
+    {
+      "session": "native_world_placer_pellets",
+      "file": "assets/game/reference/functional_ui_native/in_world/native_world_placer_pellets.png",
+      "source": "standalone native 1920 hidden game /d/ui_overlay",
+      "role": "overlay",
+      "sharpness": {
+        "width": 1920,
+        "height": 1080,
+        "alpha_pixels": 2073600,
+        "alpha_fraction": 1.0,
+        "unique_opaque_colors": 412
+      }
+    },
+    {
+      "session": "native_inspector_stats",
+      "file": "assets/game/reference/functional_ui_native/in_world/inspector/native_inspector_stats_ui_only_1920x1080.png",
+      "source": "standalone native 1920 hidden game /d/ui_overlay",
+      "role": "overlay",
+      "sharpness": {
+        "width": 1920,
+        "height": 1080,
+        "alpha_pixels": 2073600,
+        "alpha_fraction": 1.0,
+        "unique_opaque_colors": 412
+      }
+    },
+    {
+      "session": "native_inspector_genes",
+      "file": "assets/game/reference/functional_ui_native/in_world/inspector/native_inspector_genes_ui_only_1920x1080.png",
+      "source": "standalone native 1920 hidden game /d/ui_overlay",
+      "role": "overlay",
+      "sharpness": {
+        "width": 1920,
+        "height": 1080,
+        "alpha_pixels": 2073600,
+        "alpha_fraction": 1.0,
+        "unique_opaque_colors": 412
+      },
+      "button": "GeneButton",
+      "press": {
+        "ok": true,
+        "pressed": "GeneButton",
+        "path": "UICanvas/MainUI/Layer1/Panels/BibiteButtons/GeneButton"
+      }
+    },
+    {
+      "session": "native_inspector_biology",
+      "file": "assets/game/reference/functional_ui_native/in_world/inspector/native_inspector_biology_ui_only_1920x1080.png",
+      "source": "standalone native 1920 hidden game /d/ui_overlay",
+      "role": "overlay",
+      "sharpness": {
+        "width": 1920,
+        "height": 1080,
+        "alpha_pixels": 2073600,
+        "alpha_fraction": 1.0,
+        "unique_opaque_colors": 412
+      },
+      "button": "BiologyButton",
+      "press": {
+        "ok": true,
+        "pressed": "BiologyButton",
+        "path": "UICanvas/MainUI/Layer1/Panels/BibiteButtons/BiologyButton"
+      }
+    },
+    {
+      "session": "native_inspector_brain",
+      "file": "assets/game/reference/functional_ui_native/in_world/inspector/native_inspector_brain_ui_only_1920x1080.png",
+      "source": "standalone native 1920 hidden game /d/ui_overlay",
+      "role": "overlay",
+      "sharpness": {
+        "width": 1920,
+        "height": 1080,
+        "alpha_pixels": 2073600,
+        "alpha_fraction": 1.0,
+        "unique_opaque_colors": 412
+      },
+      "button": "BrainButton",
+      "press": {
+        "ok": true,
+        "pressed": "BrainButton",
+        "path": "UICanvas/MainUI/Layer1/Panels/BibiteButtons/BrainButton"
+      }
+    }
+  ],
+  "note": "Native 1920 transparent UI-only in-world refs; menu challenge/workshop/settings remain menu-canvas blocked.",
+  "button_theme": {
+    "json": "assets/game/reference/functional_ui_native/in_world/button_theme/button_theme.json",
+    "raw": "assets/game/reference/functional_ui_native/in_world/button_theme/button_theme_raw.json",
+    "sprites": "assets/game/reference/functional_ui_native/in_world/button_theme/sprites/",
+    "note": "Toolbar/top-right Button.colors (normal/highlighted/pressed/selected/disabled), targetGraphic, Image.color, sprite/texture/rect/pivot, material/shader/color, CanvasRenderer color, ancestor CanvasGroup alpha. All active toolbar icon sprites were missing from extracted assets and are dumped here."
+  },
+  "session_map": "assets/game/reference/functional_ui_native/in_world/session_map.json",
+  "session_map_schema": "rustibites.ui.visual_reference_map.v1",
+  "inspector_tabs": {
+    "manifest": "assets/game/reference/functional_ui_native/in_world/inspector/manifest.json",
+    "sessions": [
+      "stats",
+      "genes",
+      "biology",
+      "brain"
+    ],
+    "refs": {
+      "native_inspector_stats": "assets/game/reference/functional_ui_native/in_world/inspector/native_inspector_stats_ui_only_1920x1080.png",
+      "native_inspector_genes": "assets/game/reference/functional_ui_native/in_world/inspector/native_inspector_genes_ui_only_1920x1080.png",
+      "native_inspector_biology": "assets/game/reference/functional_ui_native/in_world/inspector/native_inspector_biology_ui_only_1920x1080.png",
+      "native_inspector_brain": "assets/game/reference/functional_ui_native/in_world/inspector/native_inspector_brain_ui_only_1920x1080.png"
+    },
+    "note": "Correct per-tab native UI-only refs (panels activated directly by path)."
+  },
+  "hud": {
+    "default_world_toolbar": "assets/game/reference/functional_ui_native/in_world/native_world_toolbar_hud_1920x1080.png"
+  }
+}

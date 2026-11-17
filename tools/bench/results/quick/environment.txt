@@ -1,0 +1,40 @@
+# RUSTibites benchmark environment
+
+Captured (UTC):        2026-10-30T07:11:50.6428861Z
+Host:                  DESKTOP
+OS:                    Microsoft Windows 10 Home | version=10.0.19045
+CPU:                   AMD Ryzen 5 3600 6-Core Processor | physical=6 logical=12 | max_clock_mhz=3593
+Memory:                16.0 GB total, 6.21 GB free at capture
+CPU load at capture:   63.0 %
+PowerShell:            5.1.19041.6456
+rustc:                 1.99.1 (58cf8f9c3 2026-10-13) (release 1.99.1, x86_64-pc-windows-msvc)
+cargo:                 1.99.1 (5f94df478 2026-08-27)
+Git HEAD:              07a401ec7f897fffd5711e85647bae7fe5ee6bbf (main) 2026-10-30T03:11:00-04:00
+Git subject:           World: persistent pool API for body (ParallelExecutor, deterministic chunk merge) + CI workflows/local gate + docs; io robustness lint fix; spec audit WIP
+Git dirty:             True (12 changed paths)
+Git status:
+   M Cargo.lock
+   M Cargo.toml
+   M crates/bibites-core/src/body.rs
+   M crates/bibites-core/src/brain.rs
+   M crates/bibites-core/src/genome.rs
+   M crates/bibites-core/src/species.rs
+   M docs/spec/02-body-organs-physics.md
+   M docs/spec/03-world-ecology.md
+  ?? crates/bibites-core/examples/
+  ?? crates/bibites-view/
+  ?? tools/bench/
+  ?? tools/parity_round2/
+Release profile:
+  opt-level = 3
+  lto = "fat"
+  codegen-units = 1
+  panic = "abort"
+  strip = "debuginfo"
+Benchmark binary:      Z:\RUSTibites\target\release\rustibites.exe
+  sha256:              D80ED2C74CEC79952170AC5D95DE28EAE7389FB176E253098434418960D32F1D
+  size:                1855488 bytes
+  mtime (UTC):         2026-10-30T07:07:59.5317773Z
+  stable copy:         C:\Users\Storme\AppData\Local\Temp\rustibites-bench\bin\rustibites-D80ED2C74CEC7995.exe
+Simulator:             30 TPS (fixed_dt = 1/30 s)
+Seed:                  seed = 0x5255535400000000 xor repetition_index (repetition starts at 0)

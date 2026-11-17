@@ -1,0 +1,109 @@
+{
+  "schema": "rustibites.assets.reference.v1",
+  "game": {
+    "title": "The Bibites",
+    "version": "0.6.3.1",
+    "unity": "6000.0.44f1"
+  },
+  "capture_method": "BibitesBridge GET /screenshot (main camera -> offscreen RenderTexture); game window hidden via BibitesAPI lab harness",
+  "save": "Z:\\RUSTibites\\testdata\\real\\saves\\lol.zip",
+  "captured_utc": "2026-10-30T07:56:43+00:00",
+  "frames": [
+    {
+      "file": "assets/game/reference/full_world.png",
+      "width": 1920,
+      "height": 1080,
+      "camera": {
+        "ok": true,
+        "x": 0.0,
+        "y": 0.0,
+        "size": 2080.0,
+        "worldHalfSize": 2000.0,
+        "aspect": 1.77777779,
+        "orthographic": true
+      },
+      "asked": {
+        "fit": true
+      }
+    },
+    {
+      "file": "assets/game/reference/population.png",
+      "width": 1920,
+      "height": 1080,
+      "camera": {
+        "ok": true,
+        "x": 0.0,
+        "y": 0.0,
+        "size": 120.0,
+        "worldHalfSize": 2000.0,
+        "aspect": 1.77777779,
+        "orthographic": true
+      },
+      "asked": {
+        "x": 0.0,
+        "y": 0.0,
+        "size": 120.0
+      }
+    },
+    {
+      "file": "assets/game/reference/zone_pellets_eggs.png",
+      "width": 1920,
+      "height": 1080,
+      "camera": {
+        "ok": true,
+        "x": 0.0,
+        "y": 0.0,
+        "size": 230.0,
+        "worldHalfSize": 2000.0,
+        "aspect": 1.77777779,
+        "orthographic": true
+      },
+      "asked": {
+        "x": 0.0,
+        "y": 0.0,
+        "size": 230.0
+      }
+    },
+    {
+      "file": "assets/game/reference/bibite_closeup.png",
+      "width": 1280,
+      "height": 720,
+      "camera": {
+        "ok": true,
+        "x": 67.68129,
+        "y": -97.96953,
+        "size": 12.0,
+        "worldHalfSize": 2000.0,
+        "aspect": 1.77777779,
+        "orthographic": true
+      },
+      "asked": {
+        "x": 67.68129,
+        "y": -97.96953,
+        "size": 12.0
+      },
+      "bibite": {
+        "id": 1234105466,
+        "x": 67.68129,
+        "y": -97.96953,
+        "species": 2583,
+        "generation": 625,
+        "size": 7.47832727
+      }
+    }
+  ],
+  "world": {
+    "simulated_time_s": 469983.78125,
+    "paused": true,
+    "counts": {
+      "bibites": 22,
+      "corpses": 13,
+      "eggs": 4
+    },
+    "sim_tps": 15,
+    "base_tick": 0,
+    "tick_note": "tick 0 = load of the save; world simulatedTime is preserved from the save, so tick counter restarts at the load (sim_tps=15)"
+  },
+  "seed": null,
+  "seed_note": "save load: no RNG seed applied; frames are the deterministic paused state after POST /load"
+}

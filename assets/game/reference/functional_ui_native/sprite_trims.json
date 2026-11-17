@@ -1,0 +1,1979 @@
+{
+ "schema": "rustibites.ui.sprite_trims.v1",
+ "trims": {
+  "assets/game/reference/functional_ui_native/sprites/Button_UI.png": {
+   "full": [
+    360,
+    360
+   ],
+   "offset": [
+    4.076,
+    4.076
+   ],
+   "size": [
+    352,
+    352
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/Checkmark.png": {
+   "full": [
+    40,
+    40
+   ],
+   "offset": [
+    7.076,
+    9.076
+   ],
+   "size": [
+    27,
+    23
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/Credits.png": {
+   "full": [
+    360,
+    360
+   ],
+   "offset": [
+    4.076,
+    4.076
+   ],
+   "size": [
+    352,
+    352
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/Delete_0.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    7.076,
+    4.051
+   ],
+   "size": [
+    21,
+    27
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/Discord-Logo_0.png": {
+   "full": [
+    1426,
+    1106
+   ],
+   "offset": [
+    0.0,
+    -1.867
+   ],
+   "size": [
+    1427,
+    1108
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/DropdownArrow.png": {
+   "full": [
+    40,
+    40
+   ],
+   "offset": [
+    8.076,
+    13.076
+   ],
+   "size": [
+    24,
+    16
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/Genes_button_selected.png": {
+   "full": [
+    360,
+    360
+   ],
+   "offset": [
+    4.076,
+    4.076
+   ],
+   "size": [
+    352,
+    352
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/Help.png": {
+   "full": [
+    360,
+    360
+   ],
+   "offset": [
+    4.076,
+    4.076
+   ],
+   "size": [
+    352,
+    352
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/Patreon.png": {
+   "full": [
+    512,
+    512
+   ],
+   "offset": [
+    0.0,
+    8.076
+   ],
+   "size": [
+    512,
+    496
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/Quit_button.png": {
+   "full": [
+    360,
+    360
+   ],
+   "offset": [
+    36.0,
+    36.0
+   ],
+   "size": [
+    288,
+    288
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/RAD.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    5.043,
+    3.076
+   ],
+   "size": [
+    26,
+    29
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/Reset_settings_icon-1.png.png": {
+   "full": [
+    600,
+    600
+   ],
+   "offset": [
+    98.076,
+    108.076
+   ],
+   "size": [
+    404,
+    374
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/Settings_button_selected.png": {
+   "full": [
+    360,
+    360
+   ],
+   "offset": [
+    4.076,
+    4.076
+   ],
+   "size": [
+    352,
+    352
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/Status_Energy.png": {
+   "full": [
+    360,
+    360
+   ],
+   "offset": [
+    22.076,
+    22.076
+   ],
+   "size": [
+    316,
+    316
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/Status_Health.png": {
+   "full": [
+    360,
+    360
+   ],
+   "offset": [
+    22.076,
+    22.076
+   ],
+   "size": [
+    316,
+    316
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/UIMask.png": {
+   "full": [
+    32,
+    32
+   ],
+   "offset": [
+    2.027,
+    2.027
+   ],
+   "size": [
+    28,
+    28
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/addNodeAfter_0.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    2.036,
+    2.076
+   ],
+   "size": [
+    31,
+    31
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/addNodeBefore_0.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    2.036,
+    2.076
+   ],
+   "size": [
+    31,
+    31
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/add_In_Connection_0.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    2.076,
+    3.027
+   ],
+   "size": [
+    30,
+    30
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/add_Out_Connection_0.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    3.027,
+    2.076
+   ],
+   "size": [
+    30,
+    30
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/animation_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    1.015,
+    1.013
+   ],
+   "size": [
+    33,
+    33
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/bibite_import_tool.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    3.076,
+    5.058
+   ],
+   "size": [
+    28,
+    26
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/bibite_options_tool.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    3.076,
+    5.058
+   ],
+   "size": [
+    28,
+    26
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/brain_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    4.076,
+    4.027
+   ],
+   "size": [
+    27,
+    27
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/bug_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    2.076,
+    3.076
+   ],
+   "size": [
+    31,
+    29
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/checkmark_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    4.076,
+    8.076
+   ],
+   "size": [
+    28,
+    22
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/clone_tool.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    3.027,
+    5.058
+   ],
+   "size": [
+    29,
+    26
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/compass.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    3.027,
+    2.027
+   ],
+   "size": [
+    29,
+    31
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/credits_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    2.013,
+    4.076
+   ],
+   "size": [
+    30,
+    29
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/dead.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    4.027,
+    4.027
+   ],
+   "size": [
+    27,
+    27
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/dna_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    7.027,
+    3.076
+   ],
+   "size": [
+    21,
+    29
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/energy_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    6.027,
+    5.076
+   ],
+   "size": [
+    24,
+    26
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/exit_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    5.076,
+    5.076
+   ],
+   "size": [
+    25,
+    25
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/export_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    4.076,
+    6.076
+   ],
+   "size": [
+    27,
+    25
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/eye_icon_0.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    3.076,
+    8.076
+   ],
+   "size": [
+    29,
+    19
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/feedback_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    3.027,
+    3.027
+   ],
+   "size": [
+    29,
+    29
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/gotolink_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    5.076,
+    5.076
+   ],
+   "size": [
+    27,
+    25
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/health_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    5.076,
+    7.076
+   ],
+   "size": [
+    25,
+    23
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/help_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    5.076,
+    4.076
+   ],
+   "size": [
+    26,
+    27
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/home_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    3.076,
+    5.027
+   ],
+   "size": [
+    29,
+    26
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/import_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    4.076,
+    6.076
+   ],
+   "size": [
+    27,
+    25
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/information_icon_0.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    10.076,
+    5.076
+   ],
+   "size": [
+    15,
+    25
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/input_pellet_conc_weight.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    9.076,
+    9.076
+   ],
+   "size": [
+    16,
+    17
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/kill_bibite_tool.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    2.013,
+    5.036
+   ],
+   "size": [
+    30,
+    25
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/lay_egg_tool.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    7.027,
+    7.076
+   ],
+   "size": [
+    21,
+    21
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/luca_import_tool.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    4.076,
+    5.058
+   ],
+   "size": [
+    27,
+    26
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/mesh_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    5.076,
+    4.076
+   ],
+   "size": [
+    25,
+    27
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/no_eye_icon_0.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    3.099,
+    6.076
+   ],
+   "size": [
+    29,
+    23
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/pause_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    6.076,
+    5.076
+   ],
+   "size": [
+    23,
+    25
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/pheroTower.png": {
+   "full": [
+    45,
+    45
+   ],
+   "offset": [
+    3.027,
+    3.027
+   ],
+   "size": [
+    42,
+    39
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/plant_paint_tool.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    3.076,
+    4.043
+   ],
+   "size": [
+    29,
+    28
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/plus_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    4.076,
+    4.076
+   ],
+   "size": [
+    27,
+    27
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/radioactive.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    3.027,
+    5.076
+   ],
+   "size": [
+    29,
+    28
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/rainbow.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    3.027,
+    7.027
+   ],
+   "size": [
+    29,
+    21
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/rename_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    4.03,
+    3.034
+   ],
+   "size": [
+    27,
+    29
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/reset_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    5.027,
+    5.027
+   ],
+   "size": [
+    25,
+    25
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/resume_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    7.076,
+    6.027
+   ],
+   "size": [
+    22,
+    23
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/revive_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    1.013,
+    2.076
+   ],
+   "size": [
+    32,
+    29
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/save_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    4.076,
+    5.076
+   ],
+   "size": [
+    27,
+    26
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/settings_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    3.076,
+    3.076
+   ],
+   "size": [
+    29,
+    29
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/simulation_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    4.076,
+    3.043
+   ],
+   "size": [
+    29,
+    29
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/smallGreen.png": {
+   "full": [
+    320,
+    300
+   ],
+   "offset": [
+    0.0,
+    18.076
+   ],
+   "size": [
+    302,
+    264
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/small_circle_base_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    3.027,
+    3.027
+   ],
+   "size": [
+    29,
+    29
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/stats_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    3.076,
+    4.076
+   ],
+   "size": [
+    29,
+    28
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/steam_add_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    3.076,
+    2.027
+   ],
+   "size": [
+    30,
+    30
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/steam_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    2.076,
+    2.027
+   ],
+   "size": [
+    30,
+    30
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/step_icon_0.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    7.076,
+    6.043
+   ],
+   "size": [
+    22,
+    23
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/stomach_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    5.027,
+    2.076
+   ],
+   "size": [
+    25,
+    31
+   ]
+  },
+  "assets/game/reference/functional_ui_native/sprites/tree_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    5.054,
+    5.076
+   ],
+   "size": [
+    25,
+    25
+   ]
+  },
+  "assets/game/ui/sharedassets0.assets/sprites/Button_UI.png": {
+   "full": [
+    360,
+    360
+   ],
+   "offset": [
+    4.076,
+    4.076
+   ],
+   "size": [
+    352,
+    352
+   ]
+  },
+  "assets/game/ui/sharedassets0.assets/sprites/Checkmark.png": {
+   "full": [
+    40,
+    40
+   ],
+   "offset": [
+    7.076,
+    9.076
+   ],
+   "size": [
+    27,
+    23
+   ]
+  },
+  "assets/game/ui/sharedassets0.assets/sprites/Delete_0.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    7.076,
+    4.051
+   ],
+   "size": [
+    21,
+    27
+   ]
+  },
+  "assets/game/ui/sharedassets0.assets/sprites/DropdownArrow.png": {
+   "full": [
+    40,
+    40
+   ],
+   "offset": [
+    8.076,
+    13.076
+   ],
+   "size": [
+    24,
+    16
+   ]
+  },
+  "assets/game/ui/sharedassets0.assets/sprites/Help.png": {
+   "full": [
+    360,
+    360
+   ],
+   "offset": [
+    4.076,
+    4.076
+   ],
+   "size": [
+    352,
+    352
+   ]
+  },
+  "assets/game/ui/sharedassets0.assets/sprites/Quit_button.png": {
+   "full": [
+    360,
+    360
+   ],
+   "offset": [
+    36.0,
+    36.0
+   ],
+   "size": [
+    288,
+    288
+   ]
+  },
+  "assets/game/ui/sharedassets0.assets/sprites/Reset_settings_icon-1.png.png": {
+   "full": [
+    600,
+    600
+   ],
+   "offset": [
+    98.076,
+    108.076
+   ],
+   "size": [
+    404,
+    374
+   ]
+  },
+  "assets/game/ui/sharedassets0.assets/sprites/Settings_button_selected.png": {
+   "full": [
+    360,
+    360
+   ],
+   "offset": [
+    4.076,
+    4.076
+   ],
+   "size": [
+    352,
+    352
+   ]
+  },
+  "assets/game/ui/sharedassets0.assets/sprites/UIMask.png": {
+   "full": [
+    32,
+    32
+   ],
+   "offset": [
+    2.027,
+    2.027
+   ],
+   "size": [
+    28,
+    28
+   ]
+  },
+  "assets/game/ui/sharedassets0.assets/sprites/challenge_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    4.076,
+    3.027
+   ],
+   "size": [
+    27,
+    29
+   ]
+  },
+  "assets/game/ui/sharedassets0.assets/sprites/checkmark_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    4.076,
+    8.076
+   ],
+   "size": [
+    28,
+    22
+   ]
+  },
+  "assets/game/ui/sharedassets0.assets/sprites/exit_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    5.076,
+    5.076
+   ],
+   "size": [
+    25,
+    25
+   ]
+  },
+  "assets/game/ui/sharedassets0.assets/sprites/plus_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    4.076,
+    4.076
+   ],
+   "size": [
+    27,
+    27
+   ]
+  },
+  "assets/game/ui/sharedassets0.assets/sprites/reset_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    5.027,
+    5.027
+   ],
+   "size": [
+    25,
+    25
+   ]
+  },
+  "assets/game/ui/sharedassets0.assets/sprites/save_icon_thick.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    5.076,
+    5.076
+   ],
+   "size": [
+    25,
+    25
+   ]
+  },
+  "assets/game/ui/sharedassets0.assets/sprites/simulation_icon_thick.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    4.076,
+    4.076
+   ],
+   "size": [
+    27,
+    28
+   ]
+  },
+  "assets/game/ui/sharedassets0.assets/sprites/small_circle_base_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    3.027,
+    3.027
+   ],
+   "size": [
+    29,
+    29
+   ]
+  },
+  "assets/game/ui/sharedassets1.assets/sprites/Credits.png": {
+   "full": [
+    360,
+    360
+   ],
+   "offset": [
+    4.076,
+    4.076
+   ],
+   "size": [
+    352,
+    352
+   ]
+  },
+  "assets/game/ui/sharedassets1.assets/sprites/Discord-Logo_0.png": {
+   "full": [
+    1426,
+    1106
+   ],
+   "offset": [
+    0.0,
+    -1.867
+   ],
+   "size": [
+    1427,
+    1108
+   ]
+  },
+  "assets/game/ui/sharedassets1.assets/sprites/Patreon.png": {
+   "full": [
+    512,
+    512
+   ],
+   "offset": [
+    0.0,
+    8.076
+   ],
+   "size": [
+    512,
+    496
+   ]
+  },
+  "assets/game/ui/sharedassets1.assets/sprites/addNodeAfter_0.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    2.036,
+    2.076
+   ],
+   "size": [
+    31,
+    31
+   ]
+  },
+  "assets/game/ui/sharedassets1.assets/sprites/addNodeBefore_0.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    2.036,
+    2.076
+   ],
+   "size": [
+    31,
+    31
+   ]
+  },
+  "assets/game/ui/sharedassets1.assets/sprites/add_In_Connection_0.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    2.076,
+    3.027
+   ],
+   "size": [
+    30,
+    30
+   ]
+  },
+  "assets/game/ui/sharedassets1.assets/sprites/add_Out_Connection_0.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    3.027,
+    2.076
+   ],
+   "size": [
+    30,
+    30
+   ]
+  },
+  "assets/game/ui/sharedassets1.assets/sprites/animation_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    1.015,
+    1.013
+   ],
+   "size": [
+    33,
+    33
+   ]
+  },
+  "assets/game/ui/sharedassets1.assets/sprites/bibite_import_tool.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    3.076,
+    5.058
+   ],
+   "size": [
+    28,
+    26
+   ]
+  },
+  "assets/game/ui/sharedassets1.assets/sprites/bibite_options_tool.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    3.076,
+    5.058
+   ],
+   "size": [
+    28,
+    26
+   ]
+  },
+  "assets/game/ui/sharedassets1.assets/sprites/brain_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    4.076,
+    4.027
+   ],
+   "size": [
+    27,
+    27
+   ]
+  },
+  "assets/game/ui/sharedassets1.assets/sprites/bug_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    2.076,
+    3.076
+   ],
+   "size": [
+    31,
+    29
+   ]
+  },
+  "assets/game/ui/sharedassets1.assets/sprites/clone_tool.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    3.027,
+    5.058
+   ],
+   "size": [
+    29,
+    26
+   ]
+  },
+  "assets/game/ui/sharedassets1.assets/sprites/credits_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    2.013,
+    4.076
+   ],
+   "size": [
+    30,
+    29
+   ]
+  },
+  "assets/game/ui/sharedassets1.assets/sprites/dna_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    7.027,
+    3.076
+   ],
+   "size": [
+    21,
+    29
+   ]
+  },
+  "assets/game/ui/sharedassets1.assets/sprites/energy_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    6.027,
+    5.076
+   ],
+   "size": [
+    24,
+    26
+   ]
+  },
+  "assets/game/ui/sharedassets1.assets/sprites/export_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    4.076,
+    6.076
+   ],
+   "size": [
+    27,
+    25
+   ]
+  },
+  "assets/game/ui/sharedassets1.assets/sprites/eye_icon_0.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    3.076,
+    8.076
+   ],
+   "size": [
+    29,
+    19
+   ]
+  },
+  "assets/game/ui/sharedassets1.assets/sprites/feedback_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    3.027,
+    3.027
+   ],
+   "size": [
+    29,
+    29
+   ]
+  },
+  "assets/game/ui/sharedassets1.assets/sprites/gotolink_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    5.076,
+    5.076
+   ],
+   "size": [
+    27,
+    25
+   ]
+  },
+  "assets/game/ui/sharedassets1.assets/sprites/health_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    5.076,
+    7.076
+   ],
+   "size": [
+    25,
+    23
+   ]
+  },
+  "assets/game/ui/sharedassets1.assets/sprites/help_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    5.076,
+    4.076
+   ],
+   "size": [
+    26,
+    27
+   ]
+  },
+  "assets/game/ui/sharedassets1.assets/sprites/import_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    4.076,
+    6.076
+   ],
+   "size": [
+    27,
+    25
+   ]
+  },
+  "assets/game/ui/sharedassets1.assets/sprites/information_icon_0.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    10.076,
+    5.076
+   ],
+   "size": [
+    15,
+    25
+   ]
+  },
+  "assets/game/ui/sharedassets1.assets/sprites/no_eye_icon_0.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    3.099,
+    6.076
+   ],
+   "size": [
+    29,
+    23
+   ]
+  },
+  "assets/game/ui/sharedassets1.assets/sprites/pause_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    6.076,
+    5.076
+   ],
+   "size": [
+    23,
+    25
+   ]
+  },
+  "assets/game/ui/sharedassets1.assets/sprites/rename_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    4.03,
+    3.034
+   ],
+   "size": [
+    27,
+    29
+   ]
+  },
+  "assets/game/ui/sharedassets1.assets/sprites/resume_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    7.076,
+    6.027
+   ],
+   "size": [
+    22,
+    23
+   ]
+  },
+  "assets/game/ui/sharedassets1.assets/sprites/save_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    4.076,
+    5.076
+   ],
+   "size": [
+    27,
+    26
+   ]
+  },
+  "assets/game/ui/sharedassets1.assets/sprites/settings_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    3.076,
+    3.076
+   ],
+   "size": [
+    29,
+    29
+   ]
+  },
+  "assets/game/ui/sharedassets1.assets/sprites/simulation_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    4.076,
+    3.043
+   ],
+   "size": [
+    29,
+    29
+   ]
+  },
+  "assets/game/ui/sharedassets1.assets/sprites/smallGreen.png": {
+   "full": [
+    320,
+    300
+   ],
+   "offset": [
+    0.0,
+    18.076
+   ],
+   "size": [
+    302,
+    264
+   ]
+  },
+  "assets/game/ui/sharedassets1.assets/sprites/steam_add_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    3.076,
+    2.027
+   ],
+   "size": [
+    30,
+    30
+   ]
+  },
+  "assets/game/ui/sharedassets1.assets/sprites/steam_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    2.076,
+    2.027
+   ],
+   "size": [
+    30,
+    30
+   ]
+  },
+  "assets/game/ui/sharedassets1.assets/sprites/step_icon_0.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    7.076,
+    6.043
+   ],
+   "size": [
+    22,
+    23
+   ]
+  },
+  "assets/game/ui/sharedassets2.assets/sprites/Genes_button_selected.png": {
+   "full": [
+    360,
+    360
+   ],
+   "offset": [
+    4.076,
+    4.076
+   ],
+   "size": [
+    352,
+    352
+   ]
+  },
+  "assets/game/ui/sharedassets2.assets/sprites/RAD.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    5.043,
+    3.076
+   ],
+   "size": [
+    26,
+    29
+   ]
+  },
+  "assets/game/ui/sharedassets2.assets/sprites/Status_Energy.png": {
+   "full": [
+    360,
+    360
+   ],
+   "offset": [
+    22.076,
+    22.076
+   ],
+   "size": [
+    316,
+    316
+   ]
+  },
+  "assets/game/ui/sharedassets2.assets/sprites/Status_Health.png": {
+   "full": [
+    360,
+    360
+   ],
+   "offset": [
+    22.076,
+    22.076
+   ],
+   "size": [
+    316,
+    316
+   ]
+  },
+  "assets/game/ui/sharedassets2.assets/sprites/compass.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    3.027,
+    2.027
+   ],
+   "size": [
+    29,
+    31
+   ]
+  },
+  "assets/game/ui/sharedassets2.assets/sprites/dead.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    4.027,
+    4.027
+   ],
+   "size": [
+    27,
+    27
+   ]
+  },
+  "assets/game/ui/sharedassets2.assets/sprites/home_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    3.076,
+    5.027
+   ],
+   "size": [
+    29,
+    26
+   ]
+  },
+  "assets/game/ui/sharedassets2.assets/sprites/input_pellet_conc_weight.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    9.076,
+    9.076
+   ],
+   "size": [
+    16,
+    17
+   ]
+  },
+  "assets/game/ui/sharedassets2.assets/sprites/kill_bibite_tool.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    2.013,
+    5.036
+   ],
+   "size": [
+    30,
+    25
+   ]
+  },
+  "assets/game/ui/sharedassets2.assets/sprites/lay_egg_tool.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    7.027,
+    7.076
+   ],
+   "size": [
+    21,
+    21
+   ]
+  },
+  "assets/game/ui/sharedassets2.assets/sprites/luca_import_tool.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    4.076,
+    5.058
+   ],
+   "size": [
+    27,
+    26
+   ]
+  },
+  "assets/game/ui/sharedassets2.assets/sprites/mesh_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    5.076,
+    4.076
+   ],
+   "size": [
+    25,
+    27
+   ]
+  },
+  "assets/game/ui/sharedassets2.assets/sprites/pheroTower.png": {
+   "full": [
+    45,
+    45
+   ],
+   "offset": [
+    3.027,
+    3.027
+   ],
+   "size": [
+    42,
+    39
+   ]
+  },
+  "assets/game/ui/sharedassets2.assets/sprites/plant_paint_tool.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    3.076,
+    4.043
+   ],
+   "size": [
+    29,
+    28
+   ]
+  },
+  "assets/game/ui/sharedassets2.assets/sprites/radioactive.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    3.027,
+    5.076
+   ],
+   "size": [
+    29,
+    28
+   ]
+  },
+  "assets/game/ui/sharedassets2.assets/sprites/rainbow.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    3.027,
+    7.027
+   ],
+   "size": [
+    29,
+    21
+   ]
+  },
+  "assets/game/ui/sharedassets2.assets/sprites/revive_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    1.013,
+    2.076
+   ],
+   "size": [
+    32,
+    29
+   ]
+  },
+  "assets/game/ui/sharedassets2.assets/sprites/stats_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    3.076,
+    4.076
+   ],
+   "size": [
+    29,
+    28
+   ]
+  },
+  "assets/game/ui/sharedassets2.assets/sprites/stomach_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    5.027,
+    2.076
+   ],
+   "size": [
+    25,
+    31
+   ]
+  },
+  "assets/game/ui/sharedassets2.assets/sprites/tree_icon.png": {
+   "full": [
+    35,
+    35
+   ],
+   "offset": [
+    5.054,
+    5.076
+   ],
+   "size": [
+    25,
+    25
+   ]
+  }
+ }
+}

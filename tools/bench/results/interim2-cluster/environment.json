@@ -1,0 +1,88 @@
+{
+    "schema":  "rustibites.bench.environment/1",
+    "captured_at_utc":  "2026-11-01T09:38:28.4581072Z",
+    "hostname":  "DESKTOP",
+    "os":  {
+               "description":  "Microsoft Windows 10 Home",
+               "version":  "10.0.19045",
+               "architecture":  "AMD64",
+               "build":  "19045"
+           },
+    "cpu":  {
+                "name":  "AMD Ryzen 5 3600 6-Core Processor",
+                "physical_cores":  6,
+                "logical_cores":  12,
+                "max_clock_mhz":  3593
+            },
+    "logical_processors":  12,
+    "memory_total_gb":  15.95,
+    "memory_free_gb":  4.8,
+    "cpu_load_pct":  74,
+    "powershell":  "5.1.19041.6456",
+    "rust":  {
+                 "rustc":  "1.99.1 (58cf8f9c3 2026-10-13)",
+                 "cargo":  "1.99.1 (5f94df478 2026-08-27)",
+                 "release":  "1.99.1",
+                 "commit_hash":  "58cf8f9c35b355199727627d07ae34a4e2846d67",
+                 "host":  "x86_64-pc-windows-msvc",
+                 "llvm":  "23.1.1"
+             },
+    "git":  {
+                "head":  "3c4126b621e385753486af535633e31b2af206e1",
+                "head_short":  "3c4126b621e3",
+                "branch":  "main",
+                "subject":  "docs/assets: off-zone steering trace; brain accelerates outward with empty plant FOV",
+                "commit_date":  "2026-11-01T04:38:17-05:00",
+                "describe":  "3c4126b-dirty",
+                "dirty":  true,
+                "dirty_files":  18,
+                "status_lines":  [
+                                     " M assets/game/reference/ecology/contact_ext/sample_schema.json",
+                                     " M scripts/make_shortcut.ps1",
+                                     " M tools/assets/build_ui_expectations.py",
+                                     " M tools/assets/ui_expectations.json",
+                                     " M tools/parity/capture_36k_contact_ext.py",
+                                     "?? assets/game/reference/ecology/default_36k_foraging.json",
+                                     "?? crates/bibites-io/tests/template_feeding.rs",
+                                     "?? tools/bench/results/interim-100k/",
+                                     "?? tools/bench/results/interim-cluster/",
+                                     "?? tools/bench/results/interim-default/",
+                                     "?? tools/bench/results/interim-frozen-serial/",
+                                     "?? tools/bench/results/interim-serial/",
+                                     "?? tools/bench/results/interim/",
+                                     "?? tools/bench/results/interim2-default/",
+                                     "?? tools/bench/results/interim2/",
+                                     "?? tools/parity/make_game_seed.py",
+                                     "?? tools/parity/plugin/_fix_select.py",
+                                     "?? tools/roundtrip/verify_compat_one.py"
+                                 ]
+            },
+    "release_profile":  {
+                            "manifest":  "Cargo.toml",
+                            "entries":  {
+                                            "opt-level":  "3",
+                                            "lto":  "\"fat\"",
+                                            "codegen-units":  "1",
+                                            "panic":  "\"abort\"",
+                                            "strip":  "\"debuginfo\""
+                                        },
+                            "raw":  "[profile.release]\nopt-level = 3\nlto = \"fat\"\ncodegen-units = 1\npanic = \"abort\"\nstrip = \"debuginfo\""
+                        },
+    "binary":  {
+                   "original_path":  "Z:\\RUSTibites\\target\\release\\rustibites.exe",
+                   "benchmark_copy":  "C:\\Users\\Storme\\AppData\\Local\\Temp\\rustibites-bench\\bin\\rustibites-0B46AC9F22974FB6.exe",
+                   "sha256":  "0B46AC9F22974FB64B6FAA2B9581E3078F815E6BF0CB3D4F4A2D42D02C90A1E6",
+                   "size_bytes":  2226688,
+                   "last_write_utc":  "2026-11-01T09:34:41.6874280Z"
+               },
+    "simulator":  {
+                      "default_sim_tps":  30,
+                      "note":  "SimSettings::game_defaults() fixed_dt = 1/30 s; bench reports sim_secs = ticks * fixed_dt"
+                  },
+    "benchmark":  {
+                      "engine_wall_secs_excludes":  "world construction/spawn and state_fingerprint sampling; process_wall_secs includes them",
+                      "seed_base":  "0x5255535400000000",
+                      "seed_formula":  "seed = 0x5255535400000000 xor repetition_index (repetition starts at 0)",
+                      "metric":  "bibite_updates_per_second = ticks_per_second * bibites_start (primary throughput)"
+                  }
+}

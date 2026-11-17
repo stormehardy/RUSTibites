@@ -1,0 +1,97 @@
+{
+    "schema":  "rustibites.bench.environment/1",
+    "captured_at_utc":  "2026-10-30T07:49:22.5122765Z",
+    "hostname":  "DESKTOP",
+    "os":  {
+               "description":  "Microsoft Windows 10 Home",
+               "version":  "10.0.19045",
+               "architecture":  "AMD64",
+               "build":  "19045"
+           },
+    "cpu":  {
+                "name":  "AMD Ryzen 5 3600 6-Core Processor",
+                "physical_cores":  6,
+                "logical_cores":  12,
+                "max_clock_mhz":  3593
+            },
+    "logical_processors":  12,
+    "memory_total_gb":  15.95,
+    "memory_free_gb":  5.23,
+    "cpu_load_pct":  94,
+    "powershell":  "5.1.19041.6456",
+    "rust":  {
+                 "rustc":  "1.99.1 (58cf8f9c3 2026-10-13)",
+                 "cargo":  "1.99.1 (5f94df478 2026-08-27)",
+                 "release":  "1.99.1",
+                 "commit_hash":  "58cf8f9c35b355199727627d07ae34a4e2846d67",
+                 "host":  "x86_64-pc-windows-msvc",
+                 "llvm":  "23.1.1"
+             },
+    "git":  {
+                "head":  "7bd1e208128126a85fe602dcc19059f4a5f9b495",
+                "head_short":  "7bd1e2081281",
+                "branch":  "main",
+                "subject":  "Viewer polish + game-faithful sprite renderer foundation",
+                "commit_date":  "2026-10-30T03:48:59-04:00",
+                "describe":  "7bd1e20-dirty",
+                "dirty":  true,
+                "dirty_files":  27,
+                "status_lines":  [
+                                     " M README.md",
+                                     " M docs/DEVIATIONS.md",
+                                     " M docs/spec/03-world-ecology.md",
+                                     " M tools/bench/README.md",
+                                     " M tools/bench/bench_common.ps1",
+                                     " D tools/bench/results/_smoke/config.json",
+                                     " D tools/bench/results/_smoke/environment.json",
+                                     " D tools/bench/results/_smoke/environment.txt",
+                                     " D tools/bench/results/_smoke/matrix.json",
+                                     " D tools/bench/results/_smoke/matrix.md",
+                                     " D tools/bench/results/_smoke/runs.csv",
+                                     " D tools/bench/results/_smoke/summary.csv",
+                                     " D tools/bench/results/full/config.json",
+                                     " D tools/bench/results/full/environment.json",
+                                     " D tools/bench/results/full/environment.txt",
+                                     " M tools/bench/results/quick/matrix.json",
+                                     " M tools/bench/results/quick/matrix.md",
+                                     " M tools/bench/run_matrix.ps1",
+                                     " M tools/bench/run_phases.ps1",
+                                     " M tools/parity_round2/capture_scenario.py",
+                                     "?? assets/game/",
+                                     "?? docs/BENCHMARKS.md",
+                                     "?? tools/assets/",
+                                     "?? tools/bench/results/phases/",
+                                     "?? tools/compat/",
+                                     "?? tools/experiments/",
+                                     "?? tools/profiling/"
+                                 ]
+            },
+    "release_profile":  {
+                            "manifest":  "Cargo.toml",
+                            "entries":  {
+                                            "opt-level":  "3",
+                                            "lto":  "\"fat\"",
+                                            "codegen-units":  "1",
+                                            "panic":  "\"abort\"",
+                                            "strip":  "\"debuginfo\""
+                                        },
+                            "raw":  "[profile.release]\nopt-level = 3\nlto = \"fat\"\ncodegen-units = 1\npanic = \"abort\"\nstrip = \"debuginfo\""
+                        },
+    "binary":  {
+                   "original_path":  "Z:\\RUSTibites\\target\\release\\rustibites.exe",
+                   "benchmark_copy":  "C:\\Users\\Storme\\AppData\\Local\\Temp\\rustibites-bench\\bin\\rustibites-BE9AA6158F2524F2.exe",
+                   "sha256":  "BE9AA6158F2524F2E4BE09F3D867F097BC275AD49A91CD2BDE3332C5F2545D59",
+                   "size_bytes":  1881088,
+                   "last_write_utc":  "2026-10-30T07:47:44.4467989Z"
+               },
+    "simulator":  {
+                      "default_sim_tps":  30,
+                      "note":  "SimSettings::game_defaults() fixed_dt = 1/30 s; bench reports sim_secs = ticks * fixed_dt"
+                  },
+    "benchmark":  {
+                      "engine_wall_secs_excludes":  "world construction/spawn and state_fingerprint sampling; process_wall_secs includes them",
+                      "seed_base":  "0x5255535400000000",
+                      "seed_formula":  "seed = 0x5255535400000000 xor repetition_index (repetition starts at 0)",
+                      "metric":  "bibite_updates_per_second = ticks_per_second * bibites_start (primary throughput)"
+                  }
+}

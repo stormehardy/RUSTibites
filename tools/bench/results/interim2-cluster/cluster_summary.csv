@@ -1,0 +1,4 @@
+kind,population,box,threads,reps_ok,best_ticks_per_second,median_ticks_per_second,best_ms_per_tick,min_physics_ms,median_physics_ms,median_body_ms,peak_ws_mb,world_content_sha256
+cluster,2000,100,1,2,15.000,14.500,66.666667,66.343000,68.675000,1.387500,88.7,fbccc12fd684f8ee19ab0bc1b4edca4ef6a19f71a87985edbc948d929a2cbc77
+cluster,2000,200,1,2,41.000,40.000,24.390244,22.756000,23.483000,1.545500,44.1,6573a6a7a8c6a0a9d09f45805ae234d80547ddf85b20da300d41816ab75d5dae
+spread,2000,,1,2,626.000,607.500,1.597444,0.872000,0.874000,0.680000,2.0,

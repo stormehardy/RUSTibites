@@ -1,0 +1,30 @@
+{
+ "name": "highlight",
+ "shader": "Unlit/highlightableGraph",
+ "colors": {
+  "_Color": null,
+  "_Flip": null,
+  "_HighlightColor": null,
+  "_RendererColor": null
+ },
+ "floats": {
+  "_ColorMask": 15.0,
+  "_EnableExternalAlpha": 0.0,
+  "_QueueControl": -1.0,
+  "_QueueOffset": 0.0,
+  "_Stencil": 0.0,
+  "_StencilComp": 4.0,
+  "_StencilOp": 0.0,
+  "_StencilReadMask": 255.0,
+  "_StencilWriteMask": 255.0,
+  "_focus": 0.0,
+  "_pixelOffset": 2.0
+ },
+ "textures": {
+  "_MainTex": "UnityTexEnv(m_Offset=Vector2f(0.0, 0.0), m_Scale=Vector2f(1.0, 1.0), m_Texture=PPtr(m_FileID=0, m_PathID=66, assetsfile=<SerializedFile>))",
+  "unity_Lightmaps": "UnityTexEnv(m_Offset=Vector2f(0.0, 0.0), m_Scale=Vector2f(1.0, 1.0), m_Texture=PPtr(m_FileID=0, m_PathID=0, assetsfile=<SerializedFile>))",
+  "unity_LightmapsInd": "UnityTexEnv(m_Offset=Vector2f(0.0, 0.0), m_Scale=Vector2f(1.0, 1.0), m_Texture=PPtr(m_FileID=0, m_PathID=0, assetsfile=<SerializedFile>))",
+  "unity_ShadowMasks": "UnityTexEnv(m_Offset=Vector2f(0.0, 0.0), m_Scale=Vector2f(1.0, 1.0), m_Texture=PPtr(m_FileID=0, m_PathID=0, assetsfile=<SerializedFile>))"
+ },
+ "source_asset": "sharedassets2.assets"
+}

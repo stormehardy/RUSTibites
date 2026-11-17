@@ -1,0 +1,556 @@
+{
+  "schema": "rustibites.assets.reference.v1",
+  "game": {
+    "title": "The Bibites",
+    "version": "0.6.3.1",
+    "unity": "6000.0.44f1"
+  },
+  "capture_method": "BibitesBridge GET /screenshot (main camera -> offscreen RenderTexture); game window hidden via BibitesAPI lab harness",
+  "input": "Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip",
+  "input_kind": "save_load",
+  "captured_utc": "2026-10-30T12:16:04+00:00",
+  "frames": [
+    {
+      "file": "assets/game/reference/default_save/full_world.png",
+      "width": 1920,
+      "height": 1080,
+      "camera": {
+        "ok": true,
+        "x": 0.0,
+        "y": 0.0,
+        "size": 2080.0,
+        "worldHalfSize": 2000.0,
+        "aspect": 1.77777779,
+        "orthographic": true
+      },
+      "asked": {
+        "fit": true
+      }
+    },
+    {
+      "file": "assets/game/reference/default_save/population.png",
+      "width": 1920,
+      "height": 1080,
+      "camera": {
+        "ok": true,
+        "x": 0.0,
+        "y": 0.0,
+        "size": 120.0,
+        "worldHalfSize": 2000.0,
+        "aspect": 1.77777779,
+        "orthographic": true
+      },
+      "asked": {
+        "x": 0.0,
+        "y": 0.0,
+        "size": 120.0
+      }
+    },
+    {
+      "file": "assets/game/reference/default_save/zone_pellets_eggs.png",
+      "width": 1920,
+      "height": 1080,
+      "camera": {
+        "ok": true,
+        "x": 0.0,
+        "y": 0.0,
+        "size": 230.0,
+        "worldHalfSize": 2000.0,
+        "aspect": 1.77777779,
+        "orthographic": true
+      },
+      "asked": {
+        "x": 0.0,
+        "y": 0.0,
+        "size": 230.0
+      }
+    },
+    {
+      "file": "assets/game/reference/default_save/bibite_closeup.png",
+      "width": 1280,
+      "height": 720,
+      "camera": {
+        "ok": true,
+        "x": -5.360003,
+        "y": 831.0031,
+        "size": 12.0,
+        "worldHalfSize": 2000.0,
+        "aspect": 1.77777779,
+        "orthographic": true
+      },
+      "asked": {
+        "x": -5.360003,
+        "y": 831.0031,
+        "size": 12.0
+      },
+      "bibite": {
+        "id": 946151190,
+        "x": -5.360003,
+        "y": 831.0031,
+        "species": 1,
+        "generation": 0,
+        "size": 1.14955354
+      }
+    }
+  ],
+  "world": {
+    "simulated_time_s": 20.000001907348633,
+    "paused": true,
+    "counts": {
+      "bibites": 11,
+      "corpses": 0,
+      "eggs": 0
+    },
+    "sim_tps": 30
+  },
+  "seed_save": "testdata/parity/default/ref_seed.zip (alias of rust_seed_600.zip)",
+  "seed_command": "target/release/rustibites.exe run testdata/real/Default.zip --ticks 600 --seed 12345 --threads 1 --save testdata/parity/default/ref_seed.zip",
+  "hud_frames": [
+    {
+      "file": "assets/game/reference/default_save/hud_default_1920x1080.png",
+      "camera": {
+        "ok": true,
+        "x": 0.0,
+        "y": 0.0,
+        "size": 2080.0,
+        "worldHalfSize": 2000.0,
+        "aspect": 1.77777779,
+        "orthographic": true
+      },
+      "selected_id": null,
+      "panel": null,
+      "ui_overlay_camera": "Main Camera",
+      "ui_overlay_alpha_pixels": 43608
+    },
+    {
+      "file": "assets/game/reference/default_save/hud_inspector_1920x1080.png",
+      "camera": {
+        "ok": true,
+        "x": 94.5817261,
+        "y": 1162.3916,
+        "size": 400.0,
+        "worldHalfSize": 2000.0,
+        "aspect": 1.77777779,
+        "orthographic": true
+      },
+      "selected_id": "bibite(Clone) (SimulationScripts.BibiteScripts.BibiteID)",
+      "panel": "Stats (OpenData)",
+      "ui_overlay_camera": "Main Camera",
+      "ui_overlay_alpha_pixels": 60538
+    }
+  ],
+  "hud_capture_method": "hidden BibitesAPI lab; bridge GET /screenshot (main camera) + ParityDump GET /d/ui_overlay (transparent UICamera RenderTexture), composited with PIL",
+  "hud_world": {
+    "simulated_time_s": 20.000001907348633,
+    "paused": true,
+    "counts": {
+      "bibites": 11,
+      "corpses": 0,
+      "eggs": 0
+    }
+  },
+  "hud_selection": {
+    "ok": true,
+    "selected_id": "bibite(Clone) (SimulationScripts.BibiteScripts.BibiteID)",
+    "name": "bibite(Clone)",
+    "pos": {
+      "x": 94.5817261,
+      "y": 1162.3916,
+      "z": 0
+    },
+    "requested": ""
+  },
+  "hud_game_bibite_ids": [
+    898750452,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    74654177
+  ],
+  "hud_stats_press": {
+    "ok": true,
+    "pressed": "OpenData",
+    "path": "UICanvas/MainUI/Layer2/StatsPanel/Top Bar/TopLeft/OpenData"
+  },
+  "hud_counts_note": "Save has 10 bibites; loading it in the game with virginSpawnRate=1 (the save's setting) makes the fresh spawner add ONE extra virgin bibite on load, so the game reports 11. The added bibite has a runtime id/position that varies per load (observed -293583432 at (-499.8,-1122.2), then -1706529912, then 74654177 at (94.58,1162.39)). The viewer correctly loads the save's 10 entities; this is game-load spawner behaviour, not a viewer save-loader bug. Use the nospawn save copy for pixel scene diffs or ignore the added id.",
+  "hud_savestate": {
+    "save": "Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip",
+    "paused": true,
+    "screen": {
+      "width": 1920,
+      "height": 1080,
+      "dpi": 96,
+      "fullscreen": true
+    },
+    "camera": {
+      "ok": true,
+      "x": 0.0,
+      "y": 0.0,
+      "size": 2080.0,
+      "worldHalfSize": 2000.0,
+      "aspect": 1.77777779,
+      "orthographic": true
+    },
+    "ruler": {
+      "value": "200u",
+      "source": "game HUD overlay/hud_savestate (measured from reference frame; RulerHandle is a script/mesh not a UI Image, so the runtime UI dump has no sprite field for the bracket; node rects recorded)",
+      "nodes": [
+        {
+          "path": "UICanvas/MainUI/Layer0/Ruler",
+          "rect": {
+            "anchor_min": {
+              "x": 1,
+              "y": 0
+            },
+            "anchor_max": {
+              "x": 1,
+              "y": 0
+            },
+            "anchored_position": {
+              "x": -15,
+              "y": 15
+            },
+            "size_delta": {
+              "x": 135,
+              "y": 5
+            },
+            "pivot": {
+              "x": 1,
+              "y": 0
+            },
+            "local_position": {
+              "x": 945,
+              "y": -525,
+              "z": 0
+            },
+            "local_rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "local_scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            }
+          },
+          "active_in_hierarchy": true
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/Ruler/Ruler (1)",
+          "rect": {
+            "anchor_min": {
+              "x": 1,
+              "y": 0
+            },
+            "anchor_max": {
+              "x": 1,
+              "y": 0
+            },
+            "anchored_position": {
+              "x": 0,
+              "y": 0
+            },
+            "size_delta": {
+              "x": 5,
+              "y": 15
+            },
+            "pivot": {
+              "x": 1,
+              "y": 0
+            },
+            "local_position": {
+              "x": 0,
+              "y": 0,
+              "z": 0
+            },
+            "local_rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "local_scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            }
+          },
+          "active_in_hierarchy": true
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/Ruler/Ruler (1)/forefront (1)",
+          "rect": {
+            "anchor_min": {
+              "x": 0,
+              "y": 0
+            },
+            "anchor_max": {
+              "x": 1,
+              "y": 1
+            },
+            "anchored_position": {
+              "x": 0,
+              "y": 0
+            },
+            "size_delta": {
+              "x": -2,
+              "y": -2
+            },
+            "pivot": {
+              "x": 0.5,
+              "y": 0.5
+            },
+            "local_position": {
+              "x": -2.5,
+              "y": 7.5,
+              "z": 0
+            },
+            "local_rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "local_scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            }
+          },
+          "active_in_hierarchy": true
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/Ruler/Ruler (2)",
+          "rect": {
+            "anchor_min": {
+              "x": 0,
+              "y": 0
+            },
+            "anchor_max": {
+              "x": 0,
+              "y": 0
+            },
+            "anchored_position": {
+              "x": 0,
+              "y": 0
+            },
+            "size_delta": {
+              "x": 5,
+              "y": 15
+            },
+            "pivot": {
+              "x": 0,
+              "y": 0
+            },
+            "local_position": {
+              "x": -135,
+              "y": 0,
+              "z": 0
+            },
+            "local_rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "local_scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            }
+          },
+          "active_in_hierarchy": true
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/Ruler/Ruler (2)/forefront (1)",
+          "rect": {
+            "anchor_min": {
+              "x": 0,
+              "y": 0
+            },
+            "anchor_max": {
+              "x": 1,
+              "y": 1
+            },
+            "anchored_position": {
+              "x": 0,
+              "y": 0
+            },
+            "size_delta": {
+              "x": -2,
+              "y": -2
+            },
+            "pivot": {
+              "x": 0.5,
+              "y": 0.5
+            },
+            "local_position": {
+              "x": 2.5,
+              "y": 7.5,
+              "z": 0
+            },
+            "local_rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "local_scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            }
+          },
+          "active_in_hierarchy": true
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/Ruler/forefront",
+          "rect": {
+            "anchor_min": {
+              "x": 0,
+              "y": 0
+            },
+            "anchor_max": {
+              "x": 1,
+              "y": 1
+            },
+            "anchored_position": {
+              "x": 0,
+              "y": 0
+            },
+            "size_delta": {
+              "x": -1.99999619,
+              "y": -2
+            },
+            "pivot": {
+              "x": 0.5,
+              "y": 0.5
+            },
+            "local_position": {
+              "x": -67.5,
+              "y": 2.5,
+              "z": 0
+            },
+            "local_rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "local_scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            }
+          },
+          "active_in_hierarchy": true
+        },
+        {
+          "path": "UICanvas/MainUI/Layer0/Ruler/FloatInfoText",
+          "rect": {
+            "anchor_min": {
+              "x": 0,
+              "y": 0
+            },
+            "anchor_max": {
+              "x": 1,
+              "y": 0
+            },
+            "anchored_position": {
+              "x": 0,
+              "y": 24.4
+            },
+            "size_delta": {
+              "x": 0,
+              "y": 0
+            },
+            "pivot": {
+              "x": 0.5,
+              "y": 1
+            },
+            "local_position": {
+              "x": -67.5,
+              "y": 24.4,
+              "z": 0
+            },
+            "local_rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0,
+              "w": 1
+            },
+            "local_scale": {
+              "x": 1,
+              "y": 1,
+              "z": 1
+            }
+          },
+          "active_in_hierarchy": true
+        }
+      ],
+      "texts_found": []
+    },
+    "overlay": "assets/game/reference/default_save/hud_savestate_overlay_1920x1080.png",
+    "overlay_alpha_pixels": 43608
+  },
+  "hud_inspector_expanded": {
+    "save": "Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip",
+    "paused": true,
+    "camera": {
+      "ok": true,
+      "x": 942.498,
+      "y": 107.319038,
+      "size": 400.0,
+      "worldHalfSize": 2000.0,
+      "aspect": 1.77777779,
+      "orthographic": true
+    },
+    "selected": {
+      "ok": true,
+      "selected_id": "bibite(Clone) (SimulationScripts.BibiteScripts.BibiteID)",
+      "name": "bibite(Clone)",
+      "pos": {
+        "x": 942.498,
+        "y": 107.319038,
+        "z": 0
+      },
+      "requested": ""
+    },
+    "press": {
+      "ok": true,
+      "pressed": "StatsButton",
+      "path": "UICanvas/MainUI/Layer1/Panels/BibiteButtons/StatsButton"
+    },
+    "stats_panels": [
+      {
+        "path": "UICanvas/MainUI/Layer2/StatsPanel",
+        "active_in_hierarchy": false
+      },
+      {
+        "path": "UICanvas/MainUI/Layer2/StatsPanel/DataPage",
+        "active_in_hierarchy": false
+      },
+      {
+        "path": "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel",
+        "active_in_hierarchy": true
+      }
+    ],
+    "ruler": {
+      "labels": [],
+      "bracket_nodes": []
+    },
+    "overlay": "assets/game/reference/default_save/hud_inspector_expanded_overlay_1920x1080.png",
+    "overlay_alpha_pixels": 302708
+  },
+  "hud_ruler_note": "Measured HUD ruler value in the save-state frame is 200u; RulerHandle draws the bracket procedurally (script/mesh), not via UI Image components, so the runtime UI dump records the Ruler node rects (UICanvas/MainUI/Layer0/Ruler, Ruler (1)/forefront (1), Ruler (2)/forefront (1), FloatInfoText) but cannot resolve bracket sprite manifests. Viewer should draw the bracket procedurally or use the hud_savestate_overlay alpha reference.",
+  "bibite_layers_selected_id": 2076547059,
+  "bibite_layers_note": "Per-SpriteRenderer layer bounds in bibite_layers.json; selected id is the bibite nearest the canonical closeup camera. Live sprite-region alpha counts are included per layer (sprite_region_nontransparent/sprite_region_pixels) for the task-137 cell audit."
+}

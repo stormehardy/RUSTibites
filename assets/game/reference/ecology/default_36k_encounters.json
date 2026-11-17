@@ -1,0 +1,65 @@
+{
+ "rust_per_tick": {
+  "records": 307890,
+  "active_fraction": 0.331,
+  "runs": 159,
+  "run_mean": 565.887,
+  "run_p50": 433,
+  "run_p90": 1063,
+  "run_max": 4034,
+  "encounter_ticks_mean": 533.222
+ },
+ "game_sampled": {
+  "final_live": 16,
+  "active_fraction_sample": 0.618,
+  "encounter_ticks_mean": 1159.086
+ },
+ "note": "Rust encounter ratio = final plant_contact_ticks / mouth_contact_enter_events; game same ratio from final contact_ext live records. Gate counts are mouth entries (not plant-specific), so use as relative duration proxy.",
+ "tick_rate_normalization": {
+  "game_actual_ticks": 35991,
+  "game_sim_time_s": 900.0,
+  "game_tps": 39.99,
+  "rust_tps": 30.0,
+  "why": "capture row tick labels are simTime*30, but final actual ticks=35991 over 900s; game UpdateOrgan/contact counters advance per actual tick",
+  "per_update_contact_rate": {
+   "all": {
+    "game": 0.4511127781945486,
+    "rust": 0.4166666666666667
+   },
+   "inzone": {
+    "game": 0.5593898474618655,
+    "rust": 0.5046666666666667
+   },
+   "nearest_0_5": {
+    "game": 0.980745186296574,
+    "rust": 0.9920000000000001
+   },
+   "nearest_5_10": {
+    "game": 0.7514378594648662,
+    "rust": 0.67
+   },
+   "radius_0_500": {
+    "game": 0.6766691672918229,
+    "rust": 0.6353333333333333
+   },
+   "radius_500_1000": {
+    "game": 0.5853963490872718,
+    "rust": 0.5376666666666666
+   },
+   "radius_1000_1500": {
+    "game": 0.44536134033508373,
+    "rust": 0.4776666666666667
+   },
+   "radius_1500_2000": {
+    "game": 0.2638159539884971,
+    "rust": 0.28633333333333333
+   }
+  },
+  "interpretation": "At matched nearest 0-5u both are near the per-update maximum (0.98 vs0.99); in-zone gap drops from48% to10.7%; 1000-2000u Rust is higher per update. The gross per-second gap is mostly the 40-vs-30 tick-rate difference plus occupancy/population weighting, not a mouth behavior shortening contacts."
+ },
+ "encounter_interpretation": {
+  "rust_runs": "159 plant-contact runs over 307,890 records; median433 ticks, p901063, max4034; once acquired, contacts are long and not repeatedly interrupted.",
+  "game_proxy": "final live plant_contact_ticks/mouth_enter_events mean1159 vs Rust533; different actual ticks and mouth-entry semantics, so use only as relative proxy.",
+  "verdict": "No evidence for bite knockback/post-bite cooldown/target-expiration shortening Rust contacts. Target counts match; Rust active fraction tracks target presence; active/contact gaps normalise to ~6-11% per update at matched radius. Remaining difference is measurement tick rate + live/lineage weighting; no body mouth patch indicated."
+ }
+}

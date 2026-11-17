@@ -1,0 +1,39 @@
+# RUSTibites benchmark environment
+
+Captured (UTC):        2026-11-01T09:58:26.7471289Z
+Host:                  DESKTOP
+OS:                    Microsoft Windows 10 Home | version=10.0.19045
+CPU:                   AMD Ryzen 5 3600 6-Core Processor | physical=6 logical=12 | max_clock_mhz=3593
+Memory:                16.0 GB total, 5.18 GB free at capture
+CPU load at capture:   11.0 %
+PowerShell:            5.1.19041.6456
+rustc:                 1.99.1 (58cf8f9c3 2026-10-13) (release 1.99.1, x86_64-pc-windows-msvc)
+cargo:                 1.99.1 (5f94df478 2026-08-27)
+Git HEAD:              0a84fba515e2e9dc76325db44a502400ab5495e9 (main) 2026-11-01T04:57:55-05:00
+Git subject:           compat: one-per-process fixture matrix (loads accepted; re-save bridge close)
+Git dirty:             True (11 changed paths)
+Git status:
+   M assets/game/reference/ecology/default_36k_pellets_compare.json
+   M docs/PARITY_ACCEPTANCE.md
+   M scripts/make_shortcut.ps1
+   M tools/assets/build_ui_expectations.py
+   M tools/assets/ui_expectations.json
+   M tools/roundtrip/summarize_compat_one.py
+  ?? assets/game/reference/ecology/default_36k_contact_normalized.json
+  ?? crates/bibites-io/tests/template_feeding.rs
+  ?? tools/bench/results/freeze-ab-serial/
+  ?? tools/parity/make_game_seed.py
+  ?? tools/parity/plugin/_fix_select.py
+Release profile:
+  opt-level = 3
+  lto = "fat"
+  codegen-units = 1
+  panic = "abort"
+  strip = "debuginfo"
+Benchmark binary:      Z:\RUSTibites\target\bench-final\rustibites-3CCB231E.exe
+  sha256:              3CCB231ECC3C9027B83CE998E6BB88FAFA4224D27874547B386F94EA84709D1D
+  size:                2168320 bytes
+  mtime (UTC):         2026-10-30T14:38:42.9058068Z
+  stable copy:         C:\Users\Storme\AppData\Local\Temp\rustibites-bench\bin\rustibites-3CCB231ECC3C9027.exe
+Simulator:             30 TPS (fixed_dt = 1/30 s)
+Seed:                  seed = 0x5255535400000000 xor repetition_index (repetition starts at 0)

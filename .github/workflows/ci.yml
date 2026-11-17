@@ -1,0 +1,78 @@
+name: CI
+
+# Gate for pushes/PRs on Windows and Linux: formatting, lints, tests and a
+# release build. testdata/ (real game saves, parity captures) is gitignored and
+# NOT available on CI; game-dependent tests are skip-if-absent by design.
+# See docs/CI.md for what runs and how to reproduce locally.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: 1
+
+jobs:
+  gate:
+    name: gate (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install stable Rust (rustfmt + clippy)
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+
+      # The viewer crate links macroquad/miniquad, which needs X11/GL/ALSA
+      # development libraries on Linux even for `cargo test`/clippy (the viewer
+      # tests render headlessly via the software rasteriser and need no display).
+      - name: Install Linux build dependencies (viewer)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            libx11-dev libxi-dev libgl1-mesa-dev libasound2-dev
+
+      # Cache the cargo registry and target dir. `target` is large on Windows
+      # because of the LTO release profile, so use a moving key with restore.
+      - name: Cache cargo registry and target
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      - name: Format check
+        run: cargo fmt --all -- --check
+
+      - name: Clippy (deny warnings)
+        run: cargo clippy --locked --workspace --all-targets -- -D warnings
+
+      # testdata/ is gitignored (not redistributable), so CI has no real game
+      # data. Tests that need it are skip-if-absent; see docs/CI.md.
+      - name: Tests
+        run: cargo test --locked --workspace
+
+      - name: Release build
+        run: cargo build --locked --release

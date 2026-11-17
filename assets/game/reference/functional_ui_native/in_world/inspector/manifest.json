@@ -1,0 +1,90 @@
+{
+  "schema": "rustibites.ui.native_inspector_tabs.v1",
+  "sessions": {
+    "stats": {
+      "panel": "UICanvas/MainUI/Layer1/Panels/BibitePanels/StatsPanel",
+      "ui_nodes": 7974,
+      "screen": {
+        "width": 1920,
+        "height": 1080,
+        "dpi": 96,
+        "fullscreen": true
+      },
+      "image": {
+        "file": "assets/game/reference/functional_ui_native/in_world/inspector/native_inspector_stats_ui_only_1920x1080.png",
+        "sha256": "f1cd9fe735f3f35971a1e3437db19e4cb6c737b14a92bd62829dfb477ada0ff3",
+        "alpha_fraction": 0.14538435570987654,
+        "alpha_pixels": 301469,
+        "unique_opaque_colors": 465
+      }
+    },
+    "genes": {
+      "panel": "UICanvas/MainUI/Layer1/Panels/BibitePanels/GenesPanel",
+      "ui_nodes": 7974,
+      "screen": {
+        "width": 1920,
+        "height": 1080,
+        "dpi": 96,
+        "fullscreen": true
+      },
+      "image": {
+        "file": "assets/game/reference/functional_ui_native/in_world/inspector/native_inspector_genes_ui_only_1920x1080.png",
+        "sha256": "82f8d04ed82a6822edac754dec8e710bd2745531ce517e7183ac2b231e483da1",
+        "alpha_fraction": 0.21958960262345678,
+        "alpha_pixels": 455341,
+        "unique_opaque_colors": 665
+      }
+    },
+    "biology": {
+      "panel": "UICanvas/MainUI/Layer1/Panels/BibitePanels/BiologyPanel",
+      "ui_nodes": 7974,
+      "screen": {
+        "width": 1920,
+        "height": 1080,
+        "dpi": 96,
+        "fullscreen": true
+      },
+      "image": {
+        "file": "assets/game/reference/functional_ui_native/in_world/inspector/native_inspector_biology_ui_only_1920x1080.png",
+        "sha256": "4561fe70128fd8b131b1df155c942565f1d1d0568fbf7496efec8d3016374e47",
+        "alpha_fraction": 0.1206081211419753,
+        "alpha_pixels": 250093,
+        "unique_opaque_colors": 959
+      }
+    },
+    "brain": {
+      "panel": "UICanvas/MainUI/Layer1/Panels/BibitePanels/BrainPanel",
+      "ui_nodes": 7974,
+      "screen": {
+        "width": 1920,
+        "height": 1080,
+        "dpi": 96,
+        "fullscreen": true
+      },
+      "image": {
+        "file": "assets/game/reference/functional_ui_native/in_world/inspector/native_inspector_brain_ui_only_1920x1080.png",
+        "sha256": "ce79f0e6337f04dadfdf2694a85f65411deaeb5ae33ce4cbe9f304ba61acef9b",
+        "alpha_fraction": 0.1937037037037037,
+        "alpha_pixels": 401664,
+        "unique_opaque_colors": 687
+      }
+    }
+  },
+  "hud": {
+    "ui_nodes": 7974,
+    "screen": {
+      "width": 1920,
+      "height": 1080,
+      "dpi": 96,
+      "fullscreen": true
+    },
+    "image": {
+      "file": "assets/game/reference/functional_ui_native/in_world/native_world_toolbar_hud_1920x1080.png",
+      "sha256": "0f90805bf37543f69d08d3fd52f0eefa130c7d89b11d691a091f9d64a0b4e970",
+      "alpha_fraction": 0.028597125771604937,
+      "alpha_pixels": 59299,
+      "unique_opaque_colors": 421
+    }
+  },
+  "note": "Per-tab panels activated directly by native path after StatsButton; overlay is native 1920 UI-only."
+}

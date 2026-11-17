@@ -1,0 +1,90 @@
+{
+    "schema":  "rustibites.bench.environment/1",
+    "captured_at_utc":  "2026-10-30T07:19:42.1850669Z",
+    "hostname":  "DESKTOP",
+    "os":  {
+               "description":  "Microsoft Windows 10 Home",
+               "version":  "10.0.19045",
+               "architecture":  "AMD64",
+               "build":  "19045"
+           },
+    "cpu":  {
+                "name":  "AMD Ryzen 5 3600 6-Core Processor",
+                "physical_cores":  6,
+                "logical_cores":  12,
+                "max_clock_mhz":  3593
+            },
+    "logical_processors":  12,
+    "memory_total_gb":  15.95,
+    "memory_free_gb":  4.63,
+    "cpu_load_pct":  87,
+    "powershell":  "5.1.19041.6456",
+    "rust":  {
+                 "rustc":  "1.99.1 (58cf8f9c3 2026-10-13)",
+                 "cargo":  "1.99.1 (5f94df478 2026-08-27)",
+                 "release":  "1.99.1",
+                 "commit_hash":  "58cf8f9c35b355199727627d07ae34a4e2846d67",
+                 "host":  "x86_64-pc-windows-msvc",
+                 "llvm":  "23.1.1"
+             },
+    "git":  {
+                "head":  "a4420ff7ec0982db0eeca26c09b0179ec4931088",
+                "head_short":  "a4420ff7ec09",
+                "branch":  "main",
+                "subject":  "Parity harness: f32 clean-load tolerance (f32_quantised vs advanced, --strict-load, --self-check) + evolved-world gating policy docs",
+                "commit_date":  "2026-10-30T03:18:49-04:00",
+                "describe":  "a4420ff-dirty",
+                "dirty":  true,
+                "dirty_files":  20,
+                "status_lines":  [
+                                     " M crates/bibites-cli/src/capture.rs",
+                                     " M crates/bibites-core/src/body.rs",
+                                     " M crates/bibites-core/src/brain.rs",
+                                     " M crates/bibites-core/src/genome.rs",
+                                     " M crates/bibites-core/src/species.rs",
+                                     " M crates/bibites-view/src/app.rs",
+                                     " M crates/bibites-view/src/main.rs",
+                                     " M crates/bibites-view/src/render.rs",
+                                     " M docs/spec/04-formats-settings.md",
+                                     " M tools/bench/bench_common.ps1",
+                                     " M tools/bench/run_matrix.ps1",
+                                     " M tools/bench/run_phases.ps1",
+                                     "?? crates/bibites-core/examples/",
+                                     "?? tools/bench/results/full/determinism.json",
+                                     "?? tools/bench/results/full/matrix.json",
+                                     "?? tools/bench/results/full/matrix.md",
+                                     "?? tools/bench/results/full/runs.csv",
+                                     "?? tools/bench/results/full/summary.csv",
+                                     "?? tools/compat/",
+                                     "?? tools/experiments/"
+                                 ]
+            },
+    "release_profile":  {
+                            "manifest":  "Cargo.toml",
+                            "entries":  {
+                                            "opt-level":  "3",
+                                            "lto":  "\"fat\"",
+                                            "codegen-units":  "1",
+                                            "panic":  "\"abort\"",
+                                            "strip":  "\"debuginfo\""
+                                        },
+                            "raw":  "[profile.release]\nopt-level = 3\nlto = \"fat\"\ncodegen-units = 1\npanic = \"abort\"\nstrip = \"debuginfo\""
+                        },
+    "binary":  {
+                   "original_path":  "Z:\\RUSTibites\\target\\release\\rustibites.exe",
+                   "benchmark_copy":  "C:\\Users\\Storme\\AppData\\Local\\Temp\\rustibites-bench\\bin\\rustibites-447506456CD705E3.exe",
+                   "sha256":  "447506456CD705E3B8771C4EAE023AC5A7E2134718B7CC0DA113948955528ECB",
+                   "size_bytes":  1855488,
+                   "last_write_utc":  "2026-10-30T07:16:14.8813521Z"
+               },
+    "simulator":  {
+                      "default_sim_tps":  30,
+                      "note":  "SimSettings::game_defaults() fixed_dt = 1/30 s; bench reports sim_secs = ticks * fixed_dt"
+                  },
+    "benchmark":  {
+                      "engine_wall_secs_excludes":  "world construction/spawn and state_fingerprint sampling; process_wall_secs includes them",
+                      "seed_base":  "0x5255535400000000",
+                      "seed_formula":  "seed = 0x5255535400000000 xor repetition_index (repetition starts at 0)",
+                      "metric":  "bibite_updates_per_second = ticks_per_second * bibites_start (primary throughput)"
+                  }
+}

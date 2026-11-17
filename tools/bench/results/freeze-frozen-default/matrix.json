@@ -1,0 +1,117 @@
+{
+    "schema":  "rustibites.bench.matrix/1",
+    "generated_at_utc":  "2026-11-01T09:59:37.9214983Z",
+    "config":  {
+                   "schema":  "rustibites.bench.matrix/1",
+                   "mode":  "quick",
+                   "run_label":  "freeze A/B frozen Default",
+                   "started_at_utc":  "2026-11-01T09:59:31.6517042Z",
+                   "scenario":  "Z:\\RUSTibites\\testdata\\real\\Default.zip",
+                   "scenario_label":  "Default.zip",
+                   "requested_pops":  [
+                                          0
+                                      ],
+                   "threads":  [
+                                   1,
+                                   8
+                               ],
+                   "ticks_per_run":  600,
+                   "repeat_per_cell":  2,
+                   "timeout_sec_run":  900,
+                   "budget_sec":  0,
+                   "min_free_gb":  0.5,
+                   "max_load_pct":  0,
+                   "load_wait_sec":  120,
+                   "sample_ms":  50,
+                   "determinism_check":  false,
+                   "binary":  {
+                                  "original_path":  "Z:\\RUSTibites\\target\\bench-final\\rustibites-3CCB231E.exe",
+                                  "measured_copy":  "C:\\Users\\Storme\\AppData\\Local\\Temp\\rustibites-bench\\bin\\rustibites-3CCB231ECC3C9027.exe",
+                                  "sha256":  "3CCB231ECC3C9027B83CE998E6BB88FAFA4224D27874547B386F94EA84709D1D"
+                              },
+                   "artifacts":  {
+                                     "runs_csv":  "runs.csv",
+                                     "summary_csv":  "summary.csv",
+                                     "markdown":  "matrix.md",
+                                     "json":  "matrix.json",
+                                     "environment":  "environment.json",
+                                     "environment_txt":  "environment.txt"
+                                 },
+                   "notes":  [
+                                 "engine wall_secs covers only world.run(ticks); process_wall_secs adds setup/spawn/startup",
+                                 "one operating-system process per repetition (--repeat 1) so repetitions are independent",
+                                 "synthetic world area scales as 2000*sqrt(N/2000) to keep density constant",
+                                 "state_fingerprint should be identical for the same repetition seed regardless of thread count"
+                             ]
+               },
+    "cells":  [
+                  {
+                      "requested_population":  0,
+                      "population":  1,
+                      "threads":  1,
+                      "reps_total":  2,
+                      "reps_ok":  2,
+                      "status":  "ok",
+                      "best_wall_secs":  0.03787,
+                      "median_wall_secs":  0.038104,
+                      "best_ticks_per_second":  15843.843,
+                      "median_ticks_per_second":  15746.974,
+                      "best_realtime_factor":  528.128,
+                      "median_realtime_factor":  524.899,
+                      "best_bibite_updates_per_second":  15843.8,
+                      "median_bibite_updates_per_second":  15746.95,
+                      "peak_ws_mb":  13.4,
+                      "state_fingerprint":  "7047803292694612210",
+                      "serial_ticks_per_second":  15843.843,
+                      "speedup_vs_serial":  1,
+                      "best_threads":  8,
+                      "cpu_load_pct_min":  6,
+                      "cpu_load_pct_max":  57,
+                      "error":  null
+                  },
+                  {
+                      "requested_population":  0,
+                      "population":  1,
+                      "threads":  8,
+                      "reps_total":  2,
+                      "reps_ok":  2,
+                      "status":  "ok",
+                      "best_wall_secs":  0.037685,
+                      "median_wall_secs":  0.0376455,
+                      "best_ticks_per_second":  15921.496,
+                      "median_ticks_per_second":  15938.261999999999,
+                      "best_realtime_factor":  530.717,
+                      "median_realtime_factor":  531.2755,
+                      "best_bibite_updates_per_second":  15921.5,
+                      "median_bibite_updates_per_second":  15938.25,
+                      "peak_ws_mb":  18.6,
+                      "state_fingerprint":  "7047803292694612210",
+                      "serial_ticks_per_second":  15843.843,
+                      "speedup_vs_serial":  1.0049011467735447,
+                      "best_threads":  8,
+                      "cpu_load_pct_min":  14,
+                      "cpu_load_pct_max":  34,
+                      "error":  null
+                  }
+              ],
+    "fingerprint_checks":  [
+                               {
+                                   "population":  1,
+                                   "unique_fingerprints":  1,
+                                   "consistent":  true,
+                                   "fingerprints":  [
+                                                        "7047803292694612210"
+                                                    ]
+                               }
+                           ],
+    "determinism":  [
+
+                    ],
+    "environment_binary":  {
+                               "original_path":  "Z:\\RUSTibites\\target\\bench-final\\rustibites-3CCB231E.exe",
+                               "benchmark_copy":  "C:\\Users\\Storme\\AppData\\Local\\Temp\\rustibites-bench\\bin\\rustibites-3CCB231ECC3C9027.exe",
+                               "sha256":  "3CCB231ECC3C9027B83CE998E6BB88FAFA4224D27874547B386F94EA84709D1D",
+                               "size_bytes":  2168320,
+                               "last_write_utc":  "2026-10-30T14:38:42.9058068Z"
+                           }
+}

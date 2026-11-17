@@ -1,0 +1,117 @@
+{
+    "schema":  "rustibites.bench.matrix/1",
+    "generated_at_utc":  "2026-11-01T09:59:28.1003453Z",
+    "config":  {
+                   "schema":  "rustibites.bench.matrix/1",
+                   "mode":  "quick",
+                   "run_label":  "freeze A/B current Default",
+                   "started_at_utc":  "2026-11-01T09:59:21.5960961Z",
+                   "scenario":  "Z:\\RUSTibites\\testdata\\real\\Default.zip",
+                   "scenario_label":  "Default.zip",
+                   "requested_pops":  [
+                                          0
+                                      ],
+                   "threads":  [
+                                   1,
+                                   8
+                               ],
+                   "ticks_per_run":  600,
+                   "repeat_per_cell":  2,
+                   "timeout_sec_run":  900,
+                   "budget_sec":  0,
+                   "min_free_gb":  0.5,
+                   "max_load_pct":  0,
+                   "load_wait_sec":  120,
+                   "sample_ms":  50,
+                   "determinism_check":  false,
+                   "binary":  {
+                                  "original_path":  "Z:\\RUSTibites\\target\\release\\rustibites.exe",
+                                  "measured_copy":  "C:\\Users\\Storme\\AppData\\Local\\Temp\\rustibites-bench\\bin\\rustibites-B9D8E23CDF97CB39.exe",
+                                  "sha256":  "B9D8E23CDF97CB39C5BD4FA1E7D4C446392A2B83528E56B0DCF6372065B0044F"
+                              },
+                   "artifacts":  {
+                                     "runs_csv":  "runs.csv",
+                                     "summary_csv":  "summary.csv",
+                                     "markdown":  "matrix.md",
+                                     "json":  "matrix.json",
+                                     "environment":  "environment.json",
+                                     "environment_txt":  "environment.txt"
+                                 },
+                   "notes":  [
+                                 "engine wall_secs covers only world.run(ticks); process_wall_secs adds setup/spawn/startup",
+                                 "one operating-system process per repetition (--repeat 1) so repetitions are independent",
+                                 "synthetic world area scales as 2000*sqrt(N/2000) to keep density constant",
+                                 "state_fingerprint should be identical for the same repetition seed regardless of thread count"
+                             ]
+               },
+    "cells":  [
+                  {
+                      "requested_population":  0,
+                      "population":  1,
+                      "threads":  1,
+                      "reps_total":  2,
+                      "reps_ok":  2,
+                      "status":  "ok",
+                      "best_wall_secs":  0.039066,
+                      "median_wall_secs":  0.038723499999999994,
+                      "best_ticks_per_second":  15358.663,
+                      "median_ticks_per_second":  15495.6785,
+                      "best_realtime_factor":  511.955,
+                      "median_realtime_factor":  516.5225,
+                      "best_bibite_updates_per_second":  15358.7,
+                      "median_bibite_updates_per_second":  15495.7,
+                      "peak_ws_mb":  14.8,
+                      "state_fingerprint":  "4956299379330743132",
+                      "serial_ticks_per_second":  15358.663,
+                      "speedup_vs_serial":  1,
+                      "best_threads":  1,
+                      "cpu_load_pct_min":  18,
+                      "cpu_load_pct_max":  57,
+                      "error":  null
+                  },
+                  {
+                      "requested_population":  0,
+                      "population":  1,
+                      "threads":  8,
+                      "reps_total":  2,
+                      "reps_ok":  2,
+                      "status":  "ok",
+                      "best_wall_secs":  0.045941,
+                      "median_wall_secs":  0.044744500000000006,
+                      "best_ticks_per_second":  13060.286,
+                      "median_ticks_per_second":  13419.029999999999,
+                      "best_realtime_factor":  435.343,
+                      "median_realtime_factor":  447.30100000000004,
+                      "best_bibite_updates_per_second":  13060.3,
+                      "median_bibite_updates_per_second":  13419.05,
+                      "peak_ws_mb":  13.5,
+                      "state_fingerprint":  "4956299379330743132",
+                      "serial_ticks_per_second":  15358.663,
+                      "speedup_vs_serial":  0.85035305481994106,
+                      "best_threads":  1,
+                      "cpu_load_pct_min":  5,
+                      "cpu_load_pct_max":  19,
+                      "error":  null
+                  }
+              ],
+    "fingerprint_checks":  [
+                               {
+                                   "population":  1,
+                                   "unique_fingerprints":  1,
+                                   "consistent":  true,
+                                   "fingerprints":  [
+                                                        "4956299379330743132"
+                                                    ]
+                               }
+                           ],
+    "determinism":  [
+
+                    ],
+    "environment_binary":  {
+                               "original_path":  "Z:\\RUSTibites\\target\\release\\rustibites.exe",
+                               "benchmark_copy":  "C:\\Users\\Storme\\AppData\\Local\\Temp\\rustibites-bench\\bin\\rustibites-B9D8E23CDF97CB39.exe",
+                               "sha256":  "B9D8E23CDF97CB39C5BD4FA1E7D4C446392A2B83528E56B0DCF6372065B0044F",
+                               "size_bytes":  2252800,
+                               "last_write_utc":  "2026-11-01T09:54:25.4821632Z"
+                           }
+}

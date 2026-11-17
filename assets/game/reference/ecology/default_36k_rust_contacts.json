@@ -1,0 +1,444 @@
+{
+ "schema": "rustibites.assets.ecology_36k_rust_contacts.v1",
+ "source": "Rust matching 36k trace (mouth_probe, current tree, Default.zip seed12345)",
+ "note": "contact rows are logged after each 1-tick world step when an attacker's mouth-target array contains a bibite; intervals are consecutive-tick runs. near_no_target rows are nearest-bibite samples within 10*max(d1) that were not mouth targets. attack_out/eat_out/grab_out are brain outputs; victim_armor is effective armor strength.",
+ "summary": {
+  "contact_rows": 35463,
+  "unique_contact_ticks": 15950,
+  "attacker_victim_pairs": 8,
+  "intervals": 12,
+  "interval_duration_ticks": {
+   "min": 10,
+   "median": 1960,
+   "max": 9174,
+   "total": 35463
+  },
+  "near_no_target_rows": 2596,
+  "near_no_target_mean_dist": 9.437,
+  "all_attack_out": [
+   0.5
+  ],
+  "all_eat_out": [
+   0.842
+  ],
+  "all_grab_out": [
+   0.0
+  ],
+  "sum_first_bites": 12,
+  "sum_damage": 908.557
+ },
+ "intervals": [
+  {
+   "attacker": "1v0",
+   "victim": "9v0",
+   "start_tick": 6009,
+   "end_tick": 6019,
+   "duration_ticks": 11,
+   "samples": 11,
+   "mean_dist": 10.048,
+   "mean_abs_bearing_deg": 5.4,
+   "max_abs_bearing_deg": 5.6,
+   "attack_out": 0.5,
+   "eat_out": 0.842,
+   "grab_out": 0.0,
+   "attacker_bite": 371.622,
+   "victim_armor": 15.21,
+   "victim_max_health": 141.88,
+   "attacker_bitten_delta": 1,
+   "attacker_damage_delta": 5.852,
+   "target_indices": [
+    0
+   ],
+   "n_targets_samples": [
+    1
+   ]
+  },
+  {
+   "attacker": "1v0",
+   "victim": "9v0",
+   "start_tick": 6077,
+   "end_tick": 6086,
+   "duration_ticks": 10,
+   "samples": 10,
+   "mean_dist": 8.119,
+   "mean_abs_bearing_deg": 12.6,
+   "max_abs_bearing_deg": 12.7,
+   "attack_out": 0.5,
+   "eat_out": 0.842,
+   "grab_out": 0.0,
+   "attacker_bite": 371.987,
+   "victim_armor": 15.216,
+   "victim_max_health": 141.98,
+   "attacker_bitten_delta": 1,
+   "attacker_damage_delta": 5.835,
+   "target_indices": [
+    0
+   ],
+   "n_targets_samples": [
+    1
+   ]
+  },
+  {
+   "attacker": "1v0",
+   "victim": "9v0",
+   "start_tick": 6131,
+   "end_tick": 6180,
+   "duration_ticks": 50,
+   "samples": 50,
+   "mean_dist": 6.431,
+   "mean_abs_bearing_deg": 60.7,
+   "max_abs_bearing_deg": 104.0,
+   "attack_out": 0.5,
+   "eat_out": 0.842,
+   "grab_out": 0.0,
+   "attacker_bite": 372.17,
+   "victim_armor": 15.222,
+   "victim_max_health": 142.09,
+   "attacker_bitten_delta": 1,
+   "attacker_damage_delta": 6.786,
+   "target_indices": [
+    0
+   ],
+   "n_targets_samples": [
+    1
+   ]
+  },
+  {
+   "attacker": "9v0",
+   "victim": "7v0",
+   "start_tick": 7795,
+   "end_tick": 7804,
+   "duration_ticks": 10,
+   "samples": 10,
+   "mean_dist": 6.213,
+   "mean_abs_bearing_deg": 52.9,
+   "max_abs_bearing_deg": 56.1,
+   "attack_out": 0.5,
+   "eat_out": 0.842,
+   "grab_out": 0.0,
+   "attacker_bite": 379.027,
+   "victim_armor": 15.39,
+   "victim_max_health": 145.24,
+   "attacker_bitten_delta": 1,
+   "attacker_damage_delta": 5.957,
+   "target_indices": [
+    0
+   ],
+   "n_targets_samples": [
+    1
+   ]
+  },
+  {
+   "attacker": "9v0",
+   "victim": "7v0",
+   "start_tick": 7857,
+   "end_tick": 11945,
+   "duration_ticks": 4089,
+   "samples": 4089,
+   "mean_dist": 0.506,
+   "mean_abs_bearing_deg": 162.4,
+   "max_abs_bearing_deg": 174.6,
+   "attack_out": 0.5,
+   "eat_out": 0.842,
+   "grab_out": 0.0,
+   "attacker_bite": 379.302,
+   "victim_armor": 15.395,
+   "victim_max_health": 145.34,
+   "attacker_bitten_delta": 1,
+   "attacker_damage_delta": 104.158,
+   "target_indices": [
+    0,
+    1
+   ],
+   "n_targets_samples": [
+    1,
+    2
+   ]
+  },
+  {
+   "attacker": "7v0",
+   "victim": "9v0",
+   "start_tick": 7866,
+   "end_tick": 15272,
+   "duration_ticks": 7407,
+   "samples": 7407,
+   "mean_dist": 0.488,
+   "mean_abs_bearing_deg": 166.3,
+   "max_abs_bearing_deg": 180.0,
+   "attack_out": 0.5,
+   "eat_out": 0.842,
+   "grab_out": 0.0,
+   "attacker_bite": 379.667,
+   "victim_armor": 15.391,
+   "victim_max_health": 145.27,
+   "attacker_bitten_delta": 1,
+   "attacker_damage_delta": 188.67,
+   "target_indices": [
+    0,
+    1
+   ],
+   "n_targets_samples": [
+    1,
+    2
+   ]
+  },
+  {
+   "attacker": "0v0",
+   "victim": "2v0",
+   "start_tick": 9370,
+   "end_tick": 15203,
+   "duration_ticks": 5834,
+   "samples": 5834,
+   "mean_dist": 0.868,
+   "mean_abs_bearing_deg": 124.0,
+   "max_abs_bearing_deg": 138.2,
+   "attack_out": 0.5,
+   "eat_out": 0.842,
+   "grab_out": 0.0,
+   "attacker_bite": 387.713,
+   "victim_armor": 15.554,
+   "victim_max_health": 148.35,
+   "attacker_bitten_delta": 1,
+   "attacker_damage_delta": 152.069,
+   "target_indices": [
+    0,
+    1
+   ],
+   "n_targets_samples": [
+    1,
+    2
+   ]
+  },
+  {
+   "attacker": "2v0",
+   "victim": "0v0",
+   "start_tick": 9372,
+   "end_tick": 18545,
+   "duration_ticks": 9174,
+   "samples": 9174,
+   "mean_dist": 0.769,
+   "mean_abs_bearing_deg": 131.3,
+   "max_abs_bearing_deg": 148.9,
+   "attack_out": 0.5,
+   "eat_out": 0.842,
+   "grab_out": 0.0,
+   "attacker_bite": 387.439,
+   "victim_armor": 15.559,
+   "victim_max_health": 148.46,
+   "attacker_bitten_delta": 1,
+   "attacker_damage_delta": 239.272,
+   "target_indices": [
+    0,
+    1
+   ],
+   "n_targets_samples": [
+    1,
+    2
+   ]
+  },
+  {
+   "attacker": "7v1",
+   "victim": "2v0",
+   "start_tick": 30818,
+   "end_tick": 30830,
+   "duration_ticks": 13,
+   "samples": 13,
+   "mean_dist": 12.223,
+   "mean_abs_bearing_deg": 5.5,
+   "max_abs_bearing_deg": 5.6,
+   "attack_out": 0.5,
+   "eat_out": 0.842,
+   "grab_out": 0.0,
+   "attacker_bite": 351.965,
+   "victim_armor": 17.31,
+   "victim_max_health": 183.74,
+   "attacker_bitten_delta": 1,
+   "attacker_damage_delta": 5.482,
+   "target_indices": [
+    0
+   ],
+   "n_targets_samples": [
+    1
+   ]
+  },
+  {
+   "attacker": "7v1",
+   "victim": "2v0",
+   "start_tick": 30834,
+   "end_tick": 36000,
+   "duration_ticks": 5167,
+   "samples": 5167,
+   "mean_dist": 2.973,
+   "mean_abs_bearing_deg": 84.1,
+   "max_abs_bearing_deg": 179.9,
+   "attack_out": 0.5,
+   "eat_out": 0.842,
+   "grab_out": 0.0,
+   "attacker_bite": 352.056,
+   "victim_armor": 17.312,
+   "victim_max_health": 183.77,
+   "attacker_bitten_delta": 1,
+   "attacker_damage_delta": 123.342,
+   "target_indices": [
+    0
+   ],
+   "n_targets_samples": [
+    1,
+    2
+   ]
+  },
+  {
+   "attacker": "2v0",
+   "victim": "7v1",
+   "start_tick": 32035,
+   "end_tick": 33772,
+   "duration_ticks": 1738,
+   "samples": 1738,
+   "mean_dist": 1.371,
+   "mean_abs_bearing_deg": 130.8,
+   "max_abs_bearing_deg": 179.9,
+   "attack_out": 0.5,
+   "eat_out": 0.842,
+   "grab_out": 0.0,
+   "attacker_bite": 484.718,
+   "victim_armor": 14.951,
+   "victim_max_health": 137.08,
+   "attacker_bitten_delta": 1,
+   "attacker_damage_delta": 59.71,
+   "target_indices": [
+    0,
+    1
+   ],
+   "n_targets_samples": [
+    1,
+    2
+   ]
+  },
+  {
+   "attacker": "19v1",
+   "victim": "7v1",
+   "start_tick": 32661,
+   "end_tick": 34620,
+   "duration_ticks": 1960,
+   "samples": 1960,
+   "mean_dist": 5.291,
+   "mean_abs_bearing_deg": 5.7,
+   "max_abs_bearing_deg": 93.2,
+   "attack_out": 0.5,
+   "eat_out": 0.842,
+   "grab_out": 0.0,
+   "attacker_bite": 68.363,
+   "victim_armor": 15.016,
+   "victim_max_health": 138.27,
+   "attacker_bitten_delta": 1,
+   "attacker_damage_delta": 11.331,
+   "target_indices": [
+    0
+   ],
+   "n_targets_samples": [
+    1
+   ]
+  }
+ ],
+ "attackers": {
+  "0v0": {
+   "samples": 5834,
+   "first_tick": 9370,
+   "last_tick": 15203,
+   "victims": [
+    "2v0"
+   ],
+   "bite_strength": 414.227,
+   "first_bites": 1,
+   "damage": 152.069,
+   "damage_per_first_bite": 152.069,
+   "victim_armor": 16.079,
+   "victim_max_health": 158.54
+  },
+  "19v1": {
+   "samples": 1960,
+   "first_tick": 32661,
+   "last_tick": 34620,
+   "victims": [
+    "7v1"
+   ],
+   "bite_strength": 91.62,
+   "first_bites": 1,
+   "damage": 11.331,
+   "damage_per_first_bite": 11.331,
+   "victim_armor": 15.212,
+   "victim_max_health": 141.91
+  },
+  "1v0": {
+   "samples": 71,
+   "first_tick": 6009,
+   "last_tick": 6180,
+   "victims": [
+    "9v0"
+   ],
+   "bite_strength": 372.444,
+   "first_bites": 3,
+   "damage": 18.519,
+   "damage_per_first_bite": 6.173,
+   "victim_armor": 15.227,
+   "victim_max_health": 142.19
+  },
+  "2v0": {
+   "samples": 10912,
+   "first_tick": 9372,
+   "last_tick": 33772,
+   "victims": [
+    "0v0",
+    "7v1"
+   ],
+   "bite_strength": 491.575,
+   "first_bites": 2,
+   "damage": 298.982,
+   "damage_per_first_bite": 149.491,
+   "victim_armor": 15.128,
+   "victim_max_health": 140.34
+  },
+  "7v0": {
+   "samples": 7407,
+   "first_tick": 7866,
+   "last_tick": 15272,
+   "victims": [
+    "9v0"
+   ],
+   "bite_strength": 413.679,
+   "first_bites": 1,
+   "damage": 188.67,
+   "damage_per_first_bite": 188.67,
+   "victim_armor": 15.771,
+   "victim_max_health": 152.52
+  },
+  "7v1": {
+   "samples": 5180,
+   "first_tick": 30818,
+   "last_tick": 36000,
+   "victims": [
+    "2v0"
+   ],
+   "bite_strength": 377.199,
+   "first_bites": 2,
+   "damage": 128.847,
+   "damage_per_first_bite": 64.424,
+   "victim_armor": 17.52,
+   "victim_max_health": 188.22
+  },
+  "9v0": {
+   "samples": 4099,
+   "first_tick": 7795,
+   "last_tick": 11945,
+   "victims": [
+    "7v0"
+   ],
+   "bite_strength": 398.319,
+   "first_bites": 2,
+   "damage": 110.139,
+   "damage_per_first_bite": 55.069,
+   "victim_armor": 15.776,
+   "victim_max_health": 152.62
+  }
+ }
+}

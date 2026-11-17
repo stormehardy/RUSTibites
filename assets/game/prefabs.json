@@ -1,0 +1,921 @@
+{
+ "schema": "rustibites.assets.prefabs.v1",
+ "source": "UnityPy level/sharedassets scan",
+ "roots": [
+  {
+   "file": "sharedassets2.assets",
+   "name": "egg",
+   "components": [
+    "Transform",
+    "unreadable:Expected to read 36 bytes, but only read 32 bytes",
+    "SpriteRenderer",
+    "unreadable:Expected to read 96 bytes, but only read 32 bytes",
+    "unreadable:Expected to read 132 bytes, but only read 32 bytes",
+    "unreadable:Expected to read 64 bytes, but only read 32 bytes",
+    "unreadable:Expected to read 36 bytes, but only read 32 bytes",
+    "CircleCollider2D",
+    "MonoBehaviour",
+    "Rigidbody2D",
+    "unreadable:Expected to read 36 bytes, but only read 32 bytes",
+    "MonoBehaviour"
+   ],
+   "tree": [
+    {
+     "name": "egg",
+     "depth": 0,
+     "local_position": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "local_rotation": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "local_scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "children": [],
+     "sprite_renderer": {
+      "sprite": "medium_egg",
+      "sorting_layer": -1,
+      "sorting_layer_name": "",
+      "sorting_order": 0,
+      "color": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "flip_x": false,
+      "flip_y": false,
+      "material": null
+     }
+    }
+   ]
+  },
+  {
+   "file": "sharedassets2.assets",
+   "name": "plant pellet",
+   "components": [
+    "Transform",
+    "unreadable:Expected to read 52 bytes, but only read 32 bytes",
+    "unreadable:Expected to read 56 bytes, but only read 32 bytes",
+    "unreadable:Expected to read 44 bytes, but only read 32 bytes",
+    "SpriteRenderer",
+    "CircleCollider2D",
+    "Rigidbody2D",
+    "unreadable:Expected to read 36 bytes, but only read 32 bytes",
+    "unreadable:Expected to read 36 bytes, but only read 32 bytes",
+    "unreadable:Expected to read 36 bytes, but only read 32 bytes"
+   ],
+   "tree": [
+    {
+     "name": "plant pellet",
+     "depth": 0,
+     "local_position": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "local_rotation": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "local_scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "children": [],
+     "sprite_renderer": {
+      "sprite": "medium_plant",
+      "sorting_layer": 0,
+      "sorting_layer_name": "",
+      "sorting_order": 0,
+      "color": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "flip_x": false,
+      "flip_y": false,
+      "material": null
+     }
+    }
+   ]
+  },
+  {
+   "file": "sharedassets2.assets",
+   "name": "bibite",
+   "components": [
+    "Transform",
+    "unreadable:Expected to read 36 bytes, but only read 32 bytes",
+    "unreadable:Expected to read 276 bytes, but only read 32 bytes",
+    "unreadable:Expected to read 64 bytes, but only read 32 bytes",
+    "unreadable:Expected to read 36 bytes, but only read 32 bytes",
+    "unreadable:Expected to read 96 bytes, but only read 32 bytes",
+    "unreadable:Expected to read 52 bytes, but only read 32 bytes",
+    "unreadable:Expected to read 84 bytes, but only read 32 bytes",
+    "Rigidbody2D",
+    "unreadable:Expected to read 52 bytes, but only read 32 bytes",
+    "unreadable:Expected to read 80 bytes, but only read 32 bytes",
+    "unreadable:Expected to read 36 bytes, but only read 32 bytes",
+    "unreadable:Expected to read 128 bytes, but only read 32 bytes",
+    "unreadable:Expected to read 36 bytes, but only read 32 bytes",
+    "unreadable:Expected to read 36 bytes, but only read 32 bytes",
+    "MonoBehaviour",
+    "MonoBehaviour",
+    "MonoBehaviour",
+    "MonoBehaviour"
+   ],
+   "tree": [
+    {
+     "name": "bibite",
+     "depth": 0,
+     "local_position": [
+      -0.0,
+      6.46,
+      0.0
+     ],
+     "local_rotation": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "local_scale": [
+      2.0,
+      2.0,
+      2.0
+     ],
+     "children": []
+    },
+    {
+     "name": "Eyes",
+     "depth": 1,
+     "local_position": [
+      0.0,
+      0.0,
+      -2.0
+     ],
+     "local_rotation": [
+      0.0,
+      0.0,
+      0.707107
+     ],
+     "local_scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "children": [],
+     "sprite_renderer": {
+      "sprite": "normal_eyes_2",
+      "sorting_layer": 0,
+      "sorting_layer_name": "",
+      "sorting_order": 0,
+      "color": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "flip_x": false,
+      "flip_y": false,
+      "material": null
+     }
+    },
+    {
+     "name": "Exoskelton",
+     "depth": 1,
+     "local_position": [
+      0.0,
+      0.0,
+      -1.0
+     ],
+     "local_rotation": [
+      0.0,
+      0.0,
+      0.707107
+     ],
+     "local_scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "children": [],
+     "sprite_renderer": {
+      "sprite": "normal_exoskeleton_0",
+      "sorting_layer": 0,
+      "sorting_layer_name": "",
+      "sorting_order": 0,
+      "color": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "flip_x": false,
+      "flip_y": false,
+      "material": null
+     }
+    },
+    {
+     "name": "Body",
+     "depth": 1,
+     "local_position": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "local_rotation": [
+      0.0,
+      0.0,
+      0.707107
+     ],
+     "local_scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "children": [],
+     "sprite_renderer": {
+      "sprite": "large_body_0",
+      "sorting_layer": 0,
+      "sorting_layer_name": "",
+      "sorting_order": 0,
+      "color": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "flip_x": false,
+      "flip_y": false,
+      "material": null
+     }
+    },
+    {
+     "name": "Tail",
+     "depth": 1,
+     "local_position": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "local_rotation": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "local_scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "children": []
+    },
+    {
+     "name": "Mouth",
+     "depth": 1,
+     "local_position": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "local_rotation": [
+      0.0,
+      0.0,
+      0.707107
+     ],
+     "local_scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "children": [],
+     "sprite_renderer": {
+      "sprite": "normal_mouth_0",
+      "sorting_layer": 0,
+      "sorting_layer_name": "",
+      "sorting_order": 0,
+      "color": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "flip_x": false,
+      "flip_y": false,
+      "material": null
+     }
+    },
+    {
+     "name": "RightArm",
+     "depth": 1,
+     "local_position": [
+      4.5,
+      0.0,
+      0.0
+     ],
+     "local_rotation": [
+      0.0,
+      0.0,
+      0.707107
+     ],
+     "local_scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "children": [],
+     "sprite_renderer": {
+      "sprite": "normal_arms_0",
+      "sorting_layer": 0,
+      "sorting_layer_name": "",
+      "sorting_order": 0,
+      "color": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "flip_x": false,
+      "flip_y": true,
+      "material": null
+     }
+    },
+    {
+     "name": "Left Arm",
+     "depth": 1,
+     "local_position": [
+      -4.5,
+      0.0,
+      -1.0
+     ],
+     "local_rotation": [
+      0.0,
+      0.0,
+      0.707107
+     ],
+     "local_scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "children": [],
+     "sprite_renderer": {
+      "sprite": "normal_arms_0",
+      "sorting_layer": 0,
+      "sorting_layer_name": "",
+      "sorting_order": 0,
+      "color": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "flip_x": false,
+      "flip_y": false,
+      "material": null
+     }
+    }
+   ]
+  },
+  {
+   "file": "sharedassets2.assets",
+   "name": "Radiation Tower",
+   "components": [
+    "Transform",
+    "SpriteRenderer",
+    "unreadable:Expected to read 92 bytes, but only read 32 bytes",
+    "MonoBehaviour",
+    "unreadable:Expected to read 36 bytes, but only read 32 bytes",
+    "CircleCollider2D",
+    "MonoBehaviour"
+   ],
+   "tree": [
+    {
+     "name": "Radiation Tower",
+     "depth": 0,
+     "local_position": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "local_rotation": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "local_scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "children": [],
+     "sprite_renderer": {
+      "sprite": "laser_circle",
+      "sorting_layer": -1,
+      "sorting_layer_name": "",
+      "sorting_order": 0,
+      "color": [
+       1.0,
+       1.0,
+       1.0,
+       0.7725
+      ],
+      "flip_x": false,
+      "flip_y": false,
+      "material": null
+     }
+    },
+    {
+     "name": "RadioZone",
+     "depth": 1,
+     "local_position": [
+      0.0,
+      0.0,
+      10.0
+     ],
+     "local_rotation": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "local_scale": [
+      500.0,
+      500.0,
+      1.0
+     ],
+     "children": [],
+     "sprite_renderer": {
+      "sprite": "Circle",
+      "sorting_layer": -2,
+      "sorting_layer_name": "",
+      "sorting_order": 2,
+      "color": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "flip_x": false,
+      "flip_y": false,
+      "material": null
+     }
+    },
+    {
+     "name": "radIcon",
+     "depth": 1,
+     "local_position": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "local_rotation": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "local_scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "children": [],
+     "sprite_renderer": {
+      "sprite": "radioactive",
+      "sorting_layer": 0,
+      "sorting_layer_name": "",
+      "sorting_order": 0,
+      "color": [
+       0.5014,
+       0.5755,
+       0.0,
+       1.0
+      ],
+      "flip_x": false,
+      "flip_y": false,
+      "material": null
+     }
+    }
+   ]
+  },
+  {
+   "file": "sharedassets2.assets",
+   "name": "ColorKiller",
+   "components": [
+    "Transform",
+    "SpriteRenderer",
+    "unreadable:Expected to read 112 bytes, but only read 32 bytes",
+    "MonoBehaviour",
+    "unreadable:Expected to read 36 bytes, but only read 32 bytes",
+    "CircleCollider2D",
+    "MonoBehaviour"
+   ],
+   "tree": [
+    {
+     "name": "ColorKiller",
+     "depth": 0,
+     "local_position": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "local_rotation": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "local_scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "children": [],
+     "sprite_renderer": {
+      "sprite": "laser_circle",
+      "sorting_layer": -1,
+      "sorting_layer_name": "",
+      "sorting_order": 0,
+      "color": [
+       1.0,
+       1.0,
+       1.0,
+       0.7686
+      ],
+      "flip_x": false,
+      "flip_y": false,
+      "material": null
+     }
+    },
+    {
+     "name": "Canvas",
+     "depth": 1,
+     "local_position": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "local_rotation": [
+      -0.0,
+      -0.0,
+      -0.0
+     ],
+     "local_scale": [
+      0.016667,
+      0.016667,
+      1.0
+     ],
+     "children": []
+    },
+    {
+     "name": "Laser",
+     "depth": 2,
+     "local_position": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "local_rotation": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "local_scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "children": []
+    },
+    {
+     "name": "Square",
+     "depth": 1,
+     "local_position": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "local_rotation": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "local_scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "children": []
+    },
+    {
+     "name": "ColorCrystal",
+     "depth": 2,
+     "local_position": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "local_rotation": [
+      -0.0,
+      -0.0,
+      -0.0
+     ],
+     "local_scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "children": [],
+     "sprite_renderer": {
+      "sprite": "laser_crystal",
+      "sorting_layer": 0,
+      "sorting_layer_name": "",
+      "sorting_order": 1,
+      "color": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "flip_x": false,
+      "flip_y": false,
+      "material": null
+     }
+    }
+   ]
+  },
+  {
+   "file": "sharedassets2.assets",
+   "name": "PheroTower",
+   "components": [
+    "Transform",
+    "SpriteRenderer",
+    "unreadable:Expected to read 92 bytes, but only read 32 bytes",
+    "MonoBehaviour",
+    "unreadable:Expected to read 36 bytes, but only read 32 bytes",
+    "CircleCollider2D",
+    "MonoBehaviour"
+   ],
+   "tree": [
+    {
+     "name": "PheroTower",
+     "depth": 0,
+     "local_position": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "local_rotation": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "local_scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "children": [],
+     "sprite_renderer": {
+      "sprite": "pheroTower",
+      "sorting_layer": -1,
+      "sorting_layer_name": "",
+      "sorting_order": 0,
+      "color": [
+       1.0,
+       1.0,
+       1.0,
+       0.7725
+      ],
+      "flip_x": false,
+      "flip_y": false,
+      "material": null
+     }
+    },
+    {
+     "name": "Pherosrc",
+     "depth": 1,
+     "local_position": [
+      0.0,
+      0.0,
+      0.01
+     ],
+     "local_rotation": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "local_scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "children": []
+    }
+   ]
+  },
+  {
+   "file": "sharedassets2.assets",
+   "name": "Zone",
+   "components": [
+    "Transform",
+    "SpriteRenderer",
+    "unreadable:Expected to read 92 bytes, but only read 32 bytes",
+    "MonoBehaviour"
+   ],
+   "tree": [
+    {
+     "name": "Zone",
+     "depth": 0,
+     "local_position": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "local_rotation": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "local_scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "children": [],
+     "sprite_renderer": {
+      "sprite": "Square",
+      "sorting_layer": -2,
+      "sorting_layer_name": "",
+      "sorting_order": 1,
+      "color": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "flip_x": false,
+      "flip_y": false,
+      "material": null
+     }
+    }
+   ]
+  },
+  {
+   "file": "sharedassets2.assets",
+   "name": "meat pellet",
+   "components": [
+    "Transform",
+    "unreadable:Expected to read 52 bytes, but only read 32 bytes",
+    "unreadable:Expected to read 56 bytes, but only read 32 bytes",
+    "unreadable:Expected to read 44 bytes, but only read 32 bytes",
+    "SpriteRenderer",
+    "CircleCollider2D",
+    "Rigidbody2D",
+    "unreadable:Expected to read 36 bytes, but only read 32 bytes",
+    "unreadable:Expected to read 36 bytes, but only read 32 bytes",
+    "unreadable:Expected to read 36 bytes, but only read 32 bytes"
+   ],
+   "tree": [
+    {
+     "name": "meat pellet",
+     "depth": 0,
+     "local_position": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "local_rotation": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "local_scale": [
+      1.0,
+      1.0,
+      1.0
+     ],
+     "children": [],
+     "sprite_renderer": {
+      "sprite": "medium_meat",
+      "sorting_layer": 0,
+      "sorting_layer_name": "",
+      "sorting_order": 0,
+      "color": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "flip_x": false,
+      "flip_y": false,
+      "material": null
+     }
+    }
+   ]
+  },
+  {
+   "file": "level2",
+   "name": "FieldOfViewDisplay",
+   "components": [
+    "Transform",
+    "SpriteRenderer",
+    "unreadable:Expected to read 68 bytes, but only read 32 bytes"
+   ],
+   "tree": [
+    {
+     "name": "FieldOfViewDisplay",
+     "depth": 0,
+     "local_position": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "local_rotation": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "local_scale": [
+      100.0,
+      100.0,
+      1.0
+     ],
+     "children": [],
+     "sprite_renderer": {
+      "sprite": "Circle",
+      "sorting_layer": -2,
+      "sorting_layer_name": "",
+      "sorting_order": 100,
+      "color": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "flip_x": false,
+      "flip_y": false,
+      "material": null
+     }
+    }
+   ]
+  },
+  {
+   "file": "level2",
+   "name": "background",
+   "components": [
+    "Transform",
+    "SpriteRenderer",
+    "unreadable:Expected to read 56 bytes, but only read 32 bytes",
+    "BoxCollider2D",
+    "Rigidbody2D"
+   ],
+   "tree": [
+    {
+     "name": "background",
+     "depth": 0,
+     "local_position": [
+      0.0,
+      0.0,
+      15.0
+     ],
+     "local_rotation": [
+      -0.0,
+      -0.0,
+      -0.0
+     ],
+     "local_scale": [
+      500000.0,
+      500000.0,
+      1.0
+     ],
+     "children": [],
+     "sprite_renderer": {
+      "sprite": "Square",
+      "sorting_layer": -2,
+      "sorting_layer_name": "",
+      "sorting_order": 0,
+      "color": [
+       1.0,
+       1.0,
+       1.0,
+       1.0
+      ],
+      "flip_x": false,
+      "flip_y": false,
+      "material": null
+     }
+    }
+   ]
+  }
+ ],
+ "unreadable": []
+}

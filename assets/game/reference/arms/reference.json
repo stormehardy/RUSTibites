@@ -1,0 +1,33 @@
+{
+  "schema": "rustibites.assets.arms_zoom.v1",
+  "capture": {
+    "method": "hidden load rust_seed_600 paused t=20s; nearest closeup bibite; exact 1280x720 camera, ortho size 5 (6 px/world)",
+    "save": "Z:\\RUSTibites\\testdata\\parity\\default\\rust_seed_600.zip",
+    "selected_id": 1627769975,
+    "selected_body_position": {
+      "x": -5.360003,
+      "y": 831.0031,
+      "z": -0.01
+    },
+    "camera": {
+      "ok": true,
+      "x": -5.360003,
+      "y": 831.0031,
+      "size": 5.0,
+      "worldHalfSize": 2000.0,
+      "aspect": 1.77777779,
+      "orthographic": true
+    },
+    "screen": [
+      1280,
+      720
+    ],
+    "pixels_per_world_unit": 72.0
+  },
+  "image": "assets/game/reference/arms/arms_zoom_1280x720.png",
+  "per_layer_refs": [
+    "assets/game/reference/default_save/closeup_single/layers/RightArm_4_alpha.png",
+    "assets/game/reference/default_save/closeup_single/layers/Left_Arm_5_alpha.png"
+  ],
+  "note": "Both arms visible at 6 px/world for the user-reported one-side arm issue; the six-layer closeup/layer alpha refs above are the same body's per-layer images."
+}

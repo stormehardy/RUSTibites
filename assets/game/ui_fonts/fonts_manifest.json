@@ -1,0 +1,182 @@
+{
+  "schema": "rustibites.assets.tmp_fonts.v1",
+  "source": "standalone hidden game /d/font_assets reflection + UnityPy atlas extraction",
+  "fonts": [
+    {
+      "name": "Boston Black SDF",
+      "json": "Boston_Black_SDF.json",
+      "atlas_texture": "Boston Black SDF Atlas",
+      "atlas_file": "atlas_Boston_Black_SDF_Atlas.png",
+      "atlas_width": 512,
+      "atlas_height": 512,
+      "glyphs": 97,
+      "characters": 97,
+      "material": "Boston Black SDF Material",
+      "shader": "TextMeshPro/Distance Field",
+      "face": {
+        "pointSize": 68,
+        "scale": 1,
+        "lineHeight": 88.4,
+        "ascentLine": 68,
+        "descentLine": -20.4,
+        "unitsPerEM": 0,
+        "unitsPerEm": null,
+        "padding": null
+      }
+    },
+    {
+      "name": "LiberationSans SDF",
+      "json": "LiberationSans_SDF.json",
+      "atlas_texture": "LiberationSans SDF Atlas",
+      "atlas_file": "atlas_LiberationSans_SDF_Atlas.png",
+      "atlas_width": 1024,
+      "atlas_height": 1024,
+      "glyphs": 250,
+      "characters": 250,
+      "material": "LiberationSans SDF Material",
+      "shader": "TextMeshPro/Mobile/Distance Field",
+      "face": {
+        "pointSize": 86,
+        "scale": 1,
+        "lineHeight": 98.8916,
+        "ascentLine": 77.8535156,
+        "descentLine": -18.22461,
+        "unitsPerEM": 2816,
+        "unitsPerEm": null,
+        "padding": null
+      }
+    },
+    {
+      "name": "LiberationSans SDF - Fallback",
+      "json": "LiberationSans_SDF_-_Fallback.json",
+      "atlas_texture": "LiberationSans SDF Atlas",
+      "atlas_file": "atlas_LiberationSans_SDF_Atlas.png",
+      "atlas_width": 1024,
+      "atlas_height": 1024,
+      "glyphs": 0,
+      "characters": 0,
+      "material": "LiberationSans SDF Material",
+      "shader": "TextMeshPro/Mobile/Distance Field",
+      "face": {
+        "pointSize": 86,
+        "scale": 1,
+        "lineHeight": 98.8916,
+        "ascentLine": 77.8535156,
+        "descentLine": -18.22461,
+        "unitsPerEM": 2048,
+        "unitsPerEm": null,
+        "padding": null
+      }
+    },
+    {
+      "name": "Roboto-Bold SDF NoOutline",
+      "json": "Roboto-Bold_SDF_NoOutline.json",
+      "atlas_texture": "Roboto-Bold Atlas",
+      "atlas_file": "atlas_Roboto-Bold_Atlas.png",
+      "atlas_width": 1024,
+      "atlas_height": 1024,
+      "glyphs": 112,
+      "characters": 112,
+      "material": "Roboto-Bold Atlas Material",
+      "shader": "TextMeshPro/Distance Field",
+      "face": {
+        "pointSize": 90,
+        "scale": 1,
+        "lineHeight": 105.46875,
+        "ascentLine": 83.49609,
+        "descentLine": -21.9726563,
+        "unitsPerEM": 2048,
+        "unitsPerEm": null,
+        "padding": null
+      }
+    },
+    {
+      "name": "Roboto-Bold SDF WhiteOutline",
+      "json": "Roboto-Bold_SDF_WhiteOutline.json",
+      "atlas_texture": "Roboto-Bold SDF Atlas",
+      "atlas_file": "atlas_Roboto-Bold_SDF_Atlas.png",
+      "atlas_width": 512,
+      "atlas_height": 512,
+      "glyphs": 98,
+      "characters": 98,
+      "material": "Roboto-Bold SDF Material",
+      "shader": "TextMeshPro/Distance Field",
+      "face": {
+        "pointSize": 69,
+        "scale": 1,
+        "lineHeight": 80.859375,
+        "ascentLine": 64.01367,
+        "descentLine": -16.8457031,
+        "unitsPerEM": 0,
+        "unitsPerEm": null,
+        "padding": null
+      }
+    },
+    {
+      "name": "Roboto-Regular SDF",
+      "json": "Roboto-Regular_SDF.json",
+      "atlas_texture": "Roboto-Regular SDF Atlas",
+      "atlas_file": "atlas_Roboto-Regular_SDF_Atlas.png",
+      "atlas_width": 512,
+      "atlas_height": 512,
+      "glyphs": 98,
+      "characters": 98,
+      "material": "Roboto-Regular SDF Material",
+      "shader": "TextMeshPro/Distance Field",
+      "face": {
+        "pointSize": 72,
+        "scale": 1,
+        "lineHeight": 84.375,
+        "ascentLine": 66.796875,
+        "descentLine": -17.578125,
+        "unitsPerEM": 0,
+        "unitsPerEm": null,
+        "padding": null
+      }
+    }
+  ],
+  "atlas_files": {
+    "Roboto-Bold SDF Atlas": {
+      "file": "atlas_Roboto-Bold_SDF_Atlas.png",
+      "width": 512,
+      "height": 512,
+      "source": "sharedassets1.assets",
+      "path_id": 15
+    },
+    "LiberationSans SDF Atlas": {
+      "file": "atlas_LiberationSans_SDF_Atlas.png",
+      "width": 1024,
+      "height": 1024,
+      "source": "sharedassets0.assets",
+      "path_id": 175
+    },
+    "Roboto-Bold Atlas": {
+      "file": "atlas_Roboto-Bold_Atlas.png",
+      "width": 1024,
+      "height": 1024,
+      "source": "sharedassets0.assets",
+      "path_id": 176
+    },
+    "Boston Black SDF Atlas": {
+      "file": "atlas_Boston_Black_SDF_Atlas.png",
+      "width": 512,
+      "height": 512,
+      "source": "sharedassets0.assets",
+      "path_id": 177
+    },
+    "Roboto-Regular SDF Atlas": {
+      "file": "atlas_Roboto-Regular_SDF_Atlas.png",
+      "width": 512,
+      "height": 512,
+      "source": "sharedassets0.assets",
+      "path_id": 178
+    },
+    "joystix monospace SDF Atlas": {
+      "file": "atlas_joystix_monospace_SDF_Atlas.png",
+      "width": 512,
+      "height": 512,
+      "source": "sharedassets3.assets",
+      "path_id": 3
+    }
+  }
+}

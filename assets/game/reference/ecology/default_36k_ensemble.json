@@ -1,0 +1,157 @@
+{
+ "window_ticks": [
+  600,
+  27000
+ ],
+ "game": {
+  "inzone_radius_p50": 672.12,
+  "inzone_radius_p90": 1530.18,
+  "nearest_p50": 6.48,
+  "nearest_p90": 102.15,
+  "plant_rate_mean": 18.04,
+  "energy_mean": 84.61,
+  "births_first36k": 35,
+  "deaths_first36k": 17,
+  "final_energy_mean": 68.63,
+  "plant_n": 650
+ },
+ "rust_seeds": [
+  {
+   "seed": 1,
+   "inzone_radius_p50": 678.06,
+   "inzone_radius_p90": 1558.42,
+   "nearest_p50": 5.73,
+   "nearest_p90": 98.11,
+   "plant_rate_mean": 13.82,
+   "energy_mean": 84.54,
+   "births": 35,
+   "deaths": 23,
+   "final_energy_mean": 85.729,
+   "plant_n": 608,
+   "pop_final": null
+  },
+  {
+   "seed": 2,
+   "inzone_radius_p50": 792.24,
+   "inzone_radius_p90": 1623.67,
+   "nearest_p50": 6.98,
+   "nearest_p90": 97.67,
+   "plant_rate_mean": 12.79,
+   "energy_mean": 85.19,
+   "births": 28,
+   "deaths": 17,
+   "final_energy_mean": 68.694,
+   "plant_n": 617,
+   "pop_final": null
+  },
+  {
+   "seed": 3,
+   "inzone_radius_p50": 952.03,
+   "inzone_radius_p90": 1470.04,
+   "nearest_p50": 8.16,
+   "nearest_p90": 107.5,
+   "plant_rate_mean": 12.89,
+   "energy_mean": 87.73,
+   "births": 32,
+   "deaths": 21,
+   "final_energy_mean": 86.645,
+   "plant_n": 623,
+   "pop_final": null
+  },
+  {
+   "seed": 4,
+   "inzone_radius_p50": 887.71,
+   "inzone_radius_p90": 1504.65,
+   "nearest_p50": 5.33,
+   "nearest_p90": 99.61,
+   "plant_rate_mean": 14.32,
+   "energy_mean": 80.9,
+   "births": 33,
+   "deaths": 23,
+   "final_energy_mean": 66.854,
+   "plant_n": 628,
+   "pop_final": null
+  },
+  {
+   "seed": 12345,
+   "inzone_radius_p50": 1380.72,
+   "inzone_radius_p90": 1752.62,
+   "nearest_p50": 25.18,
+   "nearest_p90": 212.22,
+   "plant_rate_mean": 8.75,
+   "energy_mean": 76.24,
+   "births": 32,
+   "deaths": 25,
+   "final_energy_mean": 79.032,
+   "plant_n": 610,
+   "pop_final": null
+  },
+  {
+   "seed": 67890,
+   "inzone_radius_p50": 857.16,
+   "inzone_radius_p90": 1590.78,
+   "nearest_p50": 9.43,
+   "nearest_p90": 118.51,
+   "plant_rate_mean": 11.03,
+   "energy_mean": 89.89,
+   "births": 30,
+   "deaths": 20,
+   "final_energy_mean": 85.739,
+   "plant_n": 592,
+   "pop_final": null
+  }
+ ],
+ "rust_ensemble": {
+  "inzone_radius_p50": {
+   "min": 678.06,
+   "median": 887.71,
+   "max": 1380.72
+  },
+  "inzone_radius_p90": {
+   "min": 1470.04,
+   "median": 1590.78,
+   "max": 1752.62
+  },
+  "nearest_p50": {
+   "min": 5.33,
+   "median": 8.16,
+   "max": 25.18
+  },
+  "nearest_p90": {
+   "min": 97.67,
+   "median": 107.5,
+   "max": 212.22
+  },
+  "plant_rate_mean": {
+   "min": 8.75,
+   "median": 12.89,
+   "max": 14.32
+  },
+  "energy_mean": {
+   "min": 76.24,
+   "median": 85.19,
+   "max": 89.89
+  },
+  "births": {
+   "min": 28,
+   "median": 32,
+   "max": 35
+  },
+  "deaths": {
+   "min": 17,
+   "median": 23,
+   "max": 25
+  },
+  "final_energy_mean": {
+   "min": 66.854,
+   "median": 85.729,
+   "max": 86.645
+  },
+  "plant_n": {
+   "min": 592,
+   "median": 617,
+   "max": 628
+  }
+ },
+ "note": "Game later positions coverage from samples_fast ends at27000; births/deaths are first36k series sums. Rust seeds 1,2,3,4,12345,67890; same 30-tick sampling."
+}
