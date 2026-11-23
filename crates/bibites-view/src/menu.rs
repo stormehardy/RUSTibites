@@ -347,6 +347,11 @@ pub struct MenuState {
     scroll_speed: f32,
     /// The Load Game list's scrollbar handle is held: where the pointer took it (reference px under the handle's top).
     bar_grab: Option<f32>,
+    /// How the current screen's scroll view differs from the capture's (1080p) in the canvas the screen is drawn in: its left and top edge moved,
+    /// its width and height changed (`[dx, dy, dw, dh]`, reference px; set when the screen's frame is built, zero in a canvas of the capture's size).
+    list_delta: std::cell::Cell<[f32; 4]>,
+    /// The same for the New Game screen's parameters panel, which the TPS settings popup covers (`[dx, dy, dw, dh]`).
+    tps_delta: std::cell::Cell<[f32; 4]>,
     /// A press on a scrolling screen waits for its release: where it began, the scroll then, whether it became a drag of the content.
     content_drag: Option<(Vec2, f32, bool)>,
     /// A slider of a Settings page or of the New Game TPS panel is held: the pointer moves it until the button is let go.
@@ -473,6 +478,8 @@ impl MenuState {
                 scrolls
             },
             bar_grab: None,
+            list_delta: std::cell::Cell::new([0.0; 4]),
+            tps_delta: std::cell::Cell::new([0.0; 4]),
             content_drag: None,
             slider_drag: None,
             inertia: 0.0,
@@ -1394,7 +1401,7 @@ impl MenuState {
             && let Some(runtime) = runtime
             && let Some(mut frame) = runtime.build_menu_frame(false, ui, width, height, fonts.sdf())
         {
-            tagline::add(&mut frame, fonts.sdf(), width, height);
+            tagline::add(&mut frame, width, height);
             if self.video_background {
                 // The animated video is drawn behind this frame.
             } else if let Some(texture) = ui.texture_of_alias("menu_background") {
@@ -2569,6 +2576,29 @@ impl MenuState {
         &mut self.scrolls[scroll_index(self.view)]
     }
 
+    /// How the scroll view of the current screen differs from its place in the capture (see the `list_delta` field).
+    #[must_use]
+    pub fn list_delta(&self) -> [f32; 4] {
+        self.list_delta.get()
+    }
+
+    /// Tells the menu where the scroll view of its screen is in the canvas it is drawn in (`ui_layout`): the lists, their bars and what they scroll
+    /// follow the view.
+    pub fn set_list_delta(&self, delta: [f32; 4]) {
+        self.list_delta.set(delta);
+    }
+
+    /// How the New Game screen's parameters panel (the TPS settings popup is drawn over it) differs from its place in the capture.
+    #[must_use]
+    pub fn tps_delta(&self) -> [f32; 4] {
+        self.tps_delta.get()
+    }
+
+    /// Tells the menu where the parameters panel is in the canvas it is drawn in.
+    pub fn set_tps_delta(&self, delta: [f32; 4]) {
+        self.tps_delta.set(delta);
+    }
+
     /// The scrollbar of the list the current screen shows (`Scrollbar Vertical` of its `ScrollRect`, at the view's right edge), there only when the rows
     /// do not fit: the Load Game list's (20 wide, 17 short of the view: the content is 15 + the "Include autosaves" line (50) + the rows, 55 each less
     /// the last spacing, + 50 = 110 + 55 a row, in a view 930 high), the scenario list's (16 wide at (733.2, 108), 946 high, rows 70 apart), the
@@ -2578,7 +2608,8 @@ impl MenuState {
     pub fn list_bar(&self) -> Option<crate::scrollbar::VBar> {
         use crate::scrollbar::{Style, VBar};
         let scroll = self.list_scroll();
-        let bar = match self.view {
+        let [dx, dy, dw, dh] = self.list_delta();
+        let mut bar = match self.view {
             MenuView::LoadGame => VBar::new(
                 [890.0, 75.0, 20.0, 913.0],
                 110.0 + 55.0 * self.saves.len() as f32,
@@ -2621,6 +2652,8 @@ impl MenuState {
                 match self.settings_tab {
                     0 => 1035.0,
                     1 => 1415.0,
+                    // The Calibration page fits its view.
+                    3 => 920.0,
                     _ => 1384.8,
                 },
                 920.0,
@@ -2629,6 +2662,9 @@ impl MenuState {
             ),
             _ => return None,
         };
+        // The view of another canvas: the bar stays on its right edge and as long as the view's change says (the content is what it was).
+        bar.track = [bar.track[0] + dx + dw, bar.track[1] + dy, bar.track[2], bar.track[3] + dh];
+        bar.view += dh;
         bar.visible().then_some(bar)
     }
 
@@ -2684,7 +2720,7 @@ impl MenuState {
         let max = self.scroll_max();
         let wanted = start_scroll - dy;
         let over = if wanted < 0.0 { wanted } else if wanted > max { wanted - max } else { 0.0 };
-        let view = 946.0;
+        let view = 946.0 + self.list_delta()[3];
         let place = wanted.clamp(0.0, max)
             + if over == 0.0 { 0.0 } else { (1.0 - 1.0 / (over.abs() * 0.55 / view + 1.0)) * view * over.signum() };
         let before = self.list_scroll();
@@ -2821,7 +2857,7 @@ impl MenuState {
         ) {
             0.0
         } else {
-            (rows * 70.0 - 946.0).max(0.0)
+            (rows * 70.0 - 946.0 - self.list_delta()[3]).max(0.0)
         }
     }
 
@@ -3353,6 +3389,11 @@ impl MenuState {
                 self.user_settings.reset_warnings();
                 MenuAction::None
             }
+            // The Calibration page's button: the test starts (its line says what it does, or why not), or stops.
+            MenuCommand::CalibrationRun => {
+                crate::machine_calibration::button_pressed();
+                MenuAction::None
+            }
             MenuCommand::OpenUrl(which) => {
                 if let Some(url) = URLS.get(usize::from(which)) {
                     open_url(url);
@@ -3388,7 +3429,7 @@ impl MenuState {
                 MenuAction::None
             }
             MenuCommand::SettingsTab(tab) => {
-                self.settings_tab = tab.min(2);
+                self.settings_tab = tab.min(3);
                 self.scrolls[scroll_index(MenuView::Settings)] = 0.0;
                 MenuAction::None
             }

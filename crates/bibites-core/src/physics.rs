@@ -829,6 +829,37 @@ impl PhysicsBody {
         if colliders.is_empty() {
             return None;
         }
+        // A pellet or an egg: one circle on the body's origin. Its box does not depend on the rotation, so the `sin/cos` pair is not
+        // worked out (it is most of what a box of this kind costs, and the resting-pellet layer and the step ask for the boxes of
+        // tens of thousands of them). What the general path below gives for this body is `pos + (cos * 0 - sin * 0)`, which is
+        // the position again (the zero it adds only changes the sign of a zero position, and the radius that is taken off or
+        // added next, a positive one, leaves nothing of that), so the two boxes are the same bits. The conditions keep the cases
+        // where they would not be (a position or rotation that is not a number, a radius that is not a positive number) on the
+        // general path.
+        if let [only] = colliders
+            && let Shape::Circle { radius } = only.shape
+            && only.offset.x == 0.0
+            && only.offset.y == 0.0
+            && radius > 0.0
+            && radius.is_finite()
+            && self.pos.x.is_finite()
+            && self.pos.y.is_finite()
+            && self.rot.is_finite()
+        {
+            let extent = Vec2::splat(radius);
+            let min = (self.pos - extent) - Vec2::splat(AABB_MARGIN);
+            let max = (self.pos + extent) + Vec2::splat(AABB_MARGIN);
+            return Some(self.swept_by_speed(min, max));
+        }
+        self.aabb_general()
+    }
+
+    /// [`Self::aabb`] for any body, with no shortcut (the reference the shortcut is compared with).
+    fn aabb_general(&self) -> Option<Aabb> {
+        let colliders = self.colliders();
+        if colliders.is_empty() {
+            return None;
+        }
         let (sin, cos) = self.rot.sin_cos();
         let mut min = Vec2::splat(f32::INFINITY);
         let mut max = Vec2::splat(f32::NEG_INFINITY);
@@ -863,14 +894,19 @@ impl PhysicsBody {
             min = min.min(offset - extent);
             max = max.max(offset + extent);
         }
-        let (mut min, mut max) = (min - Vec2::splat(AABB_MARGIN), max + Vec2::splat(AABB_MARGIN));
+        Some(self.swept_by_speed(min - Vec2::splat(AABB_MARGIN), max + Vec2::splat(AABB_MARGIN)))
+    }
+
+    /// The box `min`..`max` (the colliders' box with its margin), grown to cover where the step takes a fast body.
+    #[inline]
+    fn swept_by_speed(&self, mut min: Vec2, mut max: Vec2) -> Aabb {
         // A fast body also covers where the step takes it: the contact it is about to make is found before the shapes touch.
         if self.vel.length_sq() > FAST_SPEED * FAST_SPEED {
             let sweep = self.vel * SWEEP_TIME;
             min = min.min(min + sweep);
             max = max.max(max + sweep);
         }
-        Some(Aabb { min, max })
+        Aabb { min, max }
     }
 }
 
@@ -1812,6 +1848,11 @@ pub struct PhysicsScratch {
     pair_keys: Vec<u64>,
     /// Every body's box, tag and layer, by body index.
     body_boxes: Vec<BodyBox>,
+    /// The grid broadphase's lists of bodies by chunk of bodies and stripe of the world, and its stripes (see [`grid_broadphase`]).
+    grid_lists: Vec<Vec<u32>>,
+    grid_stripes: Vec<GridStripe>,
+    /// Never ask the grid for the candidate pairs: the sweep (and its x order) does it, whatever the size of the world.
+    pub sweep_only: bool,
     collider_aabbs: Vec<Aabb>,
     collider_poses: Vec<Pose>,
     /// Which bodies a candidate pair names (only theirs need collider poses).
@@ -1848,6 +1889,9 @@ pub struct PhysicsScratch {
     pub min_bodies: usize,
     /// Bodies in the broadphase from which its sweep uses the pool.
     pub min_broadphase: usize,
+    /// Bodies from which the candidate pairs are found by the grid (on a pool of enough workers) instead of the sweep; 0: never (see
+    /// [`grid_broadphase_from`]).
+    pub min_grid: usize,
     /// Candidate pairs from which the narrowphase uses the pool.
     pub min_narrow_pairs: usize,
     /// Bodies and boxes (candidate pairs: twice as many) from which the sorts and the column copies use the pool.
@@ -1886,6 +1930,9 @@ impl PhysicsScratch {
             dense_cap_hit: false,
             pair_keys: Vec::new(),
             body_boxes: Vec::new(),
+            grid_lists: Vec::new(),
+            grid_stripes: Vec::new(),
+            sweep_only: false,
             collider_aabbs: Vec::new(),
             collider_poses: Vec::new(),
             pair_bodies: Vec::new(),
@@ -1904,6 +1951,7 @@ impl PhysicsScratch {
             threads: 0,
             min_bodies: 0,
             min_broadphase: 0,
+            min_grid: 0,
             min_narrow_pairs: 0,
             min_sort: 0,
             min_island_bodies: 0,
@@ -2103,6 +2151,488 @@ const DENSE_PAIR_CAP_MIN_ENTRIES: usize = 512;
 
 /// Max candidate bodies supplemented per sensor collider in a dense world.
 const SENSOR_CANDIDATE_CAP: usize = 0;
+
+/// The x order and the sweep: the candidate pairs of the step, found the way the game's physics world is checked since the first version
+/// (the bodies sorted by where their boxes start, each body paired with the ones whose boxes start before its own ends, and a dense
+/// world handed to the capped grid). The stages are timed into `lap`.
+fn sweep_broadphase(scratch: &mut PhysicsScratch, pool: usize, min_sort: usize, lap: &mut Instant) {
+    let sort_workers = |items: usize, from: usize| crate::sim::ParallelGates::workers_for(items, from, pool);
+    let boxes = &scratch.body_boxes;
+    // The x order: the bodies sorted by where their boxes start, bodies whose boxes start at exactly the same x by body index.
+    // That is a total order, so the result is the same whichever way it is reached - sorted from scratch (on the pool or
+    // not) or carried from the last tick and repaired - and nothing depends on the history of the order.
+    scratch.entries.clear();
+    let order_workers = sort_workers(boxes.len(), min_sort);
+    if order_workers > 1 {
+        // On the pool the order is sorted from scratch as plain integers: the box's start in total order over the body index
+        // (equal starts then go by body index, as the order wants), so a comparison looks nothing up. The carried order (the
+        // serial repair below) is not kept; with the resting-pellet layer on, the number of bodies changes every tick and
+        // the repair gave up and sorted from scratch anyway.
+        let min_len = crate::sim::ParallelGates::chunk_len(boxes.len(), min_sort, order_workers, 4);
+        let mut keys = std::mem::take(&mut scratch.sort_keys);
+        keys.clear();
+        keys.par_extend(
+            boxes
+                .par_iter()
+                .enumerate()
+                .with_min_len(min_len)
+                .filter_map(|(index, entry)| {
+                    entry
+                        .valid
+                        .then(|| total_order_key(entry.aabb.min.x, index as u32))
+                }),
+        );
+        if sort_workers(keys.len(), min_sort) > 1 {
+            keys.par_sort_unstable();
+        } else {
+            keys.sort_unstable();
+        }
+        // The entries come from the boxes (one record per body: its tag and layer are in it), in the order of the keys.
+        scratch
+            .entries
+            .par_extend(keys.par_iter().with_min_len(min_len).map(|key| {
+                let index = (*key & 0xFFFF_FFFF) as usize;
+                let entry = &boxes[index];
+                BodyEntry {
+                    body: index as u32,
+                    tag: entry.tag,
+                    layer: entry.layer,
+                    aabb: entry.aabb,
+                }
+            }));
+        scratch.sort_keys = keys;
+        scratch.body_order.clear();
+    } else {
+        scratch.order_keys.clear();
+        scratch
+            .order_keys
+            .extend(boxes.iter().map(|entry| entry.aabb.min.x));
+        let keys = &scratch.order_keys;
+        let by_x = |a: &u32, b: &u32| {
+            keys[*a as usize]
+                .total_cmp(&keys[*b as usize])
+                .then(a.cmp(b))
+        };
+        let order = &mut scratch.body_order;
+        let mut sort_from_scratch = order.len() != boxes.len();
+        if !sort_from_scratch {
+            // Insertion sort: positions move a little per tick, so this is ~O(n). If the carried order turns out to be far
+            // from sorted (the bodies behind the indices changed) it gives up and sorts from scratch instead of going
+            // quadratic.
+            let mut budget = order.len().saturating_mul(8).saturating_add(1024);
+            'repair: for i in 1..order.len() {
+                let mut j = i;
+                while j > 0 {
+                    if by_x(&order[j - 1], &order[j]) != std::cmp::Ordering::Greater {
+                        break;
+                    }
+                    if budget == 0 {
+                        sort_from_scratch = true;
+                        break 'repair;
+                    }
+                    budget -= 1;
+                    order.swap(j - 1, j);
+                    j -= 1;
+                }
+            }
+        }
+        if sort_from_scratch {
+            order.clear();
+            order.extend((0..boxes.len() as u32).filter(|index| boxes[*index as usize].valid));
+            order.sort_unstable_by(by_x);
+        }
+        for index in order.iter() {
+            let body_index = *index as usize;
+            let entry = &boxes[body_index];
+            if !entry.valid {
+                continue;
+            }
+            scratch.entries.push(BodyEntry {
+                body: body_index as u32,
+                tag: entry.tag,
+                layer: entry.layer,
+                aabb: entry.aabb,
+            });
+        }
+    }
+    scratch.clock.lap(Stage::PhysOrder, lap);
+    build_broadphase(scratch);
+    scratch.clock.lap(Stage::PhysBroadphase, lap);
+}
+
+/// The grid broadphase and the sweep give the same candidate pairs; this says from how many bodies the step asks the grid first.
+/// `RUSTIBITES_BROADPHASE=sweep` never uses it, `=grid` uses it from [`GRID_MIN_BODIES`] bodies, and anything else (or nothing) from the
+/// scratch's `min_grid` ([`crate::sim::ParallelGates::grid_bodies`]: about where it pays), and only for a tick on a pool of
+/// [`GRID_MIN_THREADS`] workers or more: the pairs do not depend on it, only the time.
+fn grid_broadphase_from(min_grid: usize, threads: usize) -> usize {
+    static MODE: std::sync::OnceLock<u8> = std::sync::OnceLock::new();
+    match *MODE.get_or_init(|| match std::env::var("RUSTIBITES_BROADPHASE").ok().as_deref() {
+        Some("sweep") => 1,
+        Some("grid") => 2,
+        _ => 0,
+    }) {
+        1 => usize::MAX,
+        2 => GRID_MIN_BODIES,
+        // (A serial tick carries its x order from one step to the next, and has no pool to spread the grid over; a `min_grid` of 0 is a
+        // scratch the caller did not set.)
+        _ if min_grid == 0 || threads < GRID_MIN_THREADS => usize::MAX,
+        _ => min_grid.max(GRID_MIN_BODIES),
+    }
+}
+
+/// The fewest bodies the grid is tried for.
+const GRID_MIN_BODIES: usize = 8;
+/// In the default mode the grid is only for a tick on a pool of at least this many workers (below it the stripes have too few to run on).
+const GRID_MIN_THREADS: usize = 4;
+/// A cell is this many times the mean size of a box.
+const GRID_CELL_FACTOR: f32 = 3.0;
+/// A box that spans more cells than this is not put in the grid: it is looked at against every body instead.
+const GRID_LARGE_SPAN: i64 = 36;
+/// The grid gives way to the sweep when the large boxes times the bodies (the tests they cost) are more than this.
+const GRID_LARGE_BUDGET: usize = 1_000_000;
+
+/// One body's place in a cell of the grid: the cell, the body and a copy of its box, so that the tests of what shares a cell read
+/// neighbours in memory instead of asking the boxes of scattered bodies.
+#[derive(Clone, Copy, Debug, Default)]
+struct GridMember {
+    cell_x: i32,
+    cell_y: i32,
+    body: u32,
+    min_x: f32,
+    min_y: f32,
+    max_x: f32,
+    max_y: f32,
+}
+
+/// The cell of the coordinate `value` on a grid whose first cell starts at `origin` (it never decreases as `value` grows).
+#[inline]
+fn grid_cell(value: f32, origin: f32, inverse: f32) -> i32 {
+    ((value - origin) * inverse).floor() as i32
+}
+
+/// The bucket of a cell in a table of `mask + 1` buckets (a different cell may share it: the members carry their cell).
+#[inline]
+fn grid_bucket(cell_x: i32, cell_y: i32, mask: u32) -> usize {
+    let hash = (cell_x as u32).wrapping_mul(0x9E37_79B1) ^ (cell_y as u32).wrapping_mul(0x85EB_CA77);
+    ((hash ^ (hash >> 15)) & mask) as usize
+}
+
+/// One stripe of the grid broadphase's world: the places of the bodies in its cells by bucket, where each bucket starts, and the pairs it found.
+#[derive(Clone, Debug, Default)]
+struct GridStripe {
+    members: Vec<GridMember>,
+    buckets: Vec<u32>,
+    pairs: Vec<BodyPair>,
+}
+
+/// What one stretch of boxes says to the grid broadphase: how many take part, where they lie, how big they are, and whether every one is a
+/// finite box.
+#[derive(Clone, Copy)]
+struct GridLook {
+    valid: usize,
+    low: Vec2,
+    high: Vec2,
+    extent_sum: f64,
+    area_sum: f64,
+    finite: bool,
+}
+
+/// The candidate pairs of a big, spread-out world by a hashed uniform grid, with no x order: **the pairs the sweep finds, the first of
+/// a pair being the body whose box starts first in the sweep's order** (the start in the order of [`f32::total_cmp`], then the body
+/// index), so that once the step puts them in order by tag they are the same list. Returns whether it did: `false` leaves the
+/// pairs alone and the sweep does the work. It declines a world with fewer than `from` bodies, a box that is not a finite box, a
+/// world dense enough for the sweep to hand it to the capped grid (or one with more candidates than that), and one with too many large
+/// boxes.
+///
+/// Every box is put in each cell it overlaps (a box that spans more than [`GRID_LARGE_SPAN`] cells is kept aside and looked at against
+/// every body); a pair of overlapping boxes is reported once, in the cell that holds the corner of the boxes' common part, which both
+/// boxes are in. The world is cut into stripes of columns of cells, and every phase runs on the pool: the look at the boxes, the
+/// sorting of the bodies into the stripes they reach, and then each stripe on its own, with a small hashed grid (a counting sort of its
+/// members by bucket) that stays in a core's cache. A pair is found by the stripe that holds its corner cell and by no other, so no
+/// stripe waits for another, and nothing depends on how many there are or in what order they finished.
+fn grid_broadphase(scratch: &mut PhysicsScratch, from: usize) -> bool {
+    let count = scratch.body_boxes.len();
+    if count < from {
+        return false;
+    }
+    let workers = crate::sim::ParallelGates::workers_for(count, scratch.min_broadphase, scratch.threads);
+    let chunk_len = if workers > 1 {
+        crate::sim::ParallelGates::chunk_len(count, scratch.min_broadphase, workers, 2)
+    } else {
+        count.max(1)
+    };
+    let boxes = &scratch.body_boxes;
+    // 1. One look at every box: they must be finite boxes, and the world must be one the sweep would not call dense (by a margin that
+    // makes the order the areas are added in, which differs here, irrelevant).
+    let look = |chunk: &[BodyBox]| {
+        let mut seen = GridLook {
+            valid: 0,
+            low: Vec2::splat(f32::INFINITY),
+            high: Vec2::splat(f32::NEG_INFINITY),
+            extent_sum: 0.0,
+            area_sum: 0.0,
+            finite: true,
+        };
+        for entry in chunk {
+            if !entry.valid {
+                continue;
+            }
+            let aabb = entry.aabb;
+            if !(aabb.min.x.is_finite() && aabb.min.y.is_finite() && aabb.max.x.is_finite() && aabb.max.y.is_finite())
+                || aabb.max.x < aabb.min.x
+                || aabb.max.y < aabb.min.y
+            {
+                seen.finite = false;
+                return seen;
+            }
+            seen.valid += 1;
+            seen.low = seen.low.min(aabb.min);
+            seen.high = seen.high.max(aabb.max);
+            let extent = aabb.max - aabb.min;
+            seen.extent_sum += f64::from(extent.x.max(extent.y));
+            seen.area_sum += f64::from(extent.x) * f64::from(extent.y);
+        }
+        seen
+    };
+    let looks: Vec<GridLook> = if workers > 1 {
+        boxes.par_chunks(chunk_len).map(look).collect()
+    } else {
+        vec![look(boxes)]
+    };
+    let mut valid = 0usize;
+    let mut low = Vec2::splat(f32::INFINITY);
+    let mut high = Vec2::splat(f32::NEG_INFINITY);
+    let (mut extent_sum, mut area_sum) = (0.0f64, 0.0f64);
+    for seen in &looks {
+        if !seen.finite {
+            return false;
+        }
+        valid += seen.valid;
+        low = low.min(seen.low);
+        high = high.max(seen.high);
+        extent_sum += seen.extent_sum;
+        area_sum += seen.area_sum;
+    }
+    if valid < 2 || !extent_sum.is_finite() || !area_sum.is_finite() {
+        return false;
+    }
+    let union = high - low;
+    let union_area = f64::from(union.x) * f64::from(union.y);
+    if !union_area.is_finite() || (union_area > 0.0 && area_sum * 2.0 > union_area * 8.0) {
+        return false;
+    }
+    let cell = ((extent_sum / valid as f64) as f32 * GRID_CELL_FACTOR).max(2.0);
+    if !cell.is_finite() {
+        return false;
+    }
+    let inverse = 1.0 / cell;
+    let cells_of = |aabb: &Aabb| {
+        (
+            grid_cell(aabb.min.x, low.x, inverse),
+            grid_cell(aabb.max.x, low.x, inverse),
+            grid_cell(aabb.min.y, low.y, inverse),
+            grid_cell(aabb.max.y, low.y, inverse),
+        )
+    };
+    let spans_of = |(x0, x1, y0, y1): (i32, i32, i32, i32)| (i64::from(x1) - i64::from(x0) + 1) * (i64::from(y1) - i64::from(y0) + 1);
+    // 2. The stripes: columns of cells, as many as will keep the workers busy (a few each), and the lists of the bodies each reaches, by
+    // chunk of bodies (a chunk fills its own lists), with the bodies too big for the grid kept aside.
+    let columns = i64::from(grid_cell(high.x, low.x, inverse)) + 1;
+    let wanted = if workers > 1 { (workers * 4) as i64 } else { 1 };
+    let stripe_columns = ((columns + wanted - 1) / wanted).max(1);
+    let stripes = ((columns + stripe_columns - 1) / stripe_columns).max(1) as usize;
+    let chunks = count.div_ceil(chunk_len);
+    let lists = &mut scratch.grid_lists;
+    lists.truncate(chunks * stripes);
+    lists.resize_with(chunks * stripes, Vec::new);
+    let classify = |chunk: &[BodyBox], lists: &mut [Vec<u32>], base: usize| {
+        let mut large: Vec<u32> = Vec::new();
+        for list in lists.iter_mut() {
+            list.clear();
+        }
+        for (offset, entry) in chunk.iter().enumerate() {
+            if !entry.valid {
+                continue;
+            }
+            let cells = cells_of(&entry.aabb);
+            let body = (base + offset) as u32;
+            if spans_of(cells) > GRID_LARGE_SPAN {
+                large.push(body);
+                continue;
+            }
+            let (x0, x1, ..) = cells;
+            for stripe in (i64::from(x0) / stripe_columns)..=(i64::from(x1) / stripe_columns) {
+                lists[stripe as usize].push(body);
+            }
+        }
+        large
+    };
+    let larges: Vec<Vec<u32>> = if workers > 1 {
+        boxes
+            .par_chunks(chunk_len)
+            .zip(lists.par_chunks_mut(stripes))
+            .enumerate()
+            .map(|(index, (chunk, lists))| classify(chunk, lists, index * chunk_len))
+            .collect()
+    } else {
+        boxes
+            .chunks(chunk_len)
+            .zip(lists.chunks_mut(stripes))
+            .enumerate()
+            .map(|(index, (chunk, lists))| classify(chunk, lists, index * chunk_len))
+            .collect()
+    };
+    let large: Vec<u32> = larges.into_iter().flatten().collect();
+    if large.len().saturating_mul(valid) > GRID_LARGE_BUDGET {
+        return false;
+    }
+    // A pair of overlapping boxes: first the one the sweep's order puts first, and only if their tags differ and their layers collide.
+    let push = |pairs: &mut Vec<BodyPair>, a: u32, b: u32| {
+        let key = |body: u32| total_order_key(boxes[body as usize].aabb.min.x, body);
+        let (first, second) = if key(a) < key(b) { (a, b) } else { (b, a) };
+        let (first_entry, second_entry) = (&boxes[first as usize], &boxes[second as usize]);
+        if first_entry.tag == second_entry.tag || !collision_allowed(first_entry.layer, second_entry.layer) {
+            return;
+        }
+        pairs.push(BodyPair {
+            body_a: first,
+            body_b: second,
+            tag_a: first_entry.tag,
+            tag_b: second_entry.tag,
+        });
+    };
+    // 3. Each stripe on its own: its members by bucket (count, then place from the back so that each bucket's start is left in
+    // `buckets`), and the pairs of what shares a cell.
+    let grid = &mut scratch.grid_stripes;
+    grid.truncate(stripes);
+    grid.resize_with(stripes, GridStripe::default);
+    let lists: &[Vec<u32>] = &scratch.grid_lists;
+    let run_stripe = |index: usize, stripe: &mut GridStripe| {
+        let first_column = index as i64 * stripe_columns;
+        let last_column = first_column + stripe_columns - 1;
+        let in_stripe = |body: u32| {
+            let (x0, x1, y0, y1) = cells_of(&boxes[body as usize].aabb);
+            (
+                (i64::from(x0).max(first_column)) as i32,
+                (i64::from(x1).min(last_column)) as i32,
+                y0,
+                y1,
+            )
+        };
+        let mut places = 0usize;
+        for chunk in 0..chunks {
+            for &body in &lists[chunk * stripes + index] {
+                places += spans_of(in_stripe(body)) as usize;
+            }
+        }
+        let bucket_count = (places.max(8) * 2).next_power_of_two();
+        let mask = (bucket_count - 1) as u32;
+        stripe.pairs.clear();
+        stripe.buckets.clear();
+        stripe.buckets.resize(bucket_count + 1, 0);
+        for chunk in 0..chunks {
+            for &body in &lists[chunk * stripes + index] {
+                let (x0, x1, y0, y1) = in_stripe(body);
+                for cell_y in y0..=y1 {
+                    for cell_x in x0..=x1 {
+                        stripe.buckets[grid_bucket(cell_x, cell_y, mask)] += 1;
+                    }
+                }
+            }
+        }
+        for at in 1..bucket_count {
+            stripe.buckets[at] += stripe.buckets[at - 1];
+        }
+        stripe.buckets[bucket_count] = places as u32;
+        stripe.members.clear();
+        stripe.members.resize(places, GridMember::default());
+        for chunk in 0..chunks {
+            for &body in &lists[chunk * stripes + index] {
+                let aabb = boxes[body as usize].aabb;
+                let (x0, x1, y0, y1) = in_stripe(body);
+                for cell_y in y0..=y1 {
+                    for cell_x in x0..=x1 {
+                        let bucket = grid_bucket(cell_x, cell_y, mask);
+                        stripe.buckets[bucket] -= 1;
+                        stripe.members[stripe.buckets[bucket] as usize] = GridMember {
+                            cell_x,
+                            cell_y,
+                            body,
+                            min_x: aabb.min.x,
+                            min_y: aabb.min.y,
+                            max_x: aabb.max.x,
+                            max_y: aabb.max.y,
+                        };
+                    }
+                }
+            }
+        }
+        let GridStripe { members, buckets, pairs } = stripe;
+        for bucket in 0..bucket_count {
+            let (start, end) = (buckets[bucket] as usize, buckets[bucket + 1] as usize);
+            for first in start..end {
+                let a = &members[first];
+                for b in &members[first + 1..end] {
+                    if a.cell_x != b.cell_x
+                        || a.cell_y != b.cell_y
+                        || !(b.max_x >= a.min_x && a.max_x >= b.min_x && b.max_y >= a.min_y && a.max_y >= b.min_y)
+                    {
+                        continue;
+                    }
+                    // Found in the cell that holds the corner of the common part of the two boxes, and nowhere else.
+                    if grid_cell(a.min_x.max(b.min_x), low.x, inverse) != a.cell_x
+                        || grid_cell(a.min_y.max(b.min_y), low.y, inverse) != a.cell_y
+                    {
+                        continue;
+                    }
+                    push(pairs, a.body, b.body);
+                }
+            }
+        }
+    };
+    if workers > 1 {
+        grid.par_iter_mut().enumerate().for_each(|(index, stripe)| run_stripe(index, stripe));
+    } else {
+        for (index, stripe) in grid.iter_mut().enumerate() {
+            run_stripe(index, stripe);
+        }
+    }
+    let mut found: Vec<BodyPair> = Vec::with_capacity(grid.iter().map(|stripe| stripe.pairs.len()).sum());
+    for stripe in grid.iter() {
+        found.extend_from_slice(&stripe.pairs);
+    }
+    // 4. The large boxes against every body (a pair of two of them from the one that comes first in `large`).
+    for &big in &large {
+        let big_box = boxes[big as usize].aabb;
+        for (other, entry) in boxes.iter().enumerate() {
+            if !entry.valid || other == big as usize {
+                continue;
+            }
+            let aabb = entry.aabb;
+            if !(aabb.max.x >= big_box.min.x
+                && big_box.max.x >= aabb.min.x
+                && aabb.max.y >= big_box.min.y
+                && big_box.max.y >= aabb.min.y)
+            {
+                continue;
+            }
+            if (other as u32) < big && large.binary_search(&(other as u32)).is_ok() {
+                continue;
+            }
+            push(&mut found, big, other as u32);
+        }
+    }
+    // More candidates than the sweep keeps is a dense world: the sweep (and then the capped grid) answers for it.
+    if found.len() > SWEEP_ABORT_PAIRS {
+        return false;
+    }
+    scratch.pairs.clear();
+    scratch.pairs = found;
+    scratch.pair_keys.clear();
+    scratch.body_order.clear();
+    scratch.dense_cap_hit = false;
+    true
+}
 
 /// Builds the broadphase candidate list.
 ///
@@ -2918,6 +3448,11 @@ pub fn step(
     let threads = scratch.effective_threads(bodies.len());
     let pool = scratch.threads;
     let min_sort = scratch.min_sort.max(1);
+    let grid_from = if scratch.sweep_only {
+        usize::MAX
+    } else {
+        grid_broadphase_from(scratch.min_grid, scratch.threads)
+    };
     let sort_workers =
         |items: usize, from: usize| crate::sim::ParallelGates::workers_for(items, from, pool);
     let max_angular = config.max_rotation_speed.to_radians();
@@ -3013,107 +3548,13 @@ pub fn step(
         scratch.body_boxes.extend(bodies.iter().map(BodyBox::of));
     }
     scratch.clock.lap(Stage::PhysAabb, &mut lap);
-    let boxes = &scratch.body_boxes;
-    // The x order: the bodies sorted by where their boxes start, bodies whose boxes start at exactly the same x by body index.
-    // That is a total order, so the result is the same whichever way it is reached - sorted from scratch (on the pool or
-    // not) or carried from the last tick and repaired - and nothing depends on the history of the order.
-    scratch.entries.clear();
-    let order_workers = sort_workers(boxes.len(), min_sort);
-    if order_workers > 1 {
-        // On the pool the order is sorted from scratch as plain integers: the box's start in total order over the body index
-        // (equal starts then go by body index, as the order wants), so a comparison looks nothing up. The carried order (the
-        // serial repair below) is not kept; with the resting-pellet layer on, the number of bodies changes every tick and
-        // the repair gave up and sorted from scratch anyway.
-        let min_len = crate::sim::ParallelGates::chunk_len(boxes.len(), min_sort, order_workers, 4);
-        let mut keys = std::mem::take(&mut scratch.sort_keys);
-        keys.clear();
-        keys.par_extend(
-            boxes
-                .par_iter()
-                .enumerate()
-                .with_min_len(min_len)
-                .filter_map(|(index, entry)| {
-                    entry
-                        .valid
-                        .then(|| total_order_key(entry.aabb.min.x, index as u32))
-                }),
-        );
-        if sort_workers(keys.len(), min_sort) > 1 {
-            keys.par_sort_unstable();
-        } else {
-            keys.sort_unstable();
-        }
-        // The entries come from the boxes (one record per body: its tag and layer are in it), in the order of the keys.
-        scratch
-            .entries
-            .par_extend(keys.par_iter().with_min_len(min_len).map(|key| {
-                let index = (*key & 0xFFFF_FFFF) as usize;
-                let entry = &boxes[index];
-                BodyEntry {
-                    body: index as u32,
-                    tag: entry.tag,
-                    layer: entry.layer,
-                    aabb: entry.aabb,
-                }
-            }));
-        scratch.sort_keys = keys;
-        scratch.body_order.clear();
+    // The grid finds the pairs of a big, spread-out world without the x order; anything else (and any world it will not answer for) takes the sweep.
+    if grid_broadphase(scratch, grid_from) {
+        scratch.clock.lap(Stage::PhysOrder, &mut lap);
+        scratch.clock.lap(Stage::PhysBroadphase, &mut lap);
     } else {
-        scratch.order_keys.clear();
-        scratch
-            .order_keys
-            .extend(boxes.iter().map(|entry| entry.aabb.min.x));
-        let keys = &scratch.order_keys;
-        let by_x = |a: &u32, b: &u32| {
-            keys[*a as usize]
-                .total_cmp(&keys[*b as usize])
-                .then(a.cmp(b))
-        };
-        let order = &mut scratch.body_order;
-        let mut sort_from_scratch = order.len() != boxes.len();
-        if !sort_from_scratch {
-            // Insertion sort: positions move a little per tick, so this is ~O(n). If the carried order turns out to be far
-            // from sorted (the bodies behind the indices changed) it gives up and sorts from scratch instead of going
-            // quadratic.
-            let mut budget = order.len().saturating_mul(8).saturating_add(1024);
-            'repair: for i in 1..order.len() {
-                let mut j = i;
-                while j > 0 {
-                    if by_x(&order[j - 1], &order[j]) != std::cmp::Ordering::Greater {
-                        break;
-                    }
-                    if budget == 0 {
-                        sort_from_scratch = true;
-                        break 'repair;
-                    }
-                    budget -= 1;
-                    order.swap(j - 1, j);
-                    j -= 1;
-                }
-            }
-        }
-        if sort_from_scratch {
-            order.clear();
-            order.extend((0..boxes.len() as u32).filter(|index| boxes[*index as usize].valid));
-            order.sort_unstable_by(by_x);
-        }
-        for index in order.iter() {
-            let body_index = *index as usize;
-            let entry = &boxes[body_index];
-            if !entry.valid {
-                continue;
-            }
-            scratch.entries.push(BodyEntry {
-                body: body_index as u32,
-                tag: entry.tag,
-                layer: entry.layer,
-                aabb: entry.aabb,
-            });
-        }
+        sweep_broadphase(scratch, pool, min_sort, &mut lap);
     }
-    scratch.clock.lap(Stage::PhysOrder, &mut lap);
-    build_broadphase(scratch);
-    scratch.clock.lap(Stage::PhysBroadphase, &mut lap);
     let trace = physics_trace_enabled();
     if trace {
         trace_scratch("broadphase", scratch);
@@ -3870,10 +4311,17 @@ fn run_island(
         narrow_phase_into(pairs, bodies, solver, aabbs, poses, config, params.h, true, narrow);
         let NarrowOutput { contacts: events, constraints, .. } = narrow;
         if !welds.is_empty() {
-            // The bodies one holder holds (and the holder) are tied to each other: none of their contacts pushes.
-            let group_of = |body: u32| welds.iter().find(|weld| weld.held == body).map(|weld| weld.holder).or_else(|| welds.iter().any(|weld| weld.holder == body).then_some(body));
+            // Two bodies are tied to each other when a weld joins them (the holder and what it holds: `collideConnected` is off for the game's joints) or when one holder
+            // holds both (what a holder holds overlaps by construction and moves as one with it): none of their contacts pushes. The test is for each pair of bodies, not
+            // for a body's first holder: a bibite that holds something and is itself held (a bibite holding a bibite that holds a pellet), or a body in two mouths, belongs
+            // to more than one such set, and the contacts between its welded neighbours were left in the velocity solve; their carried impulses wound up by tens a tick
+            // (819 to 1,108 in five ticks on the island of the "deadly pile" save of 2026-11-22) and the group threw what it touched.
+            let tied = |a: u32, b: u32| {
+                welds.iter().any(|weld| (weld.holder == a && weld.held == b) || (weld.holder == b && weld.held == a))
+                    || welds.iter().any(|first| first.held == a && welds.iter().any(|second| second.held == b && second.holder == first.holder))
+            };
             for constraint in constraints.iter_mut() {
-                constraint.welded = matches!((group_of(constraint.body_a), group_of(constraint.body_b)), (Some(a), Some(b)) if a == b);
+                constraint.welded = tied(constraint.body_a, constraint.body_b);
             }
         }
         solve_island(solver, constraints, if step == 0 { carried_global } else { carried }, &mut welds[..], params);
@@ -4223,6 +4671,18 @@ fn solve_island(solver: &mut [SolverBody], constraints: &mut [ContactConstraint]
         }
     }
     if let Some(rigid) = rigid {
+        // The bodies one holder holds (and the holder) are tied to each other by welds, and none of their contacts pushes (`constraint.welded`: the soft step leaves out their
+        // push-out bias and the position solve below skips them). A weld anchors what is held at the holder's origin, so the pair overlaps by construction, and the weld is
+        // rigid: their contacts have nothing to push apart. Left in the velocity solve they fought the weld, and the impulses they carried from tick to tick wound up by a
+        // hundred or more a tick: a holder that turned (its spin on the clamp) in a pile of bodies threw the light ones near it at the speed limit, and what they hit died (the
+        // glitch save of 2026-11-20; a reload cleared it, as the carried impulses are not saved). They are out of the solve altogether, with the impulses they carried. Which
+        // pairs are tied is decided where the contacts are made (a weld joins them, or one holder holds both): the first version looked only at a body's first holder, and a
+        // bibite that held a bibite while another held it, or a body in two mouths, kept its contacts (the glitch save of 2026-11-22).
+        for constraint in constraints.iter_mut().filter(|constraint| constraint.welded) {
+            constraint.normal_mass = 0.0;
+            constraint.normal_impulse = 0.0;
+            constraint.tangent_impulse = 0.0;
+        }
         // Box2D 2.4's step: integrate the velocities, warm start, the velocity iterations, integrate the positions with the solved velocities, the position iterations.
         for body in solver.iter_mut() {
             if body.is_static || body.inv_mass == 0.0 {
@@ -4241,10 +4701,14 @@ fn solve_island(solver: &mut [SolverBody], constraints: &mut [ContactConstraint]
             apply_pair_impulse(body_a, body_b, constraint.anchor_a, constraint.anchor_b, constraint.normal, constraint.normal_impulse);
             apply_pair_impulse(body_a, body_b, constraint.anchor_a, constraint.anchor_b, constraint.tangent, constraint.tangent_impulse);
         }
-        for weld in welds.iter_mut().filter(|weld| !weld.broken) {
-            solve_weld(solver, weld, joint_soft, true);
-        }
+        // `b2Island::Solve`: every velocity iteration solves the joints and then the contacts. The welds used to be solved once, before the iterations (the soft step's order),
+        // and a group of welds that is not a tree (a body held by two mouths ties two holders together, a bibite holds a bibite that holds a pellet, ...) does not come out of
+        // one pass with its bodies moving together: the pass left the welded bodies' velocities up to hundreds of units a second apart at the end of every tick (the "deadly
+        // pile" save of 2026-11-22: a pile of bibites and pellets that threw what touched it, quiet again after a reload).
         for _ in 0..rigid.velocity_iterations {
+            for weld in welds.iter_mut().filter(|weld| !weld.broken) {
+                solve_weld(solver, weld, joint_soft, true);
+            }
             solve_contacts(solver, constraints, soft, soft_static, inv_h, push_speed, false);
         }
         // (The iterations added the accumulated impulse each time: the step's impulse is the accumulated one.)
@@ -4894,6 +5358,161 @@ mod tests {
         body.pos = pos;
         let _ = body.add_collider(Collider::solid(Shape::circle(radius)));
         body
+    }
+
+    /// The grid broadphase finds the pairs of the sweep, bit for bit once both are in order by tag: the same pairs, the first of each the body whose
+    /// box starts first in the sweep's order. Worlds of every size and spread, boxes on whole numbers (so that they touch exactly and start at the
+    /// same x), boxes with no size, big boxes, repeated tags, layers that do not collide, bodies that take no part; serial and on the pool.
+    #[test]
+    fn the_grid_broadphase_finds_the_pairs_of_the_sweep() {
+        let mut rng = Rng::from_seed(2026);
+        let layers = [LAYER_BIBITE, LAYER_PELLETS, LAYER_SCENE_TRIGGERS, 0u8];
+        let key = |pair: &BodyPair| (pair.tag_a, pair.tag_b, pair.body_a, pair.body_b);
+        let (mut used, mut with_pairs, mut declined) = (0, 0, 0);
+        for case in 0..400usize {
+            let n = [12, 60, 300, 1_500, 4_000][case % 5] + (case / 5) % 7;
+            let world = [200.0f32, 1_000.0, 6_000.0, 40_000.0][(case / 5) % 4];
+            let whole_numbers = case % 3 == 0;
+            let mut boxes = Vec::with_capacity(n);
+            for index in 0..n {
+                let coordinate = |rng: &mut Rng| {
+                    let value = rng.f32_range(-world, world);
+                    if whole_numbers { value.round() } else { value }
+                };
+                let (x, y) = (coordinate(&mut rng), coordinate(&mut rng));
+                let half = match rng.f32() {
+                    r if r < 0.01 => rng.f32_range(80.0, 1_500.0),
+                    r if r < 0.05 => 0.0,
+                    r if r < 0.3 => rng.f32_range(8.0, 40.0),
+                    _ => rng.f32_range(1.0, 8.0),
+                };
+                let half = if whole_numbers { half.round() } else { half };
+                let tag = if rng.f32() < 0.05 { (index / 2) as u64 } else { index as u64 + 1 };
+                boxes.push(BodyBox {
+                    aabb: Aabb { min: Vec2::new(x - half, y - half), max: Vec2::new(x + half, y + half) },
+                    tag,
+                    layer: layers[(rng.f32() * 4.0) as usize % 4],
+                    valid: rng.f32() > 0.05,
+                });
+            }
+            for threads in [0usize, 4] {
+                let mut sweep = PhysicsScratch::default();
+                sweep.threads = threads;
+                sweep.min_broadphase = 1;
+                sweep.min_sort = 1;
+                sweep.body_boxes = boxes.clone();
+                let mut lap = Instant::now();
+                sweep_broadphase(&mut sweep, threads, 1, &mut lap);
+                let mut grid = PhysicsScratch::default();
+                grid.threads = threads;
+                grid.min_broadphase = 1;
+                grid.body_boxes = boxes.clone();
+                if !grid_broadphase(&mut grid, 1) {
+                    declined += 1;
+                    continue;
+                }
+                used += 1;
+                with_pairs += usize::from(!sweep.pairs.is_empty());
+                sweep.pairs.sort_unstable_by_key(key);
+                grid.pairs.sort_unstable_by_key(key);
+                assert_eq!(grid.pairs, sweep.pairs, "case {case}: {n} bodies in a world of {world}, {threads} threads");
+                assert!(!grid.dense_cap_hit);
+            }
+        }
+        assert!(used > 200 && with_pairs > 150, "the grid took {used} worlds (declined {declined}), {with_pairs} of them with pairs");
+    }
+
+    /// A box that is not a finite box, or a world the sweep would hand to the capped grid, is not the grid broadphase's to answer: it declines and
+    /// leaves the pairs as they were.
+    #[test]
+    fn the_grid_broadphase_declines_what_it_cannot_answer_for() {
+        let finite = |x: f32| BodyBox {
+            aabb: Aabb { min: Vec2::new(x, 0.0), max: Vec2::new(x + 3.0, 3.0) },
+            tag: x as u64 + 1,
+            layer: LAYER_BIBITE,
+            valid: true,
+        };
+        let spread: Vec<BodyBox> = (0..40).map(|i| finite(i as f32 * 20.0)).collect();
+        let mut scratch = PhysicsScratch::default();
+        scratch.body_boxes = spread.clone();
+        assert!(grid_broadphase(&mut scratch, 8), "a plain spread world is the grid's");
+        for broken in [f32::NAN, f32::INFINITY] {
+            let mut boxes = spread.clone();
+            boxes[7].aabb.max.x = broken;
+            let mut scratch = PhysicsScratch::default();
+            scratch.body_boxes = boxes;
+            assert!(!grid_broadphase(&mut scratch, 8), "a box with {broken} in it");
+        }
+        // Everything on top of everything: dense.
+        let pile: Vec<BodyBox> = (0..300)
+            .map(|i| BodyBox { aabb: Aabb { min: Vec2::ZERO, max: Vec2::splat(4.0) }, tag: i + 1, layer: LAYER_BIBITE, valid: true })
+            .collect();
+        let mut scratch = PhysicsScratch::default();
+        scratch.body_boxes = pile;
+        assert!(!grid_broadphase(&mut scratch, 8), "a pile of bodies");
+        // Too few bodies for the size asked.
+        let mut scratch = PhysicsScratch::default();
+        scratch.body_boxes = spread;
+        assert!(!grid_broadphase(&mut scratch, 100));
+    }
+
+    /// The box of a body that is one circle on its origin (a pellet, an egg) is worked out without the rotation: it must be the box the
+    /// general path gives, bit for bit, whatever the position (signed zeros and huge values), the rotation, the radius and the speed
+    /// are, and the bodies the shortcut does not take (a position that is not a number, an offset collider, two colliders) must come out
+    /// the same too.
+    #[test]
+    fn the_box_of_a_circle_on_the_origin_is_the_general_box() {
+        let mut rng = Rng::from_seed(77);
+        let specials = [0.0, -0.0, 1e-30, -1e-30, 1e7, -1e7, 0.06, -0.06];
+        let mut shortcut_cases = 0;
+        for case in 0..40_000 {
+            let pick = |rng: &mut Rng| {
+                if rng.f32() < 0.15 {
+                    specials[(rng.f32() * specials.len() as f32) as usize % specials.len()]
+                } else {
+                    rng.f32_range(-3000.0, 3000.0)
+                }
+            };
+            let pos = Vec2::new(pick(&mut rng), pick(&mut rng));
+            let radius = if rng.f32() < 0.05 {
+                [0.0, f32::INFINITY, f32::NAN, -1.0][case % 4]
+            } else {
+                rng.f32_range(0.001, 60.0)
+            };
+            let mut body = PhysicsBody::new_dynamic(case as u64 + 1, LAYER_PELLETS, 1.0, 1.0);
+            body.pos = pos;
+            body.rot = if rng.f32() < 0.1 {
+                [0.0, -0.0, 1e6, 1e-9, f32::NAN, f32::INFINITY][case % 6]
+            } else {
+                rng.f32_range(-60.0, 60.0)
+            };
+            body.vel = if rng.f32() < 0.3 {
+                Vec2::new(rng.f32_range(-200.0, 200.0), rng.f32_range(-200.0, 200.0))
+            } else {
+                Vec2::new(rng.f32_range(-5.0, 5.0), rng.f32_range(-5.0, 5.0))
+            };
+            if case % 10 == 0 {
+                body.pos = Vec2::new(f32::NAN, pos.y);
+            }
+            let collider = if case % 17 == 0 {
+                Collider::solid(Shape::circle(radius)).with_offset(Vec2::new(1.5, -0.5))
+            } else {
+                Collider::solid(Shape::circle(radius))
+            };
+            let _ = body.add_collider(collider);
+            if case % 23 == 0 {
+                let _ = body.add_collider(Collider::solid(Shape::circle(2.0)));
+            }
+            let (fast, general) = (body.aabb(), body.aabb_general());
+            let bits = |boxed: Option<Aabb>| {
+                boxed.map(|b| [b.min.x.to_bits(), b.min.y.to_bits(), b.max.x.to_bits(), b.max.y.to_bits()])
+            };
+            assert_eq!(bits(fast), bits(general), "case {case}: {body:?}");
+            if body.collider_count() == 1 && radius > 0.0 && radius.is_finite() && body.pos.x.is_finite() && body.rot.is_finite() && case % 17 != 0 {
+                shortcut_cases += 1;
+            }
+        }
+        assert!(shortcut_cases > 20_000, "only {shortcut_cases} cases took the shortcut");
     }
 
     #[test]
@@ -5559,16 +6178,19 @@ mod tests {
         };
         // From scratch, serial.
         let mut serial = PhysicsScratch::new();
+        serial.sweep_only = true;
         step(&mut bodies.clone(), &config, dt, &mut serial);
         assert_eq!(x_order_of(&serial), sorted_by_hand);
         // From scratch, on the pool.
         let mut pooled = PhysicsScratch::new();
+        pooled.sweep_only = true;
         pooled.threads = 4;
         pooled.min_bodies = 1;
         step(&mut bodies.clone(), &config, dt, &mut pooled);
         assert_eq!(x_order_of(&pooled), sorted_by_hand);
         // Carried: a step with a few bodies moved, then the real positions again (insertion repair).
         let mut carried = PhysicsScratch::new();
+        carried.sweep_only = true;
         let mut moved = bodies.clone();
         for index in (0..moved.len()).step_by(97) {
             moved[index].pos.x += 23.0;
@@ -5578,6 +6200,7 @@ mod tests {
         assert_eq!(x_order_of(&carried), sorted_by_hand);
         // Carried but far from sorted (every body somewhere else): the repair gives up and sorts from scratch.
         let mut scrambled = PhysicsScratch::new();
+        scrambled.sweep_only = true;
         let mut shuffled = bodies.clone();
         for index in 0..shuffled.len() {
             shuffled[index].pos.x = ((index * 7919) % shuffled.len()) as f32;
@@ -5663,6 +6286,184 @@ mod tests {
             step(&mut bodies, &config, dt, &mut scratch);
             assert_eq!(scratch.broken_welds(), &[(2, 2)], "{label}: the pellet's weld to the holder with tag 2 gave way, and only that one");
         }
+    }
+
+    /// A bibite that holds two others (the glitch save of 2026-11-20: a pile of bibites and pellets that threw everything that touched it, and was gone after a reload).
+    /// A weld anchors what is held at the holder's origin, so the holder and the bodies it holds overlap by construction, and their contacts have nothing to push apart: the
+    /// weld is rigid. Those contacts were still solved as velocity constraints and carried their impulses from tick to tick; a holder that turned (its spin sits on the
+    /// clamp) wound them up by 100 to 250 a tick, past a thousand in ten ticks, and the light bodies near them were thrown at the speed limit. The contacts inside a weld
+    /// group do not push (`constraint.welded`: not by the soft bias, not by the position solve, and now not by the velocity solve either).
+    #[test]
+    fn the_contacts_inside_a_weld_group_carry_no_impulse_while_the_holder_turns() {
+        let config = PhysicsConfig::default();
+        let dt = 1.0 / 30.0;
+        // (anchor of the first held body, anchor of the second, holder's spin to begin with, its torque, a light pellet that touches the group)
+        for (label, first_at, second_at, spin, torque, pellet) in [
+            ("overlapping, turning", Vec2::new(4.0, 0.0), Vec2::new(-3.0, 3.0), 0.0f32, 40.0f32, false),
+            ("overlapping, spin on the clamp", Vec2::new(4.0, 0.0), Vec2::new(-3.0, 3.0), 6.28, 40.0, false),
+            ("held a little further off", Vec2::new(8.0, 0.0), Vec2::new(-6.0, 6.0), 6.28, 40.0, false),
+            ("on the holder's origin", Vec2::new(0.5, 0.0), Vec2::new(-0.5, 0.5), 6.28, 40.0, false),
+            ("with a light pellet touching", Vec2::new(4.0, 0.0), Vec2::new(-3.0, 3.0), 6.28, 40.0, true),
+        ] {
+            let mut holder = PhysicsBody::new_dynamic(1, LAYER_BIBITE, 0.675, 4.1);
+            let _ = holder.add_collider(Collider::solid(Shape::circle(3.5)));
+            let mut first = PhysicsBody::new_dynamic(2, LAYER_BIBITE, 2.0, 9.0);
+            first.pos = first_at;
+            let _ = first.add_collider(Collider::solid(Shape::circle(3.0)));
+            let mut second = PhysicsBody::new_dynamic(3, LAYER_BIBITE, 1.85, 8.0);
+            second.pos = second_at;
+            let _ = second.add_collider(Collider::solid(Shape::circle(3.0)));
+            // Both welds froze the pose they were made in: the held body's origin in the holder's frame, and the relative rotation.
+            let welds = [
+                WeldDef { held: 1, holder: 0, anchor: first_at, angle: 0.0, break_force: 0.0 },
+                WeldDef { held: 2, holder: 0, anchor: second_at, angle: 0.0, break_force: 0.0 },
+            ];
+            // The holder turns as hard as its muscles let it, and pushes.
+            holder.torque = torque;
+            holder.ang_vel = spin;
+            holder.force = Vec2::new(30.0, 10.0);
+            let mut bodies = vec![holder, first, second];
+            if pellet {
+                let mut light = PhysicsBody::new_dynamic(4, LAYER_PELLETS, 0.0168, 0.0003);
+                light.pos = Vec2::new(first_at.x + 3.2, first_at.y + 1.0);
+                let _ = light.add_collider(Collider::solid(Shape::circle(0.6)));
+                bodies.push(light);
+            }
+            let mut scratch = PhysicsScratch::new();
+            let (mut fastest, mut inside, mut outside) = (0.0f32, 0.0f32, 0.0f32);
+            for _ in 0..60 {
+                for weld in welds {
+                    scratch.add_weld(weld);
+                }
+                step(&mut bodies, &config, dt, &mut scratch);
+                for body in &bodies[..3] {
+                    fastest = fastest.max(body.vel.length());
+                }
+                for contact in scratch.contacts() {
+                    if contact.tag_a < 4 && contact.tag_b < 4 {
+                        inside = inside.max(contact.normal_impulse.abs());
+                    } else {
+                        outside = outside.max(contact.normal_impulse.abs());
+                    }
+                }
+            }
+            assert_eq!(inside, 0.0, "{label}: a contact inside the weld group carried an impulse");
+            assert!(fastest < 30.0, "{label}: the group left at {fastest} u/s");
+            if pellet {
+                assert!(outside > 0.0, "{label}: the light pellet that touches the group is not pushed by it any more");
+            }
+        }
+    }
+
+    /// What a held body does to a body outside its group is unchanged: a pellet held by a holder still pushes a free body that it overlaps.
+    #[test]
+    fn a_held_body_still_pushes_a_body_that_is_not_in_its_weld_group() {
+        let config = PhysicsConfig::default();
+        let dt = 1.0 / 30.0;
+        let mut holder = PhysicsBody::new_dynamic(1, LAYER_BIBITE, 1.7, 17.3);
+        let _ = holder.add_collider(Collider::solid(Shape::circle(4.0)));
+        let mut held = PhysicsBody::new_dynamic(2, LAYER_PELLETS, 3.0, 3.0);
+        held.pos = Vec2::new(12.0, 0.0);
+        let _ = held.add_collider(Collider::solid(Shape::circle(3.0)));
+        let mut free = PhysicsBody::new_dynamic(3, LAYER_BIBITE, 1.0, 4.0);
+        free.pos = Vec2::new(16.5, 0.0);
+        let _ = free.add_collider(Collider::solid(Shape::circle(3.0)));
+        let weld = WeldDef { held: 1, holder: 0, anchor: Vec2::new(12.0, 0.0), angle: 0.0, break_force: 0.0 };
+        let mut bodies = vec![holder, held, free];
+        let mut scratch = PhysicsScratch::new();
+        scratch.add_weld(weld);
+        for _ in 0..5 {
+            scratch.add_weld(weld);
+            step(&mut bodies, &config, dt, &mut scratch);
+        }
+        // (A resting overlap is taken out by the position solve, not by a velocity.)
+        assert!(bodies[2].pos.x > 16.5 + 0.1, "the free body that overlaps the held pellet was not pushed away: {:?}", bodies[2].pos);
+    }
+
+    /// A loop of welds (the "deadly pile" save of 2026-11-22: two clumps of pellets that threw and killed what touched them, and were quiet again after a reload). The island is
+    /// the one the solver trace showed at tick 49,967 of a replay of that save: a heavy bibite held a light bibite, a small pellet and a heavy pellet; the light bibite held a
+    /// second light bibite; and that one held a pellet and the same heavy pellet again (a body can be held by two mouths, as in the game): six rigid welds between six bodies, with
+    /// masses from 11 to 0.05 and inertias from 500 to 0.02, each body pushed by its muscles and slowed by its own drag. Box2D 2.4 solves the joints in every one of its velocity
+    /// iterations, which makes a group like that move as one; a single pass over them left the welded bodies' velocities 70-160 u/s apart at the end of every tick (the first pass
+    /// threw them to 110-185 u/s and moved them four units, the relax pass put most of the velocities back and the position solve the bodies), and what the muscles added each
+    /// tick stayed: within twenty ticks bibites were thrown at the speed limit and what they hit died.
+    #[test]
+    fn a_loop_of_welds_moves_as_one_body() {
+        let config = PhysicsConfig::default();
+        let dt = 1.0 / 30.0;
+        // (mass, inertia, linear damping, position, rotation, velocity, spin, the muscles' force, their torque), heavy holder first. Linear damping is the drag coefficient
+        // (5) times the size over the mass; angular damping is half the coefficient.
+        let specs: [(f32, f32, f32, Vec2, f32, Vec2, f32, Vec2, f32); 6] = [
+            (11.11, 500.0, 10.7, Vec2::new(-83.49, 248.03), -459.67, Vec2::new(-22.4, 9.5), -1.30, Vec2::new(339.48, 220.97), -101.26),
+            (2.02, 22.2, 28.8, Vec2::new(-68.44, 247.33), -63.07, Vec2::new(45.4, 27.2), 0.08, Vec2::new(10.66, 44.60), -11.01),
+            (2.31, 26.3, 25.7, Vec2::new(-60.73, 251.18), 19.40, Vec2::new(33.9, 25.9), 2.78, Vec2::new(-83.18, 134.33), -80.37),
+            (0.256, 0.685, 91.0, Vec2::new(-61.11, 259.16), 4.51, Vec2::new(51.0, 34.7), -0.75, Vec2::ZERO, 0.0),
+            (2.72, 77.0, 28.0, Vec2::new(-68.45, 262.50), 13.24, Vec2::new(7.3, -1.4), 2.78, Vec2::ZERO, 0.0),
+            (0.0546, 0.0186, 90.0, Vec2::new(-73.32, 250.13), -0.10, Vec2::new(-42.7, -39.2), -3.80, Vec2::ZERO, 0.0),
+        ];
+        // (holder, held): 0 holds 5, 1 and 4; 1 holds 2; 2 holds 3 and 4 again.
+        let pairs: [(u32, u32); 6] = [(0, 5), (0, 1), (0, 4), (1, 2), (2, 3), (2, 4)];
+        let mut bodies: Vec<PhysicsBody> = Vec::new();
+        for (index, &(mass, inertia, damping, pos, rot, vel, spin, force, torque)) in specs.iter().enumerate() {
+            let layer = if index < 3 { LAYER_BIBITE } else { LAYER_PELLETS };
+            let mut body = PhysicsBody::new_dynamic(index as u64 + 1, layer, mass, inertia);
+            body.pos = pos;
+            body.rot = rot;
+            body.vel = vel;
+            body.ang_vel = spin;
+            body.linear_damping = damping;
+            body.angular_damping = 2.5;
+            // (The bodies lie as close together as the real ones did: the neighbours touch.)
+            let radius = [8.0, 5.0, 5.0, 3.5, 8.0, 0.6][index];
+            let _ = body.add_collider(Collider::solid(Shape::circle(radius)));
+            body.force = force;
+            body.torque = torque;
+            bodies.push(body);
+        }
+        // Each weld froze the held body's pose in the holder's frame when the grab was made.
+        let welds: Vec<WeldDef> = pairs
+            .iter()
+            .map(|&(holder, held)| {
+                let (a, b) = (&bodies[holder as usize], &bodies[held as usize]);
+                WeldDef { held, holder, anchor: (b.pos - a.pos).rotate(-a.rot), angle: b.rot - a.rot, break_force: 0.0 }
+            })
+            .collect();
+        // Two bodies are tied when a weld joins them or one holder holds both (the tags are the places plus one).
+        let tag = |index: u32| u64::from(index) + 1;
+        let tied = |a: u64, b: u64| {
+            pairs.iter().any(|&(holder, held)| (tag(holder) == a && tag(held) == b) || (tag(holder) == b && tag(held) == a))
+                || pairs.iter().any(|&(first, held)| tag(held) == a && pairs.iter().any(|&(second, other)| tag(other) == b && second == first))
+        };
+        let mut scratch = PhysicsScratch::new();
+        let (mut residual, mut fastest, mut inside, mut touching) = (0.0f32, 0.0f32, 0.0f32, 0usize);
+        for tick in 0..40 {
+            for weld in &welds {
+                scratch.add_weld(*weld);
+            }
+            step(&mut bodies, &config, dt, &mut scratch);
+            for contact in scratch.contacts() {
+                if tied(contact.tag_a, contact.tag_b) {
+                    touching += 1;
+                    inside = inside.max(contact.normal_impulse.abs());
+                }
+            }
+            // The group settles in a few ticks; after that every tick must end with the welded bodies moving together.
+            if tick < 10 {
+                continue;
+            }
+            for body in &bodies {
+                fastest = fastest.max(body.vel.length());
+            }
+            for &(holder, held) in &pairs {
+                // What a weld keeps at zero: the velocity of the holder's origin as a point of the held body against the holder's own, and the difference of the spins.
+                let (a, b) = (&bodies[holder as usize], &bodies[held as usize]);
+                residual = residual.max((b.vel + (a.pos - b.pos).perp() * b.ang_vel - a.vel).length() + (b.ang_vel - a.ang_vel).abs() * 10.0);
+            }
+        }
+        assert!(touching > 0, "the bodies of the group do not touch: the test checks nothing");
+        assert_eq!(inside, 0.0, "a contact between bodies that a weld ties carried an impulse");
+        assert!(residual < 30.0, "welded bodies ended a tick {residual} (u/s, plus ten times rad/s) apart");
+        assert!(fastest < 100.0, "the weld group reached {fastest} u/s");
     }
 
     #[test]

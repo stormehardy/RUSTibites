@@ -130,6 +130,32 @@ Options: `--bibites <N>` synthetic population, `--ticks`, `--threads`, `--repeat
 The synthetic harness scales the world to the requested population; use a real
 scenario to measure a realistic world.
 
+## 6b. Calibrating the machine (`calibrate`, Settings > Calibration)
+
+How many of the machine's threads a tick should use, and from what size of world sharing the work pays, depend on the machine (its cores, how fast the
+system wakes one, its memory bandwidth) as much as on the world. The simulation always measures its own ticks and keeps the faster way
+(`docs/BENCHMARKS.md`, "The line and the levels are measured"), but it starts from a first guess made on one machine. A calibration looks at the machine once,
+on purpose, and hands the simulation a first guess that is right for it:
+
+1. **Workers**: a world of a few thousand bibites ticks on 2, 3, 4 ... up to every thread the machine has, at each of the four levels of eagerness; the most
+   workers that are within 12 % of the fastest are the ones a tick uses (the tick is memory-bound from a few workers on, so the times of 3 and of 12 workers differ by the
+   noise of the measurement, about a tenth).
+2. **The landscape**: with those workers, worlds of 150 to 10,000 bibites tick inline and at each level, round after round and alternating (the cost of a world
+   drifts); the pool pays from the size where its best level takes under 92 % of the inline time for good, and the level that was the best at the big sizes is
+   the one a world starts at.
+3. **Graphics** (the window only): a crowd of bibites is drawn into a picture of its own with the GPU hue shader and with the processor's way, each timed with the
+   graphics card made to finish; the shader is the default unless it measured at least half as slow again as the processor's way (a machine with no graphics driver runs it in software).
+
+In the window: **Settings > Calibration** has the check box (*Use Calibration*, on by default), the **Run Test** button (about half a minute; it becomes *Stop*
+while it runs, and it will not start while a world is running in the window: pause it or use the title screen) and four lines (what the test is doing, the
+processor and the graphics card, what the pool of workers found, what the graphics test found). The result is kept in `userdata\calibration.txt` and is used from
+the next start (and at once by the world that is open); it is for a machine with that many threads only. Headless: `rustibites calibrate [--quick] [--save]`
+prints the whole table (`--save` keeps it for the window; `--threads N` calibrates for a smaller machine).
+
+What it changes is **speed only**: serial and pool ticks are bit-identical whatever the workers, the level or the mix (the tests compare whole checkpoints), so a
+calibration, a stale one, or none gives the same simulation. What it does not do: the tick stays on the processor, because a graphics card's floating point is not
+bit-exact with the game's and the results must be; the card draws everything that is drawn (the bibites' skins, the zones, the grid, the Red Death bloom, the dark ring).
+
 ## 7. Parity captures and comparison
 
 **Canonical Default (policy):**

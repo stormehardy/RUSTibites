@@ -83,6 +83,7 @@ mod lineage_mesh_view;
 mod lineage_settings;
 mod lineage_tree;
 mod lineage_view;
+mod machine_calibration;
 mod menu;
 mod menu_video;
 mod node_info_data;
@@ -97,12 +98,14 @@ mod placer_panel;
 mod preview;
 mod render;
 mod save_dialog;
+mod scenario_saver;
 mod save_panel;
 mod scenario_editor;
 mod scrollbar;
 mod selection;
 mod selection_ui;
 mod setting_ui_data;
+mod settings_pages;
 mod sim_thread;
 mod tick_overlap;
 mod skin;
@@ -124,6 +127,7 @@ mod tooltip;
 mod tooltip_data;
 mod tower_panel;
 mod ui;
+mod ui_layout;
 mod ui_runtime;
 mod unity_layout;
 mod user_settings;
@@ -321,6 +325,8 @@ struct Args {
     /// Open the Save Bibite dialog for the selected bibite before a screenshot
     /// (`--select-first --save-dialog`).
     save_dialog: bool,
+    /// Opens the scenario saver with this name typed (a screenshot flag: the form is shown, never answered).
+    scenario_saver: Option<String>,
     /// Select zone `n` before a screenshot, as the Z key does (opens the Zones tab on its item).
     select_zone: Option<usize>,
     /// Verification: open the lineage panel on the species at this list index.
@@ -484,6 +490,7 @@ impl Default for Args {
             show_targets: false,
             select_tool: false,
             save_dialog: false,
+            scenario_saver: None,
             select_zone: None,
             lineage_species: None,
             lineage_tab: None,
@@ -567,6 +574,8 @@ fn run() -> Result<(), String> {
         print_usage();
         return Ok(());
     }
+    // The machine's calibration (Settings > Calibration), when one was run: every world made from here on starts from it.
+    machine_calibration::init(load_user_settings().flag(machine_calibration::LABEL_USE));
 
     if args.ui_functional_matrix {
         return run_functional_matrix(&args);
@@ -745,6 +754,7 @@ fn apply_stored_toggles(app: &mut App) {
 
 fn apply_user_settings(app: &mut App, settings: &user_settings::UserSettings) {
     app.tps_defaults = settings.tps_defaults();
+    machine_calibration::calibrator().set_use(settings.flag(machine_calibration::LABEL_USE));
     ui::set_ui_scale_settings(
         settings.flag("Automatically Detect Screen Resolution"),
         [0.667, 0.711, 0.833, 1.0, 1.333, 2.0][settings.choice("Screen Resolution").min(5)],
@@ -1379,6 +1389,8 @@ fn build_ui_frame(app: &App, themed: &ThemedUi, width: f32, height: f32) -> ui::
                     true,
                 );
             }
+            // The scenario saver (a form over the whole screen); the overwrite question goes over it.
+            runtime.emit_scenario_saver(&mut frame, app, &themed.ui, themed.fonts.sdf(), width, height);
             // The confirmation popup (game wording and look) goes over everything.
             runtime.emit_confirm_dialog(
                 &mut frame,
@@ -1632,7 +1644,7 @@ fn run_window(
         let mut world_frames = 0usize;
         let self_shot = self_shot_request();
         let textures = render::upload_atlases(app.assets.as_ref());
-        let hue_material = if args.gpu_hue_shader {
+        let hue_material = if args.gpu_hue_shader && machine_calibration::calibrator().graphics().is_none_or(|graphics| graphics.prefers_gpu_shader()) {
             let skin_params = app
                 .assets
                 .as_ref()
@@ -1654,7 +1666,7 @@ fn run_window(
             }
         } else {
             eprintln!(
-                "renderer: GPU hue-match shader off (--no-gpu-hue-shader): the bibites' sprites are recoloured on the processor (the same colours, slower with many bibites)"
+                "renderer: GPU hue-match shader off (--no-gpu-hue-shader, or the calibration found the processor's way faster here): the bibites' sprites are recoloured on the processor (the same colours)"
             );
             None
         };
@@ -1700,6 +1712,8 @@ fn run_window(
         let mut video_texture: Option<Texture2D> = None;
         let mut video_seen = 0_u64;
         let mut video_tried = false;
+        // Whether the title screen's video was stopped for the calibration test (it starts again when the test is over).
+        let mut video_paused_for_test = false;
         // In-game Settings / Library / Achievements / Tools / Credits panels replay the
         // title-menu screens (live data) over the dimmed world.
         let mut overlay_menu: Option<menu::MenuState> = None;
@@ -1707,6 +1721,8 @@ fn run_window(
         let mut overlay_dirty = true;
         let mut frame_log = FrameLog::from_env();
         let mut pool_switches_logged = 0_u32;
+        // What the Calibration page said when it was last painted (it is painted again when this changes).
+        let mut calibration_line = String::new();
         // The window opens as the stored `Fullscreen` setting says (the game's default is fullscreen; `Screen.fullScreen = val` at start-up).
         if load_user_settings().flag("Fullscreen") {
             miniquad::window::set_fullscreen(true);
@@ -1716,6 +1732,19 @@ fn run_window(
             app.join_overlapped_ticks();
             log_pool_switches(&mut app.world, &mut pool_switches_logged);
             app.begin_frame();
+            // The machine's calibration (Settings > Calibration): a new result, or the check box, reaches the world that is open, and the test of the graphics
+            // follows the processor's part of the test.
+            let world_running = menu.is_none() && !app.paused;
+            calibration_frame(&mut app, &args, world_running, &textures, hue_material.as_ref(), zone_material.as_ref());
+            // The title screen's background video is decoded by a process of its own: it stops while the test runs (the cores it takes would be measured) and starts again after.
+            if machine_calibration::calibrator().running() {
+                if menu_video.take().is_some() {
+                    video_paused_for_test = true;
+                    video_texture = None;
+                }
+            } else if std::mem::take(&mut video_paused_for_test) {
+                video_tried = false;
+            }
             // The Fullscreen setting (Settings screens, title menu or world): `Screen.fullScreen = val`.
             if let Some(on) = user_settings::take_fullscreen_change() {
                 miniquad::window::set_fullscreen(on);
@@ -2129,6 +2158,18 @@ fn run_window(
                 // The Library's Edit Bibite, Edit and Create New buttons: the Bibite Editor opens over the title menu.
                 if let menu::MenuAction::EditTemplate { path, submit } = &action {
                     app.open_editor_from_library(path.as_deref(), *submit);
+                }
+                // The Calibration page's check box reaches the calibrator at once (the title menu hands its settings to a world only when one opens).
+                if state.view() == menu::MenuView::Settings {
+                    machine_calibration::calibrator().set_use(state.user_settings().flag(machine_calibration::LABEL_USE));
+                }
+                // The Calibration page is painted again when what it says changes by itself (the test's progress, the hardware answering).
+                if state.view() == menu::MenuView::Settings && state.settings_tab() == settings_pages::CALIBRATION_TAB {
+                    let line = machine_calibration::page_signature();
+                    if line != calibration_line {
+                        calibration_line = line;
+                        menu_dirty = true;
+                    }
                 }
                 if menu_dirty || menu_texture.is_none() {
                     if let Some(themed) = themed.as_mut() {
@@ -2555,6 +2596,14 @@ fn run_window(
             if overlay_active
                 && let (Some(themed), Some(state)) = (themed.as_mut(), overlay_menu.as_mut())
             {
+                // The Calibration page is painted again when what it says changes by itself.
+                if state.view() == menu::MenuView::Settings && state.settings_tab() == settings_pages::CALIBRATION_TAB {
+                    let line = machine_calibration::page_signature();
+                    if line != calibration_line {
+                        calibration_line = line;
+                        overlay_dirty = true;
+                    }
+                }
                 if overlay_dirty || overlay_texture.is_none() {
                     overlay_texture = build_menu_texture(
                         state,
@@ -2838,6 +2887,38 @@ fn pool_switch_line(switch: &bibites_core::pool_tuner::PoolSwitch) -> String {
 
 /// Changes of the way the ticks run that a run logs at most (a world whose answer keeps changing must not fill the log).
 const MAX_LOGGED_POOL_SWITCHES: u32 = 40;
+
+/// The machine's calibration, once a frame (see `machine_calibration`): tells it whether a world is running in the window (a test would measure the world as much as
+/// the machine), gives the simulation a new result (or the check box's new state) and, when the processor's part of the test has just finished, runs the test of the
+/// graphics (a few frames' worth of drawing into a picture of its own, a second at most).
+fn calibration_frame(
+    app: &mut App,
+    args: &Args,
+    world_running: bool,
+    textures: &[Texture2D],
+    hue: Option<&render::GpuHueMaterial>,
+    zone: Option<&render::GpuZoneMaterial>,
+) {
+    let calibrator = machine_calibration::calibrator();
+    calibrator.set_world_running(world_running);
+    if calibrator.take_changed() {
+        machine_calibration::apply(calibrator);
+        // (A world that was given a number of threads by hand keeps it; a world that lives on the simulation thread has its own: it takes the profile when it is next made.)
+        if app.sim.is_none() {
+            app.world.apply_machine_profile(args.threads == 0);
+        }
+    }
+    if calibrator.take_graphics_due() {
+        if let Some(found) = machine_calibration::graphics_test(textures, hue, zone, app.assets.as_ref()) {
+            eprintln!("calibration: graphics {found:?}");
+            calibrator.set_graphics(found, &machine_calibration::default_root());
+        }
+    }
+    // (`RUSTIBITES_CALIBRATE=tiny|quick|full`: the test runs by itself, its lines are printed and the program ends.)
+    if machine_calibration::autorun_finished() {
+        std::process::exit(0);
+    }
+}
 
 /// Logs the changes of the way the world's ticks run since the last call (for the tester's `logs/last_run.log`: which way the machine
 /// found faster, and at what size of world).
@@ -4817,6 +4898,13 @@ fn run_screenshot(
     if args.save_dialog {
         app.apply_ui_actions(&[ui::UiAction::Invoke(ui::ControlCommand::SaveSelected)]);
     }
+    if let Some(name) = args.scenario_saver.as_ref() {
+        app.apply_ui_actions(&[ui::UiAction::DynSaveScenario]);
+        if let Some(saver) = app.scenario_saver.as_mut() {
+            saver.name.clone_from(name);
+            saver.description = "Oases that dry out in winter.".to_owned();
+        }
+    }
     if let Some(index) = args.select_zone {
         app.select_zone(index);
     }
@@ -5411,6 +5499,7 @@ fn parse_args(mut args: impl Iterator<Item = String>) -> Result<Args, String> {
             "--show-targets" => parsed.show_targets = true,
             "--select-tool" => parsed.select_tool = true,
             "--save-dialog" => parsed.save_dialog = true,
+            "--scenario-saver" => parsed.scenario_saver = Some(next_value(&mut args, "--scenario-saver")?),
             "--dyn-tab" => {
                 let value = next_value(&mut args, "--dyn-tab")?;
                 parsed.dyn_tab = Some(

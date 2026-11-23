@@ -185,6 +185,13 @@ pub struct ParallelGates {
     /// Pellets from which resting pellets skip the physics step (`usize::MAX`: never). Unlike the other gates this one is not
     /// about the pool: it works with one thread too.
     pub sleep_pellets: usize,
+    /// Bodies in the physics step from which the candidate pairs are found by a grid, on the pool, instead of the sweep over the x order (`usize::MAX`:
+    /// never). Like `sleep_pellets` it is not a size the levels lower: the grid is slower than the sweep below a few thousand bodies (about 10 % of a
+    /// tick at 300 to 1,000 bibites) and from 4,000 or so it is faster (a stage that is 15-30 % shorter, 1-2 % of a tick).
+    pub grid_bodies: usize,
+    /// The level of the pool ([`crate::pool_tuner::Arm::Pooled`]) a measuring world starts at when it is big enough for the pool: 0 on
+    /// the reference machine; a calibration ([`crate::calibration`]) sets the level that was the fastest on this one.
+    pub start_level: u8,
 }
 
 impl ParallelGates {
@@ -207,6 +214,8 @@ impl ParallelGates {
         island_bodies: 1,
         island_constraints: 1,
         sleep_pellets: 1,
+        grid_bodies: 8,
+        start_level: 0,
     };
 
     /// Every stage that can use the pool uses it from one item, whatever the work: the reference the benchmarks compare
@@ -237,6 +246,8 @@ impl ParallelGates {
         island_bodies: 256,
         island_constraints: 512,
         sleep_pellets: 2_048,
+        grid_bodies: 4_000,
+        start_level: 0,
     };
 
     /// The same sizes with no measuring: a world is on the pool when it has that many bibites or bodies (the way the tests and the
@@ -310,6 +321,8 @@ impl ParallelGates {
             island_bodies: scale(self.island_bodies),
             island_constraints: scale(self.island_constraints),
             sleep_pellets: self.sleep_pellets,
+            grid_bodies: self.grid_bodies,
+            start_level: self.start_level,
         }
     }
 
@@ -385,19 +398,77 @@ impl ParallelGates {
                 pool_bibites: self.pool_bibites,
                 pool_bodies: self.pool_bodies,
                 sleep_pellets: self.sleep_pellets,
+                grid_bodies: self.grid_bodies,
+                start_level: self.start_level,
                 ..Self::EAGER
             },
         }
     }
 
-    /// The first guess of a world that measures ([`crate::pool_tuner::PoolTuner`]): the sizes from which the pool is expected to pay.
+    /// The first guess of a world that measures ([`crate::pool_tuner::PoolTuner`]): the sizes from which the pool is expected to pay, and
+    /// the level it starts at.
     #[must_use]
     pub fn pool_prior(&self) -> crate::pool_tuner::Prior {
         crate::pool_tuner::Prior {
             bibites: self.pool_bibites.max(1),
             bodies: self.pool_bodies.max(1),
+            level: self.start_level.min(crate::pool_tuner::POOLED_LEVELS as u8 - 1),
         }
     }
+
+    /// These gates with the first guess of a calibrated machine ([`MachineProfile`]): the sizes from which the pool pays there and the level
+    /// it starts at. The stages' own sizes are the levels' business and stay.
+    #[must_use]
+    pub fn with_profile(self, profile: MachineProfile) -> Self {
+        Self {
+            pool_bibites: profile.pool_bibites.max(1),
+            pool_bodies: profile.pool_bodies.max(1),
+            start_level: profile.start_level,
+            ..self
+        }
+    }
+
+    /// What a world starts with: the gates of [`ParallelGates::from_environment`], with the first guess of this machine's calibration
+    /// ([`machine_profile`]) when there is one and `RUSTIBITES_GATES` does not say otherwise (a gate named by hand is a gate named by hand).
+    #[must_use]
+    pub fn calibrated() -> Self {
+        static BY_HAND: std::sync::OnceLock<bool> = std::sync::OnceLock::new();
+        let gates = Self::from_environment();
+        match machine_profile() {
+            Some(profile) if !*BY_HAND.get_or_init(|| std::env::var_os("RUSTIBITES_GATES").is_some()) => gates.with_profile(profile),
+            _ => gates,
+        }
+    }
+}
+
+/// What a calibration found out about the machine ([`crate::calibration`]): how many workers a tick should use, and from what size of
+/// world the pool pays, and at which level. The viewer sets it for the whole process ([`set_machine_profile`]) from the stored calibration; every
+/// world made after that starts from it ([`ParallelGates::calibrated`], [`crate::world::World::set_threads`] with `0`), and a world that exists
+/// takes it with [`crate::world::World::apply_machine_profile`]. Nothing a tick computes depends on any of it: only how fast it is done.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct MachineProfile {
+    /// Workers a tick uses on the pool (what `set_threads(0)` gives a world).
+    pub workers: usize,
+    /// Live bibites from which the pool pays (the tuner's first guess).
+    pub pool_bibites: usize,
+    /// Bodies from which the pool pays.
+    pub pool_bodies: usize,
+    /// The level of the pool a world starts at.
+    pub start_level: u8,
+}
+
+static MACHINE_PROFILE: std::sync::RwLock<Option<MachineProfile>> = std::sync::RwLock::new(None);
+
+/// The calibration of this machine that the process uses, if one was set.
+#[must_use]
+pub fn machine_profile() -> Option<MachineProfile> {
+    *MACHINE_PROFILE.read().unwrap_or_else(std::sync::PoisonError::into_inner)
+}
+
+/// Sets (or, with `None`, forgets) the calibration the process uses. The worlds that exist keep what they have until they are told
+/// ([`crate::world::World::apply_machine_profile`]).
+pub fn set_machine_profile(profile: Option<MachineProfile>) {
+    *MACHINE_PROFILE.write().unwrap_or_else(std::sync::PoisonError::into_inner) = profile;
 }
 
 impl Default for ParallelGates {
@@ -1807,12 +1878,12 @@ mod tests {
         }
         let last = gates.pooled_level(crate::pool_tuner::POOLED_LEVELS as u8 - 1);
         assert!(sizes(last).into_iter().all(|size| size == 1), "{last:?}");
-        // What the levels are not about: the measuring, the prior and the resting-pellet layer.
+        // What the levels are not about: the measuring, the prior, the resting-pellet layer and the grid.
         for level in 0..crate::pool_tuner::POOLED_LEVELS as u8 {
             let at = gates.pooled_level(level);
             assert_eq!(
-                (at.adaptive, at.sleep_pellets),
-                (gates.adaptive, gates.sleep_pellets)
+                (at.adaptive, at.sleep_pellets, at.grid_bodies),
+                (gates.adaptive, gates.sleep_pellets, gates.grid_bodies)
             );
         }
         assert_eq!(last.pool_bibites, gates.pool_bibites);

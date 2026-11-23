@@ -794,6 +794,9 @@ fn draw_modals(
             crate::app::ConfirmKind::OverwriteSave(name) => {
                 format!("Overwrite save {name}?")
             }
+            crate::app::ConfirmKind::OverwriteScenario(name) => {
+                format!("Overwrite scenario {name}?")
+            }
             crate::app::ConfirmKind::DeleteSave(path) => format!(
                 "Delete save {}?",
                 path.file_name()

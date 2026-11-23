@@ -376,6 +376,14 @@ pub const DEFS: &[Def] = &[
         kind: Kind::Bool,
         default: Value::Bool(false),
     },
+    // Whether the simulation uses the stored calibration of the machine (`machine_calibration.rs`); the Calibration page of the Settings screens shows this row.
+    // On from the start: with no calibration run nothing changes, and a calibration only changes how fast the simulation runs, never what it computes.
+    Def {
+        label: "Use Calibration",
+        key: "UseCalibration",
+        kind: Kind::Bool,
+        default: Value::Bool(true),
+    },
     // The Lineage panel's options (`LineagePanelSettingsManager`).
     Def {
         label: "Hide Extinct Lineages",

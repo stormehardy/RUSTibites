@@ -393,7 +393,12 @@ fn spawn_one(
         ang_vel: 0.0,
         genome: genome.clone(),
         meta: meta.clone(),
-        brain: brain.clone(),
+        // `CopyBrain` + `FinalizeEditing`: a spawned bibite's nodes start fresh, whatever values the template's brain was saved with.
+        brain: {
+            let mut fresh = brain.clone();
+            fresh.reset_runtime_state(world.settings.brain_period());
+            fresh
+        },
         vitals,
         energy: None,
         health: None,
@@ -1524,6 +1529,8 @@ pub enum ConfirmKind {
     ClearAnimators,
     /// Overwrite an existing save name.
     OverwriteSave(String),
+    /// Overwrite an existing scenario (the scenario saver's name is taken).
+    OverwriteScenario(String),
     /// Delete a save file.
     DeleteSave(PathBuf),
     /// Restart the running challenge (`ChallengeTrackerPanel` Retry).
@@ -1654,6 +1661,8 @@ pub struct App {
     tag_edit_is_placer: bool,
     /// The Save Bibite dialog while it is open (`SaveBibiteDialogHandle`).
     pub save_dialog: Option<crate::save_dialog::SaveDialog>,
+    /// The scenario saver while it is open (`ScenarioSaver`, opened by the settings panel's Save button).
+    pub scenario_saver: Option<crate::scenario_saver::ScenarioSaver>,
     /// `UserSettings.SaveBibiteAsTemplate`: the dialog's checkbox starts from it.
     pub save_as_template: bool,
     /// `UserSettings.FormatBibiteJSON`: the dialog's checkbox starts from it.
@@ -2197,6 +2206,7 @@ impl App {
             placer_pause: None,
             tag_edit_is_placer: false,
             save_dialog: None,
+            scenario_saver: None,
             save_as_template: false,
             format_bibite_json: false,
             user_settings_path: None,
@@ -2485,6 +2495,7 @@ impl App {
             && self.value_edit.is_none()
             && self.bibite_editor.is_none()
             && self.expanded_brain.is_none()
+            && self.scenario_saver.is_none()
             // `UserControl.SetKeyboardBlockFromSource("Challenge", true)` when the challenge ends.
             && !self.challenge_end_shown
             && !self.panels.is_open(crate::ui::PanelKind::Escape)
@@ -2501,6 +2512,7 @@ impl App {
             && self.confirm_dialog.is_none()
             && self.dropdown_open.is_none()
             && self.save_dialog.is_none()
+            && self.scenario_saver.is_none()
             && self.tag_edit.is_none()
             && self.zone_name_edit.is_none()
             && self.value_edit.is_none()
@@ -2550,6 +2562,7 @@ impl App {
         // The dialog's fields take the typed characters first (the tag field drops them when it is
         // not being edited).
         self.edit_save_dialog(&raw_input);
+        self.edit_scenario_saver(&raw_input);
         self.edit_save_name(&raw_input);
         self.edit_editor_text(&raw_input);
         // The Expanded Brain View's force simulation runs with the real frame time.
@@ -3146,8 +3159,8 @@ impl App {
     }
 
     /// `BibitePlacer.UpdatePanel`: a left press on the world spawns the template there with the
-    /// panel's choices (`WorldObjectsSpawner.SpawnBibiteFromTemplate`). The core spawns eggs
-    /// without the randomize-genes choice (`spawn_template_at`).
+    /// panel's choices (`WorldObjectsSpawner.SpawnBibiteFromTemplate`); an egg takes the randomize-genes
+    /// choice as well (`SpawnEggFromTemplate`).
     fn place_bibite(&mut self, pos: Vec2) {
         let Some(placer) = &self.placer else {
             return;
@@ -3156,13 +3169,14 @@ impl App {
         let tag = options.tag.clone();
         let result = if options.growth_at_spawn == GrowthAtSpawn::Egg {
             self.world
-                .spawn_template_at(
+                .spawn_template_at_randomized(
                     &placer.template,
                     pos,
                     None,
                     GrowthAtSpawn::Egg,
                     options.tagging,
                     &tag,
+                    options.randomize_genes,
                 )
                 .map(|_| ())
         } else {
@@ -3494,6 +3508,7 @@ impl App {
                     }
                 }
                 UiAction::SaveDialogToggle(which) => self.toggle_save_dialog_option(which),
+                UiAction::ScenarioSaver(code) => self.scenario_saver_action(code),
                 // A dropdown control was clicked: its list opens under it (`TMP_Dropdown.Show`).
                 UiAction::DropdownOpen(target) => {
                     let anchor = self.click_rect;
@@ -3639,9 +3654,8 @@ impl App {
                             .get(material);
                     });
                 }
-                UiAction::DynSaveScenario => {
-                    self.last_action = "Save Scenario is not available yet".to_owned();
-                }
+                // `DynamicSettingsPanel.OpenScenarioSaver`.
+                UiAction::DynSaveScenario => self.open_scenario_saver(),
                 UiAction::ShowToolbar(which) => {
                     if let Some(panel) = self.toolbar.get_mut(usize::from(which)) {
                         panel.show();
@@ -4782,7 +4796,7 @@ impl App {
         dt: f32,
     ) {
         use crate::tooltip::Target;
-        let blocked = self.confirm_dialog.is_some() || self.save_dialog.is_some();
+        let blocked = self.confirm_dialog.is_some() || self.save_dialog.is_some() || self.scenario_saver.is_some();
         let control = frame.tips.iter().rev().find(|rect| rect.contains(cursor));
         // A live tooltip (the lineage mesh's: its path starts with '@') belongs to the rectangle its shape registered as
         // a hit: with a panel drawn over it, the pointer is not on the shape and the tooltip does not show.
@@ -5598,6 +5612,15 @@ impl App {
             self.close_save_dialog();
             return;
         }
+        // The overwrite question over the scenario saver closes first, then the saver itself (its exit button).
+        if self.scenario_saver.is_some() {
+            if matches!(self.confirm_dialog, Some(ConfirmKind::OverwriteScenario(_))) {
+                self.confirm_dialog = None;
+            } else {
+                self.close_scenario_saver();
+            }
+            return;
+        }
         // Escape leaves the editor's text field first, then the editor closes (`UIPanel.Escape`).
         if let Some(session) = self.bibite_editor.as_mut()
             && session.view.focus.take().is_some()
@@ -6267,6 +6290,7 @@ impl App {
             }
             ConfirmKind::RestartChallenge => self.start_local_challenge(),
             ConfirmKind::OverwriteSave(name) => self.save_as_to(&name),
+            ConfirmKind::OverwriteScenario(name) => self.scenario_saver_write(&name),
             ConfirmKind::DeleteSave(path) => {
                 self.delete_save_path(&path);
             }
@@ -6848,6 +6872,7 @@ impl App {
             && self.dropdown_open.is_none()
             && self.confirm_dialog.is_none()
             && self.save_dialog.is_none()
+            && self.scenario_saver.is_none()
             && self.value_edit.is_none()
             && self.tag_edit.is_none()
             && self.zone_name_edit.is_none()

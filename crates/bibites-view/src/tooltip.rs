@@ -122,6 +122,16 @@ pub fn of_user_setting(label: &str) -> Option<Tip> {
             ui: true,
             instant: false,
         })
+        // The Calibration page's check box.
+        .or_else(|| {
+            crate::machine_calibration::help_of(label).map(|(title, content)| Tip {
+                path: "",
+                title,
+                content,
+                ui: true,
+                instant: false,
+            })
+        })
 }
 
 /// The trigger of a generated settings row (`SettingSlider.UpdateText(setting.Name, setting.HelperText)`

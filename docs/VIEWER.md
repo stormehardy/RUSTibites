@@ -154,9 +154,9 @@ renders the menu deterministically without a window or a loaded world; a plain `
 still captures the world directly. Release builds use the Windows GUI subsystem so the desktop
 shortcut does not flash a console (headless scripts should launch with `Start-Process -Wait`).
 
-The title screen carries one line the game does not have: "RUSTibites Faithful" with "by Storme" under
-it, a white title card in the top left corner (`menu/tagline.rs`: Boston Black SDF in the version
-label's Bold style, 66 and 32 px at 1080p, scaled with the UI). It is drawn over the captured frame
+The title screen carries one line the game does not have: "RUSTibites Faithful", a white title card in the
+top left corner (`menu/tagline.rs`: Boston Black SDF in the version label's Bold style, 66 px at 1080p,
+scaled with the UI). It is drawn over the captured frame
 and takes no clicks; it is the port's own branding and has no counterpart in the game's title screen.
 
 Desktop shortcut target: `target\release\rustibites-view.exe` with **no arguments**, working

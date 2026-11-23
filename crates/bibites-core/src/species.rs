@@ -3461,7 +3461,15 @@ mod tests {
     /// Pinned again (0xc2bc_ff31_8241_1f0e before) on 2026-11-13: the test is ignored and had not been run since the contact physics, the pellet friction and the grabs of
     /// 2026-11-11 changed what a population does; the code of the day before the glitch fixes gave this very value, and so do the fixes (a lethal spend that stands,
     /// a hold that is checked against its prey's generation, a dead holder that lets go, poses that are numbers: none of it happens in this run).
-    const EVOLUTION_REGRESSION_FINGERPRINT: u64 = 0xc40a_a2b2_b958_ec7c;
+    /// Pinned again (0xc40a_a2b2_b958_ec7c before) on 2026-11-19 when the brain's arithmetic became the game's (a C# expression is done in double and rounded to float only at
+    /// a store, a call argument and a return: Sigmoid, Gaussian, Integrator, Inhibitory, SoftLatch; the Herding output is computed with herding off; `tanh(pheroSum / 5)` in double;
+    /// measured bit for bit against the original game, `tools/braincheck/game_diff`): the nodes after a node that was one ulp off carry it on, so a population moves.
+    /// Pinned again (0x160b_d186_45b3_8cc5 before) on 2026-11-19 when the senses became the game's, measured against the original game (`sense_vs_game`): Unity's vector maths in double
+    /// (`magnitude`, `SignedAngle` by `acos`, `normalized`), the field-of-view weights as one double expression, `Transform.up` from the quaternion, the pheromone sense one tick late,
+    /// the cadence counters subtracting the period, the growth and upkeep expressions in double: the population moves (births 25 -> 20, deaths 41 -> 44).
+    /// Pinned again (0xa818_5c92_2bf4_bf31 before) on 2026-11-19 when a child's brain started fresh as in the game (`CopyBrain` copies only the structure and `FinalizeEditing` runs every
+    /// non-input node once, so a node nothing feeds holds `f(bias)`; the port cloned the parent's running node values, which stayed for ever in an unfed node): births 20 -> 20, deaths 44 -> 43.
+    const EVOLUTION_REGRESSION_FINGERPRINT: u64 = 0xf292_be2d_a8ad_d122;
 
     /// An evolving population (births, deaths, mutations, species changes, eaten and rotting pellets) with every parallel
     /// stage forced on gives the same checkpoint, byte for byte, as the serial run.

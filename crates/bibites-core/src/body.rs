@@ -1278,8 +1278,9 @@ pub struct GrowthGenes {
 /// `rate(maturity) = SpeedRatio / (1 + GrowthMaturityFactor * maturity^Exp)`
 /// (`BibiteGrowth.cs:114-117`).
 pub fn growth_rate(maturity: f32, genes: &GrowthGenes) -> f32 {
-    genes.metabolic_rate
-        / (1.0 + genes.growth_maturity_factor * maturity.powf(genes.growth_maturity_exponent))
+    // `Mathf.Pow` is a float (the double power rounded); the rest of the expression is one double expression rounded once on return (the game's arithmetic, see `math::sigmoid`).
+    let power = f64::from(crate::math::pow(maturity, genes.growth_maturity_exponent));
+    (f64::from(genes.metabolic_rate) / (1.0 + f64::from(genes.growth_maturity_factor) * power)) as f32
 }
 
 /// One growth-step decision (`BibiteGrowth.FixedUpdate`, `BibiteGrowth.cs:91-107`).
@@ -1366,7 +1367,8 @@ impl GrowthState {
 
         let maturity = self.maturity(genes);
         let rate = growth_rate(maturity, genes);
-        let delta = want_to_grow * rate * period * genes.growth_scale / 100.0;
+        // `brain.Output(Want2Grow) * num * growthUpdatePeriod * growthScale / 100f`: one double expression, rounded once when stored.
+        let delta = (f64::from(want_to_grow) * f64::from(rate) * f64::from(period) * f64::from(genes.growth_scale) / 100.0) as f32;
         let new_growth = self.growth + delta;
         let organ_base_body_area = AREA_PER_D2 * self.growth * genes.size_ratio * genes.size_ratio;
         let was_mature = self.mature;
@@ -1379,8 +1381,9 @@ impl GrowthState {
             self.update_period
         };
 
+        // `(growth - appliedGrowth) / appliedGrowth > 0.005f`: the quotient stays a double in the comparison.
         let update_scale = if self.applied_growth > 0.0 {
-            (new_growth - self.applied_growth) / self.applied_growth > 0.005
+            (f64::from(new_growth) - f64::from(self.applied_growth)) / f64::from(self.applied_growth) > f64::from(0.005_f32)
         } else {
             true
         };
@@ -1390,7 +1393,8 @@ impl GrowthState {
 
         Some(GrowthStep {
             new_growth,
-            new_d2_size: new_growth * genes.size_ratio * genes.size_ratio,
+            // `body.Set2DSize(growth * sizeRatio * sizeRatio, ..)`: the argument is one double expression rounded once.
+            new_d2_size: (f64::from(new_growth) * f64::from(genes.size_ratio) * f64::from(genes.size_ratio)) as f32,
             organ_base_body_area,
             update_scale,
             period,
@@ -1820,10 +1824,10 @@ pub struct BibiteView {
 }
 
 impl BibiteView {
-    /// Forward unit vector (`transform.up`): `(−sin rot, cos rot)`.
+    /// Forward unit vector (`transform.up`, see [`crate::math::unity::transform_up`]).
     #[must_use]
     pub fn up(&self) -> Vec2 {
-        Vec2::Y.rotate(self.rot)
+        crate::math::unity::transform_up(self.rot)
     }
 
     /// Alias of [`BibiteView::up`] for sensing code that calls it "forward".
@@ -3634,7 +3638,19 @@ impl BibiteStore {
     ///
     /// Returns an error for a non-positive/non-finite spawn size.
     pub fn spawn(&mut self, spawn: BibiteSpawn) -> crate::error::Result<BibiteId> {
-        let record = Self::build_record(spawn, &self.settings)?;
+        let record = Self::build_record(spawn, &self.settings, None)?;
+        Ok(self.insert_record(record))
+    }
+
+    /// [`Self::spawn`] for a template spawn: the size a growth mode asks for is read from `basis`, the TEMPLATE's genes, not from the genes the
+    /// bibite is spawned with (`WorldObjectsSpawner.SpawnBibiteFromTemplate`: `StartBodyAtGrowthAndNormalize(GrowthAtMature(template.genes))`).
+    /// It matters when the genes were randomised: a random womb share makes the spawned genome's own `GrowthAtMature` huge.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error for a non-positive/non-finite spawn size.
+    pub fn spawn_with_growth_basis(&mut self, spawn: BibiteSpawn, basis: &Genome) -> crate::error::Result<BibiteId> {
+        let record = Self::build_record(spawn, &self.settings, Some(basis))?;
         Ok(self.insert_record(record))
     }
 
@@ -3652,7 +3668,13 @@ impl BibiteStore {
             ang_vel: save.ang_vel,
             genome: save.genome.clone(),
             meta: save.meta.clone(),
-            brain: save.brain.clone(),
+            // A save the port wrote while children kept their parents' running node values can hold a stale value in a node nothing feeds (a constant pheromone or herding
+            // output with the synapse disabled): put it back to what the game would hold there (`Brain::heal_unfed_nodes`; a game save is not touched).
+            brain: {
+                let mut brain = save.brain.clone();
+                brain.heal_unfed_nodes();
+                brain
+            },
             vitals: SpawnVitals::Baby,
             energy: Some(save.energy.max(0.0)),
             health: Some(save.health.max(0.0)),
@@ -3869,6 +3891,7 @@ impl BibiteStore {
     fn build_record(
         spawn: BibiteSpawn,
         settings: &SimSettings,
+        growth_basis: Option<&Genome>,
     ) -> crate::error::Result<BibiteRecord> {
         let bs = BodySettings::from_sim_settings(settings);
         let genome = spawn.genome;
@@ -3877,7 +3900,7 @@ impl BibiteStore {
         let params = BodyParams::new(metabolic_rate, genome.body_energy_density(settings), &bs);
         let growth_genes = growth_genes_of(&genome);
         let d2_birth = genome.d2_size_at_birth();
-        let d2 = match spawn.vitals.target_growth(&genome) {
+        let d2 = match spawn.vitals.target_growth(growth_basis.unwrap_or(&genome)) {
             Some(growth) => growth * size_ratio * size_ratio,
             None => {
                 // `StartBody`: a newborn with less energy than `BodyEnergyAtBirth` is only as big as that share (`newSize = Energy / bodyEnergyAtBirth`).
@@ -4857,6 +4880,10 @@ pub struct BibiteScratch {
     /// Per record slot: the sweep takes a snapshot of the bibite here before its pass-B turn (it is the bibite target of
     /// a bibite that comes before it in dense order).
     snapshot_slots: Vec<bool>,
+    /// Per record slot: the bibite is a mouth target of a bibite that comes after it in dense order, which reads its state as it
+    /// stands after its own turn: that turn must be whole by the time the other's comes, so the rest of it is not left for the pool
+    /// (see [`BibiteStore::pass_b_dense`]).
+    viewed_slots: Vec<bool>,
     /// How the pass-B turns were shared out between the pool and the calling thread.
     lanes: PassBLanes,
     /// The pellets at rest that the physics bridge keeps out of the step.
@@ -4890,13 +4917,17 @@ pub struct PassBLanes {
     pub eggs: u64,
     /// Heavy turns of bibites emitting pheromone.
     pub emit: u64,
+    /// Heavy turns whose head (the stomach, the womb, the fat, the movement) the sweep took on the pool.
+    pub head_in_sweep: u64,
+    /// Heavy turns whose last part (growth, healing, the clock) the pool took after the dense-order stretch.
+    pub post_on_pool: u64,
 }
 
 /// What one stretch of records hands back from the pool in the body sweep.
 #[derive(Default)]
 struct PoolPart {
-    /// Slots whose turn needs the world's stores.
-    heavy: Vec<u32>,
+    /// Slots whose turn needs the world's stores, with what the sweep already did of it (a mask of [`turn`] bits).
+    heavy: Vec<(u32, u8)>,
     /// `(dense rank, death)` of bibites whose health went non-finite in their pass-B turn on the pool.
     deaths: Vec<(u32, PendingDeath)>,
     /// `(dense rank, death)` of the bibites pass A found starved.
@@ -4935,6 +4966,8 @@ impl PassBLanes {
         self.vomit += other.vomit;
         self.eggs += other.eggs;
         self.emit += other.emit;
+        self.head_in_sweep += other.head_in_sweep;
+        self.post_on_pool += other.post_on_pool;
     }
 }
 
@@ -5316,6 +5349,9 @@ impl BibiteStore {
         let mut snapshot_slots = std::mem::take(&mut ctx.scratch.snapshot_slots);
         snapshot_slots.clear();
         snapshot_slots.resize(self.records.len(), false);
+        let mut viewed_slots = std::mem::take(&mut ctx.scratch.viewed_slots);
+        viewed_slots.clear();
+        viewed_slots.resize(self.records.len(), false);
         for &slot in &mouth_lane {
             let Some(record) = self
                 .records
@@ -5329,6 +5365,13 @@ impl BibiteStore {
                 let Some(target) = bibite_id_from_tag(tag) else {
                     continue;
                 };
+                if ctx.scratch.rank_of(target) <= own_rank {
+                    // A target before the viewer in dense order is read as it stands after its own turn (a target after it is read
+                    // from the snapshot the sweep took before that turn), so that turn must be whole when the viewer's comes.
+                    if let Some(flag) = viewed_slots.get_mut(target.handle().slot() as usize) {
+                        *flag = true;
+                    }
+                }
                 if ctx.scratch.rank_of(target) > own_rank {
                     wanted.push(tag);
                     if let Some(flag) = snapshot_slots.get_mut(target.handle().slot() as usize) {
@@ -5346,6 +5389,7 @@ impl BibiteStore {
         let rank: &[u32] = &ctx.scratch.rank;
         let wanted_tags: &[u64] = &wanted;
         let wanted_slots: &[bool] = &snapshot_slots;
+        let split_turns = split_turns_enabled();
         let parts: Vec<PoolPart> = self
             .records
             .par_chunks_mut(chunk_len)
@@ -5389,7 +5433,7 @@ impl BibiteStore {
                             }
                         }
                         if record.body.dead {
-                            part.heavy.push(slot);
+                            part.heavy.push((slot, 0));
                             part.lanes.dead += 1;
                             part.lanes.heavy += 1;
                             continue;
@@ -5400,7 +5444,22 @@ impl BibiteStore {
                         let outputs = record.brain.output_values_copy();
                         let reasons = pass_b_heavy_reasons(record, &outputs, env.settings, env.dt);
                         if reasons != 0 {
-                            part.heavy.push(slot);
+                            let mut done = 0;
+                            // The head of the turn (the counters, the stomach, the womb, the fat, the movement, the mouth's latching of
+                            // the outputs) touches nothing but this record when no egg is to be laid, so it is taken here whatever else
+                            // the turn will do. (A revival step comes before it in the dense order: those turns stay whole.)
+                            if split_turns
+                                && reasons & heavy::EGGS == 0
+                                && !(record.body.corpse_decay > 0.0)
+                            {
+                                pass_b_head(record, &mut LocalOnly, env, &outputs);
+                                part.lanes.head_in_sweep += 1;
+                                done = turn::HEAD_DONE;
+                                if reasons & heavy::EMIT != 0 {
+                                    done |= turn::EMITS;
+                                }
+                            }
+                            part.heavy.push((slot, done));
                             part.lanes.add_reasons(reasons);
                             continue;
                         }
@@ -5420,7 +5479,7 @@ impl BibiteStore {
                 part
             })
             .collect();
-        let mut heavy_slots: Vec<u32> = Vec::new();
+        let mut heavy_slots: Vec<(u32, u8)> = Vec::new();
         let mut pool_deaths: Vec<(u32, PendingDeath)> = Vec::new();
         let mut starved: Vec<(u32, PendingDeath)> = Vec::new();
         let mut snapshots: Vec<(u64, Option<TargetSnapshot>)> = Vec::new();
@@ -5451,8 +5510,9 @@ impl BibiteStore {
         ctx.scratch.pre_snapshots = pre;
         ctx.scratch.mouth_lane = mouth_lane;
         ctx.scratch.snapshot_slots = snapshot_slots;
+        ctx.scratch.viewed_slots = viewed_slots;
         ctx.scratch.clock.lap(crate::sim::Stage::BodySweep, lap);
-        self.pass_b_dense(ctx, env, heavy_slots, pool_deaths);
+        self.pass_b_dense(ctx, env, executor, heavy_slots, pool_deaths);
     }
 
     /// The pass-B turns that need the world's stores, in dense order (see [`Self::fused_body_tick`]), and the starvation
@@ -5461,11 +5521,22 @@ impl BibiteStore {
         &mut self,
         ctx: &mut BibiteTickCtx<'_>,
         env: &OrganEnv<'_>,
-        mut heavy_slots: Vec<u32>,
+        executor: crate::sim::ParallelExecutor<'_>,
+        mut heavy_slots: Vec<(u32, u8)>,
         mut pool_deaths: Vec<(u32, PendingDeath)>,
     ) {
-        heavy_slots.sort_unstable_by_key(|slot| ctx.scratch.rank[*slot as usize]);
+        heavy_slots.sort_unstable_by_key(|(slot, _)| ctx.scratch.rank[*slot as usize]);
         let first_death = ctx.scratch.deaths.len();
+        // The turns whose head the sweep took have only the mouth left that reaches the world's stores. With enough of them the pool
+        // takes the rest of those turns too, after this stretch (the growth, the healing, the clock, the propulsion bookkeeping: one
+        // record each), except for the bibites a later turn of this stretch may look at (they are whole when it comes) and the ones
+        // that have a pheromone puff to make.
+        let split_turns = heavy_slots
+            .iter()
+            .filter(|(_, done)| done & turn::HEAD_DONE != 0)
+            .count();
+        let leave_to_pool = executor.is_parallel() && split_turns >= self.gates.brains.max(1);
+        let mut deferred: Vec<u32> = Vec::new();
         ctx.scratch.split = true;
         for position in 0..heavy_slots.len() {
             // The records of the turns a few places ahead are asked for now: these are the bibites with something in their
@@ -5473,12 +5544,12 @@ impl BibiteStore {
             for ahead in [position + 3, position + 6] {
                 if let Some(entry) = heavy_slots
                     .get(ahead)
-                    .and_then(|slot| self.records.get(*slot as usize))
+                    .and_then(|(slot, _)| self.records.get(*slot as usize))
                 {
                     prefetch_turn((entry as *const Option<BibiteRecord>).cast::<u8>());
                 }
             }
-            let slot = heavy_slots[position];
+            let (slot, done) = heavy_slots[position];
             let Some(id) = self
                 .records
                 .get(slot as usize)
@@ -5487,9 +5558,68 @@ impl BibiteStore {
             else {
                 continue;
             };
-            self.tick_brain_post(id, ctx, env);
+            if done & turn::HEAD_DONE != 0 {
+                let leave = leave_to_pool
+                    && done & turn::EMITS == 0
+                    && !ctx
+                        .scratch
+                        .viewed_slots
+                        .get(slot as usize)
+                        .copied()
+                        .unwrap_or(true);
+                if self.tick_brain_post_split(id, ctx, env, leave) {
+                    deferred.push(slot);
+                }
+            } else {
+                self.tick_brain_post(id, ctx, env);
+            }
         }
         ctx.scratch.split = false;
+        if !deferred.is_empty() {
+            // The rest of the left turns, on the pool: a worker takes a stretch of the slots and does the turns of the left ones in it.
+            deferred.sort_unstable();
+            let workers = crate::sim::ParallelGates::workers_for(
+                deferred.len(),
+                self.gates.brains.max(1),
+                executor.threads(),
+            );
+            let chunk_len = self.records.len().div_ceil(workers.max(1) * 4).max(1);
+            let rank: &[u32] = &ctx.scratch.rank;
+            let slots: &[u32] = &deferred;
+            let parts: Vec<Vec<(u32, PendingDeath)>> = self
+                .records
+                .par_chunks_mut(chunk_len)
+                .enumerate()
+                .map(|(index, chunk)| {
+                    let base = index * chunk_len;
+                    let first = slots.partition_point(|slot| (*slot as usize) < base);
+                    let end = slots.partition_point(|slot| (*slot as usize) < base + chunk.len());
+                    let mut deaths = Vec::new();
+                    for &slot in &slots[first..end] {
+                        let Some(record) = chunk[slot as usize - base].as_mut() else {
+                            continue;
+                        };
+                        let outputs = record.brain.output_values_copy();
+                        let up = crate::math::unity::transform_up(record.rot);
+                        if pass_b_post(record, &mut LocalOnly, env, &outputs, up) {
+                            deaths.push((
+                                rank[slot as usize],
+                                PendingDeath {
+                                    id: record.id,
+                                    cause: DeathCause::Starvation,
+                                    swallowed: false,
+                                },
+                            ));
+                        }
+                    }
+                    deaths
+                })
+                .collect();
+            for part in parts {
+                pool_deaths.extend(part);
+            }
+            ctx.scratch.lanes.post_on_pool += deferred.len() as u64;
+        }
         if !pool_deaths.is_empty() {
             let dense_deaths: Vec<PendingDeath> = ctx.scratch.deaths.drain(first_death..).collect();
             pool_deaths.extend(
@@ -5513,10 +5643,11 @@ impl BibiteStore {
         if record.body.dead || !record.born || !record.is_ready {
             return (false, None);
         }
-        let upkeep = record.body.metabolism + record.derived.brain_upkeep;
+        // `UseEnergy((metabolism + brain.brainUpkeepCost) * Time.fixedDeltaTime)`: the argument is one double expression rounded once.
+        let upkeep = ((f64::from(record.body.metabolism) + f64::from(record.derived.brain_upkeep)) * f64::from(dt)) as f32;
         // A new frame of the game: the `Hurting` calls of the last one are over (see `BodyState::death_hurts`).
         record.body.death_hurts = 0;
-        let spend = record.body.use_energy(upkeep * dt, true);
+        let spend = record.body.use_energy(upkeep, true);
         let mut death = None;
         if spend.died {
             death = Some(PendingDeath {
@@ -5527,15 +5658,20 @@ impl BibiteStore {
         }
         record.throttle.brain_counter += 1;
         let mut due = false;
-        if record.throttle.brain_counter >= settings.brain_tps.max(1) {
-            record.throttle.brain_counter = 0;
+        // The game SUBTRACTS the period (`brainTicksCount -= brainTickFactor`, `visionLookupCount -= visionLookupPeriod`, `visionSensingCount -= visionSensingPeriod`), so a counter
+        // that is above its period (the setting was lowered while the world ran) stays above it; resetting to 0 gave the same schedule only while the counters were below it.
+        let brain_period = settings.brain_tps.max(1);
+        if record.throttle.brain_counter >= brain_period {
+            record.throttle.brain_counter -= brain_period;
             record.throttle.lookup_counter += 1;
-            if record.throttle.lookup_counter >= settings.vision_lookup_updates.max(1) {
-                record.throttle.lookup_counter = 0;
+            let lookup_period = settings.vision_lookup_updates.max(1);
+            if record.throttle.lookup_counter >= lookup_period {
+                record.throttle.lookup_counter -= lookup_period;
             }
             record.throttle.sense_counter += 1;
-            if record.throttle.sense_counter >= settings.vision_sense_updates.max(1) {
-                record.throttle.sense_counter = 0;
+            let sense_period = settings.vision_sense_updates.max(1);
+            if record.throttle.sense_counter >= sense_period {
+                record.throttle.sense_counter -= sense_period;
             }
             due = true;
         }
@@ -5770,12 +5906,41 @@ impl BibiteStore {
                 }
             }
         }
+        let Some((snapshots, count)) = self.mouth_snapshots(id, ctx) else {
+            return;
+        };
+        let Some(record) = self.get_mut(id) else {
+            return;
+        };
+        let outputs = record.brain.output_values_copy();
+        let non_finite = pass_b_live(
+            record,
+            &mut CtxShared(&mut *ctx),
+            env,
+            &outputs,
+            &snapshots[..count],
+        );
+        if non_finite {
+            ctx.scratch.deaths.push(PendingDeath {
+                id,
+                cause: DeathCause::Starvation,
+                swallowed: false,
+            });
+        }
+    }
+
+    /// What the bibite `id` sees of each of its mouth targets at its turn, nearest first, and how many there are.
+    fn mouth_snapshots(
+        &mut self,
+        id: BibiteId,
+        ctx: &mut BibiteTickCtx<'_>,
+    ) -> Option<([TargetSnapshot; 10], usize)> {
         let (targets, count) = match self.get(id) {
-            Some(record) => (record.mouth_targets, record.n_mouth_targets),
-            None => return,
+            Some(record) => (record.mouth_targets, record.n_mouth_targets as usize),
+            None => return None,
         };
         let mut snapshots = [TargetSnapshot::default(); 10];
-        for index in 0..count as usize {
+        for index in 0..count {
             snapshots[index] = self
                 .target_snapshot(id, targets[index], ctx)
                 .unwrap_or_default();
@@ -5786,31 +5951,45 @@ impl BibiteStore {
                 format!("{:?}", snapshots[index]),
             ));
         }
-        let Some(record) = self.get_mut(id) else {
-            return;
-        };
         // `BibiteMouth.cs:359-394`: `objectsInMouth` is sorted by distance
         // from the mouth transform (the bibite origin) every update, so the
         // nearest target is bitten/swallowed first. Stable sort keeps
         // trigger order as the tie-break.
-        let origin = record.pos;
-        snapshots[..count as usize]
-            .sort_by(|a, b| a.pos.distance(origin).total_cmp(&b.pos.distance(origin)));
+        let origin = self.get(id)?.pos;
+        snapshots[..count].sort_by(|a, b| a.pos.distance(origin).total_cmp(&b.pos.distance(origin)));
+        Some((snapshots, count))
+    }
+
+    /// The dense-order part of a heavy turn whose head the sweep took ([`turn::HEAD_DONE`]): the mouth's work with the world's stores,
+    /// and then the rest of the turn, unless `leave` says the pool takes that after the dense-order stretch ([`Self::pass_b_dense`]).
+    /// Returns whether it was left.
+    fn tick_brain_post_split(
+        &mut self,
+        id: BibiteId,
+        ctx: &mut BibiteTickCtx<'_>,
+        env: &OrganEnv<'_>,
+        leave: bool,
+    ) -> bool {
+        let Some((snapshots, count)) = self.mouth_snapshots(id, ctx) else {
+            return false;
+        };
+        let Some(record) = self.get_mut(id) else {
+            return false;
+        };
         let outputs = record.brain.output_values_copy();
-        let non_finite = pass_b_live(
-            record,
-            &mut CtxShared(&mut *ctx),
-            env,
-            &outputs,
-            &snapshots[..count as usize],
-        );
-        if non_finite {
+        organs_hooks(record, &mut CtxShared(&mut *ctx), &outputs, &snapshots[..count]);
+        if leave {
+            return true;
+        }
+        let up = crate::math::unity::transform_up(record.rot);
+        if pass_b_post(record, &mut CtxShared(&mut *ctx), env, &outputs, up) {
             ctx.scratch.deaths.push(PendingDeath {
                 id,
                 cause: DeathCause::Starvation,
                 swallowed: false,
             });
         }
+        false
     }
 
     /// The snapshot of a mouth target as the serial pass B sees it when `viewer` takes its turn. In the split pass B the
@@ -6295,6 +6474,22 @@ impl OrganShared for LocalOnly {
     }
 }
 
+/// What the sweep did of a heavy turn before it handed it to the dense-order stretch (the bits of the flags that go with its slot).
+mod turn {
+    /// The head of the turn ([`super::pass_b_head`]) was taken in the sweep: the dense-order stretch does the rest.
+    pub const HEAD_DONE: u8 = 1;
+    /// A pheromone puff is due this tick: the rest of the turn reaches the pheromone store, so it stays in dense order to the end.
+    pub const EMITS: u8 = 2;
+}
+
+/// Whether a bibite's heavy turn is cut in parts ([`pass_b_head`], [`organs_hooks`], [`pass_b_post`]) so that the pool takes the parts
+/// that touch nothing but the record. `RUSTIBITES_NOSPLIT` (any value) puts the whole turn in dense order, as it was (the results do not
+/// depend on it; it is there to time the two against each other and for the tests).
+fn split_turns_enabled() -> bool {
+    static SPLIT: std::sync::OnceLock<bool> = std::sync::OnceLock::new();
+    *SPLIT.get_or_init(|| std::env::var_os("RUSTIBITES_NOSPLIT").is_none())
+}
+
 /// Bits of [`pass_b_heavy_reasons`].
 mod heavy {
     /// Something is in the mouth.
@@ -6390,13 +6585,38 @@ fn pass_b_live<S: OrganShared>(
     outputs: &[f32; N_OUTPUTS],
     snapshots: &[TargetSnapshot],
 ) -> bool {
-    let (bs, dt) = (env.bs, env.dt);
+    let up = pass_b_head(record, shared, env, outputs);
+    organs_hooks(record, shared, outputs, snapshots);
+    pass_b_post(record, shared, env, outputs, up)
+}
+
+/// The first part of [`pass_b_live`]: the attacked-damage decay and [`organs_head`]. Returns the forward vector.
+fn pass_b_head<S: OrganShared>(
+    record: &mut BibiteRecord,
+    shared: &mut S,
+    env: &OrganEnv<'_>,
+    outputs: &[f32; N_OUTPUTS],
+) -> Vec2 {
     // `BibiteBody.cs:622-625`: after the brain step and before the
     // organs, `attackedDmg` decays every fixed update.
     if record.body.attacked_dmg > 0.0 {
-        record.body.attacked_dmg = attacked_dmg_decay(record.body.attacked_dmg, dt);
+        record.body.attacked_dmg = attacked_dmg_decay(record.body.attacked_dmg, env.dt);
     }
-    let up = tick_organs(record, shared, env, outputs, snapshots);
+    organs_head(record, shared, env, outputs)
+}
+
+/// The last part of [`pass_b_live`], after the mouth: [`organs_post`], the clock and the propulsion bookkeeping. Returns whether the
+/// health went non-finite (a starvation death for the caller to queue in dense order). `up` is what [`pass_b_head`] returned (the
+/// rotation does not change in a turn: the forward vector is not worked out a second time).
+fn pass_b_post<S: OrganShared>(
+    record: &mut BibiteRecord,
+    shared: &mut S,
+    env: &OrganEnv<'_>,
+    outputs: &[f32; N_OUTPUTS],
+    up: Vec2,
+) -> bool {
+    let (bs, dt) = (env.bs, env.dt);
+    organs_post(record, shared, env, outputs, up);
     let clock_tick = record
         .clock
         .tick(dt, record.brain.output_value(Output::ClkReset));
@@ -6421,7 +6641,8 @@ fn pass_b_live<S: OrganShared>(
     record.propulsion.total_travel += record.pos.distance(last_pos);
     record.propulsion.last_pos = record.pos;
     record.propulsion.angular_velocity = record.ang_vel.to_degrees() / 360.0;
-    record.propulsion.signed_velocity = record.vel.dot(up);
+    // `SignedVelocity = Vector2.Dot(linearVelocity, transform.up)`: the sum in double, rounded once.
+    record.propulsion.signed_velocity = crate::math::unity::dot(record.vel, up);
     record.propulsion.normalized_velocity = if record.body.geometry.body_length > 0.0 {
         record.propulsion.signed_velocity / record.body.geometry.body_length
     } else {
@@ -6431,12 +6652,15 @@ fn pass_b_live<S: OrganShared>(
     non_finite
 }
 
-fn tick_organs<S: OrganShared>(
+/// The first part of a bibite's organs turn: the feeding counters, the stomach, the womb, the fat, the movement and the mouth's latching of
+/// the brain's outputs. Returns the forward vector. It reads and writes the bibite's own record and nothing else when no egg is to be
+/// laid (see [`pass_b_heavy_reasons`]), so a bibite whose turn has to reach the world's stores later (the mouth's targets, a held pellet,
+/// a loaded stomach to vomit, a pheromone to emit) can still take this part in the worker pool's sweep ([`pass_b_head`]).
+fn organs_head<S: OrganShared>(
     record: &mut BibiteRecord,
     shared: &mut S,
     env: &OrganEnv<'_>,
     outputs: &[f32; N_OUTPUTS],
-    targets: &[TargetSnapshot],
 ) -> Vec2 {
     let OrganEnv {
         settings,
@@ -6457,9 +6681,6 @@ fn tick_organs<S: OrganShared>(
         }
     }
     record.feeding.contact_latched = had_contact;
-    if had_contact && shared.plant_in_mouth(record) {
-        record.feeding.plant_contact_ticks += 1;
-    }
     // The genes the turn reads every tick come from `growth_genes` (on a line the turn reads anyway), not from the genome's lines.
     #[cfg(test)]
     assert!(
@@ -6533,7 +6754,7 @@ fn tick_organs<S: OrganShared>(
         health_fullness,
         age_strength_penalty: strength_penalty,
     };
-    let up = Vec2::Y.rotate(record.rot);
+    let up = crate::math::unity::transform_up(record.rot);
     let command = compute_movement(
         &record.propulsion_derived,
         &movement,
@@ -6556,6 +6777,22 @@ fn tick_organs<S: OrganShared>(
         outputs[Output::Grab.index()],
         &record.mouth_derived,
     );
+    up
+}
+
+/// The middle of a bibite's organs turn, the part that reaches the world's stores when the mouth has anything to do: the plant pellets
+/// in the mouth are counted, and the mouth vomits, lets go, bites, swallows and grabs.
+fn organs_hooks<S: OrganShared>(
+    record: &mut BibiteRecord,
+    shared: &mut S,
+    outputs: &[f32; N_OUTPUTS],
+    targets: &[TargetSnapshot],
+) {
+    // (This was the top of the turn: what it counts is read by nothing in the head, so a turn that took its head in the sweep counts
+    // here, with the pellets as the turns before it in dense order left them, which is what the serial order shows it.)
+    if record.n_mouth_targets > 0 && shared.plant_in_mouth(record) {
+        record.feeding.plant_contact_ticks += 1;
+    }
     // `BibiteMouth.cs:348-352`: a strong negative Want2Eat with a loaded jaw
     // vomits and skips the rest of the mouth update for this tick.
     let want_eat = outputs[Output::Want2Eat.index()];
@@ -6568,6 +6805,22 @@ fn tick_organs<S: OrganShared>(
         }
         shared.tick_mouth(record, targets);
     }
+}
+
+/// The last part of a bibite's organs turn: the pheromone puff, growth and healing, and the totals. `up` is the forward vector
+/// [`organs_head`] returned. With no puff to emit (see [`pass_b_heavy_reasons`]) it reads and writes the bibite's own record and nothing
+/// else, and it needs no more of the world than the turn's own results so far, so a bibite that nobody looks at later this tick can take
+/// it in the worker pool after the mouth was dealt with ([`pass_b_post`]).
+fn organs_post<S: OrganShared>(
+    record: &mut BibiteRecord,
+    shared: &mut S,
+    env: &OrganEnv<'_>,
+    outputs: &[f32; N_OUTPUTS],
+    up: Vec2,
+) {
+    let OrganEnv {
+        settings, bs, dt, ..
+    } = *env;
     // Pheromone.
     record.pheromone.progress += dt;
     if record.pheromone.progress >= PHEROMONE_EMIT_PERIOD {
@@ -6604,8 +6857,6 @@ fn tick_organs<S: OrganShared>(
     // BodyState energy totals are runtime-only monotonic counters.
     record.feeding.energy_gained_e = record.body.energy_gained_total;
     record.feeding.energy_spent_e = record.body.energy_spent_total;
-    // The rotation does not change in here: the caller reuses the forward vector instead of a second `sin_cos`.
-    up
 }
 
 /// Applies shade/void steering to the movement command after the herding
@@ -6718,6 +6969,8 @@ fn lay_eggs(record: &mut BibiteRecord, ctx: &mut BibiteTickCtx<'_>, count: u32) 
             &genome,
             &record.effective_mutation_factor(),
         );
+        // `eggBrain.CopyBrain(brain.Nodes, brain.Synapses, mutate: true)`: the egg's brain is built from the parent's structure, its nodes start fresh.
+        brain.reset_runtime_state(settings.brain_period());
         let upkeep = brain_upkeep_per_second(&brain, settings);
         let required = egg_required_energy(
             genome.body_energy_at_birth(settings),
@@ -6725,7 +6978,7 @@ fn lay_eggs(record: &mut BibiteRecord, ctx: &mut BibiteTickCtx<'_>, count: u32) 
             genome.gene(Gene::SizeRatio),
         );
         let hatch_time = genome.gene(Gene::HatchTime);
-        let up = Vec2::Y.rotate(record.rot);
+        let up = crate::math::unity::transform_up(record.rot);
         let pos = record.pos - up * (8.0 * record.body.geometry.d1_size);
         let egg = ctx.eggs.spawn(EggSpawn {
             pos,
@@ -7137,7 +7390,7 @@ fn vomit(record: &mut BibiteRecord, ctx: &mut BibiteTickCtx<'_>, want_eat: f32) 
     );
     // Impulse `up * magnitude * m / total` on a pellet of mass `m` is a
     // velocity change of `up * magnitude / total` for every pellet.
-    let velocity = Vec2::Y.rotate(record.rot) * (magnitude / total_mass);
+    let velocity = crate::math::unity::transform_up(record.rot) * (magnitude / total_mass);
     for id in spawned {
         let _ = ctx.pellets.set_velocity(id, velocity);
     }
@@ -7154,7 +7407,7 @@ fn release_grab(record: &mut BibiteRecord, ctx: &mut BibiteTickCtx<'_>) {
             holder: record.id,
             prey: (0..count).filter_map(|index| bibite_id_from_tag(record.held_targets[index])).collect(),
             pellets: (0..count).filter_map(|index| pellet_id_from_tag(record.held_targets[index])).collect(),
-            up: Vec2::Y.rotate(record.rot),
+            up: crate::math::unity::transform_up(record.rot),
             n_held: count as f32,
             throwing_force_factor: ctx.settings.scenario.throwing_force_factor,
             jaw_strength: record.mouth_derived.jaw_strength,
@@ -7630,6 +7883,30 @@ fn write_back_bibite_pose(
     lost
 }
 
+/// The place of the pellet `id` in `ids`, the pellets of the step in dense order (every one of them live): the answer of a search through
+/// the list from the front, found by halving it, since a holder asks for each pellet it holds and a world with thousands of grabbers and
+/// tens of thousands of awake pellets made those searches the most expensive thing the bridge did. A stale id (its slot holds a newer
+/// pellet) is not in the list, as before.
+fn pellet_offset(pellets: &PelletStore, ids: &[PelletId], id: PelletId) -> Option<usize> {
+    let found = pellets
+        .dense_position(id.handle().slot() as usize)
+        .and_then(|dense| {
+            let at = ids.partition_point(|other| {
+                pellets
+                    .dense_position(other.handle().slot() as usize)
+                    .is_some_and(|place| place < dense)
+            });
+            (ids.get(at) == Some(&id)).then_some(at)
+        });
+    #[cfg(test)]
+    assert_eq!(
+        found,
+        ids.iter().position(|other| *other == id),
+        "the pellets of the step are not in dense order"
+    );
+    found
+}
+
 /// The physics body of one pellet (`None` when the id is not in the store).
 fn build_pellet_physics_body(
     pellets: &PelletStore,
@@ -7958,8 +8235,8 @@ impl BibiteStore {
         // is overlapped, and the step, reuse them instead of computing every box again.
         let boxes = scratch.physics.boxes_for_next_step();
         boxes.clear();
-        // The bibites that hold something, as dense positions, when the build on the pool has looked at every record anyway.
-        let mut held_dense: Option<Vec<u32>> = None;
+        // The bibites that hold something, as dense positions, found by the build, which looks at every record anyway.
+        let held_dense: Option<Vec<u32>>;
         if parallel {
             let records = &self.records;
             let generations = &self.generations;
@@ -8026,15 +8303,22 @@ impl BibiteStore {
             }));
         } else {
             boxes.clear();
+            // The same list as on the pool, made in the loop that reads every record anyway: a scan for the holders afterwards
+            // is another pass over all the records.
+            let mut held = Vec::new();
             for id in self.ids() {
                 let Some(record) = self.get(id) else {
                     continue;
                 };
                 let body = build_bibite_physics_body(record, settings, &bs, dt, epoch);
                 boxes.push(phys::BodyBox::of(&body));
+                if record.n_held_targets > 0 {
+                    held.push(bodies.len() as u32);
+                }
                 bodies.push(body);
                 bibite_ids.push(id);
             }
+            held_dense = Some(held);
         }
         let bibite_count = bodies.len();
         scratch.physics.boxes_ready(bibite_count);
@@ -8083,15 +8367,40 @@ impl BibiteStore {
                 })
                 .collect();
             awake.sort_unstable();
-            for (_, slot) in awake {
-                let Some(id) = pellets.live_id(slot as usize) else {
-                    continue;
-                };
-                let Some(body) = build_pellet_physics_body(pellets, id, settings) else {
-                    continue;
-                };
-                bodies.push(body);
-                pellet_ids.push(id);
+            // The bodies of the awake pellets: each reads only its own pellet, so with enough of them the pool fills them in place.
+            let awake_workers = crate::sim::ParallelGates::workers_for(
+                awake.len(),
+                self.gates.bodies,
+                executor.map_or(1, |executor| executor.threads()),
+            );
+            if awake_workers > 1 {
+                pellet_ids.extend(
+                    awake
+                        .iter()
+                        .filter_map(|&(_, slot)| pellets.live_id(slot as usize)),
+                );
+                let pellets_ref: &PelletStore = pellets;
+                let min_len = crate::sim::ParallelGates::chunk_len(
+                    pellet_ids.len(),
+                    self.gates.bodies,
+                    awake_workers,
+                    1,
+                );
+                bodies.par_extend(pellet_ids.par_iter().with_min_len(min_len).map(|id| {
+                    build_pellet_physics_body(pellets_ref, *id, settings)
+                        .expect("`live_id` names live pellets only")
+                }));
+            } else {
+                for (_, slot) in awake {
+                    let Some(id) = pellets.live_id(slot as usize) else {
+                        continue;
+                    };
+                    let Some(body) = build_pellet_physics_body(pellets, id, settings) else {
+                        continue;
+                    };
+                    bodies.push(body);
+                    pellet_ids.push(id);
+                }
             }
         } else if pellet_workers > 1 {
             // Each body reads only its own pellet: filled in place in id order by the pool.
@@ -8201,16 +8510,12 @@ impl BibiteStore {
                 }
             }
             if !sleep.promoted().is_empty() {
-                let eggs_tail = bodies.split_off(pellet_start + pellet_ids.len());
-                let awake_bodies = bodies.split_off(pellet_start);
-                let mut merged: Vec<(u32, PelletId, phys::PhysicsBody)> =
-                    Vec::with_capacity(awake_bodies.len() + sleep.promoted().len());
-                for (body, id) in awake_bodies.into_iter().zip(pellet_ids.iter()) {
-                    let dense = pellets
-                        .dense_position(id.handle().slot() as usize)
-                        .unwrap_or(u32::MAX);
-                    merged.push((dense, *id, body));
-                }
+                // The promoted sleepers take their places among the awake pellets' bodies, in dense order. The awake bodies are
+                // in that order already and only a few sleepers are promoted (a hundred in fifty thousand pellets), so the few are
+                // sorted and merged in, and every awake body is moved once: (sorting all of them, each 224 bytes with its key,
+                // and moving them in and out of the sort's buffer cost as much as building the bodies of the awake pellets.)
+                let mut promoted: Vec<(u32, PelletId, phys::PhysicsBody)> =
+                    Vec::with_capacity(sleep.promoted().len());
                 for &slot in sleep.promoted() {
                     let Some(id) = pellets.live_id(slot as usize) else {
                         continue;
@@ -8219,15 +8524,40 @@ impl BibiteStore {
                         continue;
                     };
                     let dense = pellets.dense_position(slot as usize).unwrap_or(u32::MAX);
-                    merged.push((dense, id, body));
+                    promoted.push((dense, id, body));
                 }
-                merged.sort_unstable_by_key(|entry| entry.0);
-                pellet_ids.clear();
-                for (_, id, body) in merged {
+                promoted.sort_unstable_by_key(|entry| entry.0);
+                let mut awake_bodies = bodies.split_off(pellet_start);
+                let eggs_tail = awake_bodies.split_off(pellet_ids.len());
+                let awake_ids = std::mem::take(&mut pellet_ids);
+                pellet_ids.reserve(awake_ids.len() + promoted.len());
+                let mut promoted = promoted.into_iter().peekable();
+                for (id, body) in awake_ids.into_iter().zip(awake_bodies) {
+                    let dense = pellets
+                        .dense_position(id.handle().slot() as usize)
+                        .unwrap_or(u32::MAX);
+                    while promoted.peek().is_some_and(|entry| entry.0 < dense) {
+                        if let Some((_, promoted_id, promoted_body)) = promoted.next() {
+                            pellet_ids.push(promoted_id);
+                            bodies.push(promoted_body);
+                        }
+                    }
                     pellet_ids.push(id);
                     bodies.push(body);
                 }
+                for (_, promoted_id, promoted_body) in promoted {
+                    pellet_ids.push(promoted_id);
+                    bodies.push(promoted_body);
+                }
                 bodies.extend(eggs_tail);
+                #[cfg(test)]
+                assert!(
+                    pellet_ids.windows(2).all(|pair| {
+                        let place = |id: &PelletId| pellets.dense_position(id.handle().slot() as usize);
+                        place(&pair[0]) < place(&pair[1])
+                    }),
+                    "the pellets of the step are not in dense order after the promoted sleepers joined them"
+                );
             }
             sleep.clear_promoted();
         }
@@ -8242,9 +8572,13 @@ impl BibiteStore {
                 continue;
             }
             let holder_tag = bibite_tag(id);
-            // The joint's `breakForce` is `grab_break_force(..)`, but in the original no load ever breaks it: a bibite dragging a 3000-unit pellet at full thrust, or a prey running away
-            // at full thrust from a grab of 0.15, stays joined (measured), so the weld never gives way here either.
-            let break_force = 0.0;
+            // The joint's `breakForce` (and `breakTorque`) is what `BibiteMouth.FixedUpdate` sets on every link each tick while the grab output is up:
+            // `jawStrength * max(diet, 0.1) * desireToGrab / nHeld` (`grab_break_force`). A herbivore's grip is a tenth of a carnivore's: a shrek (diet 0) holding a plant
+            // pellet in front of its mouth lets go of it within ten ticks of the first acceleration in the game (measured 2026-11-18 on 49 identical shrek, each with one
+            // 70-unit pellet in its mouth: the hold is gone by tick 8 and is not made again), which a weld that never gave way did not reproduce: 63 % of the shrek of
+            // `shrekvssabertoothtest1` held something at every moment here against 5 % in the game.
+            // (The game only writes the new value while the grab output is at least 0.15 and leaves the last one in place below that: no value below the 0.15 one is ever set.)
+            let break_force = crate::organs::grab_break_force(record.mouth_derived.jaw_strength, record.genome.gene(Gene::Diet), record.mouth.desire_grab.max(0.15), record.n_held_targets as usize);
             for held_index in 0..record.n_held_targets as usize {
                 let tag = record.held_targets[held_index];
                 let held_at = if let Some(prey) = bibite_id_from_tag(tag) {
@@ -8256,7 +8590,7 @@ impl BibiteStore {
                         None => continue,
                     }
                 } else if let Some(pellet_id) = pellet_id_from_tag(tag) {
-                    match pellet_ids.iter().position(|p| *p == pellet_id) {
+                    match pellet_offset(pellets, &pellet_ids, pellet_id) {
                         Some(offset) => pellet_start + offset,
                         None => continue,
                     }
@@ -8297,7 +8631,7 @@ impl BibiteStore {
                     None => continue,
                 }
             } else if let Some(pellet_id) = pellet_id_from_tag(tag) {
-                match pellet_ids.iter().position(|p| *p == pellet_id) {
+                match pellet_offset(pellets, &pellet_ids, pellet_id) {
                     Some(offset) => pellet_start + offset,
                     None => continue,
                 }
@@ -8326,6 +8660,7 @@ impl BibiteStore {
         scratch.physics.min_sort = self.gates.sorts;
         scratch.physics.min_island_bodies = self.gates.island_bodies;
         scratch.physics.min_island_constraints = self.gates.island_constraints;
+        scratch.physics.min_grid = self.gates.grid_bodies;
         phys::step(&mut bodies, &config, dt, &mut scratch.physics);
         // The joints that gave way (`OnLinkBroke`): the holder lets go.
         for &(held_at, holder_tag) in scratch.physics.broken_welds() {
@@ -9585,6 +9920,28 @@ mod b2b_tests {
         let mut hatched = Vec::new();
         services.eggs.tick(1000.0, &settings, &mut hatched);
         assert_eq!(hatched, vec![egg_id]);
+    }
+
+    /// The egg's brain is the parent's structure with fresh nodes (`CopyBrain` + `FinalizeEditing`), not a copy of the parent's running node values.
+    #[test]
+    fn an_egg_gets_a_brain_with_fresh_nodes() {
+        let (mut store, settings, genome, brain) = fixture();
+        let id = spawn_adult(&mut store, &genome, &brain);
+        let record = store.get_mut(id).unwrap();
+        record.brain.set_output_value(Output::Accelerate, 1.0);
+        record.brain.set_output_value(Output::PhereOut1, 7.0);
+        let mut services = Services::new();
+        let laid = {
+            let mut ctx = services.ctx(&settings);
+            lay_eggs(record, &mut ctx, 1)
+        };
+        assert_eq!(laid, 1);
+        let egg_id = services.eggs.ids().next().unwrap();
+        let egg = services.eggs.get(egg_id).unwrap();
+        // (the egg's brain may have mutated: each node holds what a fresh node with ITS bias holds)
+        let accelerate = egg.brain.output_value(Output::Accelerate);
+        assert!((accelerate - egg.brain.output_bias(Output::Accelerate).tanh()).abs() < 1e-5, "the parent's 1.0 is not inherited: {accelerate}");
+        assert_eq!(egg.brain.output_value(Output::PhereOut1), egg.brain.output_bias(Output::PhereOut1).max(0.0));
     }
 
     #[test]
@@ -11456,6 +11813,45 @@ mod b2a_tests {
         assert!(ids.contains(&second));
         assert!(ids.contains(&third));
         assert_eq!(store.slot_capacity(), 2);
+    }
+
+    /// The game SUBTRACTS the period from its counters (`brainTicksCount -= brainTickFactor`, `visionLookupCount -= visionLookupPeriod`, `visionSensingCount -= visionSensingPeriod`),
+    /// so a counter above its period (the setting was lowered while the world ran) stays above it; measured against the original game (`sense_vs_game`, 2026-11-19: counters 2 and 4 with
+    /// both periods at 1 stayed 2 and 4 for ever, and the port's reset to 0 gave 0).
+    #[test]
+    fn cadence_counters_subtract_the_period() {
+        let (mut store, mut settings, genome, brain) = starter_store();
+        let id = spawn_with(&mut store, &genome, &brain, SpawnVitals::Adult, None);
+        settings.brain_tps = 2;
+        settings.vision_lookup_updates = 1;
+        settings.vision_sense_updates = 1;
+        {
+            let throttle = store.sense_throttle_mut(id).expect("throttle");
+            throttle.brain_counter = 1;
+            throttle.lookup_counter = 2;
+            throttle.sense_counter = 4;
+        }
+        let record = store.get_mut(id).expect("record");
+        record.born = true;
+        record.is_ready = true;
+        let (due, _) = BibiteStore::tick_brain_pre_record(record, &settings);
+        assert!(due, "the brain counter reached its period");
+        let throttle = store.sense_throttle(id).expect("throttle");
+        assert_eq!((throttle.brain_counter, throttle.lookup_counter, throttle.sense_counter), (0, 2, 4));
+        // below its period a counter does what it always did
+        settings.vision_lookup_updates = 10;
+        settings.vision_sense_updates = 5;
+        {
+            let throttle = store.sense_throttle_mut(id).expect("throttle");
+            throttle.brain_counter = 1;
+            throttle.lookup_counter = 9;
+            throttle.sense_counter = 4;
+        }
+        let record = store.get_mut(id).expect("record");
+        let (due, _) = BibiteStore::tick_brain_pre_record(record, &settings);
+        assert!(due);
+        let throttle = store.sense_throttle(id).expect("throttle");
+        assert_eq!((throttle.brain_counter, throttle.lookup_counter, throttle.sense_counter), (0, 0, 0));
     }
 
     #[test]

@@ -1444,31 +1444,53 @@ impl PelletStore {
     /// * removal uses `min(rot, amount + 1e-6)`, so the pellet is destroyed when
     ///   rot reaches the remaining amount.
     pub fn process_decay(&mut self, dt_decay: f32) -> DecayReport {
+        self.process_decay_with(dt_decay, crate::sim::ParallelExecutor::Serial, usize::MAX)
+    }
+
+    /// [`Self::process_decay`] with the scan over the pellets on the worker pool when the store has at least `from` slots (a world
+    /// on the pool: `from` is [`crate::sim::ParallelGates::scans`]). Every pellet's decay reads and writes its own slot only, so a worker
+    /// takes a stretch of the slot columns; the chops and the removals that follow stay in dense order on one thread, because the
+    /// order the pellets are removed in decides which slots the next spawns get, and so every id of the world after it.
+    pub fn process_decay_with(
+        &mut self,
+        dt_decay: f32,
+        executor: crate::sim::ParallelExecutor<'_>,
+        from: usize,
+    ) -> DecayReport {
         if !dt_decay.is_finite() || dt_decay <= 0.0 {
             return DecayReport::default();
         }
         self.pending_removals.clear();
-        for i in 0..self.dense.len() {
-            let slot = self.dense[i] as usize;
-            if !self.decaying.get(slot) {
-                continue;
-            }
-            self.fresh_remaining[slot] -= dt_decay;
-            if self.fresh_remaining[slot] <= 0.0 {
-                let rate = self.materials.get(self.material[slot]).decay_rate;
-                self.decay_amount[slot] += dt_decay * rate;
-            }
-            let amount = self.amount[slot];
-            let rot = self.decay_amount[slot];
-            let remove = if amount > 0.0 {
-                rot / amount > DECAY_REMOVE_THRESHOLD
-            } else {
-                true
-            };
-            if remove {
-                let to_remove = rot.min(amount + DECAY_REMOVE_EPSILON);
-                self.decay_amount[slot] = 0.0;
-                self.pending_removals.push((slot as u32, to_remove));
+        let workers = crate::sim::ParallelGates::workers_for(
+            self.generations.len(),
+            from,
+            executor.threads(),
+        );
+        if workers > 1 {
+            self.scan_decay_pooled(dt_decay, workers, from);
+        } else {
+            for i in 0..self.dense.len() {
+                let slot = self.dense[i] as usize;
+                if !self.decaying.get(slot) {
+                    continue;
+                }
+                self.fresh_remaining[slot] -= dt_decay;
+                if self.fresh_remaining[slot] <= 0.0 {
+                    let rate = self.materials.get(self.material[slot]).decay_rate;
+                    self.decay_amount[slot] += dt_decay * rate;
+                }
+                let amount = self.amount[slot];
+                let rot = self.decay_amount[slot];
+                let remove = if amount > 0.0 {
+                    rot / amount > DECAY_REMOVE_THRESHOLD
+                } else {
+                    true
+                };
+                if remove {
+                    let to_remove = rot.min(amount + DECAY_REMOVE_EPSILON);
+                    self.decay_amount[slot] = 0.0;
+                    self.pending_removals.push((slot as u32, to_remove));
+                }
             }
         }
 
@@ -1491,6 +1513,61 @@ impl PelletStore {
             }
         }
         report
+    }
+
+    /// The first half of [`Self::process_decay_with`] on the pool: the freshness, the rot and the chop test of every decaying
+    /// pellet, a stretch of the slot columns to a worker. Fills `pending_removals` with the chops in dense order, the order the
+    /// serial scan finds them in.
+    fn scan_decay_pooled(&mut self, dt_decay: f32, workers: usize, from: usize) {
+        use rayon::prelude::*;
+        let slots = self.generations.len();
+        let chunk = crate::sim::ParallelGates::chunk_len(slots, from, workers, 4);
+        let decaying = &self.decaying;
+        let alive = &self.alive;
+        let materials = &self.materials;
+        let parts: Vec<Vec<(u32, f32)>> = self
+            .fresh_remaining
+            .par_chunks_mut(chunk)
+            .zip(self.decay_amount.par_chunks_mut(chunk))
+            .zip(self.amount.par_chunks(chunk))
+            .zip(self.material.par_chunks(chunk))
+            .enumerate()
+            .map(|(index, (((fresh, rotten), amounts), kinds))| {
+                let base = index * chunk;
+                let mut removals: Vec<(u32, f32)> = Vec::new();
+                for offset in 0..fresh.len() {
+                    let slot = base + offset;
+                    if !decaying.get(slot) || !alive.get(slot) {
+                        continue;
+                    }
+                    fresh[offset] -= dt_decay;
+                    if fresh[offset] <= 0.0 {
+                        let rate = materials.get(kinds[offset]).decay_rate;
+                        rotten[offset] += dt_decay * rate;
+                    }
+                    let amount = amounts[offset];
+                    let rot = rotten[offset];
+                    let remove = if amount > 0.0 {
+                        rot / amount > DECAY_REMOVE_THRESHOLD
+                    } else {
+                        true
+                    };
+                    if remove {
+                        let to_remove = rot.min(amount + DECAY_REMOVE_EPSILON);
+                        rotten[offset] = 0.0;
+                        removals.push((slot as u32, to_remove));
+                    }
+                }
+                removals
+            })
+            .collect();
+        for part in parts {
+            self.pending_removals.extend(part);
+        }
+        // The serial scan walks the dense list: the chops go in that order.
+        let dense_pos = &self.dense_pos;
+        self.pending_removals
+            .sort_unstable_by_key(|(slot, _)| dense_pos[*slot as usize]);
     }
 
     /// Converts a live pellet's state to a [`crate::pellet::Matter`] value.
@@ -2598,6 +2675,75 @@ mod tests {
         store.process_decay(600.0);
         assert!(almost(store.rot_amount(id).unwrap(), 0.0));
         assert!(almost(store.amount(id).unwrap(), 946.0));
+    }
+
+    /// A store of `count` pellets of both materials with some taken out again: holes among the slots, and a dense order that is not
+    /// the slot order, the way a world that has run for a while looks.
+    fn churned_store(count: usize, seed: u64) -> PelletStore {
+        let mut rng = Rng::from_seed(seed);
+        let mut store = PelletStore::new();
+        let mut ids = Vec::new();
+        for index in 0..count {
+            let material = if index % 3 == 0 {
+                MaterialKind::Plant
+            } else {
+                MaterialKind::Meat
+            };
+            let amount = rng.f32_range(2.0, 400.0);
+            let id = store.spawn(PelletSpawn::new(
+                material,
+                amount,
+                Vec2::new(index as f32, 0.0),
+            ));
+            if material == MaterialKind::Plant && index % 2 == 0 {
+                store.register_decay(id);
+            }
+            ids.push(id);
+        }
+        for (index, id) in ids.iter().enumerate() {
+            if index % 7 == 3 {
+                store.remove(*id);
+            }
+        }
+        store
+    }
+
+    /// The decay pass on the worker pool is the serial one: the whole store byte for byte after every pass, with new pellets taking
+    /// the slots the chops freed in between (so the order the pellets were removed in shows in their ids).
+    #[test]
+    fn decay_on_the_pool_is_the_serial_decay() {
+        let pool = crate::sim::ThreadPool::new(4);
+        let executor = crate::sim::ParallelExecutor::new(Some(&pool));
+        let mut serial = churned_store(6_000, 11);
+        let mut pooled = churned_store(6_000, 11);
+        for store in [&mut serial, &mut pooled] {
+            store.materials_mut().plant.decay_rate = 0.01;
+        }
+        assert_eq!(serial.capture_checkpoint(), pooled.capture_checkpoint());
+        let mut destroyed = 0;
+        for round in 0..40 {
+            let dt = 150.0 + 5.0 * round as f32;
+            let a = serial.process_decay(dt);
+            let b = pooled.process_decay_with(dt, executor, 1);
+            assert_eq!(a, b, "round {round}: the report");
+            destroyed += a.removed_pellets;
+            for extra in 0..6 {
+                for store in [&mut serial, &mut pooled] {
+                    store.spawn(PelletSpawn::new(
+                        MaterialKind::Meat,
+                        9.0 + extra as f32,
+                        Vec2::new(round as f32, extra as f32),
+                    ));
+                }
+            }
+            assert_eq!(
+                serial.capture_checkpoint(),
+                pooled.capture_checkpoint(),
+                "round {round}: the store"
+            );
+            assert!(serial.ids().eq(pooled.ids()), "round {round}: the dense order");
+        }
+        assert!(destroyed > 100, "only {destroyed} pellets were destroyed");
     }
 
     #[test]

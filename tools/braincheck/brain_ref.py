@@ -71,6 +71,7 @@ N_OUTPUTS = 15
 FIRST_OUTPUT = N_INPUTS
 FIRST_HIDDEN = N_INPUTS + N_OUTPUTS
 HERDING_OUTPUT_NODE = FIRST_OUTPUT + 2
+HERDING_SKIPPED_NODE = 2  # NEATBrain.cs:515 compares NodeOut with the literal 2
 OUTPUT_CLAMP = 1024.0
 
 # NodeType integers (NEATBrain.cs:70-86; spec §1.1).
@@ -150,6 +151,14 @@ def pow32(base: float, exponent: float) -> float:
 # back to f32. Python's `math` module calls the same platform libm, so this
 # reproduces the game bit-for-bit (one notable effect: tanh(0.4535929f32) is
 # 0x3ed985aa here, while an f32 `tanhf` gives 0x3ed985a9).
+#
+# More than that, Mono does the arithmetic of a whole C# expression in `double`
+# and rounds to `float` only where a value is STORED (a variable, a field, an
+# array element), PASSED to a method or RETURNED. Measured 2026-11-19 against the
+# original game (tools/braincheck/game_diff, 9,600 brain ticks, every node type):
+# written that way Sigmoid, Gaussian, Integrator, Inhibitory and SoftLatch match
+# the game bit for bit; with an f32 step per operation 0.6 to 32 % of their nodes
+# were one ulp off, and the nodes after them carried it on.
 UNITY_DOUBLE_MATH = True
 
 
@@ -179,12 +188,13 @@ def uses_bias_differently(kind: int) -> bool:
 def sigmoid(x: float) -> float:
     """Game sigmoid: `1f / (1f + Mathf.Pow((float)Math.E, 0f - input))`.
 
-    The `double` power saturates before the f32 cast, so this is also
-    overflow-safe for large `|x|`.
+    `Mathf.Pow` returns a float (a method result); the `1 + p` and the
+    reciprocal are ONE double expression, rounded once. The `double` power
+    saturates before the f32 cast, so this is also overflow-safe.
     """
     x = f32(x)
     e = f32(math.e)  # `(float)Math.E`
-    return f32(1.0 / f32(1.0 + pow32(e, f32(-x))))
+    return f32(1.0 / (1.0 + pow32(e, f32(-x))))
 
 
 def relu(x: float) -> float:
@@ -196,38 +206,36 @@ def relu(x: float) -> float:
 def gaussian(x: float) -> float:
     """Game Gaussian: `1f / (1f + Mathf.Pow(input, 2f))`."""
     x = f32(x)
-    return f32(1.0 / f32(1.0 + pow32(x, 2.0)))
+    return f32(1.0 / (1.0 + pow32(x, 2.0)))
 
 
 def soft_latch(bias: float, x: float, last_output: float, last_input: float) -> float:
     """`NEATBrain.SoftLatchFunc` (NEATBrain.cs:1105-1133), exact branches.
 
-    All sub-expressions are rounded to f32 in the same order as the C# code
-    (`last / (1 - exp(...)) * (1 - exp(...))` evaluates as `(last / d) * n`).
+    The game's evaluation: each `Mathf.Exp` call takes its argument as a float
+    and returns a float, `num3` is a float local, and the rest of every
+    `return` expression is ONE double expression (see UNITY_DOUBLE_MATH).
     """
     bias = f32(bias)
     x = f32(x)
-    if x >= 0.999:
+    if x >= f32(0.999):
         return 1.0
-    if x <= 0.001:
+    if x <= f32(0.001):
         return 0.0
     li = f32(last_input)
-    if li >= 0.999:
+    if li >= f32(0.999):
         li = 1.0
-    if li <= 0.001:
+    if li <= f32(0.001):
         li = 0.0
+    last_output = f32(last_output)
     if x < li:
-        denominator = f32(1.0 - exp32(f32(f32(-bias) * li)))
-        quotient = f32(last_output / denominator)
-        numerator = f32(1.0 - exp32(f32(f32(-bias) * x)))
-        return f32(quotient * numerator)
-    exponent = f32(bias * f32(li - 1.0))
-    e = exp32(exponent)
-    numerator = f32(last_output - e)
-    denominator = f32(1.0 - e)
-    base = f32(numerator / denominator)
-    growth = exp32(f32(bias * f32(x - 1.0)))
-    return f32(base + f32(f32(1.0 - base) * growth))
+        a = exp32(f32(-bias * li))
+        c = exp32(f32(-bias * x))
+        return f32(last_output / (1.0 - a) * (1.0 - c))
+    e1 = exp32(f32(bias * (li - 1.0)))
+    num3 = f32((last_output - e1) / (1.0 - e1))  # a float local
+    e2 = exp32(f32(bias * (x - 1.0)))
+    return f32(num3 + (1.0 - num3) * e2)
 
 
 def activate(
@@ -251,10 +259,8 @@ def activate(
             x = f32(raw_input * bias)
         else:
             x = raw_input
-    elif has_bias(kind):
+    else:  # `if (!TypeUsesBiasDifferently(Type)) input += baseActivation;` (the Input type too)
         x = f32(raw_input + bias)
-    else:
-        x = raw_input
 
     if kind == INPUT or kind == LINEAR or kind == MULT:
         out = x
@@ -276,14 +282,14 @@ def activate(
         else:
             out = f32(last_output)
     elif kind == DIFFERENTIAL:
-        out = f32(f32(x - f32(last_input)) / period)
+        out = f32((x - f32(last_input)) / period)
     elif kind == ABS:
         out = f32(abs(x))
     elif kind == INTEGRATOR:
-        out = f32(f32(last_output) + f32(x * period))
+        out = f32(f32(last_output) + x * period)
     elif kind == INHIBITORY:
         decay = exp32(f32(f32(-bias) * period))
-        out = f32(f32(x - f32(last_input)) + f32(f32(last_output) * decay))
+        out = f32((x - f32(last_input)) + f32(last_output) * decay)
     elif kind == SOFT_LATCH:
         out = soft_latch(bias, x, f32(last_output), f32(last_input))
     else:
@@ -360,7 +366,9 @@ def _groups(
         if not bool(syn["En"]):
             continue
         node_out = int(syn["NodeOut"])
-        if not herding_enabled and node_out == HERDING_OUTPUT_NODE:
+        # The game's `herdingEnabled || Synapses[i].NodeOut != 2`: the literal 2 (an input node), not the Herding output (node 35), so with herding off
+        # the Herding output is still computed (measured against the game 2026-11-19).
+        if not herding_enabled and node_out == HERDING_SKIPPED_NODE:
             continue
         group = slot.get(node_out)
         if group is None:

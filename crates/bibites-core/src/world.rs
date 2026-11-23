@@ -1446,6 +1446,17 @@ fn material_kind_from_settings(kind: settings::MaterialKind) -> crate::pellet::M
     crate::zone::material_from_settings(kind)
 }
 
+/// The tag a template spawn gets (`BibiteGenes.StartGenesFromTemplate`, cs:272-278): the species name, `Bibite` and a random number below
+/// `int.MaxValue` (`Random.Range(0, int.MaxValue)`), the custom text, or none.
+fn template_tag(tagging: settings::Tagging, custom: &str, species_name: Option<String>, rng: &mut Rng) -> Option<String> {
+    match tagging {
+        settings::Tagging::NoTagging => None,
+        settings::Tagging::SpeciesTagging => species_name,
+        settings::Tagging::RandomTagging => Some(format!("Bibite{}", rng.next_u64() % i32::MAX as u64)),
+        settings::Tagging::CustomTagging => Some(custom.to_owned()),
+    }
+}
+
 /// Bounding radius registered for eggs in the spatial hash (eggs are small; the
 /// exact collider lives in the physics bridge, the hash only serves queries).
 const EGG_HASH_RADIUS: f32 = 0.5;
@@ -1731,7 +1742,8 @@ fn senses_due_from(
         settings.vision_lookup_updates,
         settings.vision_sense_updates,
     );
-    brain_tick && (cadence.lookup_due || cadence.sense_due || needs_pheromones)
+    // The pheromone sense is computed in every tick of a bibite that uses it (the game's `PherosenseAround` runs at the end of every fixed update); the vision only on brain ticks.
+    (brain_tick && (cadence.lookup_due || cadence.sense_due)) || needs_pheromones
 }
 
 /// Immutable snapshot of the stores the sensing pass reads.
@@ -1778,7 +1790,7 @@ pub(crate) fn compute_senses(
         data.settings.vision_lookup_updates,
         data.settings.vision_sense_updates,
     );
-    let phero_needed = brain_tick && record.brain.needs_pheromone_sensing();
+    let phero_needed = record.brain.needs_pheromone_sensing();
     if !cadence.lookup_due && !cadence.sense_due && !phero_needed {
         return None;
     }
@@ -1802,10 +1814,10 @@ pub(crate) fn compute_senses(
             steering = fov_steering;
         }
         if phero_needed {
-            let up = Vec2::Y.rotate(record.rot);
+            let up = crate::math::unity::transform_up(record.rot);
             let phero_radius = record.genome.gene(Gene::PheroSense).max(0.0);
             if data.pheromones.is_empty() && !data.red_death.enabled {
-                senses.apply_phero(&senses::PheroSenses::default());
+                delayed_phero(&mut senses, &senses::PheroSenses::default(), brain_tick);
             } else {
                 let mut accumulator = senses::PheroAccumulator::new(record.pos);
                 if !data.pheromones.is_empty() {
@@ -1827,12 +1839,22 @@ pub(crate) fn compute_senses(
                     accumulator.add_red_death(data.red_death.safe_radius, phero_radius);
                 }
                 let phero = accumulator.finish(up);
-                senses.apply_phero(&phero);
+                delayed_phero(&mut senses, &phero, brain_tick);
             }
         }
         result = Some((senses, steering));
     }
     Some((result, cache_update))
+}
+
+/// The game's order for the pheromone sense: a brain tick reads the values the fixed update before wrote (`Pherosense.pheroSum1..` and the angles are set at the end of every
+/// fixed update, from the pose and the pheromones of that moment), and this tick's own values wait for the next one. A bibite that has not sensed yet (just loaded) reads zeros,
+/// as a freshly loaded game does.
+fn delayed_phero(senses: &mut SenseOutputs, phero: &senses::PheroSenses, brain_tick: bool) {
+    if brain_tick {
+        senses.apply_pending_phero();
+    }
+    senses.set_pending_phero(phero);
 }
 
 /// `FieldOfView.FindSeenEntities`: overlap-query candidates only (the FOV cone
@@ -1885,7 +1907,7 @@ fn fov_lookup_cache(
                 half.sin()
             };
         let size = Vec2::new(width + 2.0 * margin, radius - behind + 2.0 * margin);
-        let up = Vec2::Y.rotate(record.rot);
+        let up = crate::math::unity::transform_up(record.rot);
         let center = record.pos + up * ((radius + behind) / 2.0);
         data.hash
             .query_rotated_box(center, size * 0.5, record.rot, class_mask, scratch)
@@ -1916,7 +1938,7 @@ fn fov_senses_from_cache(
     cache: &FovSeenCache,
 ) -> (SenseOutputs, Option<SteeringInputs>) {
     let mut senses = data.bibites.senses(record.id).copied().unwrap_or_default();
-    let up = Vec2::Y.rotate(record.rot);
+    let up = crate::math::unity::transform_up(record.rot);
     let mut steering = None;
     let params = FovParams {
         view_radius: record.genome.gene(Gene::ViewRadius) * record.derived.d1_size,
@@ -1935,7 +1957,10 @@ fn fov_senses_from_cache(
                 let Some(view) = data.pellets.get(*pellet) else {
                     continue;
                 };
-                if view.amount < 0.01 || record.is_held(crate::body::pellet_tag(*pellet)) {
+                // `FieldOfView.PelletIsHeld` compares the pellet with `held[i] = mouth.links[i].attachedRigidbody.transform`: a joint's `attachedRigidbody` is the body the
+                // joint is ON (the holder), not the one it is connected to, so no pellet ever matches and a held pellet stays in the holder's view (measured 2026-11-18: a
+                // shrek holding a plant pellet in front of its mouth reads PlantCloseness 1.0 in the game and 0.0 with the pellet left out).
+                if view.amount < 0.01 {
                     continue;
                 }
                 match view.material {
@@ -1985,7 +2010,7 @@ fn fov_senses_from_cache(
 impl World {
     /// What the field of view of bibite `id` sees now, object by object with its weight: the lists the game's `FieldOfView` keeps for
     /// `FieldOfViewDisplay`'s labels ("Show Targets"). The candidates are the bibite's cached lookup and the test and weight functions are the ones
-    /// `fov_senses_from_cache` runs on them (a pellet that is held or empty, and a bibite that is the subject itself, are left out the same way);
+    /// `fov_senses_from_cache` runs on them (an empty pellet, and a bibite that is the subject itself, are left out the same way; a held pellet stays in);
     /// nothing of the simulation changes. Empty while the bibite is dead or its brain uses no field of view input.
     #[must_use]
     pub fn fov_targets(&self, id: BibiteId) -> Option<senses::FovTargets> {
@@ -2005,14 +2030,14 @@ impl World {
         if record.body.dead || !params.is_enabled() || !mask.any() {
             return Some(targets);
         }
-        let up = Vec2::Y.rotate(record.rot);
-        let weight_of = |pos: Vec2, radius: f32, size_term: f32| -> Option<f32> {
+        let up = crate::math::unity::transform_up(record.rot);
+        let weight_of = |pos: Vec2, radius: f32, what: senses::WeightOf| -> Option<f32> {
             let view = senses::target_in_view(record.pos, up, &params, pos, radius)?;
-            Some(senses::fov_weight(
+            Some(senses::fov_weight_of(
                 view.distance,
                 view.angle_deg,
                 &params,
-                size_term,
+                what,
             ))
         };
         if mask.plant || mask.meat {
@@ -2020,7 +2045,7 @@ impl World {
                 let Some(view) = self.pellets.get(*pellet) else {
                     continue;
                 };
-                if view.amount < 0.01 || record.is_held(crate::body::pellet_tag(*pellet)) {
+                if view.amount < 0.01 {
                     continue;
                 }
                 let list = match view.material {
@@ -2029,7 +2054,7 @@ impl World {
                     _ => continue,
                 };
                 let size_term = senses::pellet_size_term(view.amount);
-                if let Some(weight) = weight_of(view.pos, view.radius, size_term) {
+                if let Some(weight) = weight_of(view.pos, view.radius, senses::WeightOf::Pellet(size_term)) {
                     list.push(SeenTarget {
                         key: crate::body::pellet_tag(*pellet),
                         pos: view.pos,
@@ -2049,7 +2074,10 @@ impl World {
                 };
                 let key = crate::body::bibite_tag(*other);
                 if view.dead {
-                    let corpse = senses::corpse_size_term(view.base_body_area, view.health_ratio);
+                    let corpse = senses::WeightOf::Corpse {
+                        base_body_area: view.base_body_area,
+                        health_ratio: view.health_ratio,
+                    };
                     if let Some(weight) = weight_of(view.pos, view.side_radius(), corpse) {
                         targets.meat.push(SeenTarget {
                             key,
@@ -2059,8 +2087,10 @@ impl World {
                         });
                     }
                 }
-                let size_term = senses::bibite_size_term(view.max_health);
-                if let Some(weight) = weight_of(view.pos, view.side_radius(), size_term) {
+                let size = senses::WeightOf::Bibite {
+                    max_health: view.max_health,
+                };
+                if let Some(weight) = weight_of(view.pos, view.side_radius(), size) {
                     targets.bibites.push(SeenTarget {
                         key,
                         pos: view.pos,
@@ -2800,9 +2830,9 @@ impl World {
             threads: 1,
             sensing_pool: None,
             pool_wanted: true,
-            parallel_gates: crate::sim::ParallelGates::default(),
-            active_gates: crate::sim::ParallelGates::default(),
-            pool_tuner: PoolTuner::new(crate::sim::ParallelGates::default().pool_prior()),
+            parallel_gates: crate::sim::ParallelGates::calibrated(),
+            active_gates: crate::sim::ParallelGates::calibrated(),
+            pool_tuner: PoolTuner::new(crate::sim::ParallelGates::calibrated().pool_prior()),
             sensing_worker_scratch: Vec::new(),
             sensing_chunks: Vec::new(),
             sensing_due_ids: Vec::new(),
@@ -2895,6 +2925,13 @@ impl World {
         world.clock = FixedClock::new(settings.sim_tps);
         world.decay_tps = settings.decay_tps;
         world.decay = DecayThrottle::new(settings.decay_tps);
+        // Red Death (`RedDeathBloomManager` subscribes to the loaded settings and starts as they say): a world made from a save or a scenario with the bloom
+        // switched on has it from its first tick. Only an edit of the settings panel (`apply_settings`) set it before, so a loaded bloom hurt nothing, was
+        // not smelled and drew nothing until some setting was touched.
+        world.tools.red_death.base_damage = settings.scenario.red_death_base_damages;
+        world.tools.red_death.damage_velocity = settings.scenario.red_death_damage_velocity;
+        world.tools.red_death.set_enabled(settings.scenario.enable_red_death);
+        world.tools.red_death.set_fill(settings.scenario.red_death_fill);
 
         // Material table from settings (spec §7: settings overrides defaults).
         let mut materials = MaterialTable::default();
@@ -3492,12 +3529,9 @@ impl World {
         pos: Vec2,
         randomize: RandomizeGenes,
     ) -> Result<BibiteId> {
+        // The tag is set below, once the species is known (`StartGenesFromTemplate`: species name / random / custom / none).
         let mut meta = template.meta.clone();
-        match tagging {
-            Tagging::NoTagging => meta.species_tag = None,
-            Tagging::CustomTagging => meta.species_tag = Some(tag.to_owned()),
-            _ => {}
-        }
+        meta.species_tag = None;
         // `WorldObjectsSpawner.SpawnBibiteFromTemplate` (cs:148-176): AllGenes
         // randomises every gene (keeping the template generation),
         // NormalMutations runs one `Mutate()` pass, Color re-rolls the colour.
@@ -3519,11 +3553,15 @@ impl World {
                 genome = mutated;
             }
         }
-        let mut spawn = BibiteSpawn::new(genome, meta, template.brain.clone());
+        // `WorldObjectsSpawner`: `CopyBrain(template.nodes, template.synapses, mutate: false)`: a template's saved node values are not kept.
+        let mut template_brain = template.brain.clone();
+        template_brain.reset_runtime_state(self.settings.brain_period());
+        let mut spawn = BibiteSpawn::new(genome, meta, template_brain);
         spawn.vitals = SpawnVitals::from_growth_at_spawn(growth_at_spawn);
         spawn.pos = pos;
         spawn.rot = self.rng.f32() * TAU;
-        let id = self.bibites.spawn(spawn)?;
+        // The size a growth mode asks for comes from the TEMPLATE's genes (cs:182-188), however the spawned genes were randomised.
+        let id = self.bibites.spawn_with_growth_basis(spawn, &template.genome)?;
         if let Some(record) = self.bibites.get_mut(id) {
             let genome = record.genome.clone();
             let brain = record.brain.clone();
@@ -3531,6 +3569,10 @@ impl World {
             // `BibiteGenes.StartGenesFromTemplate`: `FindSpeciesFromTemplate` - the species the template names (every template names one), founded by the first bibite.
             let species = self.species.find_species_from_template(&template.game_species_name(), "", &genome, &brain, false);
             meta.species = Some(species);
+            // The same call sets the tag (`speciesTag = tagStyle switch ...`). The game's AllGenes branch of a live spawn never calls it (cs:163-167: it only copies
+            // the generation), so there the original leaves the bibite untagged; the player asked for Random Tag with Random (All) Genes to tag, so this port tags it.
+            let species_name = self.species.get(species).map(|found| found.name());
+            meta.species_tag = template_tag(tagging, tag, species_name, &mut self.rng);
             record.meta = meta;
             let parent = record.meta.species.unwrap_or(species);
             self.species
@@ -3548,7 +3590,8 @@ impl World {
     /// `angle_radians = None` uses a random orientation like the game. With
     /// [`GrowthAtSpawn::Egg`] this creates an incubating egg using
     /// `LayBodyEnergy` as the initial energy; other modes create a live bibite.
-    /// Randomize-gene modes are not exposed yet (see `docs/UI_ACTIONS_BODY.md`).
+    /// The egg takes the ordinary child mutation of the game's egg spawn (`Mutate((int)genes[9])`); for the other randomise-gene modes use
+    /// [`Self::spawn_template_at_randomized`].
     ///
     /// # Errors
     ///
@@ -3562,20 +3605,40 @@ impl World {
         tagging: Tagging,
         tag: &str,
     ) -> Result<TemplateSpawn> {
+        self.spawn_template_at_randomized(template, pos, angle_radians, growth_at_spawn, tagging, tag, RandomizeGenes::NormalMutations)
+    }
+
+    /// [`Self::spawn_template_at`] with the spawn row's `randomizeGenes` choice for an EGG (`WorldObjectsSpawner.SpawnEggFromTemplate`,
+    /// cs:207-219): AllGenes replaces every gene (`RandomGenes()`), Color re-rolls the colour after the usual `Mutate((int)genes[9])`, and
+    /// the brain is mutated whatever the choice. The live (non-egg) modes ignore `randomize`: [`Self::spawn_bibite_from_template`] spawns those.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error for an invalid saved body size or egg spawn.
+    #[allow(clippy::too_many_arguments)] // the game's `SpawnBibiteFromTemplate` takes the same seven
+    pub fn spawn_template_at_randomized(
+        &mut self,
+        template: &TemplateSource,
+        pos: Vec2,
+        angle_radians: Option<f32>,
+        growth_at_spawn: GrowthAtSpawn,
+        tagging: Tagging,
+        tag: &str,
+        randomize: RandomizeGenes,
+    ) -> Result<TemplateSpawn> {
         if growth_at_spawn != GrowthAtSpawn::Egg {
             let mut meta = template.meta.clone();
-            match tagging {
-                Tagging::NoTagging => meta.species_tag = None,
-                Tagging::CustomTagging => meta.species_tag = Some(tag.to_owned()),
-                _ => {}
-            }
+            // The tag is set below, with the species (`StartGenesFromTemplate`).
+            meta.species_tag = None;
             let mut capped = template.genome.clone();
             capped.cap();
-            let mut spawn = BibiteSpawn::new(capped, meta, template.brain.clone());
+            let mut template_brain = template.brain.clone();
+            template_brain.reset_runtime_state(self.settings.brain_period());
+            let mut spawn = BibiteSpawn::new(capped, meta, template_brain);
             spawn.vitals = SpawnVitals::from_growth_at_spawn(growth_at_spawn);
             spawn.pos = pos;
             spawn.rot = angle_radians.unwrap_or_else(|| self.rng.f32() * TAU);
-            let id = self.bibites.spawn(spawn)?;
+            let id = self.bibites.spawn_with_growth_basis(spawn, &template.genome)?;
             if let Some(record) = self.bibites.get_mut(id) {
                 let genome = record.genome.clone();
                 let brain = record.brain.clone();
@@ -3583,6 +3646,8 @@ impl World {
                 // `StartGenesFromTemplate`: the species the template names (the placer's bibites join it, the first founds it, named for the template).
                 let species = self.species.find_species_from_template(&template.game_species_name(), "", &genome, &brain, false);
                 meta.species = Some(species);
+                let species_name = self.species.get(species).map(|found| found.name());
+                meta.species_tag = template_tag(tagging, tag, species_name, &mut self.rng);
                 record.meta = meta;
                 let parent = record.meta.species.unwrap_or(species);
                 self.species
@@ -3594,20 +3659,26 @@ impl World {
             return Ok(TemplateSpawn::Bibite(id));
         }
         let mut meta = template.meta.clone();
-        match tagging {
-            Tagging::NoTagging => meta.species_tag = None,
-            Tagging::CustomTagging => meta.species_tag = Some(tag.to_owned()),
-            _ => {}
-        }
-        // `SpawnEggFromTemplate`: `Mutate((int)genes[9])` (a fixed count, the average mutation number) and `CopyBrain(..., mutate: true)`.
+        // The tag is set below, with the species (`StartGenesFromTemplate` comes first in `SpawnEggFromTemplate`, so even an AllGenes egg is tagged).
+        meta.species_tag = None;
+        // `SpawnEggFromTemplate`: `Mutate((int)genes[9])` (a fixed count, the average mutation number) and `CopyBrain(..., mutate: true)`;
+        // AllGenes calls `RandomGenes()` instead of the mutation, Color re-rolls the colour after it.
         let mut genome = template.genome.clone();
         genome.cap();
         let mut brain = template.brain.clone();
-        if !self.settings.scenario.prevent_mutations {
+        if randomize == RandomizeGenes::AllGenes {
+            genome.randomize_in_place(&mut self.rng);
+        } else if !self.settings.scenario.prevent_mutations {
             let count = genome.gene(crate::genome::Gene::AverageMutationNumber) as usize;
             genome.mutate_times(count, &mut self.rng, &self.settings, &MutationFactor::default());
+        }
+        if randomize == RandomizeGenes::Color {
+            genome.randomize_color(&mut self.rng);
+        }
+        if !self.settings.scenario.prevent_mutations {
             brain.mutate(&mut self.rng, &self.settings, &genome, &MutationFactor::default());
         }
+        brain.reset_runtime_state(self.settings.brain_period());
         let upkeep_counts = brain.upkeep();
         let upkeep = upkeep_counts.synapses as f32 * self.settings.scenario.synapse_upkeep_cost
             + upkeep_counts.hidden as f32 * self.settings.scenario.neuron_upkeep_cost;
@@ -3621,7 +3692,10 @@ impl World {
         let size_ratio = genome.gene(crate::genome::Gene::SizeRatio);
         let _ = size_ratio;
         // The egg's genes come from `StartGenesFromTemplate` too: it is of the template's species.
-        meta.species = Some(self.species.find_species_from_template(&template.game_species_name(), "", &genome, &brain, false));
+        let species = self.species.find_species_from_template(&template.game_species_name(), "", &genome, &brain, false);
+        meta.species = Some(species);
+        let species_name = self.species.get(species).map(|found| found.name());
+        meta.species_tag = template_tag(tagging, tag, species_name, &mut self.rng);
         let id = self.eggs.spawn(crate::body::EggSpawn {
             pos,
             vel: Vec2::ZERO,
@@ -4528,7 +4602,10 @@ impl World {
     /// and parallel runs are bit-identical; only which thread computes each item changes.
     pub fn set_threads(&mut self, threads: usize) {
         let requested = if threads == 0 {
-            std::thread::available_parallelism().map_or(1, std::num::NonZeroUsize::get)
+            // Automatic: the workers the machine's calibration found the best ([`crate::calibration`]), or every thread the machine has.
+            crate::sim::machine_profile()
+                .map(|profile| profile.workers)
+                .unwrap_or_else(|| std::thread::available_parallelism().map_or(1, std::num::NonZeroUsize::get))
         } else {
             threads
         }
@@ -4562,6 +4639,22 @@ impl World {
         self.active_gates = gates;
         self.bibites.set_parallel_gates(gates);
         self.pool_tuner = PoolTuner::new(gates.pool_prior());
+    }
+
+    /// Takes the calibration of the machine ([`crate::sim::machine_profile`]) now, or the reference machine's numbers when there is none (the
+    /// player switched it off): its workers (a world that was set to a number of threads by hand keeps that: pass `automatic` false) and
+    /// its first guess of where the pool pays, which the world's pool tuner then starts from. The world keeps ticking the same: nothing a
+    /// tick computes depends on any of it.
+    pub fn apply_machine_profile(&mut self, automatic: bool) {
+        if automatic {
+            self.set_threads(0);
+        }
+        // (`calibrated` is the profile's gates, the reference machine's when there is no profile, or the ones `RUSTIBITES_GATES` names.) A
+        // world whose gates were set by hand (a benchmark, a test: not measuring) keeps them.
+        let gates = crate::sim::ParallelGates::calibrated();
+        if self.parallel_gates.adaptive && self.parallel_gates != gates {
+            self.set_parallel_gates(gates);
+        }
     }
 
     /// What the world's pool tuner has done so far: ticks each way, probes, switches and the mean tick time of each way (all zero for
@@ -5423,10 +5516,12 @@ impl World {
         }
         for index in 0..self.hatched.len() {
             let id = self.hatched[index];
-            let Some(payload) = self.eggs.hatch_payload(id) else {
+            let Some(mut payload) = self.eggs.hatch_payload(id) else {
                 self.eggs.remove(id);
                 continue;
             };
+            // `newBornBrain.CopyBrain(eggBrain.Nodes, eggBrain.Synapses, mutate: false)`: the newborn's nodes start fresh.
+            payload.brain.reset_runtime_state(self.settings.brain_period());
             self.eggs.remove(id);
             self.hash.remove(id.handle(), SpatialClass::Egg);
             let mut meta = payload.meta.clone();
@@ -5788,22 +5883,25 @@ impl World {
         if !self.has_sources {
             return;
         }
-        self.ids_scratch.clear();
-        self.ids_scratch.extend(self.bibites.ids());
-        let mut any = false;
-        for index in 0..self.ids_scratch.len() {
-            let id = self.ids_scratch[index];
-            let Some(record) = self.bibites.get(id) else {
-                continue;
-            };
-            if !record.meta.is_source || record.body.dead {
-                continue;
-            }
-            any = true;
-            let period = 0.5 / record.genome.metabolic_rate().max(f32::EPSILON);
-            let pellet_size = record.body.geometry.base_body_area * 0.1;
-            let energy = pellet_size * self.settings.materials.plant.energy_density;
-            let pos = record.pos - Vec2::Y.rotate(record.rot) * (8.0 * record.derived.d1_size);
+        // Finding the sources is a look at every record (a cache miss on each, in a world of thousands), so the pool takes it
+        // when the world is on it; the progress and the spawns that follow keep the dense order of the plain loop.
+        let plant_density = self.settings.materials.plant.energy_density;
+        let mut sources: Vec<(BibiteId, f32, f32, Vec2)> = Vec::new();
+        self.bibites
+            .filter_map_dense_into(self.executor(), &mut sources, |id, record| {
+                if !record.meta.is_source || record.body.dead {
+                    return None;
+                }
+                let period = 0.5 / record.genome.metabolic_rate().max(f32::EPSILON);
+                let pellet_size = record.body.geometry.base_body_area * 0.1;
+                let energy = pellet_size * plant_density;
+                let pos = record.pos
+                    - crate::math::unity::transform_up(record.rot)
+                        * (8.0 * record.derived.d1_size);
+                Some((id, period, energy, pos))
+            });
+        let any = !sources.is_empty();
+        for (id, period, energy, pos) in sources {
             let progress = acc_entry_f32(&mut self.producer_progress, id);
             *progress += dt;
             // `PelletProducer.FixedUpdate` (cs:25-31) spawns at most one
@@ -6361,8 +6459,9 @@ impl World {
                 culled += 1;
             }
         }
-        let zones = &mut self.zones;
-        zones.recount_all(&self.pellets);
+        let executor = crate::sim::ParallelExecutor::new(self.sensing_pool.as_ref());
+        self.zones
+            .recount_all_with(&self.pellets, executor, self.active_gates.scans);
         self.sync_pellet_hash();
         culled
     }
@@ -6375,9 +6474,15 @@ impl World {
             .red_death
             .enabled
             .then_some(self.tools.red_death.safe_radius);
-        let report = self
-            .zones
-            .update_phase(dt, &mut self.pellets, &mut self.hash, safe_radius);
+        let executor = crate::sim::ParallelExecutor::new(self.sensing_pool.as_ref());
+        let report = self.zones.update_phase_with(
+            dt,
+            &mut self.pellets,
+            &mut self.hash,
+            safe_radius,
+            executor,
+            self.active_gates.scans,
+        );
         self.accounting.produced_plant_energy += report.produced_plant_energy;
         self.accounting.produced_meat_energy += report.produced_meat_energy;
         self.accounting.recycled_plant_energy += report.recycled_plant_energy;
@@ -7474,7 +7579,12 @@ impl World {
             return crate::pellet::DecayReport::default();
         }
         let period = self.decay.period() as f32;
-        let report = self.pellets.process_decay(dt * period);
+        let executor = crate::sim::ParallelExecutor::new(self.sensing_pool.as_ref());
+        let report = self.pellets.process_decay_with(
+            dt * period,
+            executor,
+            self.active_gates.scans,
+        );
         self.accounting.decayed_plant_energy +=
             report.plant_amount * f64::from(self.settings.materials.plant.energy_density);
         self.accounting.decayed_meat_energy +=
@@ -8913,6 +9023,24 @@ mod tests {
         assert!(world.step_red_death_timer(0.5));
     }
 
+    /// A world made from settings that have the Red Death bloom on starts with it on (`RedDeathBloomManager` reads the loaded settings): a saved world with
+    /// Red Death enabled hurt nothing, was not smelled and drew nothing until some setting was edited.
+    #[test]
+    fn a_world_made_from_settings_with_red_death_on_has_the_bloom() {
+        let mut settings = default_settings();
+        settings.scenario.enable_red_death = true;
+        settings.scenario.red_death_fill = 0.75;
+        settings.scenario.red_death_base_damages = 2.0;
+        let world = World::new(settings, ScenarioData::default(), 1).expect("world");
+        let bloom = world.red_death();
+        assert!(bloom.enabled);
+        assert!((bloom.fill - 0.75).abs() < 1e-6 && (bloom.base_damage - 2.0).abs() < 1e-6);
+        assert!(bloom.safe_radius.is_finite() && (bloom.safe_radius - bloom.shade_end * 0.5).abs() < 1e-3);
+        // Switched off in the settings, it stays off.
+        let off = World::new(default_settings(), ScenarioData::default(), 1).expect("world");
+        assert!(!off.red_death().enabled && off.red_death().safe_radius == f32::INFINITY);
+    }
+
     // ----- World::new / ScenarioData -----
 
     fn default_settings() -> SimSettings {
@@ -9306,6 +9434,35 @@ mod tests {
         // wrapped x = 0.
         world.run(60); // total 3.5 s -> time-start = 2.5 -> wrap 0.5 -> 1.5
         assert!((world.settings.scenario.pellet_energy - 150.0).abs() < 1.0);
+    }
+
+    /// A negative `start` is a phase shift, not an error (`SettingsChanger.Update` only holds the animator back while `time - start` is below zero): the
+    /// published scenario "Seasonal Desert v3" starts its winter animators at -43,200 and its world refused to build (the tester's Start returned to the menu).
+    #[test]
+    fn a_negative_animator_start_has_the_curve_already_under_way() {
+        use crate::settings::{SettingBase, SettingsChanger, SplinePoint};
+        let changer = SettingsChanger {
+            name: "shifted".to_owned(),
+            settings_bases: vec![SettingBase {
+                key: "pelletEnergy".to_owned(),
+                base: 100.0,
+            }],
+            points: vec![SplinePoint::new(0.0, 1.0), SplinePoint::new(2.0, 3.0)],
+            repeat: false,
+            start: -1.0,
+        };
+        let mut world = World::new(
+            default_settings(),
+            ScenarioData {
+                settings_changers: vec![changer],
+                ..ScenarioData::default()
+            },
+            44,
+        )
+        .expect("a negative start is a valid animator");
+        world.run(15); // 0.5 s: the curve is 1.5 s along -> factor 2.5
+        let energy = world.settings.scenario.pellet_energy;
+        assert!((230.0..=255.0).contains(&energy), "{energy}");
     }
 
     #[test]
@@ -11942,6 +12099,91 @@ mod tests {
         );
     }
 
+    /// The pellet decay, the producers' look at every record and the zones' recounts on the pool (their gates lowered to 1), against
+    /// the serial tick, with twenty source bibites, plenty of meat that rots at once and a decay pass in every tick (so the chops, the
+    /// removals and the pellets that take the freed slots follow each other all the time): the whole checkpoint, byte for byte.
+    #[test]
+    fn decay_producers_and_recounts_on_the_pool_give_the_serial_worlds_results() {
+        use crate::brain::Brain;
+        use crate::genome::{Genome, GenomeMeta};
+        let build = |threads: usize| {
+            let mut world = audit_world(200);
+            world.set_parallel_gates(crate::sim::ParallelGates::EAGER);
+            world.set_threads(threads);
+            for index in 0..20 {
+                let meta = GenomeMeta {
+                    is_source: true,
+                    ..GenomeMeta::default()
+                };
+                let mut spawn = BibiteSpawn::new(Genome::starter(), meta, Brain::starter());
+                spawn.vitals = crate::body::SpawnVitals::Adult;
+                spawn.pos = Vec2::new(index as f32 * 40.0 - 400.0, 25.0);
+                let id = world.bibites.spawn(spawn).expect("source bibite");
+                world.register_bibite(id);
+            }
+            for index in 0..1_500usize {
+                let pos = Vec2::new(
+                    ((index * 37) % 900) as f32 - 450.0,
+                    ((index * 91) % 700) as f32 - 350.0,
+                );
+                let amount = 3.0 + ((index * 13) % 40) as f32;
+                let _ = world.spawn_pellet_with_amount(MaterialKind::Meat, pos, amount);
+            }
+            world.decay = DecayThrottle::new(1);
+            world.pellets.materials_mut().meat.decay_rate = 30.0;
+            world
+                .pellets
+                .update_decay_parameters(MaterialKind::Meat, -5_000.0);
+            world
+        };
+        let worlds = run_same_checkpoints(
+            vec![
+                ("serial".to_owned(), build(1)),
+                ("3 threads".to_owned(), build(3)),
+                ("8 threads".to_owned(), build(8)),
+            ],
+            4,
+            15,
+            |_, _| {},
+        );
+        for (name, world) in &worlds {
+            assert!(world.has_sources, "{name}");
+            assert!(
+                world.accounting.decayed_meat_energy > 0.0,
+                "{name}: nothing decayed, the test does not look at the decay"
+            );
+        }
+    }
+
+    /// The grid broadphase (from a handful of bodies, the way the pool's gates lowered to 1 ask for it, on a pool of four workers or more) against the sweep
+    /// (a grid gate no world reaches): the whole checkpoint, byte for byte, in a spread world and a packed one.
+    #[test]
+    fn the_grid_broadphase_gives_the_sweeps_worlds() {
+        let build = |packed: bool, threads: usize, sweep_only: bool| {
+            let mut world = if packed { packed_world(400, 300.0) } else { audit_world(700) };
+            let mut gates = crate::sim::ParallelGates::EAGER;
+            if sweep_only {
+                gates.grid_bodies = usize::MAX;
+            }
+            world.set_parallel_gates(gates);
+            world.set_threads(threads);
+            world
+        };
+        for packed in [false, true] {
+            assert_same_checkpoints(
+                vec![
+                    ("sweep".to_owned(), build(packed, 1, true)),
+                    ("sweep, 8 threads".to_owned(), build(packed, 8, true)),
+                    ("grid, serial".to_owned(), build(packed, 1, false)),
+                    ("grid, 4 threads".to_owned(), build(packed, 4, false)),
+                    ("grid, 8 threads".to_owned(), build(packed, 8, false)),
+                ],
+                4,
+                10,
+            );
+        }
+    }
+
     /// A world of sixty bibites has no stage that pays for the pool: with the sizes a world starts with (and no measuring) it ticks on
     /// the calling thread, every stage inline (the body sweep never runs on the pool), and a world of sixteen hundred bibites puts the
     /// sweep (from 1,500 records) and the rest of its stages that have the work on the pool. A world that measures its own ticks (what a
@@ -12541,6 +12783,11 @@ mod tests {
                     && lanes.emit > 0
                     && lanes.dead > 0,
                 "{name}: some kind of turn never happened: {lanes:?}"
+            );
+            // The heavy turns were cut in parts: the sweep took heads, and the pool took the last part of some of them.
+            assert!(
+                lanes.head_in_sweep > 0 && lanes.post_on_pool > 0,
+                "{name}: no heavy turn was cut in parts: {lanes:?}"
             );
             assert!(!world.eggs.is_empty(), "{name}: no egg was ever laid");
         }
@@ -13391,6 +13638,111 @@ mod tests {
         assert!(egg_stats.total_required_energy <= 2.0 * egg_stats.energy);
         assert_eq!(egg_stats.free_energy, egg_stats.energy);
     }
+    /// "Mutate Genes: All Genes ... spawning wayyy too big of bibites": the size a growth mode asks for is read from the TEMPLATE's genes
+    /// (`SpawnBibiteFromTemplate`: `StartBodyAtGrowthAndNormalize(GrowthAtMature(template.genes))`), however every gene was randomised. The spawned
+    /// genome's own `GrowthAtMature` is not the game's answer: a random womb share makes it reach the hundreds.
+    #[test]
+    fn an_all_genes_spawn_takes_its_size_from_the_templates_genes() {
+        use crate::brain::Brain;
+        let mut world = World::new(default_settings(), ScenarioData::default(), 5).expect("world");
+        let template = TemplateSource::new("all-genes", Genome::starter(), GenomeMeta::default(), Brain::starter());
+        let wanted_adult = template.genome.growth_at_mature();
+        let wanted_baby = template.genome.growth_at_birth();
+        let mut own_growth_differed = false;
+        for _ in 0..40 {
+            for (mode, wanted) in [(GrowthAtSpawn::Adult, wanted_adult), (GrowthAtSpawn::Baby, wanted_baby), (GrowthAtSpawn::Elder, 2.0 * wanted_adult)] {
+                let id = world
+                    .spawn_bibite_from_template(&template, mode, Tagging::NoTagging, "", Vec2::ZERO, RandomizeGenes::AllGenes)
+                    .expect("spawn");
+                let record = world.bibites.get(id).expect("record");
+                assert!((record.growth.growth - wanted).abs() < 1e-3 * wanted.max(1.0), "{mode:?}: growth {} for the template's {wanted}", record.growth.growth);
+                own_growth_differed |= (record.genome.growth_at_mature() - wanted_adult).abs() > 1.0;
+            }
+        }
+        // The test would not notice the old behaviour if no random genome had a growth of its own to go wrong with.
+        assert!(own_growth_differed, "forty random genomes all had the template's growth at mature");
+    }
+
+    /// `BibiteGenes.StartGenesFromTemplate` tags what it spawns (`speciesTag = tagStyle switch ...`): the species name, `Bibite` and a random number,
+    /// the custom text, or no tag. Random and Species tagging did nothing in a live spawn or an egg (only None and Custom were handled). The original's
+    /// live All Genes spawn never calls it (it only copies the generation) and stays untagged; this port tags that one too, on the player's request.
+    #[test]
+    fn a_template_spawn_is_tagged_the_way_start_genes_from_template_tags_it() {
+        use crate::brain::Brain;
+        let mut world = World::new(default_settings(), ScenarioData::default(), 9).expect("world");
+        let template = TemplateSource::new("tagged template", Genome::starter(), GenomeMeta::default(), Brain::starter());
+        let live_tag = |world: &mut World, tagging: Tagging, custom: &str, randomize: RandomizeGenes| {
+            let id = world
+                .spawn_bibite_from_template(&template, GrowthAtSpawn::Adult, tagging, custom, Vec2::ZERO, randomize)
+                .expect("spawn");
+            let record = world.bibites.get(id).expect("record");
+            (record.meta.species_tag.clone(), record.meta.species)
+        };
+        let egg_tag = |world: &mut World, tagging: Tagging, custom: &str, randomize: RandomizeGenes| {
+            let id = match world
+                .spawn_template_at_randomized(&template, Vec2::ZERO, None, GrowthAtSpawn::Egg, tagging, custom, randomize)
+                .expect("spawn egg")
+            {
+                TemplateSpawn::Egg(id) => id,
+                TemplateSpawn::Bibite(_) => panic!("an egg was asked for"),
+            };
+            let egg = world.eggs.get(id).expect("egg");
+            (egg.meta.species_tag.clone(), egg.meta.species)
+        };
+        // None and Custom.
+        assert_eq!(live_tag(&mut world, Tagging::NoTagging, "", RandomizeGenes::No).0, None);
+        assert_eq!(live_tag(&mut world, Tagging::CustomTagging, "mine", RandomizeGenes::No).0.as_deref(), Some("mine"));
+        assert_eq!(egg_tag(&mut world, Tagging::CustomTagging, "mine", RandomizeGenes::No).0.as_deref(), Some("mine"));
+        // Random: `Bibite` and a number, a different one each time.
+        let mut seen = Vec::new();
+        for _ in 0..4 {
+            for tag in [
+                live_tag(&mut world, Tagging::RandomTagging, "", RandomizeGenes::No).0,
+                egg_tag(&mut world, Tagging::RandomTagging, "", RandomizeGenes::NormalMutations).0,
+            ] {
+                let tag = tag.expect("a random tag");
+                let number = tag.strip_prefix("Bibite").expect("starts with Bibite");
+                assert!(!number.is_empty() && number.bytes().all(|byte| byte.is_ascii_digit()), "{tag}");
+                assert!(number.parse::<u64>().expect("a number") < i32::MAX as u64, "{tag}");
+                seen.push(tag);
+            }
+        }
+        seen.sort();
+        seen.dedup();
+        assert_eq!(seen.len(), 8, "every random tag is its own: {seen:?}");
+        // Species: the name of the species the spawn joined.
+        let (tag, species) = live_tag(&mut world, Tagging::SpeciesTagging, "", RandomizeGenes::No);
+        let name = world.species.get(species.expect("a species")).expect("record").name();
+        assert_eq!(tag.as_deref(), Some(name.as_str()));
+        let (tag, species) = egg_tag(&mut world, Tagging::SpeciesTagging, "", RandomizeGenes::No);
+        let name = world.species.get(species.expect("a species")).expect("record").name();
+        assert_eq!(tag.as_deref(), Some(name.as_str()));
+        // All Genes plus a tag style tags too (the original leaves a live All Genes spawn untagged; the player wants it tagged), live and egg alike.
+        let all_genes_tag = live_tag(&mut world, Tagging::RandomTagging, "", RandomizeGenes::AllGenes).0.expect("a random tag on an All Genes spawn");
+        assert!(all_genes_tag.starts_with("Bibite"), "{all_genes_tag}");
+        assert_eq!(live_tag(&mut world, Tagging::CustomTagging, "mine", RandomizeGenes::AllGenes).0.as_deref(), Some("mine"));
+        assert_eq!(live_tag(&mut world, Tagging::NoTagging, "", RandomizeGenes::AllGenes).0, None);
+        assert!(egg_tag(&mut world, Tagging::RandomTagging, "", RandomizeGenes::AllGenes).0.is_some());
+    }
+
+    /// A placed egg takes the spawn row's "Mutate Genes" choice (`SpawnEggFromTemplate`): AllGenes replaces every gene, the others mutate as an egg always does.
+    #[test]
+    fn an_all_genes_egg_has_every_gene_redrawn() {
+        use crate::brain::Brain;
+        let mut world = World::new(default_settings(), ScenarioData::default(), 13).expect("world");
+        let template = TemplateSource::new("egg template", Genome::starter(), GenomeMeta::default(), Brain::starter());
+        let id = match world
+            .spawn_template_at_randomized(&template, Vec2::ZERO, None, GrowthAtSpawn::Egg, Tagging::NoTagging, "", RandomizeGenes::AllGenes)
+            .expect("egg")
+        {
+            TemplateSpawn::Egg(id) => id,
+            TemplateSpawn::Bibite(_) => panic!("an egg was asked for"),
+        };
+        let genome = &world.eggs.get(id).expect("egg").genome;
+        let moved = crate::genome::ALL_GENES.iter().filter(|gene| (genome.gene(**gene) - template.genome.gene(**gene)).abs() > 1e-4).count();
+        assert!(moved >= 25, "{moved} of {} genes differ from the template's", crate::genome::N_GENES);
+    }
+
     #[test]
     fn inspector_actions_tags_force_lay_revive_and_save_views() {
         use crate::brain::Brain;
@@ -13807,5 +14159,30 @@ mod spline_jump_tests {
         // A point before its predecessor is still refused.
         changer.points.push(SplinePoint::new(50.0, 2.0));
         assert!(changer.validate().is_err());
+    }
+
+    /// The game computes the pheromone sense at the END of every fixed update and the next brain tick reads it (`Pherosense.PherosenseAround` / `NEATBrain.UpdateSenses`): a brain
+    /// tick sees the values of the tick before, and a tick that is not a brain tick only stores its own.
+    #[test]
+    fn the_pheromone_sense_is_read_one_tick_late() {
+        let sense = |a: f32, b: f32, c: f32| senses::PheroSenses {
+            sum: [0.0; 3],
+            sense: [a, a, a],
+            angle: [b, b, b],
+            heading: [c, c, c],
+        };
+        let mut s = SenseOutputs::zeroed();
+        // tick 1 is not a brain tick: the inputs stay as they were, the values wait
+        delayed_phero(&mut s, &sense(0.1, 0.2, 0.3), false);
+        assert_eq!((s.phero_sense_1, s.phero_1_angle, s.phero_1_heading), (0.0, 0.0, 0.0));
+        assert_eq!(s.pending_phero, [0.1, 0.1, 0.1, 0.2, 0.2, 0.2, 0.3, 0.3, 0.3]);
+        // tick 2 is a brain tick: it reads tick 1's values, and its own wait
+        delayed_phero(&mut s, &sense(0.4, 0.5, 0.6), true);
+        assert_eq!((s.phero_sense_2, s.phero_2_angle, s.phero_2_heading), (0.1, 0.2, 0.3));
+        assert_eq!(s.pending_phero[0], 0.4);
+        // a bibite that has not sensed before (just loaded) reads zeros on its first brain tick, as a freshly loaded game does
+        let mut fresh = SenseOutputs::zeroed();
+        delayed_phero(&mut fresh, &sense(0.7, 0.8, 0.9), true);
+        assert_eq!((fresh.phero_sense_3, fresh.phero_3_angle, fresh.phero_3_heading), (0.0, 0.0, 0.0));
     }
 }

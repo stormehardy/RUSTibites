@@ -45,6 +45,7 @@
 #![warn(missing_docs)]
 
 pub mod arena;
+pub mod calibration;
 pub mod clock;
 pub mod datalog;
 pub mod genes_log;

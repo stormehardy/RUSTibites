@@ -1137,6 +1137,7 @@ pub fn shallow(node: &Node) -> Node {
         texts: node.texts.clone(),
         canvas_scalers: node.canvas_scalers.clone(),
         layouts: node.layouts.clone(),
+        layout: node.layout.clone(),
         controls: node.controls.clone(),
         children: Vec::new(),
     }
@@ -3338,7 +3339,8 @@ fn layout_material(ctx: &mut Ctx<'_>, kind: u8, y: f32) -> f32 {
             MaterialKind::Plant => ("Plant Material Parameters", "medium_plant"),
             MaterialKind::Meat => ("Meat Material Parameters", "medium_meat"),
             MaterialKind::Fat => ("Fat Material Parameters", "fat_pellet"),
-            MaterialKind::Armor => ("Armor Material Parameters", "medium_plant"),
+            // The armour material's picture is the grey pellet (`none_pellet`, the one `RequestPelletSpriteOfMaterial` gives a material that is neither plant nor meat).
+            MaterialKind::Armor => ("Armor Material Parameters", "none_pellet"),
         };
         if let Some(label) = find_mut(&mut node, &|n: &Node| n.name == "Title1") {
             set_text(label, title);

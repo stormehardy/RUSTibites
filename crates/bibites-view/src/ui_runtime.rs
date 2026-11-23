@@ -365,6 +365,9 @@ pub struct Node {
     /// Layout groups / layout elements.
     #[serde(default, deserialize_with = "null_vec")]
     pub layouts: Vec<LayoutComponent>,
+    /// Layout groups, element, fitters as captured (`ui_layout`: the screens in a window that is not the capture's).
+    #[serde(skip)]
+    pub layout: crate::ui_layout::LayoutInfo,
     /// Button/Canvas/Selectable components.
     #[serde(default, deserialize_with = "null_vec")]
     pub controls: Vec<ControlComponent>,
@@ -915,6 +918,18 @@ impl RuntimeUi {
                 .iter()
                 .map(|canvas| convert_native_node(canvas, true))
                 .collect();
+            // The Settings pages get the Calibration button, and the Game page's copy becomes the Calibration page.
+            if name.starts_with("main_menu_settings") {
+                crate::settings_pages::add_page_buttons(&mut session);
+            }
+            if name == "main_menu_settings_gameplay" {
+                for page in crate::settings_pages::PAGES {
+                    let mut made = session.clone();
+                    if crate::settings_pages::make_page(&mut made, page) {
+                        extra_sessions.insert(page.session.to_owned(), made);
+                    }
+                }
+            }
             extra_sessions.insert(name.clone(), session);
         }
         let mut session = extra_sessions
@@ -983,6 +998,13 @@ impl RuntimeUi {
                 extra_sessions.insert(name, session);
             } else {
                 lazy_sessions.insert(name, (file, std::sync::OnceLock::new()));
+            }
+        }
+        // The Calibration page of the Settings screens is made from the Game page's capture, on first use.
+        if let Some((file, _)) = lazy_sessions.get("main_menu_settings_gameplay") {
+            let file = file.clone();
+            for page in crate::settings_pages::PAGES {
+                lazy_sessions.insert(page.session.to_owned(), (file.clone(), std::sync::OnceLock::new()));
             }
         }
         if extra_sessions.is_empty() && lazy_sessions.is_empty() {
@@ -1839,6 +1861,16 @@ impl RuntimeUi {
             metrics,
             first_hit,
         )?;
+        // The popup is anchored at the middle of its holder, which fills the canvas of the window: the replay moves what it draws by half of what the canvas has
+        // beyond 1920 x 1080 reference px (less when it has less), and the buttons' click areas (laid out in 1920 x 1080) move with it. They stayed where a 16:9
+        // window has them: in any other window "Cancel" and "YES" were drawn where they did not answer (a tester could not click "Removing half of all pellets"
+        // away).
+        let scale = UiFrame::scaler(width, height);
+        let (dx, dy) = ((width / scale - REFERENCE_WIDTH) * 0.5, (height / scale - REFERENCE_HEIGHT) * 0.5);
+        for rect in &mut rects {
+            rect[0] += dx;
+            rect[1] += dy;
+        }
         Some((frame, rects))
     }
 
@@ -1980,9 +2012,7 @@ impl RuntimeUi {
         height: f32,
         metrics: Option<&crate::text_sdf::SdfFonts>,
     ) {
-        use crate::dyn_panel::{find, find_mut, set_active, set_rect, set_text};
         use crate::scenario_editor::EditorPopup;
-        let scale = UiFrame::scaler(width, height);
         let Some(editor) = menu.editor() else {
             return;
         };
@@ -1990,6 +2020,77 @@ impl RuntimeUi {
             Some(EditorPopup::Save { focus }) => focus,
             _ => 0,
         };
+        let official = menu.editor_name_problem() == Some("official");
+        let form = SaverForm {
+            name: &editor.save_name,
+            description: &editor.save_description,
+            focus,
+            problem: menu.editor_name_problem(),
+            exists: !official && menu.editor_name_exists(),
+            picture: None,
+            actions: [
+                UiAction::Menu(crate::ui::MenuCommand::EditorFocus(0)),
+                UiAction::Menu(crate::ui::MenuCommand::EditorFocus(1)),
+                UiAction::Menu(crate::ui::MenuCommand::EditorAnswer(true)),
+                UiAction::Menu(crate::ui::MenuCommand::EditorAnswer(false)),
+            ],
+            first_hit: 43_300,
+        };
+        self.emit_saver_form(frame, &form, ui, width, height, metrics);
+    }
+
+    /// The world's scenario saver (`ScenarioSaver`, `crate::scenario_saver`): the same form over a plain dark screen (the prefab's own background, a
+    /// `(0, 0, 0.11)` image over the whole canvas), with the picture of the world in its preview frame.
+    pub fn emit_scenario_saver(
+        &self,
+        frame: &mut UiFrame,
+        app: &App,
+        ui: &UiAssets,
+        metrics: Option<&crate::text_sdf::SdfFonts>,
+        width: f32,
+        height: f32,
+    ) {
+        use crate::scenario_saver::{ACTION_CLOSE, ACTION_DESCRIPTION, ACTION_NAME, ACTION_SAVE, Field};
+        let Some(saver) = app.scenario_saver.as_ref() else {
+            return;
+        };
+        frame.rect(Vec2::ZERO, Vec2::new(width, height), [0, 0, 28, 255]);
+        frame.hit(45_000, Vec2::ZERO, Vec2::new(width, height), UiAction::Consume);
+        let form = SaverForm {
+            name: &saver.name,
+            description: &saver.description,
+            focus: u8::from(saver.focus == Field::Description),
+            problem: saver.name_problem(),
+            exists: saver.name_problem() != Some("official") && app.scenario_saver_name_exists(),
+            picture: saver.picture.clone(),
+            actions: [
+                UiAction::ScenarioSaver(ACTION_NAME),
+                UiAction::ScenarioSaver(ACTION_DESCRIPTION),
+                UiAction::ScenarioSaver(ACTION_SAVE),
+                UiAction::ScenarioSaver(ACTION_CLOSE),
+            ],
+            first_hit: 45_010,
+        };
+        self.emit_saver_form(frame, &form, ui, width, height, metrics);
+    }
+
+    /// The scenario saver's form (shared by the title menu's scenario editor and the world): the captured `Saver` panel, placed from the measured anatomy,
+    /// over what the caller drew.
+    fn emit_saver_form(
+        &self,
+        frame: &mut UiFrame,
+        form: &SaverForm<'_>,
+        ui: &UiAssets,
+        width: f32,
+        height: f32,
+        metrics: Option<&crate::text_sdf::SdfFonts>,
+    ) {
+        use crate::dyn_panel::{find, find_mut, set_active, set_rect, set_text};
+        let scale = UiFrame::scaler(width, height);
+        let focus = form.focus;
+        // The panel is centred in the canvas of the window, which has more than 1920 x 1080 reference px in a window of another shape: what the replay draws
+        // moves by half of the difference and the click areas move with it.
+        let (dx, dy) = ((width / scale - REFERENCE_WIDTH) * 0.5, (height / scale - REFERENCE_HEIGHT) * 0.5);
         let Some(session) = self.session_by_name("main_menu_scenario_editor") else {
             return;
         };
@@ -2011,7 +2112,7 @@ impl RuntimeUi {
                 set_rect(node, rect[0], rect[1], rect[2], rect[3]);
             }
         };
-        let valid = menu.editor_name_problem().is_none();
+        let valid = form.problem.is_none();
         place(
             &mut root,
             "/button holder/ Buttons/SaveSettings",
@@ -2108,16 +2209,8 @@ impl RuntimeUi {
             ],
         );
         // The typed texts (the focused field shows a caret) and the placeholders.
-        let name_text = if focus == 0 {
-            format!("{}|", editor.save_name)
-        } else {
-            editor.save_name.clone()
-        };
-        let desc_text = if focus == 1 {
-            format!("{}|", editor.save_description)
-        } else {
-            editor.save_description.clone()
-        };
+        let name_text = if focus == 0 { format!("{}|", form.name) } else { form.name.to_owned() };
+        let desc_text = if focus == 1 { format!("{}|", form.description) } else { form.description.to_owned() };
         for (field, text) in [("Name Field", name_text), ("Description", desc_text)] {
             if let Some(node) = find_mut(&mut root, &|n: &Node| n.name == field) {
                 let empty = text.is_empty();
@@ -2134,9 +2227,15 @@ impl RuntimeUi {
         if let Some(node) = find_mut(&mut root, &|n: &Node| n.path.ends_with("/preview/Image")) {
             set_active(node, false);
         }
+        // With a picture the "no preview" line goes.
+        if form.picture.is_some()
+            && let Some(node) = find_mut(&mut root, &|n: &Node| n.name == "noPreview")
+        {
+            set_active(node, false);
+        }
         // Warnings under the name.
-        let official = menu.editor_name_problem() == Some("official");
-        let exists = !official && menu.editor_name_exists();
+        let official = form.problem == Some("official");
+        let exists = form.exists;
         if let Some(node) = find_mut(&mut root, &|n: &Node| n.name == "ExistingBasicScenario") {
             set_active(node, official);
         }
@@ -2164,45 +2263,39 @@ impl RuntimeUi {
             return;
         };
         frame.draws.extend(layer.draws);
+        // The picture of the world inside the preview frame (the `Image` is inset by 10).
+        if let Some(texture) = form.picture.as_ref() {
+            frame.draws.push(UiDraw::Pixels {
+                texture: std::sync::Arc::clone(texture),
+                pos: Vec2::new((preview_x + 10.0 + dx) * scale, (content_top + 38.1 + dy) * scale),
+                size: Vec2::new(380.0 * scale, 380.0 * scale),
+            });
+        }
         let hit = |frame: &mut UiFrame, id: UiId, rect: [f32; 4], action: UiAction| {
             frame.hit(
                 id,
-                Vec2::new(rect[0] * scale, rect[1] * scale),
+                Vec2::new((rect[0] + dx) * scale, (rect[1] + dy) * scale),
                 Vec2::new(rect[2] * scale, rect[3] * scale),
                 action,
             );
         };
+        let first = form.first_hit;
+        hit(frame, first, [details_x, content_top + 28.1, details_w, 35.4], form.actions[0]);
         hit(
             frame,
-            43_300,
-            [details_x, content_top + 28.1, details_w, 35.4],
-            UiAction::Menu(crate::ui::MenuCommand::EditorFocus(0)),
-        );
-        hit(
-            frame,
-            43_301,
+            first + 1,
             [
                 details_x,
                 content_top + 138.1,
                 details_w,
                 panel_bottom - 25.0 - content_top - 138.1,
             ],
-            UiAction::Menu(crate::ui::MenuCommand::EditorFocus(1)),
+            form.actions[1],
         );
         if valid {
-            hit(
-                frame,
-                43_302,
-                [px, py, 70.0, 70.0],
-                UiAction::Menu(crate::ui::MenuCommand::EditorAnswer(true)),
-            );
+            hit(frame, first + 2, [px, py, 70.0, 70.0], form.actions[2]);
         }
-        hit(
-            frame,
-            43_303,
-            [px + 1030.0, py, 70.0, 70.0],
-            UiAction::Menu(crate::ui::MenuCommand::EditorAnswer(false)),
-        );
+        hit(frame, first + 3, [px + 1030.0, py, 70.0, 70.0], form.actions[3]);
     }
 
     /// Builds the exact game title menu (or settings menu) without an in-world
@@ -2393,7 +2486,17 @@ impl RuntimeUi {
         }
         let (file, cell) = self.lazy_sessions.get(name)?;
         cell.get_or_init(|| match load_session_file(file) {
-            Ok(session) => Some(session),
+            // The Calibration page of the Settings screens is the Game page's capture made over.
+            Ok(mut session) => {
+                if let Some(page) = crate::settings_pages::page_named(name)
+                    && !crate::settings_pages::make_page(&mut session, page)
+                {
+                    eprintln!("ui: session {name}: the Game page's capture has not the parts of the Calibration page");
+                    None
+                } else {
+                    Some(session)
+                }
+            }
             Err(error) => {
                 eprintln!("ui: session {name}: {error}");
                 None
@@ -2584,7 +2687,35 @@ impl RuntimeUi {
                 }),
             _ => None,
         };
+        // A canvas that is not the capture's (a window of another shape, another UI scale): every captured rectangle is laid out again for it.
+        // (The two screens the viewer fills with nodes of its own - the in-world settings panel's rows and the scenario editor's - hold nodes that no capture
+        // has a layout for: they keep the composition by anchors and shifts.)
+        let relaid = if matches!(session_name, "dyn_panel" | "scenario_editor") {
+            crate::ui_layout::Relaid::default()
+        } else {
+            crate::ui_layout::relayout(&active_canvas_roots(session), [reference.x, reference.y])
+        };
+        // The menu's lists, their scroll bars and what they scroll follow the scroll view of the screen to where this canvas puts it.
+        if let Some(menu) = menu {
+            // (A screen built from several sessions: only the one that holds the scroll view says where it is.)
+            if relaid.is_empty() {
+                menu.set_list_delta([0.0; 4]);
+                menu.set_tps_delta([0.0; 4]);
+            } else {
+                if let Some(suffix) = menu_scroll_view_suffix(menu)
+                    && let Some(delta) = node_delta(session, suffix, &relaid, reference)
+                {
+                    menu.set_list_delta(delta);
+                }
+                if menu.view() == crate::menu::MenuView::NewGame
+                    && let Some(delta) = node_delta(session, "/RightGroup/ParametersPanel", &relaid, reference)
+                {
+                    menu.set_tps_delta(delta);
+                }
+            }
+        }
         let mut context = FrameContext {
+            relaid: (!relaid.is_empty()).then_some(&relaid),
             ui,
             app,
             metrics,
@@ -2600,6 +2731,7 @@ impl RuntimeUi {
             toggle_meta: None,
             menu,
             setting_row: None,
+            slider_track: None,
             local_scale: 1.0,
             details_shift: 0.0,
             scroll_clip: None,
@@ -2669,6 +2801,26 @@ impl RuntimeUi {
     }
 }
 
+/// What the scenario saver's form shows (`UiRuntime::emit_saver_form`).
+struct SaverForm<'a> {
+    /// The typed name.
+    name: &'a str,
+    /// The typed description.
+    description: &'a str,
+    /// The field with the focus (0 the name, 1 the description).
+    focus: u8,
+    /// Why the name cannot be used: `"invalid"` or `"official"`.
+    problem: Option<&'static str>,
+    /// A user scenario of this name exists.
+    exists: bool,
+    /// The picture of the world, when the form shows one.
+    picture: Option<std::sync::Arc<crate::ui::UiTexture>>,
+    /// What the name field, the description field, Save and the exit button do.
+    actions: [UiAction; 4],
+    /// The first click-area id of the form's four controls.
+    first_hit: UiId,
+}
+
 /// Title, text and button labels (dismiss first, accept second) of a confirmation, exactly as
 /// the game's `DisplayChoiceDialog` / `DisplayActionWarning` calls give them.
 fn confirm_texts(
@@ -2712,6 +2864,11 @@ fn confirm_texts(
         ConfirmKind::RemoveHalfPellets => (
             "Removing half of all pellets",
             "You're about to remove half of all pellets (each pellet will have a 50% chance of being removed, results may vary). Depending on your numbers of pellets the screen might freeze a little while doing so.\nAre you sure???".to_owned(),
+            ["Cancel", "YES"],
+        ),
+        ConfirmKind::OverwriteScenario(_) => (
+            "Warning",
+            "A scenario with this name already exists.\nContinuing will overwrite the previous scenario with this one.\nAre you sure?".to_owned(),
             ["Cancel", "YES"],
         ),
         ConfirmKind::OverwriteSave(_) => (
@@ -2812,6 +2969,7 @@ fn convert_native_node(value: &serde_json::Value, parent_active: bool) -> Node {
         texts: Vec::new(),
         canvas_scalers: Vec::new(),
         layouts: Vec::new(),
+        layout: crate::ui_layout::LayoutInfo::default(),
         controls: Vec::new(),
         children: Vec::new(),
     };
@@ -2839,6 +2997,7 @@ fn convert_native_component(component: &serde_json::Value, node: &mut Node) {
         .get("type")
         .and_then(serde_json::Value::as_str)
         .unwrap_or_default();
+    node.layout.absorb(kind, component);
     if kind == "UnityEngine.Canvas" {
         if let Ok(control) = serde_json::from_value::<ControlComponent>(component.clone()) {
             node.controls.push(control);
@@ -3123,6 +3282,9 @@ struct FrameContext<'a> {
     menu: Option<&'a crate::menu::MenuState>,
     /// Settings row (index into `user_settings::DEFS`) being emitted.
     setting_row: Option<usize>,
+    /// The track of the settings slider row being emitted (its `Slider` node in this canvas: left edge and width, canvas units): the fill and the handle are
+    /// laid along it, whatever the window's shape moved or stretched it to.
+    slider_track: Option<(f32, f32)>,
     /// Accumulated `localScale` of the popup holder (its TMP text scales with it: the
     /// `Popuholder` is scaled 1.35 in the game, the captured font sizes are unscaled).
     local_scale: f32,
@@ -3141,6 +3303,8 @@ struct FrameContext<'a> {
     shift: [Option<f32>; 2],
     /// How deep in its canvas root the node being emitted is (0 for the root).
     depth: u32,
+    /// The rectangles the captured nodes have in a canvas that is not the capture's (`ui_layout`); none in the capture's own.
+    relaid: Option<&'a crate::ui_layout::Relaid>,
 }
 
 fn count_nodes(node: &Node, stats: &mut RuntimeStats) {
@@ -3413,6 +3577,10 @@ fn emit_node(
 
 /// Whether a node is drawn: the captured state, except where the Stats panel's state decides (see `stats_states`).
 fn node_shows(context: &FrameContext<'_>, node: &Node) -> bool {
+    // A scrollbar the layout of this canvas leaves out (its list fits the view; `ui_layout`).
+    if context.relaid.is_some_and(|relaid| relaid.hides(node)) {
+        return false;
+    }
     if let Some(stats) = &context.stats
         && let Some(rel) = crate::stats_states::StatsLayout::rel_of(&node.path)
         && let Some(shows) = stats.shows(rel)
@@ -3591,7 +3759,14 @@ fn emit_node_inner(
     }
     // Native v2 sessions carry final composed 1920-screen bboxes; use them
     // directly so Unity layout groups/canvas scalers are bypassed.
-    let composed = if let Some([x0, y0, x1, y1]) = node.native_rect {
+    let composed = if let Some([x0, y0, x1, y1]) = context.relaid.and_then(|relaid| relaid.rect_of(node)) {
+        // The rectangle the node has in this canvas (`ui_layout`), in canvas units from the bottom left.
+        ComposedRect {
+            pos: Vec2::new(x0, context.reference.y - y1),
+            size: Vec2::new((x1 - x0).max(0.0), (y1 - y0).max(0.0)),
+            scale: Vec2::new(1.0, 1.0),
+        }
+    } else if let Some([x0, y0, x1, y1]) = node.native_rect {
         // v2 screen_bbox is in Unity screen space (bottom-left origin).
         ComposedRect {
             pos: Vec2::new(x0 + context.shift[0].unwrap_or(0.0), REFERENCE_HEIGHT - y1 + context.shift[1].unwrap_or(0.0)),
@@ -3841,6 +4016,9 @@ fn emit_node_inner(
             context.toggle_on = Some(flag);
         }
     }
+    if node.path.ends_with("/SliderPanel/Slider") && node.path.contains("/SettingSlider") {
+        context.slider_track = Some((composed.pos.x, composed.size.x));
+    }
     let composed = settings_slider_geometry(context, node, composed);
     let composed = speed_slider_geometry(context, node, composed);
     // The number of the time-speed slider is being typed: the slider (`NormalSecton`) is hidden and its field takes its place.
@@ -3997,11 +4175,13 @@ fn emit_node_inner(
     {
         let id = context.next_hit;
         context.next_hit += 1;
+        let (x0, x1) = speed_track(context);
+        let to_px = |x: f32| x.round().clamp(0.0, f32::from(u16::MAX)) as u16;
         context.frame.hit(
             id,
             composed.pos * context.scale,
             composed.size * context.scale,
-            UiAction::SpeedSlide(845, 1075),
+            UiAction::SpeedSlide(to_px(x0), to_px(x1)),
         );
     }
     (context.toggle_on, context.toggle_meta) = saved_toggle;
@@ -4462,6 +4642,12 @@ fn image_multiplier(path: &str) -> Option<f32> {
         };
         (table("scene"), table("prefab"))
     });
+    // The Calibration button of the Settings screens' column is a copy of the Hotkeys button, with that button's multiplier.
+    if let Some(prefix) = path.strip_suffix(crate::settings_pages::CALIBRATION_BUTTON)
+        && prefix.ends_with("/SelectorPanel/List/")
+    {
+        return image_multiplier(&format!("{prefix}Controls Button"));
+    }
     if let Some(multiplier) = scene.get(path) {
         return Some(*multiplier);
     }
@@ -5132,8 +5318,11 @@ fn emit_hit(context: &mut FrameContext<'_>, node: &Node, composed: ComposedRect)
                     index as u16,
                 )));
             }
+            // A check box answers on its box (`Toggle/Background`, 40 x 40), not on the `Toggle` container round it: that one is 350 wide and has no graphic
+            // of its own, so a click beside the box is no click in the game. Its rectangle covered the gear of "Show Grid" and "Show Experimental
+            // Background" (the box and the gear both toggled it).
             let command = match name {
-                "Toggle" => crate::ui::MenuCommand::SettingToggle(index as u16),
+                "Background" if node.path.ends_with("/Toggle/Background") => crate::ui::MenuCommand::SettingToggle(index as u16),
                 "ResetButton" => crate::ui::MenuCommand::SettingReset(index as u16),
                 "Slider" => crate::ui::MenuCommand::SettingSlide(index as u16, x0, x1),
                 "ColorDisplay" => crate::ui::MenuCommand::Unavailable(4),
@@ -5205,7 +5394,7 @@ fn functional_action(session: &str, node: &Node, label: &str) -> Option<UiAction
     if path.contains("/settingspanel/") {
         return match name {
             "CloseButton" => Some(UiAction::ClosePanel),
-            "GraphicsButton" | "Gameplay Button" | "Controls Button" => {
+            "GraphicsButton" | "Gameplay Button" | "Controls Button" | "Calibration Button" => {
                 Some(UiAction::Invoke(ControlCommand::OpenSettings))
             }
             "Reset Warnings" => Some(UiAction::Invoke(ControlCommand::ResetWarnings)),
@@ -5814,7 +6003,7 @@ fn load_session_file(path: &Path) -> Result<RuntimeSession, String> {
     let parsed: StreamedSession = serde_json::from_str(&json)
         .map_err(|error| format!("invalid native session {}: {error}", path.display()))?;
     drop(json);
-    Ok(RuntimeSession {
+    let mut session = RuntimeSession {
         screen: parsed.screen,
         canvases: parsed
             .canvases
@@ -5824,7 +6013,12 @@ fn load_session_file(path: &Path) -> Result<RuntimeSession, String> {
         core_panel_paths: parsed.core_panel_paths,
         core_panel_count: parsed.core_panel_count,
         node_count: parsed.node_count,
-    })
+    };
+    // The Settings pages get the Calibration button.
+    if path.file_name().is_some_and(|name| name.to_string_lossy().starts_with("main_menu_settings")) {
+        crate::settings_pages::add_page_buttons(&mut session);
+    }
+    Ok(session)
 }
 
 fn read_cached_json(path: &Path) -> Result<String, String> {
@@ -6663,6 +6857,161 @@ mod tests {
                 |(_, action)| *action == UiAction::Invoke(ControlCommand::ToggleDoNotShowAgain)
             )
         );
+    }
+
+    /// The choice dialogs (kill half the bibites, remove half of all pellets, delete a zone, ...) answer clicks where their buttons are drawn, in any window:
+    /// the popup is centred in the canvas of the window (a tester in a window that was not 16:9 could not click "Cancel" or "YES" away).
+    #[test]
+    fn a_choice_dialogs_buttons_answer_clicks_where_they_are_drawn_in_any_window() {
+        use crate::app::ConfirmKind;
+        let Some((runtime, mut app, atlas)) = native_fixture() else {
+            return;
+        };
+        let text_at = |frame: &UiFrame, wanted: &str| -> Option<Vec2> {
+            frame.draws.iter().find_map(|draw| match draw {
+                UiDraw::Text { text, pos, .. } if text.trim() == wanted => Some(*pos),
+                _ => None,
+            })
+        };
+        let mut problems = Vec::new();
+        for kind in [ConfirmKind::RemoveHalfPellets, ConfirmKind::KillHalf, ConfirmKind::ClearZones] {
+            app.confirm_dialog = Some(kind.clone());
+            for (width, height) in [
+                (1920.0_f32, 1080.0_f32),
+                (1900.0, 1000.0),
+                (2560.0, 1080.0),
+                (1280.0, 720.0),
+                (1600.0, 1200.0),
+                (1920.0, 1200.0),
+                (912.0, 618.0),
+                (759.0, 551.0),
+                (1366.0, 768.0),
+                (1000.0, 1000.0),
+            ] {
+                let scale = UiFrame::scaler(width, height);
+                let mut frame = UiFrame::new(scale);
+                runtime.emit_confirm_dialog(&mut frame, &app, &atlas, None, width, height);
+                for (label, command) in [("Cancel", ControlCommand::Cancel), ("YES", ControlCommand::Confirm)] {
+                    let Some((pos, size)) = hit_of(&frame, UiAction::Invoke(command)) else {
+                        problems.push(format!("{kind:?} {width} x {height}: no click area for {label}"));
+                        continue;
+                    };
+                    let Some(at) = text_at(&frame, label) else {
+                        problems.push(format!("{kind:?} {width} x {height}: {label} is not drawn"));
+                        continue;
+                    };
+                    let inside = at.x >= pos.x && at.x <= pos.x + size.x && at.y >= pos.y - 2.0 && at.y <= pos.y + size.y;
+                    if !inside {
+                        problems.push(format!("{kind:?} {width} x {height}: {label} is drawn at {at:?} but its click area is {pos:?} {size:?}"));
+                    }
+                    // Both lie inside the window.
+                    if pos.x < 0.0 || pos.y < 0.0 || pos.x + size.x > width + 0.5 || pos.y + size.y > height + 0.5 {
+                        problems.push(format!("{kind:?} {width} x {height}: the click area of {label} {pos:?} {size:?} is outside the window"));
+                    }
+                }
+            }
+        }
+        assert!(problems.is_empty(), "{problems:#?}");
+    }
+
+    /// The world's scenario saver answers clicks where its form is drawn, in any window: the typed texts are inside their fields' click areas and the two
+    /// buttons keep their places against the fields (the form is centred in the canvas of the window).
+    #[test]
+    fn the_scenario_saver_answers_clicks_where_its_form_is_drawn_in_any_window() {
+        use crate::scenario_saver::{ACTION_CLOSE, ACTION_DESCRIPTION, ACTION_NAME, ACTION_SAVE, Field, ScenarioSaver};
+        let Some((runtime, mut app, atlas)) = native_fixture() else {
+            return;
+        };
+        app.scenario_saver = Some(ScenarioSaver {
+            name: "My desert".to_owned(),
+            description: "Dry".to_owned(),
+            focus: Field::Name,
+            caret: crate::text_field::Caret::default(),
+            previous_pause: false,
+            picture_png: None,
+            picture: None,
+            official: Vec::new(),
+        });
+        let text_at = |frame: &UiFrame, wanted: &str| -> Option<Vec2> {
+            frame.draws.iter().find_map(|draw| match draw {
+                UiDraw::Text { text, pos, .. } if text.trim() == wanted => Some(*pos),
+                _ => None,
+            })
+        };
+        let mut problems = Vec::new();
+        for (width, height) in [
+            (1920.0_f32, 1080.0_f32),
+            (1900.0, 1000.0),
+            (2560.0, 1080.0),
+            (1600.0, 1200.0),
+            (1920.0, 1200.0),
+            (1280.0, 720.0),
+            (1366.0, 768.0),
+            (912.0, 618.0),
+            (1000.0, 1000.0),
+        ] {
+            let scale = UiFrame::scaler(width, height);
+            let mut frame = UiFrame::new(scale);
+            runtime.emit_scenario_saver(&mut frame, &app, &atlas, None, width, height);
+            let hit = |action: u8| hit_of(&frame, UiAction::ScenarioSaver(action));
+            let (Some(name), Some(description), Some(save), Some(close)) = (hit(ACTION_NAME), hit(ACTION_DESCRIPTION), hit(ACTION_SAVE), hit(ACTION_CLOSE)) else {
+                problems.push(format!("{width} x {height}: a control of the form has no click area"));
+                continue;
+            };
+            for (label, (pos, size), wanted) in [("the name", name, "My desert|"), ("the description", description, "Dry")] {
+                let Some(at) = text_at(&frame, wanted) else {
+                    problems.push(format!("{width} x {height}: {label} ({wanted:?}) is not drawn"));
+                    continue;
+                };
+                if at.x < pos.x || at.x > pos.x + size.x || at.y < pos.y - 2.0 || at.y > pos.y + size.y {
+                    problems.push(format!("{width} x {height}: {label} is drawn at {at:?}, outside its click area {pos:?} {size:?}"));
+                }
+            }
+            // The panel's left edge is 25 reference px left of the fields' (the Save button is its top-left corner), its right edge 1005 right of them.
+            if (name.0.x - save.0.x - 25.0 * scale).abs() > 1.0 || (close.0.x - name.0.x - 1005.0 * scale).abs() > 1.0 {
+                problems.push(format!("{width} x {height}: the buttons are not where they sit against the name field ({:?} {:?} {:?})", save.0, name.0, close.0));
+            }
+            for (label, (pos, size)) in [("the name field", name), ("Save", save), ("the exit button", close)] {
+                if pos.x < 0.0 || pos.y < 0.0 || pos.x + size.x > width + 0.5 || pos.y + size.y > height + 0.5 {
+                    problems.push(format!("{width} x {height}: {label} {pos:?} {size:?} is outside the window"));
+                }
+            }
+        }
+        assert!(problems.is_empty(), "{problems:#?}");
+    }
+
+    /// The Load list's "Include autosaves" check box answers on its 40 x 40 box: the `Toggle` container round it is 463 wide and ran under the folder button
+    /// beside it (a click on the button toggled the box).
+    #[test]
+    fn the_load_lists_autosaves_box_does_not_cover_the_folder_button() {
+        use crate::ui::MenuCommand;
+        let Some((runtime, _, atlas)) = window_fixture() else {
+            return;
+        };
+        let dir = std::env::temp_dir().join(format!("rustibites-loadtoggle-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&dir);
+        std::fs::create_dir_all(&dir).expect("temp dir");
+        let mut menu = crate::menu::MenuState::new(None, &dir).with_private_settings(&dir.join("s.json"));
+        menu.move_selection(2);
+        let _ = menu.activate();
+        assert_eq!(menu.view(), crate::menu::MenuView::LoadGame);
+        let mut problems = Vec::new();
+        for (width, height) in [(1920.0_f32, 1080.0_f32), (1900.0, 1000.0), (2560.0, 1080.0), (1600.0, 1200.0), (1280.0, 720.0)] {
+            let frame = runtime.build_menu_view_frame(&menu, &atlas, width, height, None).expect("the load game frame");
+            let scale = frame.scale;
+            let (Some((toggle, size)), Some((folder, _))) = (hit_of(&frame, UiAction::Menu(MenuCommand::ToggleAutosaves)), hit_of(&frame, UiAction::Menu(MenuCommand::Unavailable(3)))) else {
+                problems.push(format!("{width} x {height}: the check box or the folder button has no click area"));
+                continue;
+            };
+            if (size.x - 40.0 * scale).abs() > 1.5 || (size.y - 40.0 * scale).abs() > 1.5 {
+                problems.push(format!("{width} x {height}: the check box answers on {toggle:?} {size:?}, not on its {} px box", 40.0 * scale));
+            }
+            if toggle.x + size.x > folder.x + 0.5 {
+                problems.push(format!("{width} x {height}: the check box ({toggle:?} {size:?}) reaches the folder button ({folder:?})"));
+            }
+        }
+        let _ = std::fs::remove_dir_all(dir);
+        assert!(problems.is_empty(), "{problems:#?}");
     }
 
     #[test]
@@ -7970,10 +8319,17 @@ mod tests {
                 );
             }
             // What is drawn moves with it.
+            let mut misplaced = Vec::new();
             for (label, ref_at) in labels.iter().zip(&label_places) {
                 let at = text_at(&frame, label);
-                assert!(near(at, moved(*ref_at), 6.0), "the text {label:?} is drawn at {at:?} in a {width} x {height} window, not at {:?}", moved(*ref_at));
+                // The header is centred: its left edge is half its measured width left of the middle, and a text measured at another size is not exactly
+                // that width scaled (the advances are laid out per size), so it is looser than the left-aligned texts.
+                let tolerance = if *label == "Settings Animator" { 10.0 } else { 6.0 };
+                if !near(at, moved(*ref_at), tolerance) {
+                    misplaced.push(format!("the text {label:?} is drawn at {at:?} in a {width} x {height} window, not at {:?}", moved(*ref_at)));
+                }
             }
+            assert!(misplaced.is_empty(), "{misplaced:#?}");
             // The OK and Cancel texts start on their buttons.
             for (label, wanted) in [("OK", UiAction::Invoke(ControlCommand::SubmitAnimatorCreator)), ("Cancel", UiAction::Invoke(ControlCommand::CloseAnimatorCreator))] {
                 let (pos, size) = rect_of(&frame, wanted);
@@ -8420,6 +8776,269 @@ mod tests {
         assert!(settings.hits.len() >= settings_controls);
     }
 
+    /// The time-speed slider's press area carries the track of the window it is in: x 845..1075 in the 1920 x 1080 capture, moved with its
+    /// top-centre panel (half of what the canvas has beyond 1920 reference px). A track left at the capture's x read every click of a window
+    /// that is not 16:9 at the wrong speed (and the handle was drawn beside the bar).
+    #[test]
+    fn the_calibration_page_has_its_check_box_button_and_four_lines_wired_to_the_calibrator() {
+        use crate::ui::MenuCommand;
+        let Some((runtime, _, atlas)) = native_fixture() else {
+            return;
+        };
+        let dir = std::env::temp_dir().join(format!("rustibites-calibrationpage-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&dir);
+        std::fs::create_dir_all(&dir).expect("temp dir");
+        let mut menu = crate::menu::MenuState::new(None, &dir).with_private_settings(&dir.join("s.json"));
+        menu.move_selection(4);
+        let _ = menu.activate();
+        assert_eq!(menu.view(), crate::menu::MenuView::Settings);
+        let tab = crate::settings_pages::CALIBRATION_TAB;
+        // The column of every page has the Calibration button, and it opens the page.
+        for other in 0..3 {
+            menu.menu_command(MenuCommand::SettingsTab(other));
+            let frame = runtime.build_menu_view_frame(&menu, &atlas, 1920.0, 1080.0, None).expect("the settings frame");
+            assert!(hit_of(&frame, UiAction::Menu(MenuCommand::SettingsTab(tab))).is_some(), "page {other} has the Calibration button");
+            assert!(drawn_texts(&frame).iter().any(|text| text == "Calibration"), "page {other} names it");
+        }
+        menu.menu_command(MenuCommand::SettingsTab(tab));
+        assert_eq!(menu.settings_tab(), tab);
+        let frame = runtime.build_menu_view_frame(&menu, &atlas, 1920.0, 1080.0, None).expect("the Calibration page");
+        let texts: Vec<String> = drawn_texts(&frame).iter().map(|text| text.to_lowercase()).collect();
+        for wanted in ["calibration", "use calibration", "calibration test", "run test", "status", "machine", "multi-core", "graphics", "not run yet", "not measured"] {
+            assert!(texts.iter().any(|text| text == wanted || (wanted == "machine" && text == "machine")), "{wanted}: {texts:?}");
+        }
+        assert!(!texts.iter().any(|text| text.contains("autosave") || text.contains("easter") || text.contains("shuffle")), "{texts:?}");
+        // The button runs the test; the check box is a setting, on from the start, with its help; the page fits its view.
+        assert!(hit_of(&frame, UiAction::Menu(MenuCommand::CalibrationRun)).is_some(), "the button");
+        let index = crate::user_settings::index_of(crate::machine_calibration::LABEL_USE).expect("the setting") as u16;
+        assert!(menu.user_settings().flag(crate::machine_calibration::LABEL_USE), "on from the start");
+        assert!(frame.actions.iter().any(|(_, action)| matches!(action, UiAction::Menu(MenuCommand::SettingToggle(row)) if *row == index)), "the check box is bound to its setting");
+        assert!(frame.tips.iter().any(|rect| rect.tip.title == crate::machine_calibration::LABEL_USE), "it has its help");
+        assert!(menu.list_bar().is_none());
+        for root in ["UI", "UICanvas/MainUI/TopLayer"] {
+            let column = format!("{root}/SettingsPanel/SelectorPanel/List");
+            assert_eq!(image_multiplier(&format!("{column}/Calibration Button")), image_multiplier(&format!("{column}/Controls Button")), "{root}");
+        }
+        let _ = std::fs::remove_dir_all(dir);
+    }
+
+    /// The check boxes of the Settings pages answer on their 40 x 40 box, not on the 350-wide `Toggle` container round it (which ran under the gear beside
+    /// "Show Grid" and over the Load list's folder button), and a slider's handle sits on its track whatever the window's shape does to the row (the handle
+    /// was placed from the 1080p capture's numbers and slid off the bar).
+    #[test]
+    fn a_settings_check_box_answers_on_its_box_and_a_slider_handle_sits_on_its_track_in_any_window() {
+        use crate::ui::MenuCommand;
+        let Some((runtime, _, atlas)) = window_fixture() else {
+            return;
+        };
+        let dir = std::env::temp_dir().join(format!("rustibites-settingshits-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&dir);
+        std::fs::create_dir_all(&dir).expect("temp dir");
+        let mut menu = crate::menu::MenuState::new(None, &dir).with_private_settings(&dir.join("s.json"));
+        menu.move_selection(4);
+        let _ = menu.activate();
+        assert_eq!(menu.view(), crate::menu::MenuView::Settings);
+        let slider_row = crate::user_settings::index_of("Pheromones Strength").expect("the slider row");
+        let fraction = menu.user_settings().fraction(slider_row);
+        let mut problems = Vec::new();
+        for (width, height) in [(1920.0_f32, 1080.0_f32), (1900.0, 1000.0), (2560.0, 1080.0), (1600.0, 1200.0), (1920.0, 1200.0), (1280.0, 720.0), (1366.0, 768.0), (1000.0, 1000.0)] {
+            let frame = runtime.build_menu_view_frame(&menu, &atlas, width, height, None).expect("the settings screen");
+            let scale = frame.scale;
+            let mut boxes = 0;
+            for (id, action) in &frame.actions {
+                if !matches!(action, UiAction::Menu(MenuCommand::SettingToggle(_))) {
+                    continue;
+                }
+                let Some((_, pos, size)) = frame.hits.iter().find(|hit| hit.0 == *id) else {
+                    continue;
+                };
+                boxes += 1;
+                if (size.x - 40.0 * scale).abs() > 1.5 || (size.y - 40.0 * scale).abs() > 1.5 {
+                    problems.push(format!("{width} x {height}: a check box answers on {pos:?} {size:?}, not on its {} px box", 40.0 * scale));
+                }
+            }
+            if boxes == 0 {
+                problems.push(format!("{width} x {height}: no check box in the frame"));
+            }
+            // The handle of the slider row: a 30 x 30 picture centred on the track's left edge plus the value's fraction of its width.
+            let Some((pos, size)) = frame.actions.iter().find_map(|(id, action)| match action {
+                UiAction::Menu(MenuCommand::SettingSlide(row, ..)) if usize::from(*row) == slider_row => {
+                    frame.hits.iter().find(|hit| hit.0 == *id).map(|(_, pos, size)| (*pos, *size))
+                }
+                _ => None,
+            }) else {
+                problems.push(format!("{width} x {height}: the slider row is not in the frame"));
+                continue;
+            };
+            let expected = pos.x + fraction * size.x;
+            let middle = pos.y + size.y * 0.5;
+            let handles: Vec<f32> = frame
+                .draws
+                .iter()
+                .filter_map(|draw| match draw {
+                    UiDraw::Image { pos, size, .. } | UiDraw::NineSlice { pos, size, .. }
+                        if (size.x - 30.0 * scale).abs() < 1.5 && (size.y - 30.0 * scale).abs() < 1.5 && (pos.y + size.y * 0.5 - middle).abs() < 3.0 * scale =>
+                    {
+                        Some(pos.x + size.x * 0.5)
+                    }
+                    _ => None,
+                })
+                .collect();
+            if !handles.iter().any(|centre| (centre - expected).abs() < 2.0 * scale) {
+                problems.push(format!("{width} x {height}: the handle should be centred on x {expected} (track {pos:?} {size:?}, fraction {fraction}); handles drawn at {handles:?}"));
+            }
+        }
+        let _ = std::fs::remove_dir_all(dir);
+        assert!(problems.is_empty(), "{problems:#?}");
+    }
+
+    /// The menu's lists and their scroll bars sit on the scroll view the game's layout gives them in the window's canvas (`MenuState::list_delta`): in a
+    /// taller window the Graphics page's view (920 high in the capture) holds its whole content, and the game has no bar then; in a wider one the bar is
+    /// on the view's right edge (the original game's own numbers: `assets/game/reference/layout_gt`).
+    #[test]
+    fn the_menus_scroll_bar_follows_the_scroll_view_of_the_window() {
+        let Some((runtime, _, atlas)) = native_fixture() else {
+            return;
+        };
+        let dir = std::env::temp_dir().join(format!("rustibites-listdelta-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&dir);
+        std::fs::create_dir_all(&dir).expect("temp dir");
+        let mut menu = crate::menu::MenuState::new(None, &dir).with_private_settings(&dir.join("s.json"));
+        menu.move_selection(4);
+        let _ = menu.activate();
+        assert_eq!(menu.view(), crate::menu::MenuView::Settings);
+        let build = |width: f32, height: f32| runtime.build_menu_view_frame(&menu, &atlas, width, height, None).expect("the settings screen");
+        let _ = build(1920.0, 1080.0);
+        assert_eq!(menu.list_delta(), [0.0; 4], "the capture's own canvas");
+        assert_eq!(menu.list_bar().expect("the page does not fit its view").track, [1254.3, 80.0, 20.0, 903.0]);
+        // 1920 x 1200: the view is 120 higher (the game: 80 .. 1120), the content (1035) fits it, the bar is gone.
+        let _ = build(1920.0, 1200.0);
+        assert!((menu.list_delta()[3] - 120.0).abs() < 0.5, "{:?}", menu.list_delta());
+        assert!(menu.list_bar().is_none(), "the game hides the bar of a list that fits");
+        // 2560 x 1080: the view is wider (the game: its bar at x 1711.43 .. 1731.43).
+        let _ = build(2560.0, 1080.0);
+        let bar = menu.list_bar().expect("the page does not fit a view of the capture's height");
+        assert!((bar.track[0] - 1711.43).abs() < 0.6, "{:?}", bar.track);
+        assert!((bar.track[1] - 80.0).abs() < 0.6 && (bar.track[3] - 903.0).abs() < 0.6, "{:?}", bar.track);
+        // Back in the capture's canvas everything is where it was.
+        let _ = build(1920.0, 1080.0);
+        assert_eq!(menu.list_bar().expect("bar").track, [1254.3, 80.0, 20.0, 903.0]);
+        let _ = std::fs::remove_dir_all(dir);
+    }
+
+    /// The original game's own rectangles (`assets/game/reference/layout_gt`, captured from the running game at a window of that size) against the ones
+    /// `ui_layout` solves from the 1080p capture: the screens in a window that is not 16:9.
+    #[test]
+    fn the_layout_in_a_window_of_another_shape_is_the_original_games() {
+        let Some((runtime, _, _)) = native_fixture() else {
+            return;
+        };
+        let dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../assets/game/reference/layout_gt");
+        // What the game draws at run time from the state of the world (graph ticks, the bars that follow a bibite, a slider's pointer) and its title screen's
+        // own canvas are not part of the captured layout.
+        let dynamic = ["Title Screen", "BackGround", "xLine", "yLine", "stomachContentPellet", "Popuholder", "defaultvaluepointer", "/statusbars", "/Ruler", "/CreditsTab/Viewport/Content"];
+        let mut checked_sizes = 0;
+        for size in ["2560x1080", "1920x1200"] {
+            let Ok(file) = std::fs::File::open(dir.join(format!("{size}.json.gz"))) else {
+                continue;
+            };
+            let truth: serde_json::Value = serde_json::from_reader(flate2::read::GzDecoder::new(file)).expect("the ground truth file");
+            let (width, height) = {
+                let pair = &truth["size"];
+                (pair[0].as_f64().unwrap_or(0.0) as f32, pair[1].as_f64().unwrap_or(0.0) as f32)
+            };
+            checked_sizes += 1;
+            let (mut total, mut within) = (0_usize, 0_usize);
+            let mut report = Vec::new();
+            for (name, nodes) in truth["sessions"].as_object().expect("sessions") {
+                let Some(session) = runtime.session_by_name(name) else {
+                    continue;
+                };
+                let roots = active_canvas_roots(session);
+                let relaid = crate::ui_layout::relayout(&roots, [width, height]);
+                // The nodes of the tree in the order the capture walked them: a path that repeats is told apart by how many came before it.
+                fn walk<'a>(node: &'a Node, seen: &mut std::collections::HashMap<String, usize>, out: &mut std::collections::HashMap<(String, usize), &'a Node>) {
+                    let count = seen.entry(node.path.clone()).or_insert(0);
+                    out.insert((node.path.clone(), *count), node);
+                    *count += 1;
+                    for child in &node.children {
+                        walk(child, seen, out);
+                    }
+                }
+                let (mut seen, mut by_key) = (std::collections::HashMap::new(), std::collections::HashMap::new());
+                for canvas in &session.canvases {
+                    walk(canvas, &mut seen, &mut by_key);
+                }
+                let (mut session_total, mut session_within) = (0_usize, 0_usize);
+                let mut worst = (0.0_f32, String::new());
+                for entry in nodes.as_array().expect("nodes") {
+                    let path = entry[0].as_str().unwrap_or_default();
+                    if dynamic.iter().any(|part| path.contains(part)) {
+                        continue;
+                    }
+                    let key = (path.to_owned(), entry[1].as_u64().unwrap_or(0) as usize);
+                    let Some(node) = by_key.get(&key) else {
+                        continue;
+                    };
+                    // Only the nodes that are the same node in the capture the viewer holds and in the run the ground truth comes from (the captures were made on
+                    // different days: a list the game fills at run time has other items in each).
+                    let captured: Vec<f32> = (6..10).map(|index| entry[index].as_f64().unwrap_or(0.0) as f32).collect();
+                    if node.native_rect.is_none_or(|rect| (0..4).any(|index| (rect[index] - captured[index]).abs() > 0.5)) {
+                        continue;
+                    }
+                    let Some(solved) = relaid.rect_of(node) else {
+                        continue;
+                    };
+                    let game: Vec<f32> = (2..6).map(|index| entry[index].as_f64().unwrap_or(0.0) as f32).collect();
+                    let error = (0..4).map(|index| (game[index] - solved[index]).abs()).fold(0.0, f32::max);
+                    session_total += 1;
+                    session_within += usize::from(error < 1.5);
+                    if error > worst.0 {
+                        worst = (error, path.to_owned());
+                    }
+                }
+                total += session_total;
+                within += session_within;
+                if session_total > 0 {
+                    report.push((name.clone(), session_within as f32 / session_total as f32, worst));
+                }
+            }
+            assert!(total > 2_000, "{size}: only {total} nodes were compared");
+            let share = within as f32 / total as f32;
+            report.sort_by(|a, b| a.1.total_cmp(&b.1));
+            let weakest: Vec<String> = report.iter().take(6).map(|(name, share, worst)| format!("{name} {:.0} % (worst {:.0} at {})", share * 100.0, worst.0, worst.1)).collect();
+            assert!(share >= 0.93, "{size}: {within} of {total} nodes ({:.1} %) are within 1.5 px of the original game's; the weakest sessions: {weakest:#?}", share * 100.0);
+            // Every screen of the menu is laid out like the game's, not only most of them.
+            for (name, share, worst) in report.iter().filter(|(name, _, _)| name.starts_with("main_menu")) {
+                assert!(*share >= 0.75, "{size}: {name} only {:.0} % (worst {:.0} at {})", share * 100.0, worst.0, worst.1);
+            }
+        }
+        assert!(checked_sizes > 0, "no ground truth file found");
+    }
+
+    #[test]
+    fn the_time_speed_slider_track_moves_with_its_panel_in_a_wider_window() {
+        let Some((runtime, app, atlas)) = native_fixture() else {
+            return;
+        };
+        let track_in = |width: f32, height: f32| {
+            let frame = runtime.build_frame(&app, &atlas, width, height);
+            frame
+                .actions
+                .iter()
+                .find_map(|(_, action)| match action {
+                    UiAction::SpeedSlide(x0, x1) => Some((*x0, *x1)),
+                    _ => None,
+                })
+                .expect("the speed slider answers presses")
+        };
+        assert_eq!(track_in(1920.0, 1080.0), (845, 1075));
+        // 2560 x 1080: the canvas is 2560 reference px wide and the panel hangs from its middle, 320 px to the right.
+        assert_eq!(track_in(2560.0, 1080.0), (1165, 1395));
+        // A window taller than 16:9 scales by its width: the canvas stays 1920 px wide.
+        assert_eq!(track_in(1920.0, 1200.0), (845, 1075));
+    }
+
     #[test]
     fn challenge_workshop_lineage_sessions_register_controls() {
         let Some((runtime, _app, _atlas)) = save_fixture() else {
@@ -8510,7 +9129,7 @@ mod tests {
             "unexpected native registry size: {}",
             controls.len()
         );
-        assert_eq!(runtime.session_names().len(), 60);
+        assert_eq!(runtime.session_names().len(), 60 + crate::settings_pages::PAGES.len(), "the sixty captured sessions and the pages the port adds to the Settings screen");
         assert!(
             controls
                 .iter()
@@ -10595,6 +11214,9 @@ fn menu_hit_action(menu: &crate::menu::MenuState, node: &Node) -> Option<UiActio
                     "GraphicsButton" => MenuCommand::SettingsTab(0),
                     "Gameplay Button" => MenuCommand::SettingsTab(1),
                     "Controls Button" => MenuCommand::SettingsTab(2),
+                    // The Calibration page.
+                    "Calibration Button" => MenuCommand::SettingsTab(crate::settings_pages::CALIBRATION_TAB),
+                    "CalibrationRun" => MenuCommand::CalibrationRun,
                     "Reset Warnings" => MenuCommand::ResetWarnings,
                     _ => return None,
                 }
@@ -10613,7 +11235,7 @@ fn menu_hit_action(menu: &crate::menu::MenuState, node: &Node) -> Option<UiActio
                 MenuCommand::Back
             } else if name == "DeleteButton" {
                 MenuCommand::DeleteSave
-            } else if name == "Toggle" && path.contains("/SettingToggle/") {
+            } else if name == "Background" && path.ends_with("/SettingToggle/Toggle/Background") {
                 MenuCommand::ToggleAutosaves
             } else if name == "Button" && path.contains("/SettingToggle/") {
                 MenuCommand::Unavailable(3)
@@ -10626,19 +11248,53 @@ fn menu_hit_action(menu: &crate::menu::MenuState, node: &Node) -> Option<UiActio
     }
 }
 
+/// The path end of the scroll view the menu's current screen scrolls (the one `MenuState::list_bar` is the bar of).
+fn menu_scroll_view_suffix(menu: &crate::menu::MenuState) -> Option<&'static str> {
+    use crate::menu::MenuView;
+    Some(match menu.view() {
+        MenuView::LoadGame => "/LoadGamePanel/LoadList/Scroll View",
+        MenuView::NewGame => "/ScenarioList/Scroll View",
+        MenuView::Library => "/TemplateTab/Scroll View",
+        MenuView::Credits => "/CreditsPanel/CreditsTab",
+        MenuView::Tools => "/ToolsPanel/Tools Tab",
+        MenuView::Settings => match menu.settings_tab() {
+            1 => "/PagesPanels/Game/Scroll View",
+            2 => "/PagesPanels/Hotkeys/Scroll View",
+            _ => "/PagesPanels/Graphics/Scroll View",
+        },
+        _ => return None,
+    })
+}
+
+/// How the node whose path ends with `suffix` differs in this canvas from the capture: `[dx, dy, dw, dh]` of its left edge, top edge, width and height
+/// (reference px, y down); `None` when this session does not hold it.
+fn node_delta(session: &RuntimeSession, suffix: &str, relaid: &crate::ui_layout::Relaid, reference: Vec2) -> Option<[f32; 4]> {
+    fn find<'a>(node: &'a Node, suffix: &str) -> Option<&'a Node> {
+        if node.native_rect.is_some() && node.path.ends_with(suffix) {
+            return Some(node);
+        }
+        node.children.iter().find_map(|child| find(child, suffix))
+    }
+    let view = active_canvas_roots(session).into_iter().find_map(|root| find(root, suffix))?;
+    let ([nx0, ny0, nx1, ny1], [ox0, oy0, ox1, oy1]) = (relaid.rect_of(view)?, view.native_rect?);
+    let (new_top, old_top) = (reference.y - ny1, REFERENCE_HEIGHT - oy1);
+    Some([nx0 - ox0, new_top - old_top, (nx1 - nx0) - (ox1 - ox0), (ny1 - ny0) - (oy1 - oy0)])
+}
+
 /// Draws the live save list into the (empty) captured list viewport: the prefab's `SaveItem` rows (`save_panel::draw_row`), 805 wide at x 90 and
 /// 50 high, 5 apart, from y 140 (under the "Include autosaves" line) to the end of the view at 1005. Every button has Unity's default colours: no
 /// highlight but the 245 grey of a hovered or clicked one.
 fn emit_save_list(context: &mut FrameContext<'_>, menu: &crate::menu::MenuState) {
     let s = context.scale;
+    let [dx, dy, dw, dh] = menu.list_delta();
     let drawer = crate::species_panel::Drawer::new(s, context.ui, context.metrics, menu.cursor());
     let bar = menu.list_bar();
     // The viewport gives up the scrollbar's 17 when it is there (`AutoHideAndExpandViewport`).
     let (x, top, width, height) = (
-        90.0_f32,
-        140.0_f32,
-        if bar.is_some() { 788.0_f32 } else { 805.0_f32 },
-        865.0_f32,
+        90.0_f32 + dx,
+        140.0_f32 + dy,
+        if bar.is_some() { 788.0_f32 } else { 805.0_f32 } + dw,
+        865.0_f32 + dh,
     );
     let (row_h, pitch) = (50.0_f32, 55.0_f32);
     let selected = menu.selected_save();
@@ -10736,9 +11392,10 @@ fn emit_list_bar(context: &mut FrameContext<'_>, menu: &crate::menu::MenuState) 
 fn emit_menu_list(context: &mut FrameContext<'_>, menu: &crate::menu::MenuState) {
     let s = context.scale;
     let rows = menu.visible_entries();
-    // Viewport (reference px, y down): x 26..749, y 108..1054; it gives up the scrollbar's 16 when the bar is there.
-    let (x, top, height) = (26.0_f32, 108.0_f32, 946.0_f32);
-    let width = 723.0_f32 - menu.list_bar().map_or(0.0, |bar| bar.track[2]);
+    // Viewport (reference px, y down): x 26..749, y 108..1054; it gives up the scrollbar's 16 when the bar is there. Another canvas moves and sizes it.
+    let [dx, dy, dw, dh] = menu.list_delta();
+    let (x, top, height) = (26.0_f32 + dx, 108.0_f32 + dy, 946.0_f32 + dh);
+    let width = 723.0_f32 + dw - menu.list_bar().map_or(0.0, |bar| bar.track[2]);
     let selected = menu.selected_entry_index();
     for (row, entry_index) in rows.iter().enumerate() {
         let y = top + row as f32 * MENU_LIST_ROW - menu.list_scroll();
@@ -10910,6 +11567,7 @@ impl RuntimeUi {
             MenuView::Settings => match menu.settings_tab() {
                 1 => "main_menu_settings_gameplay",
                 2 => "main_menu_settings_hotkeys",
+                crate::settings_pages::CALIBRATION_TAB => crate::settings_pages::CALIBRATION_SESSION,
                 _ => "main_menu_settings_graphics",
             },
             MenuView::Main | MenuView::Loading | MenuView::ScenarioEditor => return None,
@@ -11223,6 +11881,10 @@ fn settings_live_text(
     if menu.view() != crate::menu::MenuView::Settings {
         return None;
     }
+    // The Calibration page's button and lines of text.
+    if let Some(text) = crate::machine_calibration::live_text(&node.name, &node.path) {
+        return Some(text);
+    }
     let index = row?;
     let path = node.path.as_str();
     if path.ends_with("/Dropdown/Label")
@@ -11234,6 +11896,15 @@ fn settings_live_text(
     }
     let _ = original;
     None
+}
+
+/// The time-speed slider's track in reference px on the canvas now: x 845..1075 in the 1920 x 1080 capture, moved with the panel's top-centre
+/// anchor (`FrameContext::shift`: half of what the canvas has beyond 1920 px, so a wider window or a UI scale below 1 moves it right, a UI scale
+/// above 1 moves it left). The handle, the fill and the press area all follow it: a track left at the capture's x read every click of a window that
+/// is not 16:9 at the wrong speed and drew the handle beside the bar.
+fn speed_track(context: &FrameContext<'_>) -> (f32, f32) {
+    let dx = context.shift[0].unwrap_or(0.0);
+    (845.0 + dx, 1075.0 + dx)
 }
 
 /// The top-centre time-speed slider (`LogFloatSettingSlider(targetTimeScale, 5)`): the fill and
@@ -11250,10 +11921,9 @@ fn speed_slider_geometry(
     if !node.path.contains(BASE) || crate::dyn_panel::is_generated(&context.session) {
         return composed;
     }
-    // Track in the capture (reference px): x 845..1075.
-    const TRACK: (f32, f32) = (845.0, 1075.0);
+    let track = speed_track(context);
     let fraction = App::speed_fraction(app.speed);
-    let centre = TRACK.0 + fraction * (TRACK.1 - TRACK.0);
+    let centre = track.0 + fraction * (track.1 - track.0);
     let mut result = composed;
     if node.path.ends_with("/Slider/Fill Area/Fill") {
         result.size.x = (centre + 1.0 - composed.pos.x).max(0.0);
@@ -11275,15 +11945,17 @@ fn settings_slider_geometry(
     if menu.view() != crate::menu::MenuView::Settings || !node.path.contains("/SettingSlider") {
         return composed;
     }
-    // Slider track in the captured layout: x 822..1157 (reference px).
-    const TRACK_X: f32 = 822.0;
-    const TRACK_W: f32 = 335.0;
+    // The track of the row in this canvas (its `Slider` node; x 822.96 .. 1157.29 in the 1920 x 1080 capture). The handle's centre is the track's left edge
+    // plus the value's fraction of its width (the capture's own handles: Minimum FPS at 0.125 is centred on 864.75, Reselection Delay at 0.5 on 990.13).
+    // A track fixed at the capture's x left the handle beside the bar in every window that moved or stretched the row.
+    const CAPTURED_TRACK: (f32, f32) = (822.96, 334.32);
+    let (track_x, track_w) = context.slider_track.unwrap_or(CAPTURED_TRACK);
     let fraction = menu.user_settings().fraction(index);
     let mut result = composed;
     if node.path.ends_with("/Slider/Fill Area/Fill") {
-        result.size.x = 5.0 + fraction * TRACK_W;
+        result.size.x = 5.0 + fraction * track_w;
     } else if node.path.ends_with("/Handle Slide Area/Handle") {
-        result.pos.x = TRACK_X + fraction * TRACK_W - composed.size.x * 0.5;
+        result.pos.x = track_x + fraction * track_w - composed.size.x * 0.5;
     }
     result
 }
@@ -11355,17 +12027,20 @@ fn panel_scroll(
     let mut shifted = composed;
     shifted.pos.y += view.captured - menu.list_scroll();
     let (top, bottom) = (shifted.pos.y, shifted.pos.y + shifted.size.y);
-    let whole = top >= view.top && bottom <= view.bottom;
+    // The mask is the scroll view: another canvas moves and sizes it (`MenuState::list_delta`).
+    let [_, dy, _, dh] = menu.list_delta();
+    let (view_top, view_bottom) = (view.top + dy, view.bottom + dy + dh);
+    let whole = top >= view_top && bottom <= view_bottom;
     let in_view = if whole {
         InView::Whole
-    } else if view.by_lines && !node.texts.is_empty() && bottom > view.top && top < view.bottom {
-        context.scroll_clip = Some([view.top, view.bottom]);
+    } else if view.by_lines && !node.texts.is_empty() && bottom > view_top && top < view_bottom {
+        context.scroll_clip = Some([view_top, view_bottom]);
         InView::Part
     } else {
         InView::Out
     };
     if whole && view.by_lines && !node.texts.is_empty() {
-        context.scroll_clip = Some([view.top, view.bottom]);
+        context.scroll_clip = Some([view_top, view_bottom]);
     }
     (shifted, in_view)
 }
@@ -11382,8 +12057,9 @@ fn emit_tps_panel(
     s: f32,
 ) {
     use crate::menu::{MenuState, TPS_SLIDERS};
-    // Parameters panel (reference px, y down).
-    let (px0, py0, pw, ph) = (777.0_f32, 587.0_f32, 1133.0_f32, 483.0_f32);
+    // Parameters panel (reference px, y down), where this canvas puts it.
+    let [dx, dy, dw, dh] = menu.tps_delta();
+    let (px0, py0, pw, ph) = (777.0_f32 + dx, 587.0_f32 + dy, 1133.0_f32 + dw, 483.0_f32 + dh);
     let at = |x: f32, y: f32| Vec2::new(x * s, y * s);
     let dim = |w: f32, h: f32| Vec2::new(w * s, h * s);
     let white: Rgba = [245, 245, 245, 255];
@@ -11595,9 +12271,10 @@ Some systems, like vision, or the bibites brain updates, can be specified at a m
 /// Draws the Bibite Library template list into the captured list area.
 fn emit_template_list(context: &mut FrameContext<'_>, menu: &crate::menu::MenuState) {
     let s = context.scale;
-    // List area (reference px, y down): x 41..1111, y 173..1054; it gives up the scrollbar's 12 when the bar is there.
-    let (x, top, height) = (41.0_f32, 173.0_f32, 880.0_f32);
-    let width = 1070.0_f32 - menu.list_bar().map_or(0.0, |bar| bar.track[2]);
+    // List area (reference px, y down): x 41..1111, y 173..1054; it gives up the scrollbar's 12 when the bar is there. Another canvas moves and sizes it.
+    let [dx, dy, dw, dh] = menu.list_delta();
+    let (x, top, height) = (41.0_f32 + dx, 173.0_f32 + dy, 880.0_f32 + dh);
+    let width = 1070.0_f32 + dw - menu.list_bar().map_or(0.0, |bar| bar.track[2]);
     let selected = menu.library_selected();
     // The open tab's files; a row selects its entry of the whole list.
     for (position, row) in menu.library_rows().into_iter().enumerate() {

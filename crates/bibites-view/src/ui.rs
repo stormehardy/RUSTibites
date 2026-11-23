@@ -472,8 +472,10 @@ pub enum MenuCommand {
     Unavailable(u8),
     /// Open a link (`URLManager`), by its place in `menu::URLS`: 0 wiki, 1 research Discord, 2 Patreon, 3 Reddit, 4 Twitter, 5 BlueSky, 6 YouTube.
     OpenUrl(u8),
-    /// Select a settings tab (0 graphics, 1 gameplay, 2 hotkeys).
+    /// Select a settings tab (0 graphics, 1 gameplay, 2 hotkeys, 3 calibration).
     SettingsTab(u8),
+    /// The Calibration page's "Run Test" button: starts the calibration test, or stops the one that is going on.
+    CalibrationRun,
     /// Select the n-th row of the Bibite Library template list.
     SelectTemplate(u16),
     /// The Library's submit button (`SubmitTemplate`): hands the selected template to whoever opened the Library to pick one, and in
@@ -718,6 +720,8 @@ pub enum UiAction {
     SaveDialogFocus(u8),
     /// The Save Bibite dialog: flip a checkbox (`.0`: 0 "Save as template", 1 "Format JSON").
     SaveDialogToggle(u8),
+    /// The scenario saver: a control of its form (`.0`: one of `scenario_saver::ACTION_*`).
+    ScenarioSaver(u8),
     /// The pellet placer's material dropdown: the other material (`PelletPlacer.ChangeMaterial`).
     PelletMaterial,
     /// Pressed on a pellet placer slider (`.0`: 0 pellet size factor, 1 pellet number; track x range

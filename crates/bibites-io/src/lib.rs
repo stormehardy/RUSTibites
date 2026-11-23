@@ -71,7 +71,8 @@ pub use settings::{
 pub use version::Version;
 pub use world::{
     load_scenario_world_contents, load_world_contents, save_bundle_from_contents,
-    save_world_contents, scenario_world_contents, world_contents_from_save,
+    save_world_contents, scenario_bundle_from_contents, scenario_world_contents,
+    world_contents_from_save,
 };
 
 use crate::model::{

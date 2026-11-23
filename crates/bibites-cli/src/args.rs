@@ -17,6 +17,7 @@ USAGE:
 COMMANDS:
     run <PATH>        Load a world/scenario/genome and simulate it
     bench             Run the benchmark harness
+    calibrate         Time this machine: how many workers a tick should use and from what size of world the pool of workers pays
     info <PATH>       Inspect a world/scenario/genome/settings file
     check <PATH>      Validate a file and its round-trip
     braincheck <JSON> Emit Rust brain outputs for tools/braincheck (with -o)
@@ -43,8 +44,27 @@ BENCH OPTIONS:
     --repeat <N>        Repetitions (default: 3)
     --json              Emit a machine-readable report
 
+CALIBRATE OPTIONS:
+    --quick             A shorter, rougher test (about a fifth of the time)
+    --threads <N>       Threads of the machine to calibrate for; 0 = every one (default: 0)
+    --save              Keep the result where the window's Settings > Calibration page reads it (./userdata/calibration.txt)
+    --out <PATH>        Write the result to this file
+
 Run `rustibites help` for this text.
 ";
+
+/// Arguments of `calibrate`.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct CalibrateArgs {
+    /// A shorter, rougher test.
+    pub quick: bool,
+    /// Threads of the machine to calibrate for (0 = every one it has).
+    pub threads: usize,
+    /// Keep the result where the window's Calibration page reads it.
+    pub save: bool,
+    /// Write the result to this file.
+    pub out: Option<PathBuf>,
+}
 
 /// A parsed command line.
 #[derive(Debug, Clone, PartialEq)]
@@ -53,6 +73,8 @@ pub enum Command {
     Run(RunArgs),
     /// Benchmark throughput.
     Bench(BenchArgs),
+    /// Calibrate the machine (how many workers a tick uses, from what size of world the pool pays).
+    Calibrate(CalibrateArgs),
     /// Inspect a file.
     Info {
         /// File to inspect.
@@ -173,6 +195,7 @@ where
         "-V" | "--version" | "version" => Ok(Command::Version),
         "run" => parse_run(&mut it),
         "bench" => parse_bench(&mut it),
+        "calibrate" => parse_calibrate(&mut it),
         "info" => parse_single_path("info", &mut it),
         "check" => parse_single_path("check", &mut it),
         "braincheck" => parse_braincheck(&mut it),
@@ -279,6 +302,26 @@ where
     }
     let fixture = fixture.ok_or_else(|| ParseError("'braincheck' needs a fixture file".into()))?;
     Ok(Command::Braincheck { fixture, out })
+}
+
+fn parse_calibrate<I>(it: &mut ArgIter<I>) -> Result<Command, ParseError>
+where
+    I: Iterator<Item = String>,
+{
+    let mut args = CalibrateArgs { quick: false, threads: 0, save: false, out: None };
+    while let Some(raw) = it.next() {
+        let (flag, inline) = split_flag(&raw);
+        match flag {
+            "--quick" => args.quick = true,
+            "--threads" => args.threads = take_usize(it, flag, inline)?,
+            "--save" => args.save = true,
+            "--out" => args.out = Some(PathBuf::from(take_value(it, flag, inline)?)),
+            other => {
+                return Err(ParseError(format!("unknown option '{other}' for 'calibrate'")));
+            }
+        }
+    }
+    Ok(Command::Calibrate(args))
 }
 
 fn parse_bench<I>(it: &mut ArgIter<I>) -> Result<Command, ParseError>
@@ -515,6 +558,15 @@ mod tests {
     fn rejects_bad_input() {
         assert!(parse_str(&["frobnicate"]).is_err());
         assert!(parse_str(&["run"]).is_err());
+        assert_eq!(
+            parse_str(&["calibrate"]).unwrap(),
+            Command::Calibrate(CalibrateArgs { quick: false, threads: 0, save: false, out: None })
+        );
+        assert_eq!(
+            parse_str(&["calibrate", "--quick", "--threads=4", "--save", "--out", "c.txt"]).unwrap(),
+            Command::Calibrate(CalibrateArgs { quick: true, threads: 4, save: true, out: Some(PathBuf::from("c.txt")) })
+        );
+        assert!(parse_str(&["calibrate", "--ticks", "5"]).is_err());
         assert!(parse_str(&["run", "a.zip", "b.zip"]).is_err());
         assert!(parse_str(&["run", "a.zip", "--ticks"]).is_err());
         assert!(parse_str(&["run", "a.zip", "--ticks", "many"]).is_err());
