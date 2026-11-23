@@ -19,8 +19,15 @@ use crate::species_panel::Drawer;
 use crate::tooltip::{self, Tip, TipRect};
 use crate::ui::{FontRole, Rgba, UiAction, UiDraw, UiFrame};
 
-/// `LineageSettingsPanel`: `x, y, w, h` (reference px).
+/// `LineageSettingsPanel`: `x, y, w, h` (reference px), on the 1920 x 1080 canvas the prefab was captured on (see [`panel`]).
 pub const PANEL: [f32; 4] = [1134.5, 50.0, 745.5, 740.0];
+
+/// `LineageSettingsPanel` on a canvas `canvas_width` reference px wide: the prefab hangs it from the top right corner of the `Overlay` (anchors (1, 1), pivot
+/// (1, 1), 40 in from the canvas' right edge), so it keeps to the right edge as the window gets wider or narrower.
+#[must_use]
+pub const fn panel(canvas_width: f32) -> [f32; 4] {
+    [canvas_width - 40.0 - PANEL[2], PANEL[1], PANEL[2], PANEL[3]]
+}
 /// The viewport: the panel without the 45 the scroll bar and its distance take.
 const VIEWPORT_W: f32 = 700.5;
 /// The column's padding: left, right, top, bottom.
@@ -30,12 +37,13 @@ const SPACING: f32 = 20.0;
 /// The room a row has.
 const INNER_W: f32 = VIEWPORT_W - PADDING[0] - PADDING[1];
 /// The scroll bar's track (`Scrollbar Vertical`: 20 wide, 20 from the right edge, 40 shorter than the panel).
-pub const BAR_TRACK: [f32; 4] = [
-    PANEL[0] + PANEL[2] - 40.0,
-    PANEL[1] + 20.0,
-    20.0,
-    PANEL[3] - 40.0,
-];
+pub const BAR_TRACK: [f32; 4] = bar_track(PANEL);
+
+/// The scroll bar's track of a panel placed at `panel` (see [`panel`]).
+#[must_use]
+pub const fn bar_track(panel: [f32; 4]) -> [f32; 4] {
+    [panel[0] + panel[2] - 40.0, panel[1] + 20.0, 20.0, panel[3] - 40.0]
+}
 /// Hit ids of the panel (one for the panel, then one per control).
 const HIT_PANEL: u32 = 210_000;
 
@@ -273,24 +281,25 @@ impl Drawer<'_> {
             return;
         }
         let s = self.s;
+        let panel = panel(self.canvas[0]);
         // The panel takes the clicks over it.
         frame.hit(
             HIT_PANEL,
-            self.at(PANEL[0], PANEL[1]),
-            self.at(PANEL[2], PANEL[3]),
+            self.at(panel[0], panel[1]),
+            self.at(panel[2], panel[3]),
             UiAction::Consume,
         );
-        self.slice(frame, "Long_UI", 70.0, 0.2, PANEL, WHITE);
+        self.slice(frame, "Long_UI", 70.0, 0.2, panel, WHITE);
         // The mesh view has no "Lineage Tree" group (`ShowSettingsOfType`).
         let column = layout(!app.lineage_view.mesh_mode);
         let options = app.lineage_tree_settings();
         let scroll = app.lineage_settings_scroll.clamp(0.0, column.max_scroll());
         // The viewport's mask.
-        let clip = [PANEL[0] * s, PANEL[1] * s, VIEWPORT_W * s, PANEL[3] * s];
+        let clip = [panel[0] * s, panel[1] * s, VIEWPORT_W * s, panel[3] * s];
         let place = |rect: [f32; 4]| -> [f32; 4] {
             [
-                (PANEL[0] + rect[0]) * s,
-                (PANEL[1] + rect[1] - scroll) * s,
+                (panel[0] + rect[0]) * s,
+                (panel[1] + rect[1] - scroll) * s,
                 rect[2] * s,
                 rect[3] * s,
             ]
@@ -490,7 +499,7 @@ impl Drawer<'_> {
             &spec,
             editing,
             local,
-            PANEL[0],
+            self::panel(self.canvas[0])[0],
             &|from, to| UiAction::DynSlide(row_index as u16, from, to),
             place,
             clip,
@@ -692,12 +701,8 @@ impl Drawer<'_> {
         };
         let everything = [0.0, 0.0, 100_000.0, 100_000.0];
         if let Some(texture) = self.ui.texture_of_alias("Background") {
-            let track = [
-                BAR_TRACK[0] * s,
-                BAR_TRACK[1] * s,
-                BAR_TRACK[2] * s,
-                BAR_TRACK[3] * s,
-            ];
+            let bar = bar_track(panel(self.canvas[0]));
+            let track = [bar[0] * s, bar[1] * s, bar[2] * s, bar[3] * s];
             clip_nine_slice(
                 frame,
                 self.ui,
@@ -709,7 +714,7 @@ impl Drawer<'_> {
                 everything,
             );
         }
-        let handle = crate::lineage_view::handle_rect(BAR_TRACK, flipped, true);
+        let handle = crate::lineage_view::handle_rect(bar_track(panel(self.canvas[0])), flipped, true);
         if let Some(texture) = self.ui.texture_of_alias("UISprite") {
             let rect = [handle[0] * s, handle[1] * s, handle[2] * s, handle[3] * s];
             clip_nine_slice(
