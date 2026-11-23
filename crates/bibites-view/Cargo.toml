@@ -14,6 +14,8 @@ path = "src/main.rs"
 bibites-core.workspace = true
 bibites-brainsort.workspace = true
 bibites-io.workspace = true
+# RUSTibites Improved's jukebox: plays one music file through the operating system's player (Windows MCI), no audio library.
+bibites-audio.workspace = true
 macroquad = "0.4"
 # PNG encoder for headless screenshots. Kept explicit (rather than relying on a
 # transitive dependency) so the software rasteriser has a stable, documented

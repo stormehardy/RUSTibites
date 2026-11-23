@@ -502,7 +502,7 @@ pub fn pellet_under(world: &World, point: Vec2) -> Option<PelletId> {
 pub fn tool_collider_radius(tool: &bibites_core::tools::Tool) -> f32 {
     match tool {
         bibites_core::tools::Tool::Phero(_) => 19.0,
-        bibites_core::tools::Tool::Rad(_) | bibites_core::tools::Tool::Killer(_) => 17.5,
+        bibites_core::tools::Tool::Rad(_) | bibites_core::tools::Tool::Killer(_) | bibites_core::tools::Tool::Gene(_) | bibites_core::tools::Tool::Vent(_) | bibites_core::tools::Tool::Force(_) | bibites_core::tools::Tool::Whirl(_) => 17.5,
     }
 }
 

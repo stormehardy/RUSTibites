@@ -32,7 +32,7 @@
 //! not truncate.
 
 use crate::brain::{self, Brain, BrainInputs};
-use crate::math::{PI, Vec2};
+use crate::math::{PI, Vec2, unity};
 use crate::pellet::NORMAL_AMOUNT_AT_SCALE1;
 use crate::pheromone::SENSE_TANH_DIVISOR;
 
@@ -116,6 +116,10 @@ pub struct SenseOutputs {
     pub herd_sum_direction: f32,
     /// `FieldOfView.herdSeparationProjection` (body steering input).
     pub herd_separation_projection: f32,
+    /// The pheromone sense the last fixed update computed (`tanh(sum / 5)`, angles, headings of the three channels, in the order of inputs 24-32): the game's `Pherosense` fields
+    /// are written at the END of every fixed update (`PherosenseAround`, from the pose and the pheromones of that moment) and the NEXT brain tick reads them, so a brain tick sees
+    /// the pheromone sense of the tick before. Runtime state of the sense phase: not a brain input, not in checkpoints (a loaded game starts with zeros too).
+    pub pending_phero: [f32; 9],
 }
 
 impl SenseOutputs {
@@ -147,6 +151,7 @@ impl SenseOutputs {
             has_herd: false,
             herd_sum_direction: 0.0,
             herd_separation_projection: 0.0,
+            pending_phero: [0.0; 9],
         }
     }
 
@@ -208,6 +213,7 @@ impl SenseOutputs {
             has_herd: false,
             herd_sum_direction: 0.0,
             herd_separation_projection: 0.0,
+            pending_phero: [0.0; 9],
         }
     }
 
@@ -249,6 +255,37 @@ impl SenseOutputs {
         self.phero_1_heading = phero.heading[0];
         self.phero_2_heading = phero.heading[1];
         self.phero_3_heading = phero.heading[2];
+    }
+
+    /// Stores the pheromone sense of this fixed update for the next brain tick to read (see [`SenseOutputs::pending_phero`]).
+    #[inline]
+    pub fn set_pending_phero(&mut self, phero: &PheroSenses) {
+        self.pending_phero = [
+            phero.sense[0],
+            phero.sense[1],
+            phero.sense[2],
+            phero.angle[0],
+            phero.angle[1],
+            phero.angle[2],
+            phero.heading[0],
+            phero.heading[1],
+            phero.heading[2],
+        ];
+    }
+
+    /// A brain tick reads the pheromone sense the fixed update before left (inputs 24-32).
+    #[inline]
+    pub fn apply_pending_phero(&mut self) {
+        let p = self.pending_phero;
+        self.phero_sense_1 = p[0];
+        self.phero_sense_2 = p[1];
+        self.phero_sense_3 = p[2];
+        self.phero_1_angle = p[3];
+        self.phero_2_angle = p[4];
+        self.phero_3_angle = p[5];
+        self.phero_1_heading = p[6];
+        self.phero_2_heading = p[7];
+        self.phero_3_heading = p[8];
     }
 }
 
@@ -479,29 +516,27 @@ pub struct InView {
     pub direction: Vec2,
 }
 
-/// Unity's `Vector2.SignedAngle(from, to)` in degrees: `atan2(cross, dot)`.
+/// Unity's `Vector2.SignedAngle(from, to)` in degrees (see [`unity::signed_angle`]: `Angle` is `acos` of the normalised dot product, 0 when either vector is numerically zero, and
+/// the sign comes from the cross product). The zero guard matters: without it a zero `to` gave `atan2(+-0, -0)` = 180 degrees whenever `from` had both components negative,
+/// so the pheromone angle/heading inputs of a bibite facing down-left read +-1 with no pheromone anywhere (measured 2026-11-18: those inputs are 0 in the game).
 #[inline]
 pub fn signed_angle_deg(from: Vec2, to: Vec2) -> f32 {
-    from.cross(to).atan2(from.dot(to)).to_degrees()
+    unity::signed_angle(from, to)
 }
 
 /// Unity's `Vector2.Angle(a, b)` in degrees; returns 0 when either vector is
 /// (numerically) zero, matching Unity's `kEpsilonNormalSqrt` behaviour.
 #[inline]
 pub fn angle_deg(a: Vec2, b: Vec2) -> f32 {
-    let denominator = (a.length_sq() * b.length_sq()).sqrt();
-    if denominator < 1e-15 {
-        return 0.0;
-    }
-    (a.dot(b) / denominator)
-        .clamp(-1.0, 1.0)
-        .acos()
-        .to_degrees()
+    unity::angle(a, b)
 }
 
 /// `FieldOfView.TargetIsInView`: exact cone/circle test including the
 /// cone-edge intersection branch for objects whose centre is outside the cone
 /// but whose radius crosses it (spec §3.4).
+///
+/// Every expression is the game's, evaluated the game's way (`Vector2.magnitude`, `SignedAngle`, `normalized` and `Rotate` from [`unity`]; the arithmetic of one C# expression
+/// in double, rounded where a value is stored or passed): the senses were measured against the original game, bit for bit (2026-11-19, `sense_vs_game`).
 ///
 /// Returns `None` when the target is not visible. `object_radius` is the
 /// target's `sideRadius` (bibites) or analytic pellet radius.
@@ -514,90 +549,104 @@ pub fn target_in_view(
     object_radius: f32,
 ) -> Option<InView> {
     let dir = target_pos - subject_pos;
-    let distance = dir.length();
-    if distance - object_radius > params.view_radius {
+    let distance = unity::magnitude(dir);
+    if f64::from(distance) - f64::from(object_radius) > f64::from(params.view_radius) {
         return None;
     }
     let half_angle = params.half_angle_deg();
-    let dot = subject_up.dot(dir);
-    let cross = subject_up.cross(dir);
-    // Cheap cone classification before the transcendental: most candidates are
-    // outside the view cone, and rejecting them with cross/dot comparisons
-    // avoids an atan2 + to_degrees per pellet (the dominant sensing cost).
-    let inside = if half_angle >= 90.0 {
-        // `FieldOfView.cs:563`: `|angle| < viewAngle / 2` for any width. The
-        // half-plane shortcut is only exact below 90 degrees.
-        signed_angle_deg(subject_up, dir).abs() < half_angle
-    } else {
-        let tan_half = (half_angle * PI / 180.0).tan();
-        dot > 0.0 && cross.abs() <= dot * tan_half
-    };
-    if inside {
-        let angle = signed_angle_deg(subject_up, dir);
-        let effective = (distance - object_radius).max(0.001);
+    // A cheap reject before the transcendental (most candidates are outside the cone and a pellet's `acos` was the dominant sensing cost): a target clearly
+    // outside the cone (its direction further than 0.1 % past the edge) whose circle clearly does not reach the edge line (a gap of more than 0.1 % of the
+    // distance) is not seen by the exact test either. Anything closer to a boundary than that takes the exact path below.
+    if half_angle < 90.0 && distance > 1e-3 {
+        let half_rad = half_angle * PI / 180.0;
+        let (dot, cross) = (subject_up.dot(dir), subject_up.cross(dir));
+        let clearly_outside = dot <= 0.0 || cross.abs() > dot * half_rad.tan() * 1.001;
+        if clearly_outside {
+            let sin_offset = (cross.abs() * half_rad.cos() - dot * half_rad.sin()) / distance;
+            if sin_offset > object_radius / distance + 1e-3 {
+                return None;
+            }
+        }
+    }
+    let angle = unity::signed_angle(subject_up, dir);
+    if angle.abs() < half_angle {
+        let effective = unity::max((f64::from(distance) - f64::from(object_radius)) as f32, 0.001);
         return Some(InView {
             distance: effective,
             angle_deg: angle,
-            direction: dir.normalize_or(Vec2::X) * effective,
+            direction: unity::normalized(dir) * effective,
         });
     }
 
-    // Outside the cone: a target circle can still cross the cone edge. Cheap
-    // conservative reject using `distance·sin(|angle|−half) ≈ cross·cos − dot·sin`
-    // before paying for the exact atan2/edge solve.
-    let half_rad = half_angle * PI / 180.0;
-    let sin_offset = (cross.abs() * half_rad.cos() - dot * half_rad.sin()) / distance;
-    if sin_offset > object_radius / distance {
-        return None;
-    }
-    let angle = signed_angle_deg(subject_up, dir);
-
     // Outside the cone: solve the intersection of the view-cone boundary with
     // the target circle (game's line/circle maths).
-    let k1 = 2.0 * distance * ((angle.abs() - half_angle) * PI / 180.0).cos();
-    let k2 = distance * distance - object_radius * object_radius;
-    let discriminant = k1 * k1 - 4.0 * k2;
+    let cone = unity::cos((unity::DEG_TO_RAD_FACTOR * (f64::from(angle.abs()) - f64::from(half_angle))) as f32);
+    let k1 = (2.0 * f64::from(distance) * f64::from(cone)) as f32;
+    let k2 = (f64::from(distance) * f64::from(distance) - f64::from(object_radius) * f64::from(object_radius)) as f32;
+    let discriminant = (f64::from(k1) * f64::from(k1) - 4.0 * f64::from(k2)) as f32;
     if discriminant <= 0.0 {
         return None;
     }
-    let effective = (k1 / 2.0 - discriminant.sqrt() / 2.0).max(0.001);
+    let root = f64::from(discriminant).sqrt() as f32;
+    let effective = unity::max(0.001, (f64::from(k1) / 2.0 - f64::from(root) / 2.0) as f32);
     if effective > params.view_radius {
         return None;
     }
-    let clamped_angle = angle.signum() * half_angle;
+    let clamped_angle = (f64::from(unity::sign(angle)) * f64::from(params.view_angle) / 2.0) as f32;
     Some(InView {
         distance: effective,
         angle_deg: clamped_angle,
-        direction: subject_up.rotate(clamped_angle * PI / 180.0) * effective,
+        direction: unity::rotate(subject_up, (unity::DEG_TO_RAD_FACTOR * f64::from(clamped_angle)) as f32) * effective,
     })
 }
 
-/// One target's FOV weight:
-/// `(1.05 − d/R)² · size_term · (1.05 − |angle|/(A/2))`
-/// (spec §3.5; `FieldOfView.ComputeSenses`).
-#[inline]
-pub fn fov_weight(distance: f32, angle_deg: f32, params: &FovParams, size_term: f32) -> f32 {
-    let distance_term = FOV_WEIGHT_BASE - distance / params.view_radius;
-    let angle_term = FOV_WEIGHT_BASE - angle_deg.abs() / params.half_angle_deg();
-    distance_term * distance_term * size_term * angle_term
+/// What a field-of-view weight is the weight of: the game writes the product three ways (`FieldOfView.ComputeSenses`), and in each the whole product is one expression
+/// evaluated in double and rounded once when it is stored.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub enum WeightOf {
+    /// A plant or meat pellet: `Mathf.Pow(..) * pellet.sizeFactor * angleTerm`, with the size factor [`pellet_size_term`] (a float property).
+    Pellet(f32),
+    /// A bibite: `maxHealth / 100f * Mathf.Pow(..) * angleTerm`.
+    Bibite {
+        /// `maxHealth` of the seen bibite.
+        max_health: f32,
+    },
+    /// A corpse in the meat channel: `Mathf.Pow(..) * baseBodyArea / 20f * (1f - healthRatio) * angleTerm`.
+    Corpse {
+        /// `baseBodyArea` of the dead bibite.
+        base_body_area: f32,
+        /// `healthRatio` of the dead bibite.
+        health_ratio: f32,
+    },
 }
 
-/// Plant/meat pellet size term (`MatterPellet.sizeFactor = amount/20`).
+/// One target's FOV weight (spec §3.5; `FieldOfView.ComputeSenses`): `Mathf.Pow(1.05f - dist2Target / viewRadius, 2f)` (the argument a double expression rounded to a float,
+/// the power a float) times the size factor of the kind of object and `(1.05f - Mathf.Abs(angle2Target) / (viewAngle / 2f))` (one double expression), the whole product
+/// rounded once.
+#[must_use]
+pub fn fov_weight_of(distance: f32, angle_deg: f32, params: &FovParams, what: WeightOf) -> f32 {
+    let base = f64::from(FOV_WEIGHT_BASE);
+    let power = f64::from(crate::math::pow((base - f64::from(distance) / f64::from(params.view_radius)) as f32, 2.0));
+    let angle_term = base - f64::from(angle_deg.abs()) / (f64::from(params.view_angle) / 2.0);
+    let weight = match what {
+        WeightOf::Pellet(size_factor) => power * f64::from(size_factor) * angle_term,
+        WeightOf::Bibite { max_health } => f64::from(max_health) / 100.0 * power * angle_term,
+        WeightOf::Corpse { base_body_area, health_ratio } => power * f64::from(base_body_area) / 20.0 * (1.0 - f64::from(health_ratio)) * angle_term,
+    };
+    weight as f32
+}
+
+/// The pellet kind of [`fov_weight_of`] with the size factor given (`MatterPellet.sizeFactor`).
+#[inline]
+#[must_use]
+pub fn fov_weight(distance: f32, angle_deg: f32, params: &FovParams, size_term: f32) -> f32 {
+    fov_weight_of(distance, angle_deg, params, WeightOf::Pellet(size_term))
+}
+
+/// Plant/meat pellet size term (`MatterPellet.sizeFactor = Mathf.Max(amount, 0f) / 20f`).
 #[inline]
 pub fn pellet_size_term(amount: f32) -> f32 {
     amount.max(0.0) / NORMAL_AMOUNT_AT_SCALE1
-}
-
-/// Bibite size term (`maxHealth / 100`).
-#[inline]
-pub fn bibite_size_term(max_health: f32) -> f32 {
-    max_health / BIBITE_SIZE_DIVISOR
-}
-
-/// Corpse meat-channel size term (`baseBodyArea/20 · (1 − healthRatio)`).
-#[inline]
-pub fn corpse_size_term(base_body_area: f32, health_ratio: f32) -> f32 {
-    base_body_area / CORPSE_SIZE_DIVISOR * (1.0 - health_ratio)
 }
 
 /// Aggregated FOV result for one category.
@@ -774,14 +823,9 @@ impl FovSensor {
         ) else {
             return;
         };
-        let weight = fov_weight(
-            view.distance,
-            view.angle_deg,
-            &self.params,
-            pellet_size_term(amount),
-        );
+        let weight = fov_weight_of(view.distance, view.angle_deg, &self.params, WeightOf::Pellet(pellet_size_term(amount)));
         self.plant.count += 1;
-        self.plant.max_weight = self.plant.max_weight.max(weight);
+        self.plant.max_weight = unity::max(self.plant.max_weight, weight);
         self.plant_dir_sum += view.direction * weight;
         self.plant_weight_sum += weight;
     }
@@ -800,14 +844,9 @@ impl FovSensor {
         ) else {
             return;
         };
-        let weight = fov_weight(
-            view.distance,
-            view.angle_deg,
-            &self.params,
-            pellet_size_term(amount),
-        );
+        let weight = fov_weight_of(view.distance, view.angle_deg, &self.params, WeightOf::Pellet(pellet_size_term(amount)));
         self.meat.count += 1;
-        self.meat.max_weight = self.meat.max_weight.max(weight);
+        self.meat.max_weight = unity::max(self.meat.max_weight, weight);
         self.meat_dir_sum += view.direction * weight;
         self.meat_weight_sum += weight;
     }
@@ -833,14 +872,9 @@ impl FovSensor {
         ) else {
             return;
         };
-        let weight = fov_weight(
-            view.distance,
-            view.angle_deg,
-            &self.params,
-            corpse_size_term(base_body_area, health_ratio),
-        );
+        let weight = fov_weight_of(view.distance, view.angle_deg, &self.params, WeightOf::Corpse { base_body_area, health_ratio });
         self.meat.count += 1;
-        self.meat.max_weight = self.meat.max_weight.max(weight);
+        self.meat.max_weight = unity::max(self.meat.max_weight, weight);
         self.meat_dir_sum += view.direction * weight;
         self.meat_weight_sum += weight;
     }
@@ -872,14 +906,9 @@ impl FovSensor {
         ) else {
             return;
         };
-        let weight = fov_weight(
-            view.distance,
-            view.angle_deg,
-            &self.params,
-            bibite_size_term(max_health),
-        );
+        let weight = fov_weight_of(view.distance, view.angle_deg, &self.params, WeightOf::Bibite { max_health });
         self.bibite.count += 1;
-        self.bibite.max_weight = self.bibite.max_weight.max(weight);
+        self.bibite.max_weight = unity::max(self.bibite.max_weight, weight);
         self.bibite_dir_sum += view.direction * weight;
         self.bibite_weight_sum += weight;
 
@@ -887,8 +916,9 @@ impl FovSensor {
         self.herd_heading += up;
         self.herd_center += view.direction;
         if view.distance < self.params.herd_separation_distance {
-            self.herd_separation += -view.direction.normalize_or(Vec2::X)
-                * (1.0 - view.distance / self.params.herd_separation_distance);
+            // `-dir2Target.normalized * (1f - dist2Target / herdSeparationDistance)`: the factor is a double expression rounded to a float as the argument.
+            let factor = (1.0 - f64::from(view.distance) / f64::from(self.params.herd_separation_distance)) as f32;
+            self.herd_separation += -unity::normalized(view.direction) * factor;
         }
         // `FieldOfView.cs:479-488`: `dist2Bibite` is only ever initialised to
         // +inf and never assigned, so `!(dist2Target > dist2Bibite)` is always
@@ -908,22 +938,17 @@ impl FovSensor {
         self.meat = self.finish_channel(self.meat_weight_sum, self.meat_dir_sum, self.meat);
 
         let herd = if self.bibite.count > 0 {
-            let combined = self.herd_separation.normalized() * self.params.separation_weight
-                + self.herd_center.normalized() * self.params.cohesion_weight
+            let combined = unity::normalized(self.herd_separation) * self.params.separation_weight
+                + unity::normalized(self.herd_center) * self.params.cohesion_weight
                 + self.herd_heading * self.params.alignment_weight;
             HerdState {
                 has_herd: true,
                 center_of_herd: self.herd_center,
                 separation: self.herd_separation,
                 heading: self.herd_heading,
-                sum_direction: signed_angle_deg(self.subject_up, combined),
-                separation_projection: if self.herd_separation.length_sq() <= 1e-12 {
-                    1.0
-                } else {
-                    self.subject_up
-                        .dot(self.herd_separation.normalized())
-                        .clamp(-1.0, 1.0)
-                },
+                sum_direction: unity::signed_angle(self.subject_up, combined),
+                // `Mathf.Cos((float)Math.PI / 180f * Vector2.Angle(upvect, herdSeparationVector))`: the argument a double product rounded to a float (1 for a zero vector).
+                separation_projection: unity::cos((unity::DEG_TO_RAD_FACTOR * f64::from(unity::angle(self.subject_up, self.herd_separation))) as f32),
             }
         } else {
             HerdState::default()
@@ -946,8 +971,11 @@ impl FovSensor {
     ) -> FovChannel {
         if weight_sum > 0.0 {
             let mean = dir_sum / weight_sum;
-            channel.closeness = 1.0 - (mean.length() / self.params.view_radius).min(1.0);
-            channel.angle = 2.0 * signed_angle_deg(self.subject_up, mean) / self.params.view_angle;
+            // `1f - Mathf.Min(val.magnitude / viewRadius, 1f)` and `2f * Vector2.SignedAngle(upvect, val) / viewAngle`: the quotient of the first is rounded to a float as an
+            // argument, the second is one double expression rounded when stored.
+            let ratio = (f64::from(unity::magnitude(mean)) / f64::from(self.params.view_radius)) as f32;
+            channel.closeness = 1.0 - unity::min(ratio, 1.0);
+            channel.angle = (2.0 * f64::from(unity::signed_angle(self.subject_up, mean)) / f64::from(self.params.view_angle)) as f32;
         } else {
             channel.closeness = 0.0;
             channel.angle = 0.0;
@@ -1003,8 +1031,12 @@ impl PheroAccumulator {
     /// by sensing (spec §4.2/§5.3).
     pub fn add_spot(&mut self, pos: Vec2, heading: Vec2, strength: [f32; 3]) {
         let delta = pos - self.subject_pos;
-        let distance = delta.length();
-        if distance <= 0.0 || !distance.is_finite() {
+        // `if (!(val6.sqrMagnitude <= 0f))`, then `Rstrength / val6.magnitude` (`Vector3.magnitude`: the sum in double).
+        if unity::sqr_magnitude(delta) <= 0.0 {
+            return;
+        }
+        let distance = unity::magnitude(delta);
+        if !distance.is_finite() {
             return;
         }
         for (channel, &value) in strength.iter().enumerate() {
@@ -1024,12 +1056,12 @@ impl PheroAccumulator {
         if !safe_radius.is_finite() {
             return;
         }
-        let distance_to_edge = safe_radius - self.subject_pos.length();
+        let distance_to_edge = safe_radius - unity::magnitude(self.subject_pos);
         if phero_radius > distance_to_edge {
-            let k = RED_DEATH_PHERO_STRENGTH / distance_to_edge.max(1.0);
+            let k = RED_DEATH_PHERO_STRENGTH / unity::max(1.0, distance_to_edge);
             self.sums[0] += k;
-            self.dir_sums[0] += self.subject_pos.normalize_or(Vec2::X) * (distance_to_edge * k);
-            self.heading_sums[0] += -self.subject_pos.normalize_or(Vec2::X) * k;
+            self.dir_sums[0] += unity::normalized(self.subject_pos) * (distance_to_edge * k);
+            self.heading_sums[0] += -unity::normalized(self.subject_pos) * k;
         }
     }
 
@@ -1040,10 +1072,9 @@ impl PheroAccumulator {
         let mut result = PheroSenses::default();
         for channel in 0..3 {
             result.sum[channel] = self.sums[channel];
-            result.sense[channel] = (self.sums[channel] / SENSE_TANH_DIVISOR).tanh();
-            result.angle[channel] = signed_angle_deg(subject_up, self.dir_sums[channel]) / 180.0;
-            result.heading[channel] =
-                signed_angle_deg(subject_up, self.heading_sums[channel]) / 180.0;
+            result.sense[channel] = phero_sense_value(self.sums[channel]);
+            result.angle[channel] = unity::signed_angle(subject_up, self.dir_sums[channel]) / 180.0;
+            result.heading[channel] = unity::signed_angle(subject_up, self.heading_sums[channel]) / 180.0;
         }
         result
     }
@@ -1056,10 +1087,11 @@ pub fn phero_sense_radius(gene_value: f32) -> f32 {
     gene_value.max(0.0)
 }
 
-/// Writes `tanh(sum/5)` directly (used by tests/parity digests).
+/// `NEATBrain.UpdateSenses`: `(float)Math.Tanh(phero.pheroSum1 / 5f)`. The quotient is a `double` handed straight to `Math.Tanh` (the game's arithmetic runs in
+/// `double` and rounds to `float` only where a value is stored, passed or returned: the quotient is NOT rounded to a float first); the result is rounded once.
 #[inline]
 pub fn phero_sense_value(sum: f32) -> f32 {
-    (sum / SENSE_TANH_DIVISOR).tanh()
+    (f64::from(sum) / f64::from(SENSE_TANH_DIVISOR)).tanh() as f32
 }
 
 // ---------------------------------------------------------------------------
@@ -1267,6 +1299,11 @@ mod tests {
         assert!(almost(signed_angle_deg(Vec2::X, Vec2::Y), 90.0));
         // Zero vectors: atan2(0, 0) == 0.
         assert_eq!(signed_angle_deg(Vec2::Y, Vec2::ZERO), 0.0);
+        // ... whatever the signs of `from`: `x * 0` and `y * 0` are both -0 for a `from` facing down-left, and atan2(+-0, -0) is 180 degrees.
+        for from in [Vec2::new(-0.6, -0.8), Vec2::new(-0.6, 0.8), Vec2::new(0.6, -0.8), Vec2::new(0.6, 0.8), -Vec2::Y, -Vec2::X] {
+            assert_eq!(signed_angle_deg(from, Vec2::ZERO), 0.0, "from {from:?}");
+            assert_eq!(signed_angle_deg(from, Vec2::new(-0.0, -0.0)), 0.0, "from {from:?}, to -0");
+        }
         // Unity's Angle() returns 0 when a vector is zero.
         assert_eq!(angle_deg(Vec2::Y, Vec2::ZERO), 0.0);
         assert!(almost(angle_deg(Vec2::X, Vec2::Y), 90.0));

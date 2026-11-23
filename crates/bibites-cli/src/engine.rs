@@ -13,7 +13,7 @@ use bibites_core::math::Vec2;
 use bibites_core::settings::SimSettings;
 use bibites_core::world::{ScenarioData, TemplateSource, World};
 
-use crate::args::{BenchArgs, RunArgs, StatsFormat};
+use crate::args::{BenchArgs, CalibrateArgs, RunArgs, StatsFormat};
 use crate::report::RunReport;
 
 /// Runs a world/scenario/genome and prints statistics.
@@ -227,6 +227,56 @@ pub fn bench(args: &BenchArgs) -> Result<(), String> {
         if let Some(best) = best {
             println!("best: {}", best.summary());
         }
+    }
+    Ok(())
+}
+
+/// Calibrates the machine (see `bibites_core::calibration`): how many workers a tick should use, from what size of world the pool of workers pays, and at which
+/// level; prints the numbers it found and, with `--save` or `--out`, keeps them.
+pub fn calibrate(args: &CalibrateArgs) -> Result<(), String> {
+    use bibites_core::calibration;
+    let threads = if args.threads == 0 { calibration::available_threads() } else { args.threads };
+    let config = if args.quick { calibration::Config::quick(threads) } else { calibration::Config::full(threads) };
+    let cancel = std::sync::atomic::AtomicBool::new(false);
+    println!("calibrating this machine for {threads} threads ({} test) ...", if args.quick { "quick" } else { "full" });
+    let result = calibration::run(&config, &cancel, &mut |progress| {
+        eprintln!("[{}/{}] {}", progress.done + 1, progress.total, progress.what);
+    })
+    .map_err(|stop| format!("the calibration did not finish: {stop:?}"))?;
+    println!("took {:.1} s; noise between blocks of the same way: {:.0} %{}", result.seconds, result.noise * 100.0, if result.noisy() { " (the machine was busy: run it again)" } else { "" });
+    if !result.worker_rows.is_empty() {
+        println!("\nworkers ({} bibites; the fastest level at each number of workers), ms per tick:", config.workers_bibites);
+        for row in &result.worker_rows {
+            println!("  {:>3} workers: {:>8.3}  (level {})", row.workers, row.ns / 1e6, row.level);
+        }
+    }
+    if !result.rows.is_empty() {
+        println!("\nsizes with {} workers, ms per tick:", result.workers);
+        println!("  {:>8} {:>8} {:>9} {:>9} {:>9} {:>9} {:>9}   best way", "bibites", "bodies", "inline", "level 0", "level 1", "level 2", "level 3");
+        for row in &result.rows {
+            let (level, best) = row.best_pooled();
+            let way = if best < row.ns[0] { format!("level {level}, {:.2}x", row.ns[0] / best) } else { "inline".to_owned() };
+            println!(
+                "  {:>8} {:>8} {:>9.3} {:>9.3} {:>9.3} {:>9.3} {:>9.3}   {way}",
+                row.bibites, row.bodies, row.ns[0] / 1e6, row.ns[1] / 1e6, row.ns[2] / 1e6, row.ns[3] / 1e6, row.ns[4] / 1e6
+            );
+        }
+    }
+    println!(
+        "\nresult: {} workers; the pool pays from about {} bibites; a world that big starts at level {}; up to {:.2}x faster than one thread at the biggest size measured",
+        result.workers, result.pool_bibites, result.start_level, result.speedup
+    );
+    let text = result.to_text();
+    let mut targets: Vec<std::path::PathBuf> = args.out.iter().cloned().collect();
+    if args.save {
+        targets.push(bibites_io::storage::StoragePaths::default_local().root.join("calibration.txt"));
+    }
+    for path in targets {
+        if let Some(parent) = path.parent().filter(|parent| !parent.as_os_str().is_empty()) {
+            std::fs::create_dir_all(parent).map_err(|error| format!("could not create {}: {error}", parent.display()))?;
+        }
+        std::fs::write(&path, &text).map_err(|error| format!("could not write {}: {error}", path.display()))?;
+        println!("saved: {}", path.display());
     }
     Ok(())
 }
@@ -531,7 +581,12 @@ fn spawn_one(
         ang_vel: 0.0,
         genome: genome.clone(),
         meta: meta.clone(),
-        brain: brain.clone(),
+        // `CopyBrain` + `FinalizeEditing`: a spawned bibite's nodes start fresh, whatever values the template's brain was saved with.
+        brain: {
+            let mut fresh = brain.clone();
+            fresh.reset_runtime_state(world.settings.brain_period());
+            fresh
+        },
         vitals,
         energy: None,
         health: None,
@@ -848,6 +903,13 @@ fn print_phase_table(world: &World) {
             lanes.eggs as f64 / turns * 100.0,
             lanes.emit as f64 / turns * 100.0,
             lanes.dead as f64 / turns * 100.0
+        );
+        // The dense-order turns that were cut in parts: what of them the pool took.
+        let heavy = lanes.heavy.max(1) as f64;
+        println!(
+            "dense-order turns cut in parts: head taken in the sweep {:.1}%, last part on the pool {:.1}% of the dense-order turns",
+            lanes.head_in_sweep as f64 / heavy * 100.0,
+            lanes.post_on_pool as f64 / heavy * 100.0
         );
     }
     // How a world that measures its own ticks ran them (inline, on the pool at each level), what the probes found, and the way it ended on.

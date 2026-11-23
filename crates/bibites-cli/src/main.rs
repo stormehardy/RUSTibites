@@ -49,6 +49,7 @@ fn dispatch(command: Command) -> Result<(), String> {
     match command {
         Command::Run(run) => engine::run(&run),
         Command::Bench(bench) => engine::bench(&bench),
+        Command::Calibrate(calibrate) => engine::calibrate(&calibrate),
         Command::Info { input } => engine::info(&input),
         Command::Check { input } => engine::check(&input),
         Command::Braincheck { fixture, out } => engine::braincheck(&fixture, out.as_deref()),

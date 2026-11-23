@@ -926,7 +926,8 @@ fn parse_bibite(value: &Value, version_text: &str, settings: &SimSettings) -> Re
     let growth = {
         let size_ratio = loaded.genome.gene(Gene::SizeRatio);
         if size_ratio > 0.0 {
-            body.d2_size.unwrap_or(0.0) / (size_ratio * size_ratio)
+            // `BibiteBody.LoadState`: `growth.growth = d2Size / (SizeRatio * SizeRatio)`: the square and the quotient are one double expression, rounded once.
+            (f64::from(body.d2_size.unwrap_or(0.0)) / (f64::from(size_ratio) * f64::from(size_ratio))) as f32
         } else {
             0.0
         }

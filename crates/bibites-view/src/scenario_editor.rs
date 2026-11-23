@@ -1226,6 +1226,7 @@ pub fn build(captured: &Node, input: &EditorInput<'_>) -> Option<EditorBuild> {
                 selected_point: state.animator.point,
                 creator: Some(&state.animator.creator),
                 groups: &state.scenario.zone_groups,
+                streams: &[],
                 open: &state.open_items,
                 order: &state.dyn_state.order,
                 bibites: &state.scenario.bibite_spawns,

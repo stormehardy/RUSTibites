@@ -74,6 +74,11 @@ mod gene_analysis;
 mod gene_info_data;
 mod hud;
 mod improved_switches;
+mod improved_keys;
+mod improved_settings;
+mod improved_toolbar;
+mod jukebox;
+mod name_list;
 mod information_panel;
 mod internals;
 mod internals_shaders;
@@ -85,6 +90,7 @@ mod lineage_mesh_view;
 mod lineage_settings;
 mod lineage_tree;
 mod lineage_view;
+mod machine_calibration;
 mod menu;
 mod menu_video;
 mod node_info_data;
@@ -99,6 +105,7 @@ mod placer_panel;
 mod preview;
 mod render;
 mod save_dialog;
+mod scenario_saver;
 mod save_panel;
 mod scenario_editor;
 mod scrollbar;
@@ -122,10 +129,13 @@ mod template_editor_ui;
 mod text_sdf;
 mod time_format;
 mod time_keeper;
+mod time_tags;
+mod time_tags_ui;
 mod tooltip;
 mod tooltip_data;
 mod tower_panel;
 mod ui;
+mod ui_layout;
 mod ui_runtime;
 mod unity_layout;
 mod user_settings;
@@ -135,6 +145,8 @@ mod warnings;
 mod animator_session;
 mod animators;
 mod zone_cards;
+mod zone_color_ui;
+mod zone_colors;
 mod zone_editor;
 mod zone_preview;
 
@@ -323,6 +335,8 @@ struct Args {
     /// Open the Save Bibite dialog for the selected bibite before a screenshot
     /// (`--select-first --save-dialog`).
     save_dialog: bool,
+    /// Opens the scenario saver with this name typed (a screenshot flag: the form is shown, never answered).
+    scenario_saver: Option<String>,
     /// Select zone `n` before a screenshot, as the Z key does (opens the Zones tab on its item).
     select_zone: Option<usize>,
     /// Verification: open the lineage panel on the species at this list index.
@@ -331,8 +345,50 @@ struct Args {
     lineage_tab: Option<u8>,
     /// `--lineage-mesh`: the lineage panel shows the mesh view instead of the tree (headless).
     lineage_mesh: bool,
+    /// RUSTibites Improved, `--hide-map-zone-names` / `--hide-map-zone-biomass`: the Species Distribution window starts with that check box off (headless pictures).
+    hide_map_zone_names: bool,
+    /// See `hide_map_zone_names`.
+    hide_map_zone_biomass: bool,
     /// `--lineage-show-extinct`: "Hide Extinct Lineages" is off for this run (headless).
     lineage_show_extinct: bool,
+    /// `--open-toolbar N`: the bottom-left toolbar's panel N (0 placers, 1 user actions, 2 view) is open (headless pictures).
+    open_toolbar: Option<usize>,
+    /// RUSTibites Improved, `--zone-color N:R,G,B` (repeatable): zone number N has that colour (headless pictures and real-window captures).
+    zone_color_list: Vec<(usize, [u8; 3])>,
+    /// RUSTibites Improved, `--zone-color-popup N`: zone N's colour pop-up is open at the pointer (`--hover x,y`, headless pictures).
+    zone_color_popup: Option<usize>,
+    /// RUSTibites Improved, `--settings-tab N`: the Settings screen (`--menu-view settings`) opens on page N (0 graphics, 1 game, 2 hotkeys, 3 music, 4 species names,
+    /// 5 towers, 6 extra hotkeys, 7 calibration; headless pictures and real-window captures).
+    settings_tab: Option<u8>,
+    /// RUSTibites Improved, `--hide-objects`: the world's objects are hidden from the start, as after the Hide Objects hotkey (headless pictures and real-window captures).
+    hide_objects: bool,
+    /// RUSTibites Improved, `--species-names-file FILE`: the species name list reads FILE for this run (headless pictures of the Species Names page; a screenshot
+    /// run never names species from a list without it).
+    species_names_file: Option<PathBuf>,
+    /// RUSTibites Improved, `--gene-tower X,Y[,GENE[,MIN,MAX[,inside]]]` (repeatable): a gene selector tower is placed at X, Y (the last one is selected: its panel opens);
+    /// GENE is a gene's name (`Diet`), MIN and MAX its range, `inside` makes it kill inside the range (headless pictures and real-window captures).
+    gene_towers: Vec<GeneTowerFlag>,
+    /// RUSTibites Improved, `--vent-tower X,Y[,VELOCITY[,SIZE[,RATE[,CAP[,RANGE]]]]][,recycle]` (repeatable): a hydrothermal vent is placed at X, Y (the last one is selected:
+    /// its panel opens); the numbers are the panel's (u/s, E, shots a second, E, u), `recycle` turns recycling on (headless pictures and real-window captures).
+    vent_towers: Vec<VentTowerFlag>,
+    /// RUSTibites Improved, `--force-tower X,Y[,STRENGTH[,RANGE[,constant|fading]]][,bibites|pellets|eggs ...]` (repeatable): a force tower is placed at X, Y (the last one is selected:
+    /// its panel opens); STRENGTH is in u/s per second (negative pushes), RANGE in u, and the words after them name the only kinds of body it acts on (headless pictures and
+    /// real-window captures).
+    force_towers: Vec<ForceTowerFlag>,
+    /// RUSTibites Improved, `--whirlpool X,Y[,SPEED[,RANGE]][,clockwise|counterclockwise|cw|ccw][,constant|fading][,bibites|pellets|eggs ...]` (repeatable): a whirlpool tower is placed
+    /// at X, Y (the last one is selected: its panel opens); SPEED is in u/s per second, RANGE in u, and the words after them name the way it turns, the falloff and the only
+    /// kinds of body it acts on (headless pictures and real-window captures).
+    whirlpools: Vec<WhirlpoolFlag>,
+    /// RUSTibites Improved, `--stream X1,Y1,X2,Y2[,WIDTH[,STRENGTH]]` (repeatable): a stream from (X1, Y1) to (X2, Y2) joins the world with its card open in the Zones tab
+    /// (headless pictures and real-window captures).
+    streams: Vec<StreamFlag>,
+    /// RUSTibites Improved, `--jukebox-folder DIR`: the jukebox plays the music of DIR for this run, at the volume of the settings, and the capture waits for it
+    /// to start (headless pictures of the Music page; a screenshot run never plays without it).
+    jukebox_folder: Option<PathBuf>,
+    /// RUSTibites Improved, `--time-tag MINUTES:NAME` (repeatable): a time tag set that many simulated minutes back (headless pictures and real-window captures).
+    time_tags: Vec<(f64, String)>,
+    /// RUSTibites Improved, `--open-graphs data|genes`: the Stats and Analysis panel is open on that page (`true` for the gene analysis).
+    open_graphs: Option<bool>,
     /// `--position-time N`: the Position tab's time slider value (headless).
     position_time: Option<i32>,
     /// `--bibite-editor`: the Bibite Editor is open on the selected bibite (or a new template) (headless).
@@ -486,11 +542,28 @@ impl Default for Args {
             show_targets: false,
             select_tool: false,
             save_dialog: false,
+            scenario_saver: None,
             select_zone: None,
             lineage_species: None,
             lineage_tab: None,
+            hide_map_zone_names: false,
+            hide_map_zone_biomass: false,
             lineage_mesh: false,
             lineage_show_extinct: false,
+            open_toolbar: None,
+            zone_color_list: Vec::new(),
+            zone_color_popup: None,
+            jukebox_folder: None,
+            gene_towers: Vec::new(),
+            vent_towers: Vec::new(),
+            force_towers: Vec::new(),
+            whirlpools: Vec::new(),
+            streams: Vec::new(),
+            settings_tab: None,
+            hide_objects: false,
+            species_names_file: None,
+            time_tags: Vec::new(),
+            open_graphs: None,
             position_time: None,
             bibite_editor: false,
             editor_scroll: None,
@@ -571,6 +644,18 @@ fn run() -> Result<(), String> {
         print_usage();
         return Ok(());
     }
+    // The machine's calibration (Settings > Calibration), when one was run: every world made from here on starts from it.
+    machine_calibration::init(load_user_settings().flag(machine_calibration::LABEL_USE));
+    // RUSTibites Improved, headless pictures of the Music page: the player runs on this folder for the run (a screenshot never plays by itself).
+    if let Some(file) = args.species_names_file.clone() {
+        name_list::configure(load_user_settings().choice(name_list::LABEL_MODE));
+        name_list::start(file);
+    }
+    if let Some(folder) = args.jukebox_folder.clone() {
+        jukebox::configure(jukebox::Config::from_settings(&load_user_settings()));
+        jukebox::start(folder);
+        std::thread::sleep(std::time::Duration::from_millis(1500));
+    }
 
     if args.ui_functional_matrix {
         return run_functional_matrix(&args);
@@ -634,6 +719,9 @@ fn run() -> Result<(), String> {
                 "credits" => menu::MenuView::Credits,
                 other => return Err(format!("unknown --menu-view `{other}`")),
             });
+            if let Some(tab) = args.settings_tab {
+                menu.menu_command(ui::MenuCommand::SettingsTab(tab));
+            }
         }
         if args.screenshot.is_some()
             && let Some(themed) = themed.as_ref()
@@ -749,6 +837,7 @@ fn apply_stored_toggles(app: &mut App) {
 
 fn apply_user_settings(app: &mut App, settings: &user_settings::UserSettings) {
     app.tps_defaults = settings.tps_defaults();
+    machine_calibration::calibrator().set_use(settings.flag(machine_calibration::LABEL_USE));
     ui::set_ui_scale_settings(
         settings.flag("Automatically Detect Screen Resolution"),
         [0.667, 0.711, 0.833, 1.0, 1.333, 2.0][settings.choice("Screen Resolution").min(5)],
@@ -766,6 +855,17 @@ fn apply_user_settings(app: &mut App, settings: &user_settings::UserSettings) {
     app.scene_options.grid = settings.flag("Show Grid");
     app.scene_options.pheromones = settings.flag("Show Pheromones");
     app.scene_options.zones = settings.flag("Show Fertility");
+    app.scene_options.zone_colors = settings.flag("Individually Coloured Zones");
+    // RUSTibites Improved: the Music page's settings reach the jukebox (which plays only once the game window has started it).
+    jukebox::configure(jukebox::Config::from_settings(settings));
+    // RUSTibites Improved: and where new species' names come from (the Species Names page).
+    name_list::configure(settings.choice(name_list::LABEL_MODE));
+    // RUSTibites Improved: and whether the gene selector towers and the hydrothermal vents act (the Towers page); the world gets them before each tick.
+    app.improved.set(bibites_core::improved::Feature::GeneSelectorTower, settings.flag(improved_settings::LABEL_GENE_TOWERS));
+    app.improved.set(bibites_core::improved::Feature::HydrothermalVent, settings.flag(improved_settings::LABEL_VENTS));
+    app.improved.set(bibites_core::improved::Feature::ForceTower, settings.flag(improved_settings::LABEL_FORCE));
+    app.improved.set(bibites_core::improved::Feature::Streams, settings.flag(improved_settings::LABEL_STREAMS));
+    app.improved.set(bibites_core::improved::Feature::Whirlpool, settings.flag(improved_settings::LABEL_WHIRL));
     app.scene_options.fov = settings.flag("Show Selected Bibite Field Of View");
     app.show_ruler = settings.flag("Show Ruler");
     app.show_status_bars = settings.flag("Show Status Bars");
@@ -775,6 +875,9 @@ fn apply_user_settings(app: &mut App, settings: &user_settings::UserSettings) {
     app.easter_eggs_period = (settings.number("Easter Eggs Probability Period") as u32).max(1);
     app.show_brain_differences = settings.flag("Show Difference");
     app.sort_energy_details = settings.flag("Sort Biology Panel Energy Details");
+    // RUSTibites Improved: what the Species Distribution window writes over its map's zones (its check boxes).
+    app.map_zone_names = settings.flag("Species Map Zone Names");
+    app.map_zone_biomass = settings.flag("Species Map Zone Biomass");
     app.include_autosaves = settings.flag("Include autosaves");
     app.save_as_template = settings.flag("Save as template");
     app.format_bibite_json = settings.flag("Format JSON");
@@ -864,6 +967,19 @@ fn save_window_capture() {
     }
 }
 
+/// RUSTibites Improved: what the text of a Settings page of its own says now (page 3 the Music page, 4 the Species Names page, 6 the Extra Hotkeys, 7 the Calibration page),
+/// to see whether it changed.
+fn extra_page_line(tab: u8) -> String {
+    match tab {
+        3 => jukebox::status().line(),
+        4 => format!("{}|{}", name_list::status().line(), name_list::samples_line()),
+        6 => improved_keys::line(),
+        // The Calibration page (what its lines say now).
+        7 => machine_calibration::page_signature(),
+        _ => String::new(),
+    }
+}
+
 /// `RUSTIBITES_SELF_SHOT=<world frame>:<png path>`: the window writes what the GPU drew (the framebuffer, UI included) at that frame and exits,
 /// so a real-window check does not depend on an operating-system capture of the window (`tools/window_capture.ps1`).
 fn self_shot_request() -> Option<(usize, std::path::PathBuf)> {
@@ -880,9 +996,10 @@ fn input_log() -> bool {
 
 fn persist_view_toggles(app: &App) {
     thread_local! {
-        static LAST: std::cell::Cell<Option<(bool, bool)>> = const { std::cell::Cell::new(None) };
+        static LAST: std::cell::Cell<Option<[bool; 4]>> = const { std::cell::Cell::new(None) };
     }
-    let now = (app.sort_energy_details, app.show_brain_differences);
+    // (RUSTibites Improved: the Species Distribution window's two check boxes are stored the same way.)
+    let now = [app.sort_energy_details, app.show_brain_differences, app.map_zone_names, app.map_zone_biomass];
     let last = LAST.with(std::cell::Cell::get);
     LAST.with(|cell| cell.set(Some(now)));
     let Some(last) = last else {
@@ -892,7 +1009,8 @@ fn persist_view_toggles(app: &App) {
         return;
     }
     let mut settings = load_user_settings();
-    for (label, value, before) in [("Sort Biology Panel Energy Details", now.0, last.0), ("Show Difference", now.1, last.1)] {
+    for (at, label) in ["Sort Biology Panel Energy Details", "Show Difference", "Species Map Zone Names", "Species Map Zone Biomass"].into_iter().enumerate() {
+        let (value, before) = (now[at], last[at]);
         if value != before
             && let Some(index) = user_settings::index_of(label)
         {
@@ -915,6 +1033,8 @@ fn use_game_storage(app: &mut App) {
     app.storage = bibites_io::storage::StoragePaths::default_content();
     // The achievements this port unlocked (the game's own are `GamePrefs`').
     app.achievements = achievements::Achievements::load(&app.storage);
+    // RUSTibites Improved: in which panels the player hid the time tags.
+    app.time_tag_view = bibites_io::storage::read_time_tag_view(&app.storage).unwrap_or_default();
     eprintln!(
         "storage: saves, scenarios and bibites go to {}",
         app.storage.root.display()
@@ -1068,6 +1188,262 @@ fn apply_game_camera(app: &mut App, args: &Args, screen_height: f32) {
     app.set_ortho_size(400.0, screen_height);
 }
 
+/// One `--gene-tower` flag.
+#[derive(Clone, Debug, PartialEq)]
+struct GeneTowerFlag {
+    pos: Vec2,
+    gene: Option<usize>,
+    range: Option<(f32, f32)>,
+    inside: bool,
+}
+
+impl GeneTowerFlag {
+    /// `X,Y[,GENE[,MIN,MAX[,inside]]]`.
+    fn parse(text: &str) -> Result<Self, String> {
+        let bad = || format!("--gene-tower expects X,Y[,GENE[,MIN,MAX[,inside]]], not {text:?}");
+        let parts: Vec<&str> = text.split(',').map(str::trim).collect();
+        let number = |at: usize| parts.get(at).ok_or_else(bad)?.parse::<f32>().map_err(|_| bad());
+        let pos = Vec2::new(number(0)?, number(1)?);
+        let gene = match parts.get(2) {
+            Some(name) => Some(
+                bibites_core::genome::GENE_DEFS
+                    .iter()
+                    .position(|def| def.name.eq_ignore_ascii_case(name))
+                    .ok_or_else(|| format!("--gene-tower: no gene called {name:?}"))?,
+            ),
+            None => None,
+        };
+        let range = if parts.len() > 4 { Some((number(3)?, number(4)?)) } else { None };
+        Ok(Self { pos, gene, range, inside: parts.get(5).is_some_and(|word| word.eq_ignore_ascii_case("inside")) })
+    }
+}
+
+/// One `--vent-tower` flag.
+#[derive(Clone, Debug, PartialEq)]
+struct VentTowerFlag {
+    pos: Vec2,
+    numbers: Vec<f32>,
+    recycle: bool,
+}
+
+impl VentTowerFlag {
+    /// `X,Y[,VELOCITY[,SIZE[,RATE[,CAP[,RANGE]]]]][,recycle]`.
+    fn parse(text: &str) -> Result<Self, String> {
+        let bad = || format!("--vent-tower expects X,Y[,VELOCITY[,SIZE[,RATE[,CAP[,RANGE]]]]][,recycle], not {text:?}");
+        let parts: Vec<&str> = text.split(',').map(str::trim).collect();
+        let recycle = parts.last().is_some_and(|word| word.eq_ignore_ascii_case("recycle"));
+        let numbers = parts
+            .iter()
+            .take(if recycle { parts.len() - 1 } else { parts.len() })
+            .map(|part| part.parse::<f32>().map_err(|_| bad()))
+            .collect::<Result<Vec<f32>, String>>()?;
+        if numbers.len() < 2 || numbers.len() > 7 {
+            return Err(bad());
+        }
+        Ok(Self { pos: Vec2::new(numbers[0], numbers[1]), numbers: numbers[2..].to_vec(), recycle })
+    }
+}
+
+/// One `--whirlpool` flag.
+#[derive(Clone, Debug, PartialEq)]
+struct WhirlpoolFlag {
+    pos: Vec2,
+    numbers: Vec<f32>,
+    spin: Option<bibites_core::whirlpool::Spin>,
+    falloff: Option<bibites_core::force_tower::ForceFalloff>,
+    /// The kinds of body it acts on, when the flag names any (`bibites`, `pellets`, `eggs`): the others are switched off.
+    only: Option<[bool; 3]>,
+}
+
+impl WhirlpoolFlag {
+    /// `X,Y[,SPEED[,RANGE]][,clockwise|counterclockwise|cw|ccw][,constant|fading][,bibites|pellets|eggs ...]`.
+    fn parse(text: &str) -> Result<Self, String> {
+        let bad = || format!("--whirlpool expects X,Y[,SPEED[,RANGE]][,clockwise|counterclockwise|cw|ccw][,constant|fading][,bibites|pellets|eggs ...], not {text:?}");
+        let mut numbers: Vec<f32> = Vec::new();
+        let mut spin = None;
+        let mut falloff = None;
+        let mut only: Option<[bool; 3]> = None;
+        for part in text.split(',').map(str::trim) {
+            if let Ok(number) = part.parse::<f32>() {
+                numbers.push(number);
+            } else if let Some(word) = bibites_core::whirlpool::Spin::from_key(part) {
+                spin = Some(word);
+            } else if let Some(word) = bibites_core::force_tower::ForceFalloff::from_key(part) {
+                falloff = Some(word);
+            } else if let Some(at) = ["bibites", "pellets", "eggs"].iter().position(|kind| kind.eq_ignore_ascii_case(part)) {
+                only.get_or_insert([false; 3])[at] = true;
+            } else {
+                return Err(bad());
+            }
+        }
+        if numbers.len() < 2 || numbers.len() > 4 {
+            return Err(bad());
+        }
+        Ok(Self { pos: Vec2::new(numbers[0], numbers[1]), numbers: numbers[2..].to_vec(), spin, falloff, only })
+    }
+}
+
+/// One `--stream` flag.
+#[derive(Clone, Debug, PartialEq)]
+struct StreamFlag {
+    start: Vec2,
+    end: Vec2,
+    numbers: Vec<f32>,
+}
+
+impl StreamFlag {
+    /// `X1,Y1,X2,Y2[,WIDTH[,STRENGTH]]`.
+    fn parse(text: &str) -> Result<Self, String> {
+        let bad = || format!("--stream expects X1,Y1,X2,Y2[,WIDTH[,STRENGTH]], not {text:?}");
+        let numbers = text.split(',').map(|part| part.trim().parse::<f32>().map_err(|_| bad())).collect::<Result<Vec<f32>, String>>()?;
+        if numbers.len() < 4 || numbers.len() > 6 {
+            return Err(bad());
+        }
+        Ok(Self { start: Vec2::new(numbers[0], numbers[1]), end: Vec2::new(numbers[2], numbers[3]), numbers: numbers[4..].to_vec() })
+    }
+}
+
+/// One `--force-tower` flag.
+#[derive(Clone, Debug, PartialEq)]
+struct ForceTowerFlag {
+    pos: Vec2,
+    numbers: Vec<f32>,
+    falloff: Option<bibites_core::force_tower::ForceFalloff>,
+    /// The kinds of body it acts on, when the flag names any (`bibites`, `pellets`, `eggs`): the others are switched off.
+    only: Option<[bool; 3]>,
+}
+
+impl ForceTowerFlag {
+    /// `X,Y[,STRENGTH[,RANGE]][,constant|fading][,bibites|pellets|eggs ...]`.
+    fn parse(text: &str) -> Result<Self, String> {
+        let bad = || format!("--force-tower expects X,Y[,STRENGTH[,RANGE]][,constant|fading][,bibites|pellets|eggs ...], not {text:?}");
+        let mut numbers: Vec<f32> = Vec::new();
+        let mut falloff = None;
+        let mut only: Option<[bool; 3]> = None;
+        for part in text.split(',').map(str::trim) {
+            if let Ok(number) = part.parse::<f32>() {
+                numbers.push(number);
+            } else if let Some(word) = bibites_core::force_tower::ForceFalloff::from_key(part) {
+                falloff = Some(word);
+            } else if let Some(at) = ["bibites", "pellets", "eggs"].iter().position(|kind| kind.eq_ignore_ascii_case(part)) {
+                only.get_or_insert([false; 3])[at] = true;
+            } else {
+                return Err(bad());
+            }
+        }
+        if numbers.len() < 2 || numbers.len() > 4 {
+            return Err(bad());
+        }
+        Ok(Self { pos: Vec2::new(numbers[0], numbers[1]), numbers: numbers[2..].to_vec(), falloff, only })
+    }
+}
+
+/// RUSTibites Improved, `--time-tag MINUTES:NAME` and `--open-graphs data|genes`: sets the time tags and opens the Stats and Analysis panel, for the headless
+/// pictures and the real-window captures alike (the tags are not stored: the world has no save name).
+fn apply_time_tag_flags(app: &mut App, args: &Args) {
+    for flag in &args.vent_towers {
+        let id = app.world.place_vent_at(flag.pos);
+        if let Some(bibites_core::tools::Tool::Vent(vent)) = app.world.tools.get_mut(id) {
+            if let Some(velocity) = flag.numbers.first() {
+                vent.set_velocity(*velocity);
+            }
+            if let Some(size) = flag.numbers.get(1) {
+                vent.set_pellet_energy(*size);
+            }
+            if let Some(rate) = flag.numbers.get(2) {
+                vent.set_rate(*rate);
+            }
+            if let Some(cap) = flag.numbers.get(3) {
+                vent.set_cap(*cap);
+            }
+            if let Some(range) = flag.numbers.get(4) {
+                vent.set_range(*range);
+            }
+            vent.recycle = flag.recycle;
+        }
+        app.select_placed_tool(id);
+    }
+    for flag in &args.force_towers {
+        let id = app.world.place_force_tower_at(flag.pos);
+        if let Some(bibites_core::tools::Tool::Force(tower)) = app.world.tools.get_mut(id) {
+            if let Some(strength) = flag.numbers.first() {
+                tower.set_strength(*strength);
+            }
+            if let Some(range) = flag.numbers.get(1) {
+                tower.set_range(*range);
+            }
+            if let Some(falloff) = flag.falloff {
+                tower.falloff = falloff;
+            }
+            if let Some([bibites, pellets, eggs]) = flag.only {
+                (tower.bibites, tower.pellets, tower.eggs) = (bibites, pellets, eggs);
+            }
+        }
+        app.select_placed_tool(id);
+    }
+    for flag in &args.whirlpools {
+        let id = app.world.place_whirlpool_at(flag.pos);
+        if let Some(bibites_core::tools::Tool::Whirl(tower)) = app.world.tools.get_mut(id) {
+            if let Some(speed) = flag.numbers.first() {
+                tower.set_speed(*speed);
+            }
+            if let Some(range) = flag.numbers.get(1) {
+                tower.set_range(*range);
+            }
+            if let Some(spin) = flag.spin {
+                tower.spin = spin;
+            }
+            if let Some(falloff) = flag.falloff {
+                tower.falloff = falloff;
+            }
+            if let Some([bibites, pellets, eggs]) = flag.only {
+                (tower.bibites, tower.pellets, tower.eggs) = (bibites, pellets, eggs);
+            }
+        }
+        app.select_placed_tool(id);
+    }
+    for flag in &args.streams {
+        let mut stream = bibites_core::stream::Stream::new(flag.start, flag.end);
+        if let Some(width) = flag.numbers.first() {
+            stream.set_width(*width);
+        }
+        if let Some(strength) = flag.numbers.get(1) {
+            stream.set_strength(*strength);
+        }
+        app.world.streams.push(stream);
+        app.dyn_panel.open_items.push((4, (app.world.streams.len() - 1) as u16));
+    }
+    for flag in &args.gene_towers {
+        let id = app.world.place_gene_selector_at(flag.pos);
+        if let Some(bibites_core::tools::Tool::Gene(selector)) = app.world.tools.get_mut(id) {
+            if let Some(gene) = flag.gene {
+                selector.set_gene(gene as u8);
+            }
+            if let Some((min, max)) = flag.range {
+                selector.set_range(min, max);
+            }
+            selector.kill_inside = flag.inside;
+        }
+        app.select_placed_tool(id);
+    }
+    for (zone, rgb) in &args.zone_color_list {
+        if let Some(data) = app.world.zones.zones.get_mut(*zone) {
+            data.tint = Some(*rgb);
+        }
+    }
+    if let Some(index) = args.open_toolbar {
+        app.toolbar[index].show();
+    }
+    let now = app.simulated_time();
+    for (minutes, name) in &args.time_tags {
+        app.time_tags.add((now - minutes * 60.0).max(0.0), name);
+    }
+    if let Some(genes) = args.open_graphs {
+        app.apply_ui_actions(&[ui::UiAction::OpenPanel(ui::PanelKind::Graphs)]);
+        app.graphs_genes = genes;
+    }
+}
+
 /// `--lineage-species N` and its companions (`--lineage-mesh`, `--lineage-zoom`, `--lineage-pos`, `--lineage-tab`, ...): opens the Lineage panel on the
 /// species at that index of its list, for the headless pictures and the real-window captures alike.
 fn apply_lineage_flags(app: &mut App, args: &Args) {
@@ -1094,6 +1470,12 @@ fn apply_lineage_flags(app: &mut App, args: &Args) {
         }
         if let Some(tab) = args.lineage_tab {
             app.lineage_tab = tab.min(3);
+        }
+        if args.hide_map_zone_names {
+            app.map_zone_names = false;
+        }
+        if args.hide_map_zone_biomass {
+            app.map_zone_biomass = false;
         }
         if args.node_names {
             app.prefs.show_node_names = true;
@@ -1122,6 +1504,9 @@ fn apply_view_options(app: &mut App, args: &Args) {
     app.set_view(args.center, args.zoom);
     if args.paused {
         app.paused = true;
+    }
+    if args.hide_objects {
+        app.scene_options.objects = false;
     }
 }
 
@@ -1383,6 +1768,8 @@ fn build_ui_frame(app: &App, themed: &ThemedUi, width: f32, height: f32) -> ui::
                     true,
                 );
             }
+            // The scenario saver (a form over the whole screen); the overwrite question goes over it.
+            runtime.emit_scenario_saver(&mut frame, app, &themed.ui, themed.fonts.sdf(), width, height);
             // The confirmation popup (game wording and look) goes over everything.
             runtime.emit_confirm_dialog(
                 &mut frame,
@@ -1402,6 +1789,8 @@ fn build_ui_frame(app: &App, themed: &ThemedUi, width: f32, height: f32) -> ui::
                 width,
                 height,
             );
+            // RUSTibites Improved: a zone's colour pop-up hangs over the Preview it was opened from.
+            zone_color_ui::emit(&mut frame, app, &themed.ui, themed.fonts.sdf(), width, height);
             // An open dropdown list hangs over the panels (its blocker covers the screen).
             if let Some(open) = app.dropdown_open.as_ref() {
                 dropdown::emit(
@@ -1599,10 +1988,21 @@ fn run_window(
         eprintln!("{}", threads_line(&app.world));
         start_sim_thread_if_asked(&mut app, &args, themed.as_ref());
         use_game_storage(&mut app);
+        // RUSTibites Improved: the jukebox plays the music of the Music folder while this window is open.
+        jukebox::start(jukebox::folder_in(&bibites_io::storage::StoragePaths::default_local().root));
+        // RUSTibites Improved: the keys of its extra hotkeys (the player's, from the data folder's keys file).
+        improved_keys::load(&bibites_io::storage::StoragePaths::default_local().root);
+        // RUSTibites Improved: the editable species name list (the file of the player's words, read again when it is saved).
+        name_list::configure(load_user_settings().choice(name_list::LABEL_MODE));
+        name_list::start(name_list::file_in(&bibites_io::storage::StoragePaths::default_local().root));
         app.source_scenario = args.input.clone().filter(|path| {
             path.extension()
                 .is_some_and(|ext| ext.eq_ignore_ascii_case("zip"))
         });
+        // RUSTibites Improved: the time tags that were set in the save this world was loaded from.
+        if let Some(path) = app.source_scenario.clone() {
+            app.time_tags_after_load(&path);
+        }
         apply_user_settings(&mut app, &load_user_settings());
         apply_stored_toggles(&mut app);
         apply_view_options(&mut app, &args);
@@ -1625,6 +2025,7 @@ fn run_window(
             app.center_on_selected();
         }
         apply_lineage_flags(&mut app, &args);
+        apply_time_tag_flags(&mut app, &args);
         // `--click` in the window: the scripted presses of the headless path, applied a few frames in (the window may still change size at
         // start: a fullscreen setting switches it to the monitor's, and the UI is laid out for the size the click lands on); the real-window
         // captures of `tools/window_capture.ps1` then show a panel in the state those clicks leave it in. Points are window pixels.
@@ -1636,7 +2037,7 @@ fn run_window(
         let mut world_frames = 0usize;
         let self_shot = self_shot_request();
         let textures = render::upload_atlases(app.assets.as_ref());
-        let hue_material = if args.gpu_hue_shader {
+        let hue_material = if args.gpu_hue_shader && machine_calibration::calibrator().graphics().is_none_or(|graphics| graphics.prefers_gpu_shader()) {
             let skin_params = app
                 .assets
                 .as_ref()
@@ -1658,7 +2059,7 @@ fn run_window(
             }
         } else {
             eprintln!(
-                "renderer: GPU hue-match shader off (--no-gpu-hue-shader): the bibites' sprites are recoloured on the processor (the same colours, slower with many bibites)"
+                "renderer: GPU hue-match shader off (--no-gpu-hue-shader, or the calibration found the processor's way faster here): the bibites' sprites are recoloured on the processor (the same colours)"
             );
             None
         };
@@ -1699,11 +2100,16 @@ fn run_window(
             std::sync::mpsc::Receiver<Result<(LoadedWorld, Option<challenge_run::ChallengeSetup>), String>>,
         > = None;
         let mut capture_window = false;
+        let mut menu_frames = 0usize;
+        // RUSTibites Improved: the Music page's "Now Playing" line as it was last painted (it changes by itself: a track ends, a command arrives).
+        let mut music_line = String::new();
         // The title screen's animated background (the game's looping `showOff.webm`).
         let mut menu_video: Option<menu_video::MenuVideo> = None;
         let mut video_texture: Option<Texture2D> = None;
         let mut video_seen = 0_u64;
         let mut video_tried = false;
+        // Whether the title screen's video was stopped for the calibration test (it starts again when the test is over).
+        let mut video_paused_for_test = false;
         // In-game Settings / Library / Achievements / Tools / Credits panels replay the
         // title-menu screens (live data) over the dimmed world.
         let mut overlay_menu: Option<menu::MenuState> = None;
@@ -1720,6 +2126,27 @@ fn run_window(
             app.join_overlapped_ticks();
             log_pool_switches(&mut app.world, &mut pool_switches_logged);
             app.begin_frame();
+            // The machine's calibration (Settings > Calibration): a new result, or the check box, reaches the world that is open, and the test of the graphics
+            // follows the processor's part of the test.
+            let world_running = menu.is_none() && !app.paused;
+            calibration_frame(&mut app, &args, world_running, &textures, hue_material.as_ref(), zone_material.as_ref());
+            // The title screen's background video is decoded by a process of its own: it stops while the test runs (the cores it takes would be measured) and starts again after.
+            if machine_calibration::calibrator().running() {
+                if menu_video.take().is_some() {
+                    video_paused_for_test = true;
+                    video_texture = None;
+                }
+            } else if std::mem::take(&mut video_paused_for_test) {
+                video_tried = false;
+            }
+            // RUSTibites Improved: the species name list reads its file again when it was saved.
+            name_list::tick();
+            // RUSTibites Improved: a key waited for by the Extra Hotkeys page is the page's: nothing else sees that key press (not even Escape). The wait ends
+            // when the page is off the screen (another page, or the Settings screen closed).
+            improved_keys::page_shown(
+                menu.as_ref().or(overlay_menu.as_ref()).is_some_and(|state| state.view() == menu::MenuView::Settings && state.settings_tab() == 6),
+            );
+            let key_taken = improved_keys::frame();
             // The Fullscreen setting (Settings screens, title menu or world): `Screen.fullScreen = val`.
             if let Some(on) = user_settings::take_fullscreen_change() {
                 miniquad::window::set_fullscreen(on);
@@ -1852,6 +2279,10 @@ fn run_window(
                             start_sim_thread_if_asked(&mut app, &args, themed.as_ref());
                             use_game_storage(&mut app);
                             app.source_scenario = Some(path.clone());
+                            // RUSTibites Improved: the time tags that were set in the save this world was loaded from.
+                            if loaded_save {
+                                app.time_tags_after_load(&path);
+                            }
                             // `ChallengeManager.Start`: the run of the challenge (a scenario that is only started as one has none).
                             if let Some(setup) = challenge_setup {
                                 app.begin_challenge(setup);
@@ -1894,8 +2325,10 @@ fn run_window(
                     menu_dirty = true;
                 }
                 let live = !hosted;
+                // (A key the Extra Hotkeys page took this frame is not an arrow, Enter or Escape of the menu.)
+                let keys_live = live && !key_taken;
                 let mut action = menu::MenuAction::None;
-                if live && is_key_pressed(KeyCode::Up) {
+                if keys_live && is_key_pressed(KeyCode::Up) {
                     if state.is_native_view() {
                         state.native_move(-1);
                     } else {
@@ -1903,7 +2336,7 @@ fn run_window(
                     }
                     menu_dirty = true;
                 }
-                if live && is_key_pressed(KeyCode::Down) {
+                if keys_live && is_key_pressed(KeyCode::Down) {
                     if state.is_native_view() {
                         state.native_move(1);
                     } else {
@@ -1911,7 +2344,7 @@ fn run_window(
                     }
                     menu_dirty = true;
                 }
-                if live && is_key_pressed(KeyCode::Escape) {
+                if keys_live && is_key_pressed(KeyCode::Escape) {
                     if state.view() == MenuView::Main {
                         miniquad::window::request_quit();
                         break;
@@ -1919,7 +2352,7 @@ fn run_window(
                     state.back();
                     menu_dirty = true;
                 }
-                if live && is_key_pressed(KeyCode::Enter) {
+                if keys_live && is_key_pressed(KeyCode::Enter) {
                     action = if state.is_native_view() {
                         state.native_enter()
                     } else {
@@ -2134,6 +2567,21 @@ fn run_window(
                 if let menu::MenuAction::EditTemplate { path, submit } = &action {
                     app.open_editor_from_library(path.as_deref(), *submit);
                 }
+                if state.view() == MenuView::Settings {
+                    // The Music page's settings reach the player now (the title menu hands the settings to a world only when one opens).
+                    jukebox::configure(jukebox::Config::from_settings(state.user_settings()));
+                    name_list::configure(state.user_settings().choice(name_list::LABEL_MODE));
+                    // The Calibration page's check box reaches the calibrator at once too.
+                    machine_calibration::calibrator().set_use(state.user_settings().flag(machine_calibration::LABEL_USE));
+                    // The Music and Species Names pages are painted again when what they say changes by itself.
+                    if state.settings_tab() >= 3 {
+                        let line = extra_page_line(state.settings_tab());
+                        if line != music_line {
+                            music_line = line;
+                            menu_dirty = true;
+                        }
+                    }
+                }
                 if menu_dirty || menu_texture.is_none() {
                     if let Some(themed) = themed.as_mut() {
                         (menu_texture, menu_tips) = match build_menu_texture(
@@ -2198,6 +2646,18 @@ fn run_window(
                 if is_key_pressed(KeyCode::F12) {
                     save_window_capture();
                 }
+                // RUSTibites Improved: `RUSTIBITES_SELF_SHOT=<frame>:<png>` also takes the picture of a menu (a Settings page, say), at that frame of the menu.
+                menu_frames += 1;
+                if let Some((frame, path)) = self_shot.as_ref()
+                    && *frame == menu_frames
+                {
+                    if let Some(dir) = path.parent() {
+                        let _ = std::fs::create_dir_all(dir);
+                    }
+                    macroquad::prelude::get_screen_data().export_png(&path.to_string_lossy());
+                    eprintln!("window: framebuffer saved to {}", path.display());
+                    std::process::exit(0);
+                }
                 next_frame().await;
                 continue;
             }
@@ -2223,7 +2683,7 @@ fn run_window(
             }
             app.set_viewport(screen_width(), screen_height());
             // Hotkey rebinding: capture the next key press globally.
-            let mut rebound_this_frame = false;
+            let mut rebound_this_frame = key_taken;
             if app.hotkey_listening.is_some()
                 && let Some(key) = get_last_key_pressed()
             {
@@ -2559,6 +3019,14 @@ fn run_window(
             if overlay_active
                 && let (Some(themed), Some(state)) = (themed.as_mut(), overlay_menu.as_mut())
             {
+                // The Music page is painted again when what it says is playing changes.
+                if state.view() == menu::MenuView::Settings && state.settings_tab() >= 3 {
+                    let line = extra_page_line(state.settings_tab());
+                    if line != music_line {
+                        music_line = line;
+                        overlay_dirty = true;
+                    }
+                }
                 if overlay_dirty || overlay_texture.is_none() {
                     overlay_texture = build_menu_texture(
                         state,
@@ -2843,6 +3311,38 @@ fn pool_switch_line(switch: &bibites_core::pool_tuner::PoolSwitch) -> String {
 /// Changes of the way the ticks run that a run logs at most (a world whose answer keeps changing must not fill the log).
 const MAX_LOGGED_POOL_SWITCHES: u32 = 40;
 
+/// The machine's calibration, once a frame (see `machine_calibration`): tells it whether a world is running in the window (a test would measure the world as much as
+/// the machine), gives the simulation a new result (or the check box's new state) and, when the processor's part of the test has just finished, runs the test of the
+/// graphics (a few frames' worth of drawing into a picture of its own, a second at most).
+fn calibration_frame(
+    app: &mut App,
+    args: &Args,
+    world_running: bool,
+    textures: &[Texture2D],
+    hue: Option<&render::GpuHueMaterial>,
+    zone: Option<&render::GpuZoneMaterial>,
+) {
+    let calibrator = machine_calibration::calibrator();
+    calibrator.set_world_running(world_running);
+    if calibrator.take_changed() {
+        machine_calibration::apply(calibrator);
+        // (A world that was given a number of threads by hand keeps it; a world that lives on the simulation thread has its own: it takes the profile when it is next made.)
+        if app.sim.is_none() {
+            app.world.apply_machine_profile(args.threads == 0);
+        }
+    }
+    if calibrator.take_graphics_due() {
+        if let Some(found) = machine_calibration::graphics_test(textures, hue, zone, app.assets.as_ref()) {
+            eprintln!("calibration: graphics {found:?}");
+            calibrator.set_graphics(found, &machine_calibration::default_root());
+        }
+    }
+    // (`RUSTIBITES_CALIBRATE=tiny|quick|full`: the test runs by itself, its lines are printed and the program ends.)
+    if machine_calibration::autorun_finished() {
+        std::process::exit(0);
+    }
+}
+
 /// Logs the changes of the way the world's ticks run since the last call (for the tester's `logs/last_run.log`: which way the machine
 /// found faster, and at what size of world).
 fn log_pool_switches(world: &mut bibites_core::world::World, logged: &mut u32) {
@@ -2971,6 +3471,8 @@ fn route_ui_frame(
         };
         app.update_toolbar_hover(&zones, input.cursor, input.dt);
     }
+    // RUSTibites Improved: the pointer of this frame is the app's while the frame's click acts (a click on a zone opens its pop-up where the pointer is).
+    app.cursor = input.cursor;
     // Time-speed slider: a held slider follows the cursor.
     if input.primary_pressed
         && let Some(ui::UiAction::SpeedSlide(x0, x1)) = frame.action_at(input.cursor)
@@ -3042,6 +3544,25 @@ fn route_ui_frame(
         }
         if input.primary_released || !input.primary_down {
             app.inspector_brain_drag = None;
+        }
+        input.primary_pressed = false;
+        input.primary_released = false;
+        input.primary_down = false;
+        input.wheel = 0.0;
+        return input;
+    }
+    // RUSTibites Improved: the zone colour pop-up's wheel and brightness bar follow the cursor the same way.
+    if input.primary_pressed
+        && let Some(action @ (ui::UiAction::ZoneColorWheel | ui::UiAction::ZoneColorValueBar)) = frame.action_at(input.cursor)
+    {
+        app.zone_color_press(action == ui::UiAction::ZoneColorValueBar);
+    }
+    if app.zone_color_popup.as_ref().is_some_and(|popup| popup.drag.is_some()) {
+        if input.primary_down || input.primary_released {
+            app.zone_color_drag_to(input.cursor, Vec2::new(width, height));
+        }
+        if input.primary_released || !input.primary_down {
+            app.zone_color_release();
         }
         input.primary_pressed = false;
         input.primary_released = false;
@@ -3424,6 +3945,8 @@ fn gather_input() -> FrameInput {
         toggle_pellets: false,
         toggle_pheromones: false,
         toggle_hud: is_key_pressed(KeyCode::H),
+        // RUSTibites Improved: the Hide Objects hotkey (its key is the player's: the Extra Hotkeys page).
+        toggle_objects: improved_keys::pressed(improved_keys::Action::HideObjects),
         quit: is_key_pressed(KeyCode::Escape),
         select_random_bibite: is_key_pressed(KeyCode::R),
         select_high_generation: is_key_pressed(KeyCode::G),
@@ -4762,10 +5285,13 @@ fn run_screenshot(
         app.scene_options.pheromones = false;
     }
     apply_lineage_flags(&mut app, &args);
+    apply_time_tag_flags(&mut app, &args);
     // Deterministic HUD click for headless UI verification (button/toggle/tab
     // hit-testing goes through the same UI-first routing the window uses).
     if let (Some(first), Some(themed)) = (args.click, themed.as_ref()) {
         for point in std::iter::once(first).chain(args.extra_clicks.iter().copied()) {
+            // The pointer is where it clicks (a window frame is drawn with the pointer of the frame before, which rests there).
+            app.cursor = point;
             let frame = build_ui_frame(&app, themed, args.width as f32, args.height as f32);
             let actions = frame.interact(point, true, true, &mut ui::UiInteraction::default());
             remember_click_rect(&mut app, &frame, point, &actions);
@@ -4820,6 +5346,13 @@ fn run_screenshot(
     }
     if args.save_dialog {
         app.apply_ui_actions(&[ui::UiAction::Invoke(ui::ControlCommand::SaveSelected)]);
+    }
+    if let Some(name) = args.scenario_saver.as_ref() {
+        app.apply_ui_actions(&[ui::UiAction::DynSaveScenario]);
+        if let Some(saver) = app.scenario_saver.as_mut() {
+            saver.name.clone_from(name);
+            saver.description = "Oases that dry out in winter.".to_owned();
+        }
     }
     if let Some(index) = args.select_zone {
         app.select_zone(index);
@@ -4916,6 +5449,9 @@ fn run_screenshot(
     // The pointer rests on a control or a pellet until its tooltip is fully shown.
     if let (Some(point), Some(themed)) = (args.hover, themed.as_ref()) {
         app.cursor = point;
+        if let Some(zone) = args.zone_color_popup {
+            app.zone_color_open(zone);
+        }
         // The Graphs panel's legend opens while the pointer rests on its "?" button.
         app.graphs_legend_open = app.panels.is_open(ui::PanelKind::Graphs)
             && hud::graphs_legend_hovered(&app, point, false, args.width as f32);
@@ -5415,6 +5951,7 @@ fn parse_args(mut args: impl Iterator<Item = String>) -> Result<Args, String> {
             "--show-targets" => parsed.show_targets = true,
             "--select-tool" => parsed.select_tool = true,
             "--save-dialog" => parsed.save_dialog = true,
+            "--scenario-saver" => parsed.scenario_saver = Some(next_value(&mut args, "--scenario-saver")?),
             "--dyn-tab" => {
                 let value = next_value(&mut args, "--dyn-tab")?;
                 parsed.dyn_tab = Some(
@@ -5477,7 +6014,73 @@ fn parse_args(mut args: impl Iterator<Item = String>) -> Result<Args, String> {
             }
             "--brain-differences" => parsed.brain_differences = true,
             "--lineage-mesh" => parsed.lineage_mesh = true,
+            "--hide-map-zone-names" => parsed.hide_map_zone_names = true,
+            "--hide-map-zone-biomass" => parsed.hide_map_zone_biomass = true,
             "--lineage-show-extinct" => parsed.lineage_show_extinct = true,
+            "--zone-color" => {
+                let value = next_value(&mut args, "--zone-color")?;
+                let bad = || format!("--zone-color expects N:R,G,B, not {value:?}");
+                let (zone, rgb) = value.split_once(':').ok_or_else(bad)?;
+                let zone: usize = zone.trim().parse().map_err(|_| bad())?;
+                let channels: Vec<u8> = rgb.split(',').map(|part| part.trim().parse::<u8>()).collect::<Result<_, _>>().map_err(|_| bad())?;
+                let [r, g, b] = <[u8; 3]>::try_from(channels).map_err(|_| bad())?;
+                parsed.zone_color_list.push((zone, [r, g, b]));
+            }
+            "--zone-color-popup" => {
+                let value = next_value(&mut args, "--zone-color-popup")?;
+                parsed.zone_color_popup = Some(value.trim().parse().map_err(|_| format!("--zone-color-popup expects a zone number, not {value:?}"))?);
+            }
+            "--vent-tower" => {
+                let value = next_value(&mut args, "--vent-tower")?;
+                parsed.vent_towers.push(VentTowerFlag::parse(&value)?);
+            }
+            "--force-tower" => {
+                let value = next_value(&mut args, "--force-tower")?;
+                parsed.force_towers.push(ForceTowerFlag::parse(&value)?);
+            }
+            "--whirlpool" => {
+                let value = next_value(&mut args, "--whirlpool")?;
+                parsed.whirlpools.push(WhirlpoolFlag::parse(&value)?);
+            }
+            "--stream" => {
+                let value = next_value(&mut args, "--stream")?;
+                parsed.streams.push(StreamFlag::parse(&value)?);
+            }
+            "--gene-tower" => {
+                let value = next_value(&mut args, "--gene-tower")?;
+                parsed.gene_towers.push(GeneTowerFlag::parse(&value)?);
+            }
+            "--jukebox-folder" => parsed.jukebox_folder = Some(PathBuf::from(next_value(&mut args, "--jukebox-folder")?)),
+            "--species-names-file" => parsed.species_names_file = Some(PathBuf::from(next_value(&mut args, "--species-names-file")?)),
+            "--settings-tab" => {
+                let value = next_value(&mut args, "--settings-tab")?;
+                parsed.settings_tab = Some(match value.parse::<u8>() {
+                    Ok(tab) if tab < 8 => tab,
+                    _ => return Err(format!("--settings-tab expects 0, 1, 2, 3, 4, 5, 6 or 7, not {value:?}")),
+                });
+            }
+            "--hide-objects" => parsed.hide_objects = true,
+            "--open-toolbar" => {
+                let value = next_value(&mut args, "--open-toolbar")?;
+                parsed.open_toolbar = Some(match value.parse::<usize>() {
+                    Ok(index) if index < 3 => index,
+                    _ => return Err(format!("--open-toolbar expects 0, 1 or 2, not {value:?}")),
+                });
+            }
+            "--time-tag" => {
+                let value = next_value(&mut args, "--time-tag")?;
+                let (minutes, name) = value.split_once(':').ok_or("--time-tag expects MINUTES:NAME")?;
+                let minutes: f64 = minutes.trim().parse().map_err(|error| format!("invalid --time-tag minutes: {error}"))?;
+                parsed.time_tags.push((minutes, name.to_owned()));
+            }
+            "--open-graphs" => {
+                let value = next_value(&mut args, "--open-graphs")?;
+                parsed.open_graphs = Some(match value.as_str() {
+                    "data" => false,
+                    "genes" => true,
+                    other => return Err(format!("--open-graphs expects data or genes, not {other:?}")),
+                });
+            }
             "--node-names" => parsed.node_names = true,
             "--bibite-editor" => parsed.bibite_editor = true,
             "--editor-info" => parsed.editor_info = true,

@@ -149,6 +149,9 @@ pub struct Prior {
     pub bibites: usize,
     /// Bodies from which the pool is expected to pay.
     pub bodies: usize,
+    /// The level of the pool ([`Arm::Pooled`]) a world big enough for the pool starts at (0 on the reference machine; a calibration
+    /// of the machine says which level was the fastest on it, which saves the world the climb).
+    pub level: u8,
 }
 
 /// What the tuner did so far (for the logs and the benchmarks).
@@ -342,9 +345,14 @@ impl PoolTuner {
         std::mem::take(&mut self.switches)
     }
 
-    /// The way the world is expected to run from its size alone: level 0 of the pool from the prior's size.
+    /// The way the world is expected to run from its size alone: the prior's level of the pool (0 unless a calibration said otherwise) from the
+    /// prior's size.
     fn prior_arm(&self, size: WorldSize) -> usize {
-        usize::from(size.bibites >= self.prior.bibites || size.bodies >= self.prior.bodies)
+        if size.bibites >= self.prior.bibites || size.bodies >= self.prior.bodies {
+            1 + usize::from(self.prior.level).min(POOLED_LEVELS - 1)
+        } else {
+            0
+        }
     }
 
     /// Whether the world is too small for any pool to pay.
@@ -632,6 +640,7 @@ mod tests {
     const PRIOR: Prior = Prior {
         bibites: 1_200,
         bodies: 3_000,
+        level: 0,
     };
 
     /// A machine for the tests: what a tick costs in each way, in nanoseconds, as a fixed part and a part for every bibite of the world
@@ -777,6 +786,30 @@ mod tests {
             bibites,
             bodies: bibites,
         }
+    }
+
+    #[test]
+    fn a_world_big_enough_for_the_pool_starts_at_the_level_a_calibration_found_and_a_small_one_inline() {
+        // The prior's level is where a world that has reached the prior's size starts; below the size it starts inline whatever the level.
+        for level in 0..POOLED_LEVELS as u8 {
+            let mut tuner = PoolTuner::new(Prior { level, ..PRIOR });
+            assert_eq!(tuner.choose(size(5_000)).arm, Arm::Pooled(level), "level {level}");
+            assert_eq!(tuner.incumbent(), Arm::Pooled(level));
+            let mut small = PoolTuner::new(Prior { level, ..PRIOR });
+            assert_eq!(small.choose(size(500)).arm, Arm::Inline, "level {level}: below the prior's size");
+        }
+        // A level past the last one is the last one (a stored number from a build with more levels).
+        let mut tuner = PoolTuner::new(Prior { level: 9, ..PRIOR });
+        assert_eq!(tuner.choose(size(5_000)).arm, Arm::Pooled(POOLED_LEVELS as u8 - 1));
+        // And it is only a start: a machine where another level is better moves there on its own.
+        let mut tuner = PoolTuner::new(Prior { level: 3, ..PRIOR });
+        let mut level_one = DESKTOP;
+        level_one.costs[2] = (level_one.costs[2].0 * 0.5, level_one.costs[2].1 * 0.5);
+        for _ in 0..20_000 {
+            let choice = tuner.choose(size(5_000));
+            tuner.record(level_one.cost(choice.arm, 5_000) as u64);
+        }
+        assert_eq!(tuner.incumbent(), Arm::Pooled(1), "{:?}", tuner.stats());
     }
 
     #[test]

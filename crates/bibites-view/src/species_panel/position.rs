@@ -17,6 +17,9 @@
 //!
 //! Each zone carries its labels (`ZonePreview`: the name, the biomass as `125.66 kE` and the pellet count as `~26 pellets`, stacked over its
 //! middle), here and in the Zones tab's preview ([`emit_zone_labels`]).
+//!
+//! RUSTibites Improved: two check boxes in the map's lower margin, "Zone names" and "Zone biomass", switch these labels off on this window (the biomass one takes the
+//! pellet count with it); the Zones tab's preview is not theirs.
 
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::sync::{Arc, Mutex};
@@ -38,6 +41,9 @@ use crate::ui::{Rgba, UiAction, UiDraw, UiFrame, UiTexture};
 /// Hit ids of the slider's track and handle (8950 - 8999 belong to the species panels).
 const HIT_TRACK: u32 = 8996;
 const HIT_HANDLE: u32 = 8997;
+/// RUSTibites Improved: the check boxes under the map (the zone names, the zone biomass).
+const HIT_NAMES: u32 = 8994;
+const HIT_BIOMASS: u32 = 8995;
 /// The 13 px lines' pitch (`Line` is 15.24 high).
 const LINE: f32 = 13.0 * 1.1719;
 /// The map and the preview square in it.
@@ -358,12 +364,14 @@ impl ZoneLabel {
 
 /// The zones' labels (`ZonePreview`'s `holder`: the name (Roboto-Bold 14), the biomass (14, `125.66 kE`) and the pellet count (12, `~26
 /// pellets`) stacked over the zone's middle, 16.41, 16.41 and 14.07 high, centred), white at the fertility's alpha. `square` is the preview
-/// square (reference px, `x, y, w, h`), `s` the scale, `measure` the width of a text in bold at a size.
+/// square (reference px, `x, y, w, h`), `s` the scale, `show` whether the names and whether the biomass (with the pellet count) are written (RUSTibites Improved: the
+/// Species Distribution window's check boxes; the lines that stay keep their own places), `measure` the width of a text in bold at a size.
 pub(crate) fn emit_zone_labels(
     frame: &mut UiFrame,
     labels: &[ZoneLabel],
     square: [f32; 4],
     s: f32,
+    show: (bool, bool),
     measure: &dyn Fn(&str, f32) -> f32,
 ) {
     let (mid_x, mid_y) = (square[0] + square[2] * 0.5, square[1] + square[3] * 0.5);
@@ -395,8 +403,12 @@ pub(crate) fn emit_zone_labels(
                 colour,
             );
         };
-        line(&label.name, 14.0, -23.445);
-        if let Some((biomass, pellets)) = label.counts {
+        if show.0 {
+            line(&label.name, 14.0, -23.445);
+        }
+        if show.1
+            && let Some((biomass, pellets)) = label.counts
+        {
             line(energy.format(biomass).trim(), 14.0, -7.035);
             line(count.format(pellets as f32).trim(), 12.0, 9.375);
         }
@@ -598,6 +610,8 @@ impl App {
 struct Pictures {
     serial: u64,
     scale_bits: u32,
+    /// RUSTibites Improved: the colours the zones were drawn in (the player's, when they gave some).
+    tints: Vec<Option<[u8; 3]>>,
     draws: Vec<UiDraw>,
 }
 
@@ -694,10 +708,12 @@ impl Drawer<'_> {
         );
         if let Some(state) = state {
             self.map_pictures(frame, app, state, &layout);
-            self.zone_labels(frame, &state.view.labels, &layout);
+            self.zone_labels(frame, app, &state.view.labels, &layout);
             if !state.view.around {
                 self.disclaimer(frame, &layout);
             }
+            // (Over the cover too: the choice is still the player's while the species was not around.)
+            self.map_options(frame, app, &layout);
         }
         frame.bold(
             "Possible Zone Presence: ",
@@ -781,7 +797,9 @@ impl Drawer<'_> {
             cache
                 .as_ref()
                 .filter(|pictures| {
-                    pictures.serial == state.serial && pictures.scale_bits == s.to_bits()
+                    pictures.serial == state.serial
+                        && pictures.scale_bits == s.to_bits()
+                        && pictures.tints == crate::zone_preview::zone_tints(app)
                 })
                 .map(|pictures| pictures.draws.clone())
         });
@@ -799,6 +817,7 @@ impl Drawer<'_> {
             frame,
             &state.view.shapes,
             [base[0], base[1], base[2], 255],
+            &crate::zone_preview::zone_tints(app),
             [
                 preview[0],
                 preview[1],
@@ -820,16 +839,40 @@ impl Drawer<'_> {
             *cache = Some(Pictures {
                 serial: state.serial,
                 scale_bits: s.to_bits(),
+                tints: crate::zone_preview::zone_tints(app),
                 draws: frame.draws[before..].to_vec(),
             });
         }
     }
 
-    /// The zones' labels over the map.
-    fn zone_labels(&self, frame: &mut UiFrame, labels: &[ZoneLabel], layout: &Layout) {
-        emit_zone_labels(frame, labels, layout.preview, self.s, &|text, px| {
+    /// The zones' labels over the map (the names and the biomass as the player's check boxes have them).
+    fn zone_labels(&self, frame: &mut UiFrame, app: &App, labels: &[ZoneLabel], layout: &Layout) {
+        emit_zone_labels(frame, labels, layout.preview, self.s, (app.map_zone_names, app.map_zone_biomass), &|text, px| {
             self.measure(text, px, true)
         });
+    }
+
+    /// RUSTibites Improved: the two check boxes in the map's lower margin (the 50 under the preview square): "Zone names" and "Zone biomass", each a `base_icon` box
+    /// with a check mark when on (the Brain tab's toggle), and its label in white on the map's navy.
+    fn map_options(&self, frame: &mut UiFrame, app: &App, layout: &Layout) {
+        let s = self.s;
+        let top = layout.map[1] + MAP - 34.0;
+        let mut x = layout.map[0] + 14.0;
+        for (label, on, hit, action) in [
+            ("Zone names", app.map_zone_names, HIT_NAMES, UiAction::ToggleMapZoneNames),
+            ("Zone biomass", app.map_zone_biomass, HIT_BIOMASS, UiAction::ToggleMapZoneBiomass),
+        ] {
+            let boxed = [x, top, 16.0, 16.0];
+            self.slice(frame, "base_icon", 5.0, 0.5, boxed, WHITE);
+            if on {
+                self.icon(frame, "checkmark_icon", boxed, WHITE);
+            }
+            let text_w = self.measure(label, 13.0 * s, true) / s;
+            frame.bold(label, self.at(x + 22.0, top + (16.0 - 13.0 * 1.1719) * 0.5), 13.0 * s, WHITE);
+            let area = [x, top, 22.0 + text_w, 16.0];
+            frame.hit(hit, self.rect_pos(area), self.rect_size(area), action);
+            x += 22.0 + text_w + 26.0;
+        }
     }
 
     /// The cover over the map and its text, while the species was not around.
@@ -1292,6 +1335,119 @@ mod tests {
                 .collect()
         };
         assert_eq!(address(&frame), address(&again));
+    }
+
+    #[test]
+    fn the_labels_can_be_written_without_their_names_or_without_their_biomass_and_the_pellet_count() {
+        let labels = vec![
+            ZoneLabel { centre: [0.0, 0.0], name: "Alpha".to_owned(), counts: Some((125_660.0, 26)), alpha: 1.0 },
+            ZoneLabel { centre: [0.5, 0.5], name: "Beta".to_owned(), counts: None, alpha: 1.0 },
+        ];
+        let texts = |show: (bool, bool)| -> Vec<String> {
+            let mut frame = UiFrame::new(1.0);
+            emit_zone_labels(&mut frame, &labels, [0.0, 0.0, 300.0, 300.0], 1.0, show, &|text, px| text.len() as f32 * px * 0.5);
+            frame.draws.iter().filter_map(|draw| if let UiDraw::Text { text, .. } = draw { Some(text.trim().to_owned()) } else { None }).collect()
+        };
+        // Both: the name, the biomass and the pellet count of a zone that spawns something, and the name of one that does not.
+        let both = texts((true, true));
+        assert_eq!(both.len(), 4, "{both:?}");
+        assert!(both.contains(&"Alpha".to_owned()) && both.contains(&"Beta".to_owned()) && both.iter().any(|text| text.contains("pellets")), "{both:?}");
+        // No names: the biomass and the pellet count stay, where they were.
+        let no_names = texts((false, true));
+        assert_eq!(no_names.len(), 2, "{no_names:?}");
+        assert!(!no_names.iter().any(|text| text == "Alpha" || text == "Beta") && no_names.iter().any(|text| text.contains("pellets")), "{no_names:?}");
+        // No biomass: the names stay, and the pellet count goes with the biomass.
+        let no_biomass = texts((true, false));
+        assert_eq!(no_biomass, vec!["Alpha".to_owned(), "Beta".to_owned()]);
+        assert!(texts((false, false)).is_empty());
+        // The lines that stay are where they were with everything shown.
+        let place = |show: (bool, bool), wanted: &str| -> Option<Vec2> {
+            let mut frame = UiFrame::new(1.0);
+            emit_zone_labels(&mut frame, &labels, [0.0, 0.0, 300.0, 300.0], 1.0, show, &|text, px| text.len() as f32 * px * 0.5);
+            frame.draws.iter().find_map(|draw| match draw {
+                UiDraw::Text { text, pos, .. } if text.trim() == wanted => Some(*pos),
+                _ => None,
+            })
+        };
+        assert_eq!(place((true, true), "Alpha"), place((true, false), "Alpha"));
+    }
+
+    #[test]
+    fn the_tab_has_two_check_boxes_that_switch_the_zone_names_and_the_biomass_off() {
+        let (mut app, id) = app_with_history();
+        app.world.zones.zones_mut()[0].config.name = "Zzlabelled".to_owned();
+        app.world.zones.zones_mut()[0].config.material = Some(bibites_core::settings::MaterialKind::Plant);
+        app.lineage_tab = 3;
+        app.select_species_info(Some(id));
+        app.position_value = 0;
+        app.position_fill(id);
+        let drawn = |app: &App| {
+            let mut frame = UiFrame::new(1.0);
+            crate::species_panel::emit(&mut frame, app, &crate::ui::UiAssets::empty(), None, 1920.0, 1080.0);
+            let texts: Vec<String> = frame
+                .draws
+                .iter()
+                .filter_map(|draw| if let UiDraw::Text { text, .. } = draw { Some(text.trim().to_owned()) } else { None })
+                .collect();
+            let actions: Vec<UiAction> = frame.actions.iter().map(|(_, action)| *action).collect();
+            (texts, actions)
+        };
+        let (texts, actions) = drawn(&app);
+        assert!(texts.iter().any(|text| text == "Zzlabelled") && texts.iter().any(|text| text.contains("pellets")), "{texts:?}");
+        assert!(actions.contains(&UiAction::ToggleMapZoneNames) && actions.contains(&UiAction::ToggleMapZoneBiomass), "a check box each");
+        for label in ["Zone names", "Zone biomass"] {
+            assert!(texts.iter().any(|text| text == label), "{label}: {texts:?}");
+        }
+        // The names off: the zone's name is gone from the map, the rest of the tab is as it was.
+        app.apply_ui_actions(&[UiAction::ToggleMapZoneNames]);
+        let (texts, _) = drawn(&app);
+        assert!(!texts.iter().any(|text| text == "Zzlabelled"), "{texts:?}");
+        assert!(texts.iter().any(|text| text.contains("pellets")) && texts.iter().any(|text| text == "Species Distribution over time"), "{texts:?}");
+        // The biomass off too: no pellet count either; the check boxes are still there to put them back.
+        app.apply_ui_actions(&[UiAction::ToggleMapZoneBiomass]);
+        let (texts, actions) = drawn(&app);
+        assert!(!texts.iter().any(|text| text.contains("pellets")), "{texts:?}");
+        assert!(actions.contains(&UiAction::ToggleMapZoneNames) && actions.contains(&UiAction::ToggleMapZoneBiomass));
+        // The names back on, the biomass still off.
+        app.apply_ui_actions(&[UiAction::ToggleMapZoneNames]);
+        let (texts, _) = drawn(&app);
+        assert!(texts.iter().any(|text| text == "Zzlabelled") && !texts.iter().any(|text| text.contains("pellets")), "{texts:?}");
+    }
+
+    #[test]
+    fn the_check_boxes_lie_inside_the_maps_lower_margin_and_do_not_cover_the_preview_or_each_other() {
+        let (mut app, id) = app_with_history();
+        app.lineage_tab = 3;
+        app.select_species_info(Some(id));
+        app.position_fill(id);
+        let mut frame = UiFrame::new(1.0);
+        crate::species_panel::emit(&mut frame, &app, &crate::ui::UiAssets::empty(), None, 1920.0, 1080.0);
+        let layout = layout(1, 0.0);
+        assert!(frame.shared_ids().is_empty(), "no click area id is used twice: {:?}", frame.shared_ids());
+        let boxes = |y: f32| -> Vec<UiAction> {
+            let mut seen: Vec<UiAction> = Vec::new();
+            let mut x = layout.map[0];
+            while x < layout.map[0] + layout.map[2] {
+                if let Some(action) = frame.action_at(Vec2::new(x, y))
+                    && matches!(action, UiAction::ToggleMapZoneNames | UiAction::ToggleMapZoneBiomass)
+                    && seen.last() != Some(&action)
+                {
+                    seen.push(action);
+                }
+                x += 1.0;
+            }
+            seen
+        };
+        // On the row in the lower margin, from the left: the names, then the biomass, side by side.
+        let row = layout.map[1] + MAP - 34.0 + 8.0;
+        assert_eq!(boxes(row), vec![UiAction::ToggleMapZoneNames, UiAction::ToggleMapZoneBiomass]);
+        // Nowhere over the preview square, nor above the margin.
+        let (preview_top, preview_bottom) = (layout.preview[1], layout.preview[1] + layout.preview[3]);
+        for y in [layout.map[1] + 5.0, preview_top + 5.0, preview_bottom - 5.0] {
+            assert!(boxes(y).is_empty(), "no check box at y {y}");
+        }
+        // The row is inside the map, under the preview.
+        assert!(row > preview_bottom && row < layout.map[1] + layout.map[3]);
     }
 
     #[test]

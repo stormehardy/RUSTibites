@@ -156,6 +156,72 @@ impl StoragePaths {
         self.state.join("improved_features.json")
     }
 
+    #[must_use]
+    /// `<state>/time_tags/<key>.json` (RUSTibites Improved: the time tags of the world saved or loaded as `key`, see `bibites_view::time_tags`; nothing the
+    /// original game has, so never part of a save). The key is made safe as a file name.
+    pub fn time_tags_path(&self, key: &str) -> PathBuf {
+        self.sidecar_path("time_tags", key)
+    }
+
+    #[must_use]
+    /// `<state>/zone_colors/<key>.json` (RUSTibites Improved: the colours the player gave the zones of the world saved or loaded as `key`; nothing the
+    /// original game has, so never part of a save). The key is made safe as a file name.
+    pub fn zone_colors_path(&self, key: &str) -> PathBuf {
+        self.sidecar_path("zone_colors", key)
+    }
+
+    #[must_use]
+    /// `<state>/gene_towers/<key>.json` (RUSTibites Improved: the gene selector towers of the world saved or loaded as `key`; the original game has no such tower, so
+    /// never part of a save). The key is made safe as a file name.
+    pub fn gene_towers_path(&self, key: &str) -> PathBuf {
+        self.sidecar_path("gene_towers", key)
+    }
+
+    /// `<state>/vent_towers/<key>.json` (RUSTibites Improved: the hydrothermal vent towers of the world saved or loaded as `key`; the original game has no such
+    /// tower, so never part of a save). The key is made safe as a file name.
+    #[must_use]
+    pub fn vent_towers_path(&self, key: &str) -> PathBuf {
+        self.sidecar_path("vent_towers", key)
+    }
+
+    /// `<state>/force_towers/<key>.json` (RUSTibites Improved: the force towers of the world saved or loaded as `key`; the original game has no such tower, so
+    /// never part of a save). The key is made safe as a file name.
+    #[must_use]
+    pub fn force_towers_path(&self, key: &str) -> PathBuf {
+        self.sidecar_path("force_towers", key)
+    }
+
+    /// `<state>/whirlpool_towers/<key>.json` (RUSTibites Improved: the whirlpool towers of the world saved or loaded as `key`; the original game has no such tower, so
+    /// never part of a save). The key is made safe as a file name.
+    #[must_use]
+    pub fn whirlpool_towers_path(&self, key: &str) -> PathBuf {
+        self.sidecar_path("whirlpool_towers", key)
+    }
+
+    /// `<state>/streams/<key>.json` (RUSTibites Improved: the streams of the world saved or loaded as `key`; the original game has no such thing, so never part of a
+    /// save). The key is made safe as a file name.
+    #[must_use]
+    pub fn streams_path(&self, key: &str) -> PathBuf {
+        self.sidecar_path("streams", key)
+    }
+
+    /// `<state>/<folder>/<key>.json` with the key made safe as a file name (RUSTibites Improved's per-save files).
+    fn sidecar_path(&self, folder: &str, key: &str) -> PathBuf {
+        let safe: String = key
+            .chars()
+            .map(|c| if c.is_alphanumeric() || matches!(c, ' ' | '-' | '_' | '.' | '(' | ')') { c } else { '_' })
+            .collect();
+        let safe = safe.trim().trim_matches('.');
+        let safe = if safe.is_empty() { "_" } else { safe };
+        self.state.join(folder).join(format!("{safe}.json"))
+    }
+
+    #[must_use]
+    /// `<state>/time_tag_view.json` (RUSTibites Improved: in which panels the time tags show).
+    pub fn time_tag_view_path(&self) -> PathBuf {
+        self.state.join("time_tag_view.json")
+    }
+
     /// Creates the save/auto-save/scenario/template directories if missing.
     pub fn ensure_layout(&self) -> Result<()> {
         for dir in [
@@ -1812,6 +1878,498 @@ pub fn read_improved_features(paths: &StoragePaths) -> Result<ImprovedFeaturesFi
 /// Writes `improved_features.json` (through a temporary file, so a crash leaves the old one).
 pub fn write_improved_features(paths: &StoragePaths, file: &ImprovedFeaturesFile) -> Result<()> {
     let path = paths.improved_features_path();
+    ensure_parent(&path)?;
+    let text = serde_json::to_string_pretty(file).map_err(|error| Error::invalid_data(error.to_string()))?;
+    let tmp = path.with_extension("json.tmp");
+    std::fs::write(&tmp, text)?;
+    std::fs::rename(&tmp, &path)?;
+    Ok(())
+}
+
+/// One time tag of a world (RUSTibites Improved): a moment of the simulated time with a name.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub struct TimeTagRecord {
+    /// Its number in its world (never reused).
+    pub id: u32,
+    /// The world's simulated time in seconds (`World::scene.simulated_time`) when it was set.
+    pub seconds: f64,
+    /// Its name.
+    pub label: String,
+}
+
+/// What `time_tags/<key>.json` stores: the time tags of one world.
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
+pub struct TimeTagsFile {
+    /// The tags, oldest first.
+    #[serde(default)]
+    pub tags: Vec<TimeTagRecord>,
+}
+
+/// Reads the time tags stored under `key` (nothing stored: none).
+pub fn read_time_tags(paths: &StoragePaths, key: &str) -> Result<TimeTagsFile> {
+    match std::fs::read_to_string(paths.time_tags_path(key)) {
+        Ok(text) => serde_json::from_str(&text)
+            .map_err(|error| Error::invalid_data(format!("invalid time tags file: {error}"))),
+        Err(error) if error.kind() == io::ErrorKind::NotFound => Ok(TimeTagsFile::default()),
+        Err(error) => Err(Error::from(error)),
+    }
+}
+
+/// Writes the time tags under `key` (through a temporary file, so a crash leaves the old one). No tags and no file: nothing is created.
+pub fn write_time_tags(paths: &StoragePaths, key: &str, file: &TimeTagsFile) -> Result<()> {
+    let path = paths.time_tags_path(key);
+    if file.tags.is_empty() && !path.exists() {
+        return Ok(());
+    }
+    ensure_parent(&path)?;
+    let text = serde_json::to_string_pretty(file).map_err(|error| Error::invalid_data(error.to_string()))?;
+    let tmp = path.with_extension("json.tmp");
+    std::fs::write(&tmp, text)?;
+    std::fs::rename(&tmp, &path)?;
+    Ok(())
+}
+
+/// Removes the time tag files of autosaves that no longer exist (`time_tags/autosave_<stamp>.json` whose `Autosaves/autosave_<stamp>.zip` is gone), so a
+/// long run's autosaves do not leave a file each behind. Errors are ignored: a file that stays is harmless.
+pub fn prune_autosave_time_tags(paths: &StoragePaths) {
+    // (The zone colours' files of the autosaves are cleaned the same way.)
+    for folder in ["time_tags", "zone_colors", "gene_towers", "vent_towers", "force_towers", "streams", "whirlpool_towers"] {
+        let Ok(entries) = std::fs::read_dir(paths.state.join(folder)) else {
+            continue;
+        };
+        let autosaves = paths.autosaves_dir();
+        for entry in entries.flatten() {
+            let name = entry.file_name().to_string_lossy().into_owned();
+            let Some(stem) = name.strip_suffix(".json") else {
+                continue;
+            };
+            if stem.starts_with("autosave_") && !autosaves.join(format!("{stem}.zip")).is_file() {
+                let _ = std::fs::remove_file(entry.path());
+            }
+        }
+    }
+}
+
+/// One zone's colour as stored: the zone's name and its colour.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ZoneColorRecord {
+    /// The zone's name (what finds it again when the world is loaded).
+    pub name: String,
+    /// Red, green and blue.
+    pub rgb: [u8; 3],
+}
+
+/// What `zone_colors/<key>.json` stores: the colours the player gave the zones of one world.
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ZoneColorsFile {
+    /// The zones that have a colour of their own, in the zone list's order.
+    #[serde(default)]
+    pub zones: Vec<ZoneColorRecord>,
+}
+
+/// Reads the zone colours stored under `key` (nothing stored: none).
+pub fn read_zone_colors(paths: &StoragePaths, key: &str) -> Result<ZoneColorsFile> {
+    match std::fs::read_to_string(paths.zone_colors_path(key)) {
+        Ok(text) => serde_json::from_str(&text)
+            .map_err(|error| Error::invalid_data(format!("invalid zone colours file: {error}"))),
+        Err(error) if error.kind() == io::ErrorKind::NotFound => Ok(ZoneColorsFile::default()),
+        Err(error) => Err(Error::from(error)),
+    }
+}
+
+/// Writes the zone colours under `key` (through a temporary file). No colours and no file: nothing is created; a file that exists is rewritten (so the
+/// colours the player took away are gone from it).
+pub fn write_zone_colors(paths: &StoragePaths, key: &str, file: &ZoneColorsFile) -> Result<()> {
+    let path = paths.zone_colors_path(key);
+    if file.zones.is_empty() && !path.exists() {
+        return Ok(());
+    }
+    ensure_parent(&path)?;
+    let text = serde_json::to_string_pretty(file).map_err(|error| Error::invalid_data(error.to_string()))?;
+    let tmp = path.with_extension("json.tmp");
+    std::fs::write(&tmp, text)?;
+    std::fs::rename(&tmp, &path)?;
+    Ok(())
+}
+
+/// One gene selector tower as stored (RUSTibites Improved): where it is and what it is set to; the gene by its name, which stays when the genes' order does not.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub struct GeneTowerRecord {
+    /// World position.
+    pub x: f32,
+    /// World position.
+    pub y: f32,
+    /// The gene's name (`GENE_DEFS[..].name`, "Diet", ...).
+    pub gene: String,
+    /// The lowest value of the range.
+    pub min: f32,
+    /// The highest value of the range.
+    pub max: f32,
+    /// Kill inside the range (false: outside it).
+    #[serde(default)]
+    pub kill_inside: bool,
+    /// Kill the one furthest off target (false: the first found).
+    #[serde(default)]
+    pub any_or_most: bool,
+    /// How many a cycle kills.
+    #[serde(default = "one")]
+    pub kills_per_cycle: u32,
+    /// Scan radius.
+    pub radius: f32,
+    /// Seconds between cycles.
+    pub period: f32,
+    /// Seconds into the cycle.
+    #[serde(default)]
+    pub progress: f32,
+    /// Bibites it has killed.
+    #[serde(default)]
+    pub killed: u32,
+    /// The name of the zone it follows (none: it stays where it is). A zone that is gone leaves the tower where it was.
+    #[serde(default)]
+    pub zone: Option<String>,
+}
+
+fn one() -> u32 {
+    1
+}
+
+/// What `gene_towers/<key>.json` stores: the gene selector towers of one world.
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
+pub struct GeneTowersFile {
+    /// The towers, in the order of the world's tool list.
+    #[serde(default)]
+    pub towers: Vec<GeneTowerRecord>,
+}
+
+/// Reads the gene towers stored under `key` (nothing stored: none).
+pub fn read_gene_towers(paths: &StoragePaths, key: &str) -> Result<GeneTowersFile> {
+    match std::fs::read_to_string(paths.gene_towers_path(key)) {
+        Ok(text) => serde_json::from_str(&text).map_err(|error| Error::invalid_data(format!("invalid gene towers file: {error}"))),
+        Err(error) if error.kind() == io::ErrorKind::NotFound => Ok(GeneTowersFile::default()),
+        Err(error) => Err(Error::from(error)),
+    }
+}
+
+/// Writes the gene towers under `key` (through a temporary file). No towers and no file: nothing is created; a file that exists is rewritten (so a tower the player
+/// removed is gone from it).
+pub fn write_gene_towers(paths: &StoragePaths, key: &str, file: &GeneTowersFile) -> Result<()> {
+    let path = paths.gene_towers_path(key);
+    if file.towers.is_empty() && !path.exists() {
+        return Ok(());
+    }
+    ensure_parent(&path)?;
+    let text = serde_json::to_string_pretty(file).map_err(|error| Error::invalid_data(error.to_string()))?;
+    let tmp = path.with_extension("json.tmp");
+    std::fs::write(&tmp, text)?;
+    std::fs::rename(&tmp, &path)?;
+    Ok(())
+}
+
+/// One hydrothermal vent tower as stored (RUSTibites Improved): where it is and what it is set to. The pellets it has shot are ordinary pellets of the world (in the
+/// save), so only its settings are kept here.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub struct VentTowerRecord {
+    /// World position.
+    pub x: f32,
+    /// World position.
+    pub y: f32,
+    /// Launch speed (u/s).
+    pub velocity: f32,
+    /// How far a pellet slides (u).
+    #[serde(default = "vent_range")]
+    pub range: f32,
+    /// Pellet size (E).
+    pub pellet_energy: f32,
+    /// Shots per second.
+    pub rate: f32,
+    /// Recycle the oldest pellets at the cap.
+    #[serde(default)]
+    pub recycle: bool,
+    /// The cap on the energy of its pellets alive (E).
+    pub cap: f32,
+    /// Pellets it has shot (a count).
+    #[serde(default)]
+    pub shot: u32,
+    /// The name of the zone it follows (none: it stays where it is). A zone that is gone leaves the tower where it was.
+    #[serde(default)]
+    pub zone: Option<String>,
+}
+
+fn vent_range() -> f32 {
+    200.0
+}
+
+/// What `vent_towers/<key>.json` stores: the hydrothermal vent towers of one world.
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
+pub struct VentTowersFile {
+    /// The towers, in the order of the world's tool list.
+    #[serde(default)]
+    pub towers: Vec<VentTowerRecord>,
+}
+
+/// Reads the vent towers stored under `key` (nothing stored: none).
+pub fn read_vent_towers(paths: &StoragePaths, key: &str) -> Result<VentTowersFile> {
+    match std::fs::read_to_string(paths.vent_towers_path(key)) {
+        Ok(text) => serde_json::from_str(&text).map_err(|error| Error::invalid_data(format!("invalid vent towers file: {error}"))),
+        Err(error) if error.kind() == io::ErrorKind::NotFound => Ok(VentTowersFile::default()),
+        Err(error) => Err(Error::from(error)),
+    }
+}
+
+/// Writes the vent towers under `key` (through a temporary file). No towers and no file: nothing is created; a file that exists is rewritten (so a tower the player
+/// removed is gone from it).
+pub fn write_vent_towers(paths: &StoragePaths, key: &str, file: &VentTowersFile) -> Result<()> {
+    let path = paths.vent_towers_path(key);
+    if file.towers.is_empty() && !path.exists() {
+        return Ok(());
+    }
+    ensure_parent(&path)?;
+    let text = serde_json::to_string_pretty(file).map_err(|error| Error::invalid_data(error.to_string()))?;
+    let tmp = path.with_extension("json.tmp");
+    std::fs::write(&tmp, text)?;
+    std::fs::rename(&tmp, &path)?;
+    Ok(())
+}
+
+/// One force tower as stored (RUSTibites Improved): where it is and what it is set to.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub struct ForceTowerRecord {
+    /// World position.
+    pub x: f32,
+    /// World position.
+    pub y: f32,
+    /// How far it acts (u).
+    #[serde(default = "force_range")]
+    pub range: f32,
+    /// The acceleration it gives (u/s per second): positive pulls, negative pushes.
+    #[serde(default = "force_strength")]
+    pub strength: f32,
+    /// How the strength changes with the distance: `"fading"` or `"constant"`.
+    #[serde(default = "force_falloff")]
+    pub falloff: String,
+    /// Whether it acts on bibites.
+    #[serde(default = "yes")]
+    pub bibites: bool,
+    /// Whether it acts on pellets.
+    #[serde(default = "yes")]
+    pub pellets: bool,
+    /// Whether it acts on eggs.
+    #[serde(default = "yes")]
+    pub eggs: bool,
+    /// The name of the zone it follows (none: it stays where it is). A zone that is gone leaves the tower where it was.
+    #[serde(default)]
+    pub zone: Option<String>,
+}
+
+fn force_range() -> f32 {
+    300.0
+}
+
+fn force_strength() -> f32 {
+    100.0
+}
+
+fn force_falloff() -> String {
+    "fading".to_owned()
+}
+
+/// What `force_towers/<key>.json` stores: the force towers of one world.
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
+pub struct ForceTowersFile {
+    /// The towers, in the order of the world's tool list.
+    #[serde(default)]
+    pub towers: Vec<ForceTowerRecord>,
+}
+
+/// Reads the force towers stored under `key` (nothing stored: none).
+pub fn read_force_towers(paths: &StoragePaths, key: &str) -> Result<ForceTowersFile> {
+    match std::fs::read_to_string(paths.force_towers_path(key)) {
+        Ok(text) => serde_json::from_str(&text).map_err(|error| Error::invalid_data(format!("invalid force towers file: {error}"))),
+        Err(error) if error.kind() == io::ErrorKind::NotFound => Ok(ForceTowersFile::default()),
+        Err(error) => Err(Error::from(error)),
+    }
+}
+
+/// Writes the force towers under `key` (through a temporary file). No towers and no file: nothing is created; a file that exists is rewritten (so a tower the player
+/// removed is gone from it).
+pub fn write_force_towers(paths: &StoragePaths, key: &str, file: &ForceTowersFile) -> Result<()> {
+    let path = paths.force_towers_path(key);
+    if file.towers.is_empty() && !path.exists() {
+        return Ok(());
+    }
+    ensure_parent(&path)?;
+    let text = serde_json::to_string_pretty(file).map_err(|error| Error::invalid_data(error.to_string()))?;
+    let tmp = path.with_extension("json.tmp");
+    std::fs::write(&tmp, text)?;
+    std::fs::rename(&tmp, &path)?;
+    Ok(())
+}
+
+/// One whirlpool tower as stored (RUSTibites Improved): where it is and what it is set to.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub struct WhirlpoolTowerRecord {
+    /// World position.
+    pub x: f32,
+    /// World position.
+    pub y: f32,
+    /// How far it acts (u).
+    #[serde(default = "force_range")]
+    pub range: f32,
+    /// The acceleration it gives along the circle (u/s per second).
+    #[serde(default = "force_strength")]
+    pub speed: f32,
+    /// Which way it turns: `"counterclockwise"` or `"clockwise"`.
+    #[serde(default = "whirl_spin")]
+    pub spin: String,
+    /// How the speed changes with the distance: `"fading"` or `"constant"`.
+    #[serde(default = "force_falloff")]
+    pub falloff: String,
+    /// Whether it acts on bibites.
+    #[serde(default = "yes")]
+    pub bibites: bool,
+    /// Whether it acts on pellets.
+    #[serde(default = "yes")]
+    pub pellets: bool,
+    /// Whether it acts on eggs.
+    #[serde(default = "yes")]
+    pub eggs: bool,
+    /// The name of the zone it follows (none: it stays where it is). A zone that is gone leaves the tower where it was.
+    #[serde(default)]
+    pub zone: Option<String>,
+}
+
+fn whirl_spin() -> String {
+    "counterclockwise".to_owned()
+}
+
+/// What `whirlpool_towers/<key>.json` stores: the whirlpool towers of one world.
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
+pub struct WhirlpoolTowersFile {
+    /// The towers, in the order of the world's tool list.
+    #[serde(default)]
+    pub towers: Vec<WhirlpoolTowerRecord>,
+}
+
+/// Reads the whirlpool towers stored under `key` (nothing stored: none).
+pub fn read_whirlpool_towers(paths: &StoragePaths, key: &str) -> Result<WhirlpoolTowersFile> {
+    match std::fs::read_to_string(paths.whirlpool_towers_path(key)) {
+        Ok(text) => serde_json::from_str(&text).map_err(|error| Error::invalid_data(format!("invalid whirlpool towers file: {error}"))),
+        Err(error) if error.kind() == io::ErrorKind::NotFound => Ok(WhirlpoolTowersFile::default()),
+        Err(error) => Err(Error::from(error)),
+    }
+}
+
+/// Writes the whirlpool towers under `key` (through a temporary file). No towers and no file: nothing is created; a file that exists is rewritten (so a tower the player
+/// removed is gone from it).
+pub fn write_whirlpool_towers(paths: &StoragePaths, key: &str, file: &WhirlpoolTowersFile) -> Result<()> {
+    let path = paths.whirlpool_towers_path(key);
+    if file.towers.is_empty() && !path.exists() {
+        return Ok(());
+    }
+    ensure_parent(&path)?;
+    let text = serde_json::to_string_pretty(file).map_err(|error| Error::invalid_data(error.to_string()))?;
+    let tmp = path.with_extension("json.tmp");
+    std::fs::write(&tmp, text)?;
+    std::fs::rename(&tmp, &path)?;
+    Ok(())
+}
+
+/// One stream as stored (RUSTibites Improved): where it starts and finishes, how wide it is and how strong.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub struct StreamRecord {
+    /// Where it starts (world x, y).
+    pub start_x: f32,
+    /// See `start_x`.
+    pub start_y: f32,
+    /// Where it finishes (world x, y).
+    pub end_x: f32,
+    /// See `end_x`.
+    pub end_y: f32,
+    /// How wide the band is (u).
+    #[serde(default = "stream_width")]
+    pub width: f32,
+    /// The acceleration it gives (u/s per second).
+    #[serde(default = "stream_strength")]
+    pub strength: f32,
+}
+
+fn stream_width() -> f32 {
+    100.0
+}
+
+fn stream_strength() -> f32 {
+    100.0
+}
+
+/// What `streams/<key>.json` stores: the streams of one world.
+#[derive(Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
+pub struct StreamsFile {
+    /// The streams, in the order of the world's list.
+    #[serde(default)]
+    pub streams: Vec<StreamRecord>,
+}
+
+/// Reads the streams stored under `key` (nothing stored: none).
+pub fn read_streams(paths: &StoragePaths, key: &str) -> Result<StreamsFile> {
+    match std::fs::read_to_string(paths.streams_path(key)) {
+        Ok(text) => serde_json::from_str(&text).map_err(|error| Error::invalid_data(format!("invalid streams file: {error}"))),
+        Err(error) if error.kind() == io::ErrorKind::NotFound => Ok(StreamsFile::default()),
+        Err(error) => Err(Error::from(error)),
+    }
+}
+
+/// Writes the streams under `key` (through a temporary file). No streams and no file: nothing is created; a file that exists is rewritten (so a stream the player removed
+/// is gone from it).
+pub fn write_streams(paths: &StoragePaths, key: &str, file: &StreamsFile) -> Result<()> {
+    let path = paths.streams_path(key);
+    if file.streams.is_empty() && !path.exists() {
+        return Ok(());
+    }
+    ensure_parent(&path)?;
+    let text = serde_json::to_string_pretty(file).map_err(|error| Error::invalid_data(error.to_string()))?;
+    let tmp = path.with_extension("json.tmp");
+    std::fs::write(&tmp, text)?;
+    std::fs::rename(&tmp, &path)?;
+    Ok(())
+}
+
+/// What `time_tag_view.json` stores: whether the time tags show in each panel that can show them (all on until the player hides them).
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct TimeTagViewFile {
+    /// The Stats and Analysis panel's data graphs.
+    #[serde(default = "yes")]
+    pub graphs: bool,
+    /// The Stats and Analysis panel's gene analysis page.
+    #[serde(default = "yes")]
+    pub genes: bool,
+    /// The Ancestral Lineage Graph (tree and mesh).
+    #[serde(default = "yes")]
+    pub lineage: bool,
+}
+
+fn yes() -> bool {
+    true
+}
+
+impl Default for TimeTagViewFile {
+    fn default() -> Self {
+        Self { graphs: true, genes: true, lineage: true }
+    }
+}
+
+/// Reads `time_tag_view.json` (nothing stored yet: the tags show everywhere).
+pub fn read_time_tag_view(paths: &StoragePaths) -> Result<TimeTagViewFile> {
+    match std::fs::read_to_string(paths.time_tag_view_path()) {
+        Ok(text) => serde_json::from_str(&text)
+            .map_err(|error| Error::invalid_data(format!("invalid time_tag_view.json: {error}"))),
+        Err(error) if error.kind() == io::ErrorKind::NotFound => Ok(TimeTagViewFile::default()),
+        Err(error) => Err(Error::from(error)),
+    }
+}
+
+/// Writes `time_tag_view.json` (through a temporary file).
+pub fn write_time_tag_view(paths: &StoragePaths, file: &TimeTagViewFile) -> Result<()> {
+    let path = paths.time_tag_view_path();
     ensure_parent(&path)?;
     let text = serde_json::to_string_pretty(file).map_err(|error| Error::invalid_data(error.to_string()))?;
     let tmp = path.with_extension("json.tmp");

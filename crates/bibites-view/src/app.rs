@@ -19,6 +19,17 @@ use bibites_core::world::{ScenarioData, TemplateSource, World};
 use bibites_io::storage::StoragePaths;
 
 mod animator_actions;
+mod force_tower_actions;
+mod gene_tower_actions;
+mod hidden_objects;
+mod map_zone_labels;
+mod stream_actions;
+mod time_tag_actions;
+mod vent_tower_actions;
+mod whirlpool_actions;
+mod zone_color_actions;
+
+pub use time_tag_actions::TimeTagEdit;
 
 use crate::assets::GameAssets;
 use crate::render::{Camera, Scene, SceneOptions, build_scene, pigment_rgb, render_scene};
@@ -393,7 +404,12 @@ fn spawn_one(
         ang_vel: 0.0,
         genome: genome.clone(),
         meta: meta.clone(),
-        brain: brain.clone(),
+        // `CopyBrain` + `FinalizeEditing`: a spawned bibite's nodes start fresh, whatever values the template's brain was saved with.
+        brain: {
+            let mut fresh = brain.clone();
+            fresh.reset_runtime_state(world.settings.brain_period());
+            fresh
+        },
         vitals,
         energy: None,
         health: None,
@@ -1143,6 +1159,8 @@ pub struct FrameInput {
     pub toggle_pheromones: bool,
     /// `H` pressed: toggle the HUD.
     pub toggle_hud: bool,
+    /// RUSTibites Improved: the Hide Objects hotkey went down (its key is the player's: `improved_keys`).
+    pub toggle_objects: bool,
     /// Escape pressed: pop a panel, deselect, or open the pause menu.
     pub quit: bool,
     /// `R`: select a random bibite (`UserControl.SelectRandomBibite`).
@@ -1522,8 +1540,12 @@ pub enum ConfirmKind {
     DeleteAnimator(usize),
     /// Delete every settings animator (`SettingsChangersEditor.DeleteAllChangers`).
     ClearAnimators,
+    /// RUSTibites Improved: delete every stream of the Zones tab's Streams list.
+    ClearStreams,
     /// Overwrite an existing save name.
     OverwriteSave(String),
+    /// Overwrite an existing scenario (the scenario saver's name is taken).
+    OverwriteScenario(String),
     /// Delete a save file.
     DeleteSave(PathBuf),
     /// Restart the running challenge (`ChallengeTrackerPanel` Retry).
@@ -1656,6 +1678,8 @@ pub struct App {
     tag_edit_is_placer: bool,
     /// The Save Bibite dialog while it is open (`SaveBibiteDialogHandle`).
     pub save_dialog: Option<crate::save_dialog::SaveDialog>,
+    /// The scenario saver while it is open (`ScenarioSaver`, opened by the settings panel's Save button).
+    pub scenario_saver: Option<crate::scenario_saver::ScenarioSaver>,
     /// `UserSettings.SaveBibiteAsTemplate`: the dialog's checkbox starts from it.
     pub save_as_template: bool,
     /// `UserSettings.FormatBibiteJSON`: the dialog's checkbox starts from it.
@@ -1904,6 +1928,10 @@ pub struct App {
     pub show_brain_differences: bool,
     /// `UserSettings.SortBiologyPanelEnergyDetails`: the Flow details pop-up lists its rows by value (off by default).
     pub sort_energy_details: bool,
+    /// RUSTibites Improved: the Species Distribution window writes each zone's name over its map (the "Zone names" check box; on, as the game has it).
+    pub map_zone_names: bool,
+    /// RUSTibites Improved: and each zone's biomass and pellet count (the "Zone biomass" check box; on).
+    pub map_zone_biomass: bool,
     /// How many times a diagram was sorted: every sort draws other random numbers.
     pub brain_sorts: u64,
     /// The inspector's Brain tab's layout of the target's brain (`BrainPanel.FillPanel`).
@@ -1922,6 +1950,16 @@ pub struct App {
     /// Graphs panel: the legend shows while the pointer rests on its "?" button or on the legend
     /// (`OnHoverShow`, `OnHoverKeep`).
     pub graphs_legend_open: bool,
+    /// RUSTibites Improved: the time tags of the world (`crate::time_tags`), the same in every panel that has a time axis.
+    pub time_tags: crate::time_tags::TimeTags,
+    /// RUSTibites Improved: in which panels the time tags show (each panel's own button; kept in `time_tag_view.json`).
+    pub time_tag_view: bibites_io::storage::TimeTagViewFile,
+    /// RUSTibites Improved: the name field of a time tag while the player types it.
+    pub time_tag_edit: Option<TimeTagEdit>,
+    /// RUSTibites Improved: the save name the world's time tags are stored under (`None`: the world has not been saved or loaded by a name yet).
+    pub(crate) time_tags_key: Option<String>,
+    /// RUSTibites Improved: the colour pop-up of a zone, while it is open (`crate::zone_color_ui`).
+    pub zone_color_popup: Option<crate::zone_color_ui::ZoneColorPopup>,
     /// The Bibite Editor, while it is open.
     pub bibite_editor: Option<crate::template_editor_ui::EditorSession>,
     /// The editor closed and the Library under it must fill its lists again (`AfterEditorClose`: `Some(None)`; `AfterEditorSubmit`:
@@ -2200,6 +2238,7 @@ impl App {
             placer_pause: None,
             tag_edit_is_placer: false,
             save_dialog: None,
+            scenario_saver: None,
             save_as_template: false,
             format_bibite_json: false,
             user_settings_path: None,
@@ -2311,6 +2350,8 @@ impl App {
             brain_anchors: crate::species_panel::brain::Anchors::new(),
             brain_drag: None,
             show_brain_differences: false,
+            map_zone_names: true,
+            map_zone_biomass: true,
             sort_energy_details: false,
             brain_sorts: 0,
             inspector_brain: None,
@@ -2319,6 +2360,11 @@ impl App {
             graphs_stream: 0,
             graphs_curves,
             graphs_legend_open: false,
+            time_tags: crate::time_tags::TimeTags::new(),
+            time_tag_view: bibites_io::storage::TimeTagViewFile::default(),
+            time_tag_edit: None,
+            time_tags_key: None,
+            zone_color_popup: None,
             bibite_editor: None,
             library_refill: None,
             graphs_genes: false,
@@ -2486,8 +2532,12 @@ impl App {
             && self.hotkey_listening.is_none()
             && self.confirm_dialog.is_none()
             && self.value_edit.is_none()
+            // RUSTibites Improved: a space typed in a time tag's name is a letter, not the pause key (and the colour pop-up is modal).
+            && self.time_tag_edit.is_none()
+            && self.zone_color_popup.is_none()
             && self.bibite_editor.is_none()
             && self.expanded_brain.is_none()
+            && self.scenario_saver.is_none()
             // `UserControl.SetKeyboardBlockFromSource("Challenge", true)` when the challenge ends.
             && !self.challenge_end_shown
             && !self.panels.is_open(crate::ui::PanelKind::Escape)
@@ -2504,9 +2554,12 @@ impl App {
             && self.confirm_dialog.is_none()
             && self.dropdown_open.is_none()
             && self.save_dialog.is_none()
+            && self.scenario_saver.is_none()
             && self.tag_edit.is_none()
             && self.zone_name_edit.is_none()
             && self.value_edit.is_none()
+            && self.time_tag_edit.is_none()
+            && self.zone_color_popup.is_none()
             && !self.species_ui.typing()
             && self.bibite_editor.is_none()
             && self.expanded_brain.is_none()
@@ -2541,6 +2594,7 @@ impl App {
             digit: if hotkeys_live { input.digit } else { None },
             toggle_pause: input.toggle_pause && hotkeys_live,
             toggle_hud: input.toggle_hud && hotkeys_live,
+            toggle_objects: input.toggle_objects && hotkeys_live,
             copy_tag: input.copy_tag && hotkeys_live,
             paste_tag: input.paste_tag && hotkeys_live,
             step: input.step && hotkeys_live,
@@ -2553,12 +2607,15 @@ impl App {
         // The dialog's fields take the typed characters first (the tag field drops them when it is
         // not being edited).
         self.edit_save_dialog(&raw_input);
+        self.edit_scenario_saver(&raw_input);
         self.edit_save_name(&raw_input);
         self.edit_editor_text(&raw_input);
         // The Expanded Brain View's force simulation runs with the real frame time.
         self.expanded_brain_frame(raw_input.dt);
         self.edit_zone_name(&raw_input);
         self.edit_value(&raw_input);
+        self.edit_time_tag(&raw_input);
+        self.edit_zone_color_hex(&raw_input);
         self.species_edit_typing(&raw_input);
         self.edit_species_tag(&raw_input);
         if self.tag_edit.is_none() && self.zone_name_edit.is_none() && !self.species_ui.typing() && self.bibite_editor.as_ref().is_none_or(|session| session.view.focus.is_none() && !session.view.brain.label_focus && !session.view.brain.filter_focus) {
@@ -2683,6 +2740,10 @@ impl App {
                 crate::ui::ToolKind::Tower
                     | crate::ui::ToolKind::PheroTower
                     | crate::ui::ToolKind::Killer
+                    | crate::ui::ToolKind::GeneSelector
+                    | crate::ui::ToolKind::Vent
+                    | crate::ui::ToolKind::Force
+                    | crate::ui::ToolKind::Whirl
             )
         {
             self.tool = crate::ui::ToolKind::Inspect;
@@ -2793,6 +2854,9 @@ impl App {
         }
         if input.toggle_hud {
             self.show_hud = !self.show_hud;
+        }
+        if input.toggle_objects {
+            self.toggle_objects();
         }
         // The mouse wheel scrolls the inspector's gene list when the cursor is
         // over the selection panel (the game ignores scroll over UI for zoom).
@@ -3149,8 +3213,8 @@ impl App {
     }
 
     /// `BibitePlacer.UpdatePanel`: a left press on the world spawns the template there with the
-    /// panel's choices (`WorldObjectsSpawner.SpawnBibiteFromTemplate`). The core spawns eggs
-    /// without the randomize-genes choice (`spawn_template_at`).
+    /// panel's choices (`WorldObjectsSpawner.SpawnBibiteFromTemplate`); an egg takes the randomize-genes
+    /// choice as well (`SpawnEggFromTemplate`).
     fn place_bibite(&mut self, pos: Vec2) {
         let Some(placer) = &self.placer else {
             return;
@@ -3159,13 +3223,14 @@ impl App {
         let tag = options.tag.clone();
         let result = if options.growth_at_spawn == GrowthAtSpawn::Egg {
             self.world
-                .spawn_template_at(
+                .spawn_template_at_randomized(
                     &placer.template,
                     pos,
                     None,
                     GrowthAtSpawn::Egg,
                     options.tagging,
                     &tag,
+                    options.randomize_genes,
                 )
                 .map(|_| ())
         } else {
@@ -3229,7 +3294,7 @@ impl App {
     }
 
     /// `EffectTower.Place`: a placed tower selects itself.
-    fn select_placed_tool(&mut self, id: bibites_core::ids::ToolId) {
+    pub(crate) fn select_placed_tool(&mut self, id: bibites_core::ids::ToolId) {
         if let Some(save_id) = self
             .world
             .tools
@@ -3280,6 +3345,10 @@ impl App {
             crate::ui::ToolKind::Tower => Some(GhostKind::Rad),
             crate::ui::ToolKind::PheroTower => Some(GhostKind::Phero),
             crate::ui::ToolKind::Killer => Some(GhostKind::Killer),
+            crate::ui::ToolKind::GeneSelector => Some(GhostKind::Gene),
+            crate::ui::ToolKind::Vent => Some(GhostKind::Vent),
+            crate::ui::ToolKind::Force => Some(GhostKind::Force),
+            crate::ui::ToolKind::Whirl => Some(GhostKind::Whirl),
             _ => None,
         };
         crate::render::ToolView {
@@ -3398,6 +3467,26 @@ impl App {
             {
                 self.species_commit_edit();
             }
+            // RUSTibites Improved: a zone's colour pop-up closes (the zone keeps its colour) on a press on anything but itself.
+            if self.zone_color_popup.is_some()
+                && !matches!(
+                    action,
+                    UiAction::ZoneColorOpen(_)
+                        | UiAction::ZoneColorWheel
+                        | UiAction::ZoneColorValueBar
+                        | UiAction::ZoneColorHexField
+                        | UiAction::ZoneColorClear(_)
+                        | UiAction::ZoneColorSpread
+                        | UiAction::ZoneColorClose
+                        | UiAction::Consume
+                )
+            {
+                self.zone_color_close();
+            }
+            // RUSTibites Improved: the same for a time tag's name field (its own field and the Tag time buttons are the exceptions).
+            if self.time_tag_edit.is_some() && !matches!(action, UiAction::TimeTagField | UiAction::TimeTagStart(_) | UiAction::TimeTagPlace(..)) {
+                self.time_tag_edit = None;
+            }
             // Pressing anything but the edit field takes the focus off it (`onDeselect`): the field
             // closes without applying its text.
             if self.value_edit.is_some()
@@ -3426,6 +3515,7 @@ impl App {
                     OverlayKind::Grid => self.scene_options.grid = !self.scene_options.grid,
                     OverlayKind::Ruler => self.show_ruler = !self.show_ruler,
                     OverlayKind::Zones => self.scene_options.zones = !self.scene_options.zones,
+                    OverlayKind::ZoneColors => self.toggle_zone_colors(),
                     OverlayKind::Pellets => {
                         self.scene_options.pellets = !self.scene_options.pellets
                     }
@@ -3472,6 +3562,8 @@ impl App {
                 UiAction::BrainResetPositions => self.brain_reset_positions(),
                 UiAction::BrainToggleDifferences => self.brain_toggle_differences(),
                 UiAction::ToggleEnergySort => self.sort_energy_details = !self.sort_energy_details,
+                UiAction::ToggleMapZoneNames => self.toggle_map_zone_names(),
+                UiAction::ToggleMapZoneBiomass => self.toggle_map_zone_biomass(),
                 UiAction::DynEditValue(field) => self.open_value_edit(field),
                 UiAction::ValueEditInside => {}
                 UiAction::DynReset(index) => self.dyn_reset(&[usize::from(index)]),
@@ -3497,6 +3589,7 @@ impl App {
                     }
                 }
                 UiAction::SaveDialogToggle(which) => self.toggle_save_dialog_option(which),
+                UiAction::ScenarioSaver(code) => self.scenario_saver_action(code),
                 // A dropdown control was clicked: its list opens under it (`TMP_Dropdown.Show`).
                 UiAction::DropdownOpen(target) => {
                     let anchor = self.click_rect;
@@ -3605,7 +3698,7 @@ impl App {
                 // `ZoneSettingsHandle`: an item opens and closes on its own (the bar closes it, a
                 // click on a closed item opens it); several can be open.
                 // A zone group's card (`ZoneGroupHandle.ToggleBody`) opens and closes on its own bar as well.
-                UiAction::ZoneOpen(list @ (0 | 1 | 3), index) => {
+                UiAction::ZoneOpen(list @ (0 | 1 | 3 | 4), index) => {
                     let item = (list, index);
                     if let Some(at) = self.dyn_panel.open_items.iter().position(|o| *o == item) {
                         self.dyn_panel.open_items.remove(at);
@@ -3642,9 +3735,8 @@ impl App {
                             .get(material);
                     });
                 }
-                UiAction::DynSaveScenario => {
-                    self.last_action = "Save Scenario is not available yet".to_owned();
-                }
+                // `DynamicSettingsPanel.OpenScenarioSaver`.
+                UiAction::DynSaveScenario => self.open_scenario_saver(),
                 UiAction::ShowToolbar(which) => {
                     if let Some(panel) = self.toolbar.get_mut(usize::from(which)) {
                         panel.show();
@@ -3659,6 +3751,18 @@ impl App {
                 }
                 // `GraphsPanel.OpenGeneAnalysis` / `OpenHistoricalGraph`.
                 UiAction::GraphsPage(genes) => self.graphs_genes = genes,
+                UiAction::TimeTagStart(panel) => self.time_tag_open(panel),
+                UiAction::TimeTagField => {}
+                UiAction::TimeTagPlace(panel, seconds) => self.time_tag_place(panel, seconds),
+                UiAction::ZoneColorOpen(zone) => self.zone_color_open(usize::from(zone)),
+                // (The wheel and the bar are held by the window loop: `zone_color_press` / `zone_color_drag_to`.)
+                UiAction::ZoneColorWheel | UiAction::ZoneColorValueBar => {}
+                UiAction::ZoneColorHexField => self.zone_color_focus_hex(),
+                UiAction::ZoneColorClear(zone) => self.zone_color_clear(usize::from(zone)),
+                UiAction::ZoneColorSpread => self.zone_colors_spread(),
+                UiAction::ZoneColorClose => self.zone_color_close(),
+                UiAction::TimeTagRemove(id) => self.time_tag_remove(id),
+                UiAction::TimeTagsShow(panel) => self.time_tags_toggle(panel),
                 UiAction::Editor(action) => self.apply_editor_action(action),
                 UiAction::ExpandedBrain(action) => self.apply_expanded_action(action),
                 UiAction::SavePanel(action) => self.save_panel_action(action),
@@ -4095,6 +4199,14 @@ impl App {
             }
             ControlCommand::DeleteZoneGroup(index) => self.delete_zone_group(usize::from(index)),
             ControlCommand::RerollZoneGroup(index) => self.reroll_zone_group(usize::from(index)),
+            ControlCommand::AddStream => self.add_stream(),
+            ControlCommand::RequestClearStreams => {
+                // The button is disabled while the list is empty.
+                if !self.world.streams.is_empty() {
+                    self.confirm_dialog = Some(ConfirmKind::ClearStreams);
+                }
+            }
+            ControlCommand::DeleteStream(index) => self.delete_stream(usize::from(index)),
             ControlCommand::OpenAnimatorCreator => self.open_animator_creator(),
             ControlCommand::SubmitAnimatorCreator => self.submit_animator_creator(),
             ControlCommand::CloseAnimatorCreator => self.close_animator_creator(),
@@ -4785,7 +4897,7 @@ impl App {
         dt: f32,
     ) {
         use crate::tooltip::Target;
-        let blocked = self.confirm_dialog.is_some() || self.save_dialog.is_some();
+        let blocked = self.confirm_dialog.is_some() || self.save_dialog.is_some() || self.scenario_saver.is_some();
         let control = frame.tips.iter().rev().find(|rect| rect.contains(cursor));
         // A live tooltip (the lineage mesh's: its path starts with '@') belongs to the rectangle its shape registered as
         // a hit: with a panel drawn over it, the pointer is not on the shape and the tooltip does not show.
@@ -4801,7 +4913,7 @@ impl App {
             // the UI, so it never shows on a UI element.
             Some(rect) if !blocked => rect.tip.ui.then_some(Target::Control(rect.tip)),
             Some(_) => None,
-            None if !over_ui && !blocked && self.scene_options.pellets => self
+            None if !over_ui && !blocked && self.scene_options.pellets && self.scene_options.objects => self
                 .pellet_target_at(self.camera.screen_to_world(cursor))
                 .map(Target::Pellet),
             None => None,
@@ -4909,6 +5021,9 @@ impl App {
             }
             FieldRef::Zone(index, field) => {
                 let size = self.world.settings.independents.simulation_size;
+                if let Some(stream) = crate::zone_editor::stream_index(index) {
+                    return self.stream_typed_rules(stream, field);
+                }
                 if matches!(
                     crate::zone_editor::zone_ref(index),
                     crate::zone_editor::ZoneRef::Animator(_) | crate::zone_editor::ZoneRef::Creator
@@ -5090,6 +5205,10 @@ impl App {
             }
             FieldRef::Zone(index, field) => {
                 let size = self.world.settings.independents.simulation_size;
+                if let Some(stream) = crate::zone_editor::stream_index(index) {
+                    self.stream_set(stream, field, value);
+                    return;
+                }
                 if matches!(
                     crate::zone_editor::zone_ref(index),
                     crate::zone_editor::ZoneRef::Animator(_) | crate::zone_editor::ZoneRef::Creator
@@ -5152,6 +5271,12 @@ impl App {
         }
         let fraction = (cursor_x / scale - track.0) / span;
         let size = self.world.settings.independents.simulation_size;
+        if let Ok(reference) = u16::try_from(index)
+            && let Some(stream) = crate::zone_editor::stream_index(reference)
+        {
+            self.stream_slide(stream, field, fraction);
+            return;
+        }
         if let Ok(reference) = u16::try_from(index)
             && matches!(
                 crate::zone_editor::zone_ref(reference),
@@ -5601,6 +5726,15 @@ impl App {
             self.close_save_dialog();
             return;
         }
+        // The overwrite question over the scenario saver closes first, then the saver itself (its exit button).
+        if self.scenario_saver.is_some() {
+            if matches!(self.confirm_dialog, Some(ConfirmKind::OverwriteScenario(_))) {
+                self.confirm_dialog = None;
+            } else {
+                self.close_scenario_saver();
+            }
+            return;
+        }
         // Escape leaves the editor's text field first, then the editor closes (`UIPanel.Escape`).
         if let Some(session) = self.bibite_editor.as_mut()
             && session.view.focus.take().is_some()
@@ -5614,6 +5748,10 @@ impl App {
         // The Brain tab's own entries (the help, a field, the selection, a new connection, the add-node panel) are newer than the
         // editor's: the newest is undone first.
         if self.editor_brain_escape() {
+            return;
+        }
+        // RUSTibites Improved: Escape closes a time tag's name field without setting the tag, and a zone's colour pop-up without a colour.
+        if self.time_tag_cancel() || self.zone_color_cancel() {
             return;
         }
         // Escape closes a zone's name field without renaming it (`TextLineHandle.editField`).
@@ -5833,6 +5971,7 @@ impl App {
         contents.img_png = self.save_picture();
         let browser = bibites_io::storage::SaveBrowser::new(self.storage.clone());
         let stamp = autosave_timestamp();
+        self.time_tags_beside_autosave(&stamp);
         // Serialising and compressing a world with tens of thousands of pellets takes seconds: it happens on a thread of its
         // own, from a copy of the world's contents, so that the window does not freeze.
         let (sender, receiver) = std::sync::mpsc::channel();
@@ -5944,6 +6083,18 @@ impl App {
                 )),
                 ROBOTO,
             )),
+            // RUSTibites Improved: the gene selector's gene.
+            DropdownTarget::ToolGene => {
+                let id = self.selected_tool_id()?;
+                let Some(bibites_core::tools::Tool::Gene(selector)) = self.world.tools.get(id).copied() else {
+                    return None;
+                };
+                Some((
+                    bibites_core::genome::GENE_DEFS.iter().map(|def| Choice::plain(def.display_name)).collect(),
+                    usize::from(selector.gene),
+                    LIBERATION,
+                ))
+            }
             DropdownTarget::ToolZone => {
                 let id = self.selected_tool_id()?;
                 let tool = *self.world.tools.get(id)?;
@@ -6192,6 +6343,12 @@ impl App {
                     self.refresh_overlay(1.0);
                 }
             }
+            DropdownTarget::ToolGene => {
+                if let Some(id) = self.selected_tool_id() {
+                    crate::tower_panel::set_gene(&mut self.world, id, index);
+                    self.refresh_overlay(1.0);
+                }
+            }
             DropdownTarget::GraphsData => self.set_graphs_stream(index),
             // `BarGraph.UpdateSelectedData`.
             DropdownTarget::GraphsGene => {
@@ -6270,6 +6427,7 @@ impl App {
             }
             ConfirmKind::RestartChallenge => self.start_local_challenge(),
             ConfirmKind::OverwriteSave(name) => self.save_as_to(&name),
+            ConfirmKind::OverwriteScenario(name) => self.scenario_saver_write(&name),
             ConfirmKind::DeleteSave(path) => {
                 self.delete_save_path(&path);
             }
@@ -6298,6 +6456,7 @@ impl App {
             ConfirmKind::ClearZones => self.clear_zones(),
             ConfirmKind::DeleteAnimator(index) => self.delete_animator(index),
             ConfirmKind::ClearAnimators => self.clear_animators(),
+            ConfirmKind::ClearStreams => self.clear_streams(),
             ConfirmKind::RemoveHalfPellets => {
                 let removed = self.world.remove_random_half_pellets();
                 self.last_action = format!("removed {removed} pellets (half)");
@@ -6638,7 +6797,10 @@ impl App {
         contents.img_png = self.save_picture();
         if quick {
             match browser.quick_save(&contents) {
-                Ok(path) => self.last_action = format!("quick saved {}", path.display()),
+                Ok(path) => {
+                    self.last_action = format!("quick saved {}", path.display());
+                    self.time_tags_after_save(&path);
+                }
                 Err(error) => self.last_action = format!("save failed: {error}"),
             }
             self.refresh_save_entries();
@@ -6652,6 +6814,7 @@ impl App {
             Ok((path, rows)) => {
                 self.save_entries = rows;
                 self.last_action = format!("saved {}", path.display());
+                self.time_tags_after_save(&path);
             }
             Err(error) => self.last_action = format!("save failed: {error}"),
         }
@@ -6668,6 +6831,7 @@ impl App {
             Ok((path, rows)) => {
                 self.save_entries = rows;
                 self.last_action = format!("saved as {}", path.display());
+                self.time_tags_after_save(&path);
                 // `SaveGamePanel.Save` (also the overwrite dialog's OK): `SaveWorld`, then `ClosePanel` - back to what was under it.
                 self.panels.close(crate::ui::PanelKind::SaveGame);
             }
@@ -6851,6 +7015,7 @@ impl App {
             && self.dropdown_open.is_none()
             && self.confirm_dialog.is_none()
             && self.save_dialog.is_none()
+            && self.scenario_saver.is_none()
             && self.value_edit.is_none()
             && self.tag_edit.is_none()
             && self.zone_name_edit.is_none()
@@ -7595,6 +7760,7 @@ impl App {
     /// Puts a freshly built world in the place of the running one (what loading a scenario or a save does to the app).
     pub(crate) fn adopt_world(&mut self, loaded: LoadedWorld) {
         self.world = loaded.world;
+        self.time_tags_reset();
         self.undo.clear();
         self.undo_drag = None;
         self.tail_states = initial_tail_states(&self.world);
@@ -7668,6 +7834,7 @@ impl App {
             match LoadedWorld::load(Some(&path), 12_345, 1, self.world.threads()) {
                 Ok(loaded) => {
                     self.world = loaded.world;
+                    self.time_tags_reset();
                     self.undo.clear();
                     self.undo_drag = None;
                     self.tail_states = initial_tail_states(&self.world);
@@ -8987,6 +9154,7 @@ impl App {
                 self.placer_pause = None;
                 self.forget_zone_editor();
                 self.after_world_loaded();
+                self.time_tags_after_load(path);
                 self.refresh_overlay(1.0);
                 self.last_action = format!("loaded {}", path.display());
                 if let (Some(version), Some(bibites_io::version::SaveCompat::Updated)) = (version, compat) {
@@ -9228,6 +9396,8 @@ impl App {
                     self.placer_pause = None;
                     self.forget_zone_editor();
                     self.after_world_loaded();
+                    let quick = self.quick_save_path();
+                    self.time_tags_after_load(&quick);
                     self.refresh_overlay(1.0);
                     self.last_action = "loaded quick save".to_owned();
                 }
@@ -9398,6 +9568,34 @@ impl App {
                 self.world.place_color_killer_at(pos, None);
                 self.last_action = "placed colour killer".to_owned();
                 self.tool = crate::ui::ToolKind::Inspect;
+            }
+            // RUSTibites Improved: a gene selector goes down where the cursor is and is selected, which opens its panel (a new one kills nobody until its range is narrowed).
+            crate::ui::ToolKind::GeneSelector => {
+                let id = self.world.place_gene_selector_at(pos);
+                self.last_action = "placed gene selector".to_owned();
+                self.tool = crate::ui::ToolKind::Inspect;
+                self.select_placed_tool(id);
+            }
+            // RUSTibites Improved: a hydrothermal vent goes down where the cursor is and is selected, which opens its panel.
+            crate::ui::ToolKind::Vent => {
+                let id = self.world.place_vent_at(pos);
+                self.last_action = "placed hydrothermal vent".to_owned();
+                self.tool = crate::ui::ToolKind::Inspect;
+                self.select_placed_tool(id);
+            }
+            // RUSTibites Improved: a force tower goes down where the cursor is and is selected, which opens its panel.
+            crate::ui::ToolKind::Force => {
+                let id = self.world.place_force_tower_at(pos);
+                self.last_action = "placed force tower".to_owned();
+                self.tool = crate::ui::ToolKind::Inspect;
+                self.select_placed_tool(id);
+            }
+            // RUSTibites Improved: a whirlpool tower goes down where the cursor is and is selected, which opens its panel.
+            crate::ui::ToolKind::Whirl => {
+                let id = self.world.place_whirlpool_at(pos);
+                self.last_action = "placed whirlpool tower".to_owned();
+                self.tool = crate::ui::ToolKind::Inspect;
+                self.select_placed_tool(id);
             }
             crate::ui::ToolKind::Inspect => {}
         }
@@ -10545,12 +10743,14 @@ mod tests {
             None,
             &SceneOptions {
                 zones: false,
+                zone_colors: false,
                 pellets: false,
                 pheromones: false,
                 grid: false,
                 fov: false,
                 targets: false,
                 pheromone_strength: 0.1,
+                objects: true,
             },
             None,
             None,
@@ -10970,6 +11170,8 @@ mod sprite_renderer_tests {
                     Tool::Rad(_) => rad += 1,
                     Tool::Phero(_) => phero += 1,
                     Tool::Killer(_) => killer += 1,
+                    // RUSTibites Improved: the placer test of the game's three tools does not count the gene selector.
+                    Tool::Gene(_) | Tool::Vent(_) | Tool::Force(_) | Tool::Whirl(_) => {}
                 }
             }
             (rad, phero, killer)
@@ -16283,6 +16485,7 @@ mod simulation_thread_tests {
             toggle_pellets: _,
             toggle_pheromones: _,
             toggle_hud: _,
+            toggle_objects: _,
             quit: _,
             select_random_bibite: _,
             select_high_generation: _,
@@ -16372,6 +16575,11 @@ mod simulation_thread_tests {
                 toggle_pellets: true,
                 toggle_pheromones: true,
                 toggle_hud: true,
+                ..idle
+            },
+            // RUSTibites Improved: the Hide Objects hotkey only changes what is drawn (the simulation thread builds its scene with the option).
+            FrameInput {
+                toggle_objects: true,
                 ..idle
             },
             FrameInput { dt: FRAME, ..idle },
@@ -16756,6 +16964,43 @@ mod simulation_thread_tests {
             .expect("a request");
         assert!(!request.options.pellets);
         assert!(app.world_away());
+    }
+
+    #[test]
+    fn the_hide_objects_hotkey_needs_no_world_and_the_thread_then_draws_none_of_them() {
+        use crate::render::Primitive;
+        let mut app = threaded_app(9_231);
+        watch_until_away(&mut app);
+        let idle = FrameInput::default();
+        let objects_in_the_picture = |app: &App| {
+            app.snapshot.as_ref().is_some_and(|snapshot| {
+                snapshot
+                    .scene
+                    .primitives
+                    .iter()
+                    .any(|primitive| matches!(primitive, Primitive::Capsule { .. } | Primitive::Sprite { .. } | Primitive::Dots { count: 1.., .. }))
+            })
+        };
+        wait_until("a snapshot of the thread with the bibites in it", || {
+            step_frame(&mut app, &idle);
+            objects_in_the_picture(&app)
+        });
+        let seen = app.snapshot.as_ref().map_or(0, |snapshot| snapshot.seq);
+        step_frame(&mut app, &FrameInput { toggle_objects: true, ..idle });
+        assert!(app.world_away(), "the hotkey changes what is drawn and needs no world");
+        assert!(!app.objects_shown());
+        assert!(!app.sim.as_ref().and_then(|sim| sim.request()).expect("a request").options.objects, "the thread is asked to leave them out");
+        wait_until("a snapshot drawn without the objects", || {
+            step_frame(&mut app, &idle);
+            app.snapshot.as_ref().is_some_and(|snapshot| snapshot.seq > seen) && !objects_in_the_picture(&app)
+        });
+        assert!(app.world_away(), "all of it with the world away");
+        // And back.
+        step_frame(&mut app, &FrameInput { toggle_objects: true, ..idle });
+        wait_until("a snapshot with the objects again", || {
+            step_frame(&mut app, &idle);
+            objects_in_the_picture(&app)
+        });
     }
 
     #[test]

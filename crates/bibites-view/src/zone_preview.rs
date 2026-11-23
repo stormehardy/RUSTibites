@@ -31,6 +31,18 @@ const WHITE: Rgba = [255, 255, 255, 255];
 const BOLD_FONT: &str = "Roboto-Bold SDF NoOutline";
 /// Id of the panel's click-swallowing hit.
 const HIT_PANEL: u32 = 8900;
+/// Id of the click area of the preview's zones (RUSTibites Improved: it opens the zone's colour pop-up).
+const HIT_PICK: u32 = 8901;
+
+/// The colours the player gave the world's zones, in the order of the zones (none while the View panel's "Individual Zone Colors" is off): the preview shows
+/// them as the world does.
+#[must_use]
+pub(crate) fn zone_tints(app: &App) -> Vec<Option<[u8; 3]>> {
+    if !app.scene_options.zone_colors {
+        return Vec::new();
+    }
+    app.world.zones.zones().iter().map(|zone| zone.tint).collect()
+}
 
 /// Whether the panel is up: it belongs to the Zones tab of the dynamic panel.
 #[must_use]
@@ -142,12 +154,40 @@ pub fn emit(
         .assets
         .as_ref()
         .map_or([231, 154, 0], |assets| assets.background.zone_base);
+    let tints = zone_tints(app);
     crate::ui_runtime::emit_zone_preview(
         frame,
         &shapes,
         [base[0], base[1], base[2], 255],
+        &tints,
         BACKGROUND,
         s,
+    );
+    // RUSTibites Improved: a click on a zone of the preview opens the zone's colour pop-up. The zone under the pointer is found here (the pointer of the frame
+    // before, as the graphs' hover line has it, put back to the unmoved panel's place), and the click area carries it.
+    let dx = crate::ui_runtime::dyn_panel_offset(Vec2::new(width / s, height / s));
+    let pointer = [app.cursor.x / s - dx, app.cursor.y / s];
+    let under = crate::ui_runtime::zone_shape_at(&shapes, BACKGROUND, pointer);
+    if let Some(zone) = under {
+        frame.hit(
+            HIT_PICK,
+            at(BACKGROUND[0], BACKGROUND[1]),
+            at(BACKGROUND[2] - BACKGROUND[0], BACKGROUND[3] - BACKGROUND[1]),
+            UiAction::ZoneColorOpen(zone as u16),
+        );
+    }
+    // The line between the square and the estimation says what a click does.
+    let hint = match under.and_then(|zone| app.world.zones.zones().get(zone)) {
+        Some(zone) => format!("Click to colour {}", zone.config.name),
+        None => "Click a zone to colour it".to_owned(),
+    };
+    let hint_px = 15.0 * s;
+    let hint_w = measure(&hint, hint_px);
+    frame.bold(
+        hint,
+        Vec2::new(((BACKGROUND[0] + BACKGROUND[2]) * 0.5) * s - hint_w * 0.5, (SQUARE[3] + 3.0) * s),
+        hint_px,
+        [200, 200, 200, 255],
     );
     // Each zone's name, biomass and pellet count over its middle (`ZonePreview`'s labels).
     let size = app.world.settings.independents.simulation_size;
@@ -171,6 +211,8 @@ pub fn emit(
             BACKGROUND[3] - BACKGROUND[1],
         ],
         s,
+        // (RUSTibites Improved: the Species Distribution window's check boxes are not this preview's: it shows both, as the game does.)
+        (true, true),
         &|text, px| measure(text, px),
     );
     // The estimation lines.
@@ -269,6 +311,121 @@ mod tests {
         assert_eq!(wide_scale, 1.0);
         assert!((wide_pos.x - (PANEL[0] + 640.0)).abs() < 0.01, "{wide_pos:?}");
         assert!((wide_pos.y - pos.y).abs() < 0.01 && wide_size == size && wide_drawn == drawn);
+    }
+
+    use crate::scenario_editor::{PreviewKind, PreviewShape};
+
+    fn shape(centre: [f32; 2], size: f32, kind: PreviewKind) -> PreviewShape {
+        PreviewShape { centre, size: [size, size], kind, opacity: 1.0, palette: 1.0 }
+    }
+
+    #[test]
+    fn the_zone_under_a_point_of_the_square_is_the_topmost_one_whose_shape_covers_it() {
+        let square = BACKGROUND;
+        let (w, mid) = (square[2] - square[0], [(square[0] + square[2]) / 2.0, (square[1] + square[3]) / 2.0]);
+        // A disc 0.4 of the square wide at the middle, a ring over it half as wide whose hole is 0.5, a rect to the right.
+        let shapes = [
+            shape([0.0, 0.0], 0.4, PreviewKind::Disc),
+            shape([0.0, 0.0], 0.2, PreviewKind::Ring { inside: 0.5 }),
+            shape([0.6, 0.0], 0.1, PreviewKind::Rect),
+            shape([-0.6, 0.0], 0.01, PreviewKind::Disc),
+        ];
+        let at = |dx: f32, dy: f32| crate::ui_runtime::zone_shape_at(&shapes, square, [mid[0] + dx, mid[1] + dy]);
+        assert_eq!(at(0.0, 0.0), Some(0), "the ring's hole shows the disc under it");
+        assert_eq!(at(0.075 * w, 0.0), Some(1), "the ring is over the disc where it is");
+        assert_eq!(at(0.15 * w, 0.0), Some(0), "outside the ring, inside the disc");
+        assert_eq!(at(0.225 * w, 0.0), None, "outside every shape");
+        // The disc is round: its bounding box's corner is not on it.
+        assert_eq!(at(0.19 * w, 0.19 * w), None);
+        // The rect is at 0.6 of half the square's width to the right of the middle.
+        assert_eq!(at(0.3 * w, 0.0), Some(2));
+        assert_eq!(at(0.3 * w + 0.06 * w, 0.0), None);
+        // A zone that is only a dot is hit from a few pixels off (nearest middle within 9 px), not from further.
+        assert_eq!(at(-0.3 * w + 6.0, 0.0), Some(3));
+        assert_eq!(at(-0.3 * w + 12.0, 0.0), None);
+        // Outside the square nothing is picked, however big a shape is.
+        assert_eq!(crate::ui_runtime::zone_shape_at(&shapes, square, [square[0] - 1.0, mid[1]]), None);
+        assert_eq!(crate::ui_runtime::zone_shape_at(&[], square, mid), None);
+    }
+
+    #[test]
+    fn a_zone_the_player_coloured_is_drawn_in_its_colour_in_the_preview_and_the_others_in_the_base_colour() {
+        let shapes = [shape([-0.5, 0.0], 0.2, PreviewKind::Rect), shape([0.5, 0.0], 0.2, PreviewKind::Rect)];
+        let colours = |tints: &[Option<[u8; 3]>]| -> Vec<[u8; 3]> {
+            let mut frame = UiFrame::new(1.0);
+            crate::ui_runtime::emit_zone_preview(&mut frame, &shapes, [200, 100, 0, 255], tints, BACKGROUND, 1.0);
+            frame
+                .draws
+                .iter()
+                .filter_map(|draw| match draw {
+                    UiDraw::Pixels { texture, .. } => Some([texture.rgba[0], texture.rgba[1], texture.rgba[2]]),
+                    _ => None,
+                })
+                .collect()
+        };
+        assert_eq!(colours(&[]), [[200, 100, 0], [200, 100, 0]]);
+        assert_eq!(colours(&[None, Some([10, 20, 30])]), [[200, 100, 0], [10, 20, 30]]);
+        assert_eq!(colours(&[Some([1, 2, 3])]), [[1, 2, 3], [200, 100, 0]], "a list shorter than the zones leaves the rest");
+    }
+
+    #[test]
+    fn a_click_on_a_zone_of_the_preview_opens_its_colour_popup_and_the_line_under_the_square_says_so() {
+        let loaded = crate::app::LoadedWorld::load(None, 3, 2, 1).expect("world");
+        let mut app = App::new(loaded, Vec2::new(1920.0, 1080.0), None);
+        let root = std::env::temp_dir().join(format!("rustibites_zone_preview_pick_{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&root);
+        std::fs::create_dir_all(&root).unwrap();
+        app.storage = bibites_io::storage::StoragePaths::new(&root);
+        app.user_settings_path = Some(root.join("settings.json"));
+        app.apply_ui_actions(&[UiAction::Invoke(crate::ui::ControlCommand::ToggleZonePreview)]);
+        app.panels.open(crate::ui::PanelKind::WorldDynamics);
+        app.dyn_panel.tab = 1;
+        assert!(is_open(&app));
+        let assets = UiAssets::empty();
+        let frame_of = |app: &App| {
+            let mut frame = UiFrame::new(1.0);
+            emit(&mut frame, app, &assets, None, 1920.0, 1080.0);
+            frame
+        };
+        let texts = |frame: &UiFrame| -> Vec<String> {
+            frame
+                .draws
+                .iter()
+                .filter_map(|draw| match draw {
+                    UiDraw::Text { text, .. } => Some(text.trim().to_owned()),
+                    _ => None,
+                })
+                .collect()
+        };
+        // The pointer off every zone (a corner of the square outside them): the panel only swallows the click; the line tells what to do.
+        let scenario = bibites_core::world::ScenarioData {
+            zones: app.world.zones.zones().iter().map(|zone| zone.config.0.clone()).collect(),
+            ..bibites_core::world::ScenarioData::default()
+        };
+        let shapes = crate::scenario_editor::preview_shapes(&app.world.settings, &scenario);
+        assert!(!shapes.is_empty());
+        let corner = Vec2::new(BACKGROUND[0] + 1.0, BACKGROUND[1] + 1.0);
+        app.cursor = corner;
+        let frame = frame_of(&app);
+        let free = crate::ui_runtime::zone_shape_at(&shapes, BACKGROUND, [corner.x, corner.y]).is_none();
+        if free {
+            assert_eq!(frame.action_at(corner), Some(UiAction::Consume));
+            assert!(texts(&frame).contains(&"Click a zone to colour it".to_owned()), "{:?}", texts(&frame));
+        }
+        // The pointer on the middle of the last zone (the topmost): the click area names it, and a click opens the pop-up at the pointer.
+        let last = shapes.len() - 1;
+        let (mid_x, mid_y) = ((BACKGROUND[0] + BACKGROUND[2]) / 2.0, (BACKGROUND[1] + BACKGROUND[3]) / 2.0);
+        let (w, h) = (BACKGROUND[2] - BACKGROUND[0], BACKGROUND[3] - BACKGROUND[1]);
+        let centre = Vec2::new(mid_x + shapes[last].centre[0] * w * 0.5, mid_y + shapes[last].centre[1] * h * 0.5);
+        app.cursor = centre;
+        let frame = frame_of(&app);
+        assert_eq!(frame.action_at(centre), Some(UiAction::ZoneColorOpen(last as u16)));
+        let name = app.world.zones.zones()[last].config.name.clone();
+        assert!(texts(&frame).contains(&format!("Click to colour {name}")), "{:?}", texts(&frame));
+        app.apply_ui_actions(&[UiAction::ZoneColorOpen(last as u16)]);
+        let popup = app.zone_color_popup.clone().expect("the pop-up opened");
+        assert_eq!((popup.zone, popup.at), (last, centre));
+        let _ = std::fs::remove_dir_all(root);
     }
 
     #[test]

@@ -126,6 +126,13 @@ pub const DEFS: &[Def] = &[
         kind: Kind::Color,
         default: Value::Color([11, 128, 0, 255]),
     },
+    // RUSTibites Improved: the colours the player gave the zones show (`zone_colors.rs`); a view switch of the toolbar's View panel, kept here with the others.
+    Def {
+        label: "Individually Coloured Zones",
+        key: "ImprovedZoneColors",
+        kind: Kind::Bool,
+        default: Value::Bool(true),
+    },
     Def {
         label: "Background Color",
         key: "Background",
@@ -375,6 +382,89 @@ pub const DEFS: &[Def] = &[
         key: "IncludeAutoSavesInLoadPanel",
         kind: Kind::Bool,
         default: Value::Bool(false),
+    },
+    // RUSTibites Improved: the jukebox (`jukebox.rs`); the Music page of the Settings screens shows these three rows.
+    Def {
+        label: "Play Music",
+        key: "ImprovedMusicOn",
+        kind: Kind::Bool,
+        default: Value::Bool(true),
+    },
+    Def {
+        label: "Shuffle Music",
+        key: "ImprovedMusicShuffle",
+        kind: Kind::Bool,
+        default: Value::Bool(true),
+    },
+    Def {
+        label: "Music Volume",
+        key: "ImprovedMusicVolume",
+        kind: Kind::Percent(0.0, 1.0),
+        default: Value::Number(0.5),
+    },
+    // RUSTibites Improved: where new species' names come from (`name_list.rs`); the Species Names page of the Settings screens shows this row.
+    Def {
+        label: "Species Names",
+        key: "ImprovedSpeciesNames",
+        kind: Kind::Choice(&["Game's List", "My List", "Both Lists"]),
+        default: Value::Choice(1),
+    },
+    // RUSTibites Improved: whether the gene selector towers act (`Feature::GeneSelectorTower`); on from the start because with no tower in the world nothing changes.
+    Def {
+        label: "Gene Selector Towers",
+        key: "ImprovedGeneTowers",
+        kind: Kind::Bool,
+        default: Value::Bool(true),
+    },
+    // RUSTibites Improved: whether the hydrothermal vents act (`Feature::HydrothermalVent`); on from the start for the same reason.
+    Def {
+        label: "Hydrothermal Vents",
+        key: "ImprovedVents",
+        kind: Kind::Bool,
+        default: Value::Bool(true),
+    },
+    // RUSTibites Improved: whether the force towers act (`Feature::ForceTower`); on from the start for the same reason.
+    Def {
+        label: "Force Towers",
+        key: "ImprovedForce",
+        kind: Kind::Bool,
+        default: Value::Bool(true),
+    },
+    // RUSTibites Improved: whether the whirlpool towers act (`Feature::Whirlpool`); on from the start for the same reason.
+    Def {
+        label: "Whirlpool Towers",
+        key: "ImprovedWhirlpool",
+        kind: Kind::Bool,
+        default: Value::Bool(true),
+    },
+    // RUSTibites Improved: whether the streams of the Zones tab push (`Feature::Streams`); on from the start for the same reason (with no stream in the world nothing changes).
+    Def {
+        label: "Streams",
+        key: "ImprovedStreams",
+        kind: Kind::Bool,
+        default: Value::Bool(true),
+    },
+    // RUSTibites Improved: what the Species Distribution window (the Position tab) writes over each zone of its map: the zone's name, and its biomass with the pellet count.
+    // Both are on from the start (the game shows them); the check boxes are on the window, not on the Settings screens.
+    Def {
+        label: "Species Map Zone Names",
+        key: "ImprovedMapZoneNames",
+        kind: Kind::Bool,
+        default: Value::Bool(true),
+    },
+    Def {
+        label: "Species Map Zone Biomass",
+        key: "ImprovedMapZoneBiomass",
+        kind: Kind::Bool,
+        default: Value::Bool(true),
+    },
+    // Whether the simulation uses the stored calibration of the machine (`machine_calibration.rs`); the Calibration page of the Settings screens shows this row.
+    // On from the start: with no calibration run nothing changes, and a calibration only changes how fast the simulation runs, never what it computes.
+    Def {
+        label: "Use Calibration",
+        key: "UseCalibration",
+        kind: Kind::Bool,
+        default: Value::Bool(true),
     },
     // The Lineage panel's options (`LineagePanelSettingsManager`).
     Def {

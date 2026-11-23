@@ -1,0 +1,117 @@
+RUSTibites IMPROVED  -  read this first
+==========================================
+
+This is the "Improved" edition of the RUSTibites alpha: the same Rust re-implementation of The Bibites as the plain alpha (README.txt explains how to start it,
+what to compare with the original game and how to report a bug), plus a few extras of its own. The window says "RUSTibites Improved". The simulation is the
+same as the plain edition's, and saves stay in the original game's format: the original game opens what this writes. None of the extras below is stored
+inside a save.
+
+You need Windows 10/11 and your own copy of The Bibites, as for the plain alpha. Start it with Play.bat.
+
+WHAT IS NEW
+
+  Music (your own jukebox)
+    Put music files (mp3 is what it is made for; wav, wma, m4a, aac and flac play too) in the folder  userdata\Music  (next to Play.bat; the game makes it
+    when it starts). They play one after the other while the game runs, in the title menu and in a world. A file you add while the game runs joins in
+    a few seconds later.
+    Settings (title menu: Settings, or the cog in a world) > "Music Settings": Play Music, Shuffle Music, Music Volume (50 % from the start), what is
+    playing, a button that opens the folder, Previous and Next.
+    The music goes through Windows' own media player, so it works on Windows only.
+
+  Species names (your own list of names)
+    The game names a species with two words ("Genus epithet") drawn from its built-in list. Here you can give your own words: the file
+    userdata\species_names.txt  (the game makes it with notes in it). Put words in it, one or several to a line; save it, and species named from then on use
+    them (the game looks at the file again every second; species that already have a name keep it).
+    Settings > "Species Names": choose the game's list, your list (from the start; while the file has no words the game's list is used) or both, open the
+    file, reload it, and see two sample names. A short list runs out of fresh names quickly, so give it plenty.
+
+  Colours for zones
+    Each zone can have a colour of its own. In a world: open the world's parameters panel (the pen button in the row of buttons at the top right), go to the Zones tab, switch the Preview on and
+    click a zone in the preview: a colour wheel with a brightness bar and a box to type a hex colour (RRGGBB) opens; the zone changes as you choose. Done or a
+    click outside keeps the colour, Escape puts the old one back, "Fertility Color" takes it away and "All different" gives every zone its own. The View panel
+    (the magnifier at the bottom left) has a check box "Individual Zone Colors" to show or hide them.
+
+  Gene selector tower
+    Like the colour killer, but for a gene. In a world: click the placer button (bottom left), then the second button from the top of its panel (the DNA icon),
+    then click the world to put the tower down; click the tower to set its gene, the range of values (two sliders in the gene's own units), whether it kills what is
+    outside the range (so only the range survives, as the colour killer does) or inside it, how many a cycle kills, its radius and period, and, as the colour
+    killer, a zone to follow (the tower goes where the zone goes). A new tower has the gene's whole range, so it kills nobody until you narrow the range.
+    The switch is Settings > "Towers & Streams" (on from the start). The towers are kept beside the save (userdata\gene_towers), never inside it: the original game does
+    not know such a tower.
+
+  Hydrothermal vent tower
+    A plant pellet spawner. In a world: the placer button (bottom left), then the top button of its panel (the plant pellet icon), then click the world to put
+    the vent down; click the vent to set how fast it shoots its pellets (in random directions), how far they slide (its Range), the size of a pellet, how many a second, a cap on the energy of
+    the pellets it has alive and whether, at the cap, it recycles its oldest pellets (and goes on shooting) or stops until some are eaten, as a zone does over its
+    biomass cap. It can follow a zone too. The game's own drag stops a pellet within a few tens of units, so the vent lowers the drag of ITS flying pellets to reach its
+    Range (200 from the start, up to 3000); other pellets are untouched. The switch
+    is Settings > "Towers & Streams" (on from the start). The vents are kept beside the save (userdata\vent_towers), never inside it. The pellets they shot are ordinary
+    pellets and are in the save, but the save does not remember which vent shot them: after a load a vent counts and recycles only what it shoots from then on.
+
+  Species Distribution window: zone names and biomass off
+    The Position tab of a species' panel (the map of the zones with the ellipse where the species was) writes each zone's name, its biomass and its pellet count over
+    the zone. Two check boxes at the bottom of the map, "Zone names" and "Zone biomass" (the biomass one takes the pellet count with it), switch those lines off. Both
+    are on from the start, as in the original game; your choice is remembered. It only changes what you see.
+
+  Force tower
+    A tower that pulls the things near it towards itself, or pushes them away (a negative strength). In a world: the placer button (bottom left), then the top button of
+    its panel (a light blue round icon), then click the world to put the tower down; click the tower to set its range, its strength (positive pulls, negative pushes; 100 is
+    gentle and 500 strong: the world slows pellets down much more than bibites, so a pellet needs a stronger force to go as fast), whether the force is the same all the way to the edge
+    of the range or fades with the distance, which kinds of body it acts on (bibites, pellets, eggs) and, as the colour killer, a zone to follow. Good for heaps of pellets
+    that look like planets, or for keeping bibites in a zone. The switch is Settings > "Towers & Streams" (on from the start). The towers are kept beside the save
+    (userdata\force_towers), never inside it.
+
+  Whirlpool tower
+    A tower that turns the things around it in a circle, clockwise or counterclockwise, as fast as you set. In a world: the placer button (bottom left), then the top button of its
+    panel (a teal round icon), then click the world to put the tower down; click the tower to set its range, its speed, its direction (a button that says the way it turns; a click
+    turns it the other way), whether the speed is the same all the way to the edge of the range or fades with the distance, which kinds of body it acts on (bibites, pellets, eggs)
+    and, as the colour killer, a zone to follow. Bibites that go round are held on their circle, so they do not spiral out. A pellet is slow (it needs 3 to 5 times the speed to go as
+    fast as a bibite). The switch is Settings > "Towers & Streams" (on from the start). The towers are kept beside the save (userdata\whirlpool_towers), never inside it.
+
+  Streams
+    In a world, open the world's parameters panel and its Zones tab: under Zone Groups there is a new section, Streams. The + makes a stream: a band of the world with a start
+    and a finish (two points, x and y), a width and a strength. Everything in the band (bibites, eggs, pellets) is pushed from the start towards the finish. It is drawn as a
+    transparent blue band with a blue border and a small arrowhead at the finish. Each stream is a card with six sliders (Start X, Start Y, Width, End X, End Y, Strength); click a
+    value to type a number. Strength is an acceleration (100 is gentle, 500 strong; pellets need more than bibites to go as fast). The switch is Settings > "Towers & Streams"
+    (on from the start). The streams are kept beside the save (userdata\streams), never inside it.
+
+  Hide Objects (a hotkey)
+    Press V in a world to hide the bibites, eggs, pellets, towers and particles and keep the interface: every panel and graph, and the floor (background, grid,
+    zones). Press it again to show them. The world goes on running, hidden or not; it is only the drawing that stops, so it also makes a crowded world much
+    lighter to watch. A window always starts with the objects shown. You can still click where a bibite is: it is selected, though you cannot see it.
+    The key is yours: Settings > "Extra Hotkeys": click the key's button, then press the new key (Escape cancels). A key the game uses (WASD, R E G O Z K, H, 1-4,
+    F1-F5, F9, F12) is refused, with what it does there. "Reset" gives V back. The key is kept in  userdata\improved_keys.txt .
+
+  Time tags
+    Marks you put on the world's time. The Stats and Analysis panel (the graphs) and the Ancestral Lineage Graph have a "Tag time" button: type a name, then
+    "Tag now" (or Enter), or click a graph to tag a moment in the past. A tag shows in all those panels as a coloured line with its name; each panel can hide
+    them.
+
+THE MAIN SCREEN'S MOVING BACKGROUND (ffmpeg)
+
+  The title menu's moving background is the original game's own video, played through ffmpeg, a free video tool that is not part of this package.
+  Play.bat looks for ffmpeg at every start. When it is missing, Play.bat installs it by itself, ONCE, with winget (Windows' own package manager):
+      winget install Gyan.FFmpeg.Essentials
+  It is a small download, installed for you only (no administrator rights), and the screen says so while it happens; it takes about a minute. The first
+  start after that copies the video out of your own copy of The Bibites into  userdata\menu_video  (13 MB).
+  If the installation cannot be done (no winget, no internet) it says so and the game starts anyway, with a plain dark main screen; it tries again a day
+  later. To stop it from installing anything: start with  Play.bat -NoFfmpegInstall  , or make an empty file called  no_ffmpeg_install.txt  next to Play.bat.
+  To do it by hand instead: install ffmpeg yourself and put ffmpeg.exe on the PATH or in  C:\ffmpeg\bin  (or set the environment variable
+  RUSTIBITES_FFMPEG to the full path of ffmpeg.exe). The video is not played in screenshots or by Make-Bug-Report.
+
+WHERE THE EXTRAS' FILES ARE
+
+  Everything of the extras is in the userdata folder next to Play.bat: Music\ (your music), species_names.txt, improved_keys.txt (your hotkeys), the colours of your zones (zone_colors\) and
+  your time tags (time_tags\), gene towers (gene_towers\), vents (vent_towers\) and force towers (force_towers\) kept by the name of the save, and the settings. Worlds and saves go where the README says (userdata with Play.bat, the original
+  game's own folders with Play-with-my-game-saves.bat). The colours and the tags belong to a save by its name: copying a save to another computer does not take
+  them along unless you copy their files too.
+
+HONEST LIMITS
+
+  This edition has been tried on one computer only. The music page and the names page were checked by clicking through them in the real window; a species
+  named from your own list in a long run has been checked by tests, not by hours of play. Reports are welcome (Make-Bug-Report.bat, as in README.txt).
+  Zones can be coloured only from the Zones tab's preview, not from the zone cards; the scenario editor's own preview does not show the colours.
+
+LICENSE
+
+  As for the plain alpha (see README.txt). This package contains no game art and no game music.

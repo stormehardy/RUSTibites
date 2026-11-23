@@ -16,6 +16,7 @@ use crate::ui_runtime::Node;
 use crate::value_edit::{self, Rules, ValueEdit};
 
 mod animator_cards_ui;
+mod stream_cards_ui;
 mod zone_cards_ui;
 
 /// Reference size the capture was made at.
@@ -277,6 +278,24 @@ pub fn tab_groups(tab: u8) -> Vec<TabGroup> {
                 title: "",
                 rows: vec![Row::Items {
                     list: 1,
+                    template: "NoGroups",
+                    height: 99.0,
+                }],
+            },
+            // RUSTibites Improved: the Streams list, in the same two parts as the others (a header with `+` and "remove all", then the cards).
+            TabGroup {
+                title: "",
+                rows: vec![Row::Header {
+                    template: "Group Header",
+                    title: "Streams",
+                    add: UiAction::Invoke(crate::ui::ControlCommand::AddStream),
+                    clear: UiAction::Invoke(crate::ui::ControlCommand::RequestClearStreams),
+                }],
+            },
+            TabGroup {
+                title: "",
+                rows: vec![Row::Items {
+                    list: 4,
                     template: "NoGroups",
                     height: 99.0,
                 }],
@@ -791,6 +810,8 @@ pub struct ListsInput<'a> {
     pub creator: Option<&'a crate::animators::Creator>,
     /// Zone groups.
     pub groups: &'a [bibites_core::settings::ZoneGroupSettings],
+    /// RUSTibites Improved: the streams of the world (list 4; the scenario editor has none).
+    pub streams: &'a [bibites_core::stream::Stream],
     /// Items whose edit section is open: `(list, index)`.
     pub open: &'a [(u8, u16)],
     /// The order the cards are shown in (`DynState.order`).
@@ -882,6 +903,7 @@ pub fn state_key(input: &DynInput<'_>) -> u64 {
         if input.state.tab == 1 {
             format!("{:?}", lists.zones).hash(&mut hasher);
             format!("{:?}", lists.groups).hash(&mut hasher);
+            format!("{:?}", lists.streams).hash(&mut hasher);
             lists.sim_size.to_bits().hash(&mut hasher);
         }
     }
@@ -1137,6 +1159,7 @@ pub fn shallow(node: &Node) -> Node {
         texts: node.texts.clone(),
         canvas_scalers: node.canvas_scalers.clone(),
         layouts: node.layouts.clone(),
+        layout: node.layout.clone(),
         controls: node.controls.clone(),
         children: Vec::new(),
     }
@@ -1460,6 +1483,7 @@ fn layout_header(
         let empty = match title {
             "Zones" => lists.zones.is_empty(),
             "Zone Groups" => lists.groups.is_empty(),
+            "Streams" => lists.streams.is_empty(),
             // (The port keeps no settings animators.)
             "Settings Animator" => lists.changers.is_empty(),
             _ => lists.bibites.is_empty(),
@@ -1645,6 +1669,9 @@ fn layout_items(ctx: &mut Ctx<'_>, list: u8, template: &str, min_height: f32, y:
             return min_height;
         }
         return animator_cards_ui::layout_animators(ctx, &lists, min_height, y);
+    }
+    if list == 4 {
+        return stream_cards_ui::layout_streams(ctx, &lists, min_height, y);
     }
     let count = if list == 0 {
         lists.zones.len()
@@ -3338,7 +3365,8 @@ fn layout_material(ctx: &mut Ctx<'_>, kind: u8, y: f32) -> f32 {
             MaterialKind::Plant => ("Plant Material Parameters", "medium_plant"),
             MaterialKind::Meat => ("Meat Material Parameters", "medium_meat"),
             MaterialKind::Fat => ("Fat Material Parameters", "fat_pellet"),
-            MaterialKind::Armor => ("Armor Material Parameters", "medium_plant"),
+            // The armour material's picture is the grey pellet (`none_pellet`, the one `RequestPelletSpriteOfMaterial` gives a material that is neither plant nor meat).
+            MaterialKind::Armor => ("Armor Material Parameters", "none_pellet"),
         };
         if let Some(label) = find_mut(&mut node, &|n: &Node| n.name == "Title1") {
             set_text(label, title);

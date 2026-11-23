@@ -1,5 +1,5 @@
 # RUSTibites alpha launcher.
-param([switch]$GameSaves, [switch]$Windowed, [string]$GameDir = '', [string[]]$ViewerArgs = @())
+param([switch]$GameSaves, [switch]$Windowed, [string]$GameDir = '', [string[]]$ViewerArgs = @(), [switch]$NoFfmpegInstall)
 $ErrorActionPreference = 'Stop'
 Set-Location -LiteralPath $PSScriptRoot
 $stamp = Join-Path $PSScriptRoot 'assets\game\.art_extracted.json'
@@ -32,6 +32,13 @@ if (-not (Test-Path $stamp)) {
 }
 $game = (Get-Content $stamp -Raw | ConvertFrom-Json).game
 $env:RUSTIBITES_GAME_DIR = $game
+
+# 1b. RUSTibites Improved: ffmpeg for the title menu's moving background, installed once with winget when it is missing (ensure_ffmpeg.ps1 says so on the screen;
+# -NoFfmpegInstall skips it). The game starts whatever happens here.
+$ensureFfmpeg = Join-Path $PSScriptRoot 'ensure_ffmpeg.ps1'
+if (-not $NoFfmpegInstall -and (Test-Path $ensureFfmpeg)) {
+    try { & $ensureFfmpeg } catch { Write-Host "ffmpeg check skipped: $($_.Exception.Message)" }
+}
 
 # 2. Where the worlds go: a private folder by default.
 if (-not $GameSaves) {

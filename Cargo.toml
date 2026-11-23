@@ -5,6 +5,7 @@ members = [
     "crates/bibites-prefetch",
     "crates/bibites-brainsort",
     "crates/bibites-io",
+    "crates/bibites-audio",
     "crates/bibites-cli",
     "crates/bibites-view",
 ]
@@ -21,6 +22,7 @@ bibites-core = { path = "crates/bibites-core" }
 bibites-prefetch = { path = "crates/bibites-prefetch" }
 bibites-brainsort = { path = "crates/bibites-brainsort" }
 bibites-io = { path = "crates/bibites-io" }
+bibites-audio = { path = "crates/bibites-audio" }
 
 [profile.release]
 opt-level = 3

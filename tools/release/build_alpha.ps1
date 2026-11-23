@@ -38,6 +38,11 @@ try {
     foreach ($f in 'Play.bat', 'Play-with-my-game-saves.bat', 'Make-Bug-Report.bat', 'play.ps1', 'report.ps1', 'README.txt') {
         Copy-Item (Join-Path $PSScriptRoot "alpha\$f") $stage
     }
+    # The Improved edition's own files for testers (Faithful has none): the note on what is new and where its files are, and the check that ffmpeg is there.
+    foreach ($f in 'IMPROVED.txt', 'ensure_ffmpeg.ps1') {
+        $improved = Join-Path $PSScriptRoot "alpha\$f"
+        if (Test-Path $improved) { Copy-Item $improved $stage }
+    }
     foreach ($f in 'LICENSE-MIT', 'LICENSE-APACHE') { Copy-Item $f $stage }
     Copy-Item (Join-Path $PSScriptRoot 'art_map.json') $stage
     "$Name`r`ncommit $commit`r`nbuilt $date" | Set-Content (Join-Path $stage 'VERSION.txt')

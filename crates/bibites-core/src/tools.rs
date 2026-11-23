@@ -37,7 +37,7 @@
 //!   outputs in W4 once `BibiteStore` (B2) lands.
 
 use crate::arena::Handle;
-use crate::ids::{BibiteId, PheromoneId, ToolId, ZoneId};
+use crate::ids::{BibiteId, PelletId, PheromoneId, ToolId, ZoneId};
 use crate::math::{Vec2, clamp};
 use crate::pheromone::PheromoneStore;
 use crate::rng::Rng;
@@ -452,6 +452,14 @@ pub enum Tool {
     Phero(PheroTower),
     /// Colour killer.
     Killer(ColorKiller),
+    /// RUSTibites Improved: gene selector (never written into a save of the game's format).
+    Gene(crate::gene_selector::GeneSelector),
+    /// RUSTibites Improved: hydrothermal vent, a plant pellet spawner (never written into a save of the game's format).
+    Vent(crate::vent::HydrothermalVent),
+    /// RUSTibites Improved: force tower, pulls bodies towards itself or pushes them away (never written into a save of the game's format).
+    Force(crate::force_tower::ForceTower),
+    /// RUSTibites Improved: whirlpool tower, turns bodies round itself (never written into a save of the game's format).
+    Whirl(crate::whirlpool::WhirlpoolTower),
 }
 
 impl Tool {
@@ -462,6 +470,10 @@ impl Tool {
             Self::Rad(tower) => tower.base.save_id,
             Self::Phero(tower) => tower.base.save_id,
             Self::Killer(tower) => tower.base.save_id,
+            Self::Gene(tower) => tower.base.save_id,
+            Self::Vent(tower) => tower.base.save_id,
+            Self::Force(tower) => tower.base.save_id,
+            Self::Whirl(tower) => tower.base.save_id,
         }
     }
 
@@ -472,6 +484,10 @@ impl Tool {
             Self::Rad(tower) => &mut tower.base,
             Self::Phero(tower) => &mut tower.base,
             Self::Killer(tower) => &mut tower.base,
+            Self::Gene(tower) => &mut tower.base,
+            Self::Vent(tower) => &mut tower.base,
+            Self::Force(tower) => &mut tower.base,
+            Self::Whirl(tower) => &mut tower.base,
         }
     }
 
@@ -482,6 +498,10 @@ impl Tool {
             Self::Rad(tower) => &tower.base,
             Self::Phero(tower) => &tower.base,
             Self::Killer(tower) => &tower.base,
+            Self::Gene(tower) => &tower.base,
+            Self::Vent(tower) => &tower.base,
+            Self::Force(tower) => &tower.base,
+            Self::Whirl(tower) => &tower.base,
         }
     }
 }
@@ -516,6 +536,9 @@ pub struct ToolStore {
     kill_hit: Vec<bool>,
     phero_added: Vec<(PheromoneId, Vec2)>,
     phero_removed: Vec<PheromoneId>,
+    /// RUSTibites Improved: the pellets each hydrothermal vent has shot that are still in the world, oldest first, by the vent's serialized id (runtime only: a
+    /// saved world does not remember which vent shot which pellet).
+    vent_pellets: std::collections::BTreeMap<u64, std::collections::VecDeque<PelletId>>,
 }
 
 impl ToolStore {
@@ -536,6 +559,27 @@ impl ToolStore {
             kill_hit: Vec::new(),
             phero_added: Vec::new(),
             phero_removed: Vec::new(),
+            vent_pellets: std::collections::BTreeMap::new(),
+        }
+    }
+
+    /// The pellets the vent `save_id` shot that were alive when its list was last tidied, oldest first (none: it has shot none).
+    #[must_use]
+    pub fn vent_pellets(&self, save_id: u64) -> Option<&std::collections::VecDeque<PelletId>> {
+        self.vent_pellets.get(&save_id)
+    }
+
+    /// Takes the vent's pellet list out of the store (an empty one when it has none); [`Self::put_vent_pellets`] gives it back.
+    pub fn take_vent_pellets(&mut self, save_id: u64) -> std::collections::VecDeque<PelletId> {
+        self.vent_pellets.remove(&save_id).unwrap_or_default()
+    }
+
+    /// Puts the vent's pellet list back (an empty list is not kept).
+    pub fn put_vent_pellets(&mut self, save_id: u64, list: std::collections::VecDeque<PelletId>) {
+        if list.is_empty() {
+            self.vent_pellets.remove(&save_id);
+        } else {
+            self.vent_pellets.insert(save_id, list);
         }
     }
 
@@ -607,7 +651,10 @@ impl ToolStore {
     pub fn remove_tool(&mut self, id: ToolId) -> Option<Tool> {
         let index = id.handle().slot() as usize;
         if index < self.tools.len() {
-            Some(self.tools.remove(index))
+            let tool = self.tools.remove(index);
+            // A vent that is taken away forgets its pellets: they stay in the world as ordinary pellets.
+            self.vent_pellets.remove(&tool.save_id());
+            Some(tool)
         } else {
             None
         }
@@ -626,6 +673,26 @@ impl ToolStore {
     /// Adds a colour killer and returns its id.
     pub fn add_color_killer(&mut self, killer: ColorKiller) -> ToolId {
         self.push(Tool::Killer(killer))
+    }
+
+    /// RUSTibites Improved: adds a hydrothermal vent and returns its id.
+    pub fn add_vent(&mut self, vent: crate::vent::HydrothermalVent) -> ToolId {
+        self.push(Tool::Vent(vent))
+    }
+
+    /// RUSTibites Improved: adds a force tower and returns its id.
+    pub fn add_force_tower(&mut self, tower: crate::force_tower::ForceTower) -> ToolId {
+        self.push(Tool::Force(tower))
+    }
+
+    /// RUSTibites Improved: adds a whirlpool tower and returns its id.
+    pub fn add_whirlpool(&mut self, tower: crate::whirlpool::WhirlpoolTower) -> ToolId {
+        self.push(Tool::Whirl(tower))
+    }
+
+    /// RUSTibites Improved: adds a gene selector and returns its id.
+    pub fn add_gene_selector(&mut self, tower: crate::gene_selector::GeneSelector) -> ToolId {
+        self.push(Tool::Gene(tower))
     }
 
     /// Phase 3: snaps every attached tower to its zone (game

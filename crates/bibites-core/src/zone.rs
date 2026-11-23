@@ -527,6 +527,9 @@ pub struct ZoneData {
     /// (`ScenarioSettings.zones`). The store keeps the explicit zones first and then each group's zones one after the other
     /// (`ScenarioSettings.UpdateAllZonesList`), so a zone's list position is its zone id.
     pub group: Option<u32>,
+    /// RUSTibites Improved: the colour the player gave this zone (view only: it is not simulated, not saved in the game's format and not hashed; the
+    /// viewer keeps it beside the save, by the zone's name). `None`: the zone is drawn in the Fertility Color like all the others.
+    pub tint: Option<[u8; 3]>,
 }
 
 impl ZoneData {
@@ -576,6 +579,7 @@ impl ZoneData {
             rng,
             log: crate::zone_log::ZoneLog::new(),
             group: None,
+            tint: None,
         };
         zone.refresh(bounds, globals);
         zone
@@ -764,12 +768,53 @@ impl ZoneData {
     /// Recomputes `pellet_biomass` from the live owned pellets and prunes stale
     /// ids (`Zone.RecountBiomass`).
     pub fn recount(&mut self, pellets: &PelletStore) {
-        self.owned_pellets.retain(|id| pellets.contains(*id));
-        self.pellet_biomass = self
-            .owned_pellets
-            .iter()
-            .map(|id| pellets.energy(*id).unwrap_or(0.0))
-            .sum();
+        self.recount_with(pellets, crate::sim::ParallelExecutor::Serial, usize::MAX);
+    }
+
+    /// [`Self::recount`] with the look at every owned pellet on the worker pool when the zone owns at least `from` of them. The
+    /// workers only read the store (is the pellet still there, what is its energy); the list is pruned and the energies are added
+    /// up in list order on one thread, so the sum, which is of `f32`s and depends on the order, is the plain loop's.
+    pub fn recount_with(
+        &mut self,
+        pellets: &PelletStore,
+        executor: crate::sim::ParallelExecutor<'_>,
+        from: usize,
+    ) {
+        use rayon::prelude::*;
+        let workers = crate::sim::ParallelGates::workers_for(
+            self.owned_pellets.len(),
+            from,
+            executor.threads(),
+        );
+        if workers > 1 {
+            let min_len = crate::sim::ParallelGates::chunk_len(
+                self.owned_pellets.len(),
+                from,
+                workers,
+                4,
+            );
+            let energies: Vec<Option<f32>> = self
+                .owned_pellets
+                .par_iter()
+                .with_min_len(min_len)
+                .map(|id| {
+                    pellets
+                        .contains(*id)
+                        .then(|| pellets.energy(*id).unwrap_or(0.0))
+                })
+                .collect();
+            let mut live = energies.iter();
+            self.owned_pellets
+                .retain(|_| live.next().is_some_and(|energy| energy.is_some()));
+            self.pellet_biomass = energies.iter().flatten().copied().sum();
+        } else {
+            self.owned_pellets.retain(|id| pellets.contains(*id));
+            self.pellet_biomass = self
+                .owned_pellets
+                .iter()
+                .map(|id| pellets.energy(*id).unwrap_or(0.0))
+                .sum();
+        }
         self.time_since_recount = 0.0;
     }
 
@@ -972,6 +1017,11 @@ impl ZoneStore {
             })
             .collect();
         let removed: Vec<ZoneData> = self.zones.splice(start..end, fresh).collect();
+        // RUSTibites Improved: a zone that took the place of one with its name (a group's zones are made again when the group changes) keeps its colour.
+        let old_tints: Vec<(String, [u8; 3])> = removed.iter().filter_map(|zone| zone.tint.map(|tint| (zone.config.name.clone(), tint))).collect();
+        if !old_tints.is_empty() {
+            Self::restore_tints(&mut self.zones[start..start + added], &old_tints);
+        }
         for (index, zone) in self.zones.iter_mut().enumerate() {
             zone.config.set_runtime_zone_id(index as u32);
             zone.id = ZoneId::from_handle(Handle::new(index as u32, self.generation));
@@ -992,10 +1042,27 @@ impl ZoneStore {
         (removed, mapping)
     }
 
+    /// Gives the zones the colours of the same names in `tints` (zones that have none of those names are left as they are).
+    fn restore_tints(zones: &mut [ZoneData], tints: &[(String, [u8; 3])]) {
+        for zone in zones {
+            if let Some((_, tint)) = tints.iter().find(|(name, _)| *name == zone.config.name) {
+                zone.tint = Some(*tint);
+            }
+        }
+    }
+
+    /// The colours the player gave the zones, with the zones' names (what the viewer keeps beside a save).
+    #[must_use]
+    pub fn tints(&self) -> Vec<(String, [u8; 3])> {
+        self.zones.iter().filter_map(|zone| zone.tint.map(|tint| (zone.config.name.clone(), tint))).collect()
+    }
+
     /// Rebuilds the zone list from configs. Bumps the handle generation, so all
     /// previously returned [`ZoneId`]s become stale.
     pub fn rebuild(&mut self, configs: Vec<ZoneConfig>) {
         self.generation = self.generation.wrapping_add(1);
+        // RUSTibites Improved: the colours the player gave the zones follow their names into the rebuilt list.
+        let old_tints = self.tints();
         self.zones.clear();
         self.zones.reserve(configs.len());
         for (index, mut config) in configs.into_iter().enumerate() {
@@ -1016,6 +1083,9 @@ impl ZoneStore {
         for index in 0..self.zones.len() {
             let target = self.resolve_target(&self.zones[index].config, index);
             self.zones[index].target_index = target;
+        }
+        if !old_tints.is_empty() {
+            Self::restore_tints(&mut self.zones, &old_tints);
         }
     }
 
@@ -1213,6 +1283,28 @@ impl ZoneStore {
         hash: &mut SpatialHash,
         red_death_safe_radius: Option<f32>,
     ) -> ZoneUpdateReport {
+        self.update_phase_with(
+            dt,
+            pellets,
+            hash,
+            red_death_safe_radius,
+            crate::sim::ParallelExecutor::Serial,
+            usize::MAX,
+        )
+    }
+
+    /// [`Self::update_phase`] with the recounts on the worker pool for the zones that own at least `from` pellets
+    /// ([`ZoneData::recount_with`]). The production and the recycling stay on one thread, zone by zone: every spawn and every
+    /// removal changes the pellet store, and the order they are made in decides which slot, and so which id, each pellet gets.
+    pub fn update_phase_with(
+        &mut self,
+        dt: f32,
+        pellets: &mut PelletStore,
+        hash: &mut SpatialHash,
+        red_death_safe_radius: Option<f32>,
+        executor: crate::sim::ParallelExecutor<'_>,
+        from: usize,
+    ) -> ZoneUpdateReport {
         let mut report = ZoneUpdateReport::default();
         for index in 0..self.zones.len() {
             let spawn = self.zones[index].update_production(
@@ -1234,7 +1326,7 @@ impl ZoneStore {
             let zone = &mut self.zones[index];
             zone.time_since_recount += dt;
             if zone.time_since_recount >= RECOUNT_PERIOD {
-                zone.recount(pellets);
+                zone.recount_with(pellets, executor, from);
             }
         }
         report
@@ -1284,8 +1376,18 @@ impl ZoneStore {
 
     /// Recounts every zone's biomass from the pellet store (load/teleport path).
     pub fn recount_all(&mut self, pellets: &PelletStore) {
+        self.recount_all_with(pellets, crate::sim::ParallelExecutor::Serial, usize::MAX);
+    }
+
+    /// [`Self::recount_all`] with each zone's recount on the worker pool when it owns at least `from` pellets.
+    pub fn recount_all_with(
+        &mut self,
+        pellets: &PelletStore,
+        executor: crate::sim::ParallelExecutor<'_>,
+        from: usize,
+    ) {
         for zone in &mut self.zones {
-            zone.recount(pellets);
+            zone.recount_with(pellets, executor, from);
         }
     }
 
@@ -1889,6 +1991,34 @@ mod tests {
         (a - b).abs() <= 1e-3_f32.max(b.abs() * 1e-5)
     }
 
+    /// A zone named `name`.
+    fn named_zone(name: &str) -> ZoneConfig {
+        zone_with(ZoneConfig::default_zone(), |zone| zone.name = name.to_owned())
+    }
+
+    #[test]
+    fn the_colour_a_zone_was_given_stays_with_it_through_a_splice_a_rebuild_and_a_remake_of_its_name() {
+        let configs = vec![named_zone("A"), named_zone("B"), named_zone("C")];
+        let mut store = ZoneStore::from_configs(configs, bounds(2000.0), default_globals(), 42);
+        assert!(store.zones().iter().all(|zone| zone.tint.is_none()), "no zone has a colour of its own to begin with");
+        store.zones[1].tint = Some([10, 20, 30]);
+        store.zones[2].tint = Some([200, 100, 0]);
+        assert_eq!(store.tints(), [("B".to_owned(), [10, 20, 30]), ("C".to_owned(), [200, 100, 0])]);
+        // A zone taken out of the list: the ones after it keep their colours (the zone moved with its colour).
+        store.splice_zones(0..1, Vec::new(), None);
+        assert_eq!(store.tints(), [("B".to_owned(), [10, 20, 30]), ("C".to_owned(), [200, 100, 0])]);
+        assert_eq!(store.zones()[0].tint, Some([10, 20, 30]));
+        // Zones made again under the same names (a group's zones when it changes) are given back theirs; new names have none.
+        store.splice_zones(0..1, vec![named_zone("B"), named_zone("New")], None);
+        assert_eq!(store.zones()[0].tint, Some([10, 20, 30]));
+        assert_eq!(store.zones()[1].tint, None);
+        assert_eq!(store.zones()[2].tint, Some([200, 100, 0]));
+        // The whole list built again from configs: by name too.
+        let configs: Vec<ZoneConfig> = store.zones().iter().map(|zone| zone.config.clone()).collect();
+        store.rebuild(configs);
+        assert_eq!(store.tints(), [("B".to_owned(), [10, 20, 30]), ("C".to_owned(), [200, 100, 0])]);
+    }
+
     fn store_with(zone: ZoneConfig) -> (ZoneStore, PelletStore) {
         let store = ZoneStore::from_configs(vec![zone], bounds(2000.0), default_globals(), 42);
         (store, PelletStore::new())
@@ -1901,6 +2031,57 @@ mod tests {
             Vec2::splat(extent),
             (store.bounds.sim_size() / 128.0).max(32.0),
         )
+    }
+
+    /// A recount of the biomass on the worker pool is the plain recount: the pruned list and the sum (of `f32`s, so it depends on the
+    /// order they are added in) bit for bit, with pellets eaten away and chopped in between.
+    #[test]
+    fn recount_on_the_pool_is_the_serial_recount() {
+        let pool = crate::sim::ThreadPool::new(4);
+        let executor = crate::sim::ParallelExecutor::new(Some(&pool));
+        let build = || {
+            let config = zone_with(plant_zone(1.0), |zone| {
+                zone.fertility = 1.0;
+                zone.biomass_density = 4.0;
+            });
+            let mut store = ZoneStore::from_configs(
+                vec![config],
+                bounds(2000.0),
+                globals_with(default_globals(), |settings| {
+                    settings.independents.biomass_density = 0.01;
+                }),
+                42,
+            );
+            let mut pellets = PelletStore::new();
+            let mut hash = hash_for(&store);
+            store.initial_seeding(&mut pellets, &mut hash, None);
+            // Eat every fifth pellet away, nibble at every third.
+            let ids: Vec<_> = pellets.ids().collect();
+            for (index, id) in ids.iter().enumerate() {
+                if index % 5 == 0 {
+                    pellets.remove(*id);
+                } else if index % 3 == 0 {
+                    let amount = pellets.amount(*id).unwrap_or(0.0);
+                    pellets.set_amount(*id, amount * 0.37);
+                }
+            }
+            (store, pellets)
+        };
+        let (mut serial, pellets) = build();
+        let (mut pooled, _) = build();
+        assert!(
+            serial.zones[0].owned_pellets.len() > 200,
+            "only {} pellets were seeded",
+            serial.zones[0].owned_pellets.len()
+        );
+        serial.recount_all(&pellets);
+        pooled.recount_all_with(&pellets, executor, 1);
+        assert_eq!(serial.zones[0].owned_pellets, pooled.zones[0].owned_pellets);
+        assert_eq!(
+            serial.zones[0].pellet_biomass.to_bits(),
+            pooled.zones[0].pellet_biomass.to_bits()
+        );
+        assert!(serial.zones[0].pellet_biomass > 0.0);
     }
 
     #[test]
@@ -2063,6 +2244,50 @@ mod tests {
                 }
             }
         }
+    }
+
+    /// Where a world's pellets are spawned is spread evenly over a rectangle zone, whatever else the zone's stream is used for in between (the pellet's size draws from the
+    /// same stream): a chi-square over a 20 x 20 grid of the whole Default zone, and the two axes' correlation.
+    #[test]
+    fn a_rect_zone_spawns_evenly_over_its_rectangle() {
+        let sim_size = 6000.0;
+        let globals = default_globals();
+        // The "World" zone of the Default scenario: a rectangle of twice the world's size.
+        let config = zone_with(ZoneConfig::default_zone(), |zone| {
+            zone.distribution = SpawnDistribution::Rect;
+            zone.radius_is_relative = true;
+            zone.width_relative = 2.0;
+            zone.height_relative = 2.0;
+        });
+        let mut store = ZoneStore::from_configs(vec![config], bounds(sim_size), globals.clone(), 7);
+        let zone = &mut store.zones[0];
+        assert!(zone.is_rect, "the zone is a rectangle");
+        let (half_x, half_y) = (zone.half_extents.x, zone.half_extents.y);
+        assert!((half_x - sim_size).abs() < 1.0 && (half_y - sim_size).abs() < 1.0, "the default zone covers the whole world: {half_x} x {half_y}");
+        let (n, cells) = (400_000usize, 20usize);
+        let mut counts = vec![0u32; cells * cells];
+        let (mut sum_xy, mut sum_x, mut sum_y, mut sum_xx, mut sum_yy) = (0.0f64, 0.0f64, 0.0f64, 0.0f64, 0.0f64);
+        for _ in 0..n {
+            let pos = zone.spawn_location() - zone.pos;
+            let _ = zone.roll_pellet_energy(&globals);
+            let (u, v) = (f64::from(pos.x / half_x), f64::from(pos.y / half_y));
+            sum_x += u;
+            sum_y += v;
+            sum_xx += u * u;
+            sum_yy += v * v;
+            sum_xy += u * v;
+            let cell = |t: f64| (((t + 1.0) / 2.0 * cells as f64) as usize).min(cells - 1);
+            counts[cell(v) * cells + cell(u)] += 1;
+        }
+        let expected = n as f64 / (cells * cells) as f64;
+        let chi: f64 = counts.iter().map(|&c| (f64::from(c) - expected).powi(2) / expected).sum();
+        let dof = (cells * cells - 1) as f64;
+        assert!((chi - dof).abs() < 6.0 * (2.0 * dof).sqrt(), "chi-square {chi} for {dof} degrees of freedom: the spawns are not even");
+        let nf = n as f64;
+        let (mean_x, mean_y) = (sum_x / nf, sum_y / nf);
+        let corr = (sum_xy / nf - mean_x * mean_y) / ((sum_xx / nf - mean_x * mean_x) * (sum_yy / nf - mean_y * mean_y)).sqrt();
+        assert!(mean_x.abs() < 0.01 && mean_y.abs() < 0.01, "the mean is off the centre: {mean_x}, {mean_y}");
+        assert!(corr.abs() < 0.01, "the axes are correlated: {corr}");
     }
 
     #[test]

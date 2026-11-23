@@ -396,6 +396,8 @@ pub fn draw(
         UiAction::GenesTimeSlide(ends.0, ends.1),
     );
     label(frame, &time_text(value), 24.0, white, [1705.0, 998.4, 165.0, 28.1], 1.0);
+    // RUSTibites Improved: the time tags on the slider (the chips in the band between the plot's x labels and the slider).
+    crate::time_tags_ui::draw_genes_tags(frame, &crate::time_tags_ui::Surface { ui, metrics, s }, app, SLIDER, (min, max), 961.0);
 }
 
 #[cfg(test)]

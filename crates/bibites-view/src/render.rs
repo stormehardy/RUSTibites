@@ -366,6 +366,14 @@ pub enum Primitive {
         /// Fill colour.
         color: Rgba,
     },
+    /// RUSTibites Improved: a filled convex four-sided shape (a stream's band and its border's sides), alpha blended. The corners go round the shape; two of them may
+    /// be the same point (a triangle).
+    Quad {
+        /// World corners, in order round the shape.
+        corners: [Vec2; 4],
+        /// Fill colour.
+        color: Rgba,
+    },
     /// The experimental background's moving cells (`Shader Graphs/background` with `_ShowTexture` on, its own grid off): the game's pixel program over a
     /// world rectangle, from the background colour toward the texture colour.
     BackgroundCells {
@@ -444,6 +452,14 @@ pub enum Primitive {
         /// `_ShadeFadeDistance` (1000).
         fade: f32,
     },
+    /// The Red Death bloom (`RedDeathBloomManager`'s sprite with `Shader Graphs/algeaBloom`): purple and red cells that creep in from outside the shade, the game's
+    /// pixel program over the view. See [`red_bloom_ring`] for where it is.
+    RedBloom {
+        /// `_Fill`: `tRadius`, `1 - sqrt(1 - redDeathFill)`.
+        fill: f32,
+        /// `_ShadeEnd` (1.5 x the simulation size plus the fade distance, 1000): the ring the bloom grows in is made from it.
+        shade_end: f32,
+    },
     /// Filled capsule (oriented bibite body / pellet blob).
     Capsule {
         /// First segment endpoint (world).
@@ -498,6 +514,9 @@ pub enum Primitive {
 pub struct SceneOptions {
     /// Draw zone fills and outlines.
     pub zones: bool,
+    /// RUSTibites Improved: a zone the player gave a colour (`ZoneData::tint`) is drawn in it instead of the Fertility Color (the View panel's "Individual Zone
+    /// Colors": switched off, the colours are kept but not shown).
+    pub zone_colors: bool,
     /// Draw plant/meat pellets.
     pub pellets: bool,
     /// Draw pheromone spots.
@@ -511,12 +530,17 @@ pub struct SceneOptions {
     /// Label what the selected bibite's field of view sees with its weight (`UserSettings.ShowBibiteTargets`; only while the field of view is shown):
     /// the scene holds the labels' pointers, the HUD the labels.
     pub targets: bool,
+    /// RUSTibites Improved, the "Hide Objects" hotkey: switched off, the world's objects are not drawn (bibites, eggs, pellets, towers, the particles of pheromones and
+    /// blood, and what hangs on a bibite: its field of view, its selection ring, the pointers of "Show Targets"). The background, the grid and the zones stay, and so does
+    /// the tower being placed. The simulation does not notice.
+    pub objects: bool,
 }
 
 impl Default for SceneOptions {
     fn default() -> Self {
         Self {
             zones: true,
+            zone_colors: true,
             pellets: true,
             // Pheromone spots are chunky and only meaningful when watched
             // closely, so they start hidden; `O` toggles them on.
@@ -525,6 +549,7 @@ impl Default for SceneOptions {
             grid: true,
             fov: true,
             targets: false,
+            objects: true,
         }
     }
 }
@@ -538,6 +563,20 @@ pub enum GhostKind {
     Phero,
     /// A colour killer being placed.
     Killer,
+    /// RUSTibites Improved: a gene selector being placed.
+    Gene,
+    /// RUSTibites Improved: a hydrothermal vent being placed.
+    Vent,
+    /// RUSTibites Improved: a force tower being placed.
+    Force,
+    /// RUSTibites Improved: a whirlpool tower being placed.
+    Whirl,
+}
+
+/// The colour a gene selector tower shows for its gene: a hue per gene, spread round the colour wheel by the golden angle so neighbouring genes differ.
+#[must_use]
+pub fn gene_hue(gene: u8) -> f32 {
+    (f32::from(gene) * 0.381_966 + 0.08).rem_euclid(1.0)
 }
 
 /// What the player is doing with the placed towers and colour killers, for the display list.
@@ -667,6 +706,9 @@ pub fn build_scene(
     let (view_min, view_max) = camera.visible_world(0.0);
     let bounds_min = world.bounds.min();
     let bounds_max = world.bounds.max();
+    // RUSTibites Improved: "Hide Objects". The loops over the world's objects take this many of them (none: nothing is looked at, so a hidden crowd costs nothing).
+    let objects = options.objects;
+    let drawn_limit = if objects { usize::MAX } else { 0 };
 
     // 1. Background. In game-asset mode this reproduces the game's background
     // shader: the camera clear colour plus the user's fine/coarse grid (the
@@ -682,10 +724,9 @@ pub fn build_scene(
         if let Some(cell) = assets.background.texture {
             scene.push(Primitive::BackgroundCells { min: bounds_min, max: bounds_max, color: assets.background.color, cell });
         }
-        if world.settings.scenario.shade_outside_of_bounds {
-            // `BackgroundManager.shadeStart`: 1.5 x the simulation size; the fade is 1000.
-            scene.push(Primitive::MicroscopeShade { start: 1.5 * world.settings.independents.simulation_size, fade: 1000.0 });
-        }
+        // The grid is a part of the background sprite (sorting layer `BackGround`, order 0): the zones (order 1), the Red Death bloom (order 10) and the
+        // microscope shade (the `Default` layer, over everything in the world) are all drawn over it, so the shade and the bloom hide its lines (the grid
+        // fades out with the dark ring round the world; it used to be drawn over both).
         if options.grid {
             push_game_grid(scene, camera, world, view_min, view_max, &assets.background);
         }
@@ -729,7 +770,7 @@ pub fn build_scene(
                     SpawnDistribution::ExteriorGradual => -1.0,
                     _ => 1.0,
                 };
-                let base = assets.background.zone_base;
+                let base = zone.tint.filter(|_| options.zone_colors).unwrap_or(assets.background.zone_base);
                 if zone.is_rect {
                     // A rect has no circle mask and no gradient: the alpha is `opacity * (0.5 + 0.5 * coefficient)` all over.
                     let alpha = opacity * (0.5 + coefficient * 0.5);
@@ -825,11 +866,24 @@ pub fn build_scene(
         }
     }
 
+    // 3a. RUSTibites Improved: the streams of the Zones tab, a transparent blue band with a blue border, over the zones (and shown or hidden with them).
+    if options.zones && !world.streams.is_empty() {
+        push_streams(scene, camera, world, view_min, view_max);
+    }
+
+    // 3a'. The Red Death bloom (`RedDeathBloomManager`: its sprite is active while `enableRedDeath` is on, its `_Fill` is `tRadius`). Sorting layer `BackGround`,
+    // order 10: over the background with its grid (0), the zones (1) and the radio areas (2), under everything on the layers above - the towers, eggs, pellets
+    // and bibites - and under the shade, so at a fill of 0 it is behind the opaque part of the shade and creeps in through its fade.
+    if assets.is_some() && world.red_death().enabled {
+        let fill = world.red_death().fill.clamp(0.0, 1.0);
+        scene.push(Primitive::RedBloom { fill: 1.0 - (1.0 - fill).sqrt(), shade_end: 1.5 * world.settings.independents.simulation_size + 1000.0 });
+    }
+
     // 3b. The selected bibite's field of view (`FieldOfViewDisplay`, shown when `ShowBibiteFOW` is on - the default - and the
     // bibite is alive). Its renderer is on sorting layer -2, order 100 (the prefab dump): above the zones (-2, order 1) and below
     // everything on the layers above it - towers and eggs (-1), pellets and bibites (0) - so the cone never tints a sprite.
     // The game draws a shader cone; it is approximated by its translucent fill and its border (two rays and an arc).
-    if options.fov {
+    if options.fov && objects {
         if let Some(record) = selected.and_then(|id| world.bibites.get(id)) {
             if !record.body.dead {
                 push_view_cone(scene, camera, record);
@@ -838,8 +892,9 @@ pub fn build_scene(
     }
 
     // 4. Pheromones: the particles the spots emit (`PheromoneSpot`, `ParticlesMaster`), under pellets and bodies.
-    crate::phero_particles::advance(world, options.pheromones, options.pheromone_strength);
-    if options.pheromones {
+    // (Hidden objects: no spot emits, and what is in the air finishes its life unseen.)
+    crate::phero_particles::advance(world, options.pheromones && objects, options.pheromone_strength);
+    if options.pheromones && objects {
         let dots_at = scene.open_dots();
         for particle in crate::phero_particles::drawn(view_min, view_max) {
             // A diamond under a pixel and a half across is a pixel (its area is that of a square with 0.707 of the half diagonal).
@@ -858,10 +913,10 @@ pub fn build_scene(
 
     // 4b. Towers and colour killers: sorting layer `Recessed`, above the background and the zones
     // and below everything on `Default` (pellets, eggs, bibites).
-    push_tools(scene, world, assets, view_min, view_max, camera);
+    push_tools(scene, world, assets, view_min, view_max, camera, objects);
 
     // 5. Pellets (plants green, meat red).
-    if options.pellets {
+    if options.pellets && objects {
         let first_pellet = scene.primitives.len();
         // Pellets too small to be anything but a pixel are dots (a run at the head of the layer: under the sprites, which are grouped by atlas below).
         let dots_at = scene.open_dots();
@@ -907,7 +962,7 @@ pub fn build_scene(
     }
 
     // 6. Eggs (shell + hatch-progress core).
-    for id in world.eggs.ids() {
+    for id in world.eggs.ids().take(drawn_limit) {
         let Some(egg) = world.eggs.get(id) else {
             continue;
         };
@@ -957,7 +1012,7 @@ pub fn build_scene(
     //    population stays cheap when zoomed out.
     // (The bibites that are only a few pixels long are dots, one run at the head of the layer; the selected one is always drawn in full.)
     let dots_at = scene.open_dots();
-    for (id, record) in world.bibites.iter() {
+    for (id, record) in world.bibites.iter().take(drawn_limit) {
         push_bibite(
             scene,
             camera,
@@ -973,9 +1028,10 @@ pub fn build_scene(
     scene.close_dots(dots_at);
 
     // 7b. The blood of the bodies that burst into meat (`ParticlesMaster.BloodSplatterAtPosition`), sorting order 10: over the bodies.
+    // (Always advanced, hidden or not: it keeps its place in the log of bursts, so showing the objects again does not play the old ones back.)
     crate::blood_particles::advance(world);
     let dots_at = scene.open_dots();
-    for pixel in crate::blood_particles::drawn(view_min, view_max) {
+    for pixel in crate::blood_particles::drawn(view_min, view_max).into_iter().take(drawn_limit) {
         if (pixel.max.x - pixel.min.x) * camera.zoom < PARTICLE_DOT_PIXELS {
             scene.dots.push(Dot { center: (pixel.min + pixel.max) * 0.5, half: (pixel.max.x - pixel.min.x) * 0.5, color: pixel.color });
             continue;
@@ -988,9 +1044,16 @@ pub fn build_scene(
     }
     scene.close_dots(dots_at);
 
+    // 7c. The microscope shade (`BackgroundManager.microscopeShade`, sorting layer `Default`, order 100): over the pellets, the bibites and their blood (orders
+    // 0 to 10 of that layer) and over everything under it (the towers and eggs, the zones, the bloom, the grid), not under them as it was drawn.
+    if assets.is_some() && world.settings.scenario.shade_outside_of_bounds {
+        // `BackgroundManager.shadeStart`: 1.5 x the simulation size; the fade is 1000.
+        scene.push(Primitive::MicroscopeShade { start: 1.5 * world.settings.independents.simulation_size, fade: 1000.0 });
+    }
+
     // 8. A selected corpse gets a ring on top (the game has no selection ring for a living bibite; its field of view is drawn
     // under the sprites, see 3b).
-    if let Some(id) = selected {
+    if let Some(id) = selected.filter(|_| objects) {
         if let Some(record) = world.bibites.get(id) {
             if record.body.dead {
                 let radius = body_radius(record).max(6.0 / camera.zoom);
@@ -1006,7 +1069,7 @@ pub fn build_scene(
 
     // 9. "Show Targets": the pointers of the labels of what the selected bibite sees (`WeightDisplay.pointer`), over everything in the world; the labels
     // themselves are drawn by the HUD (`target_weights`).
-    if options.fov && options.targets {
+    if options.fov && options.targets && objects {
         if let Some(targets) = selected.and_then(|id| world.fov_targets(id)) {
             for label in crate::target_weights::labels(&targets) {
                 scene.push(label.pointer());
@@ -1030,6 +1093,14 @@ const RAD_ICON_TINT: Rgba = [127, 148, 0, 255];
 /// The radiation and pheromone towers' base opacity until they are placed in the game (0.7725 of the prefab).
 const LOADED_TOWER_ALPHA: u8 = 197;
 
+/// RUSTibites Improved: the colour of a force tower and of the area the selected one shows: blue for a pull, orange for a push.
+fn force_colour(pull: bool) -> [u8; 3] {
+    if pull { [64, 150, 232] } else { [238, 112, 64] }
+}
+
+/// RUSTibites Improved: the teal of a whirlpool tower's ring and of the area the selected one shows.
+const WHIRL_COLOUR: [u8; 3] = [60, 198, 188];
+
 /// The tower kinds `push_tool_body` draws.
 #[derive(Clone, Copy)]
 enum ToolShape {
@@ -1037,6 +1108,14 @@ enum ToolShape {
     Rad { radius: f32 },
     Phero { heading: f32 },
     Killer { hue: f32 },
+    /// RUSTibites Improved: a gene selector, in the colour of its gene.
+    Gene { hue: f32 },
+    /// RUSTibites Improved: a hydrothermal vent.
+    Vent,
+    /// RUSTibites Improved: a force tower (a pull is blue, a push orange).
+    Force { pull: bool },
+    /// RUSTibites Improved: a whirlpool tower (a teal ring with two arrowheads that show which way it turns).
+    Whirl { clockwise: bool },
 }
 
 /// Draws the placed towers and colour killers, the placement ghost and the radius of the selected
@@ -1048,12 +1127,43 @@ fn push_tools(
     view_min: Vec2,
     view_max: Vec2,
     camera: &Camera,
+    objects: bool,
 ) {
     let view = scene.tool_view;
     let sim_size = world.bounds.sim_size();
-    // The selected colour killer shows the area it scans, in its colour at 30 % opacity.
+    // RUSTibites Improved: a gene selector that is switched off is drawn faint, and the selected one shows the area it scans.
+    let genes_active = world.improved.is_on(bibites_core::improved::Feature::GeneSelectorTower);
+    let vents_active = world.improved.is_on(bibites_core::improved::Feature::HydrothermalVent);
+    let forces_active = world.improved.is_on(bibites_core::improved::Feature::ForceTower);
+    let whirls_active = world.improved.is_on(bibites_core::improved::Feature::Whirlpool);
     if let Some(selected) = view.selected {
         for tool in world.tools.tools() {
+            if let Tool::Gene(selector) = tool
+                && selector.base.save_id == selected
+                && circle_visible(selector.base.pos, selector.radius, view_min, view_max)
+            {
+                let rgb = hue_to_rgb(gene_hue(selector.gene));
+                scene.push(Primitive::Circle {
+                    center: selector.base.pos,
+                    radius: selector.radius,
+                    color: [(rgb[0] * 255.0).round() as u8, (rgb[1] * 255.0).round() as u8, (rgb[2] * 255.0).round() as u8, 60],
+                });
+            }
+            // RUSTibites Improved: the selected force tower shows how far it acts, in the colour of its kind.
+            if let Tool::Force(force) = tool
+                && force.base.save_id == selected
+                && circle_visible(force.base.pos, force.range, view_min, view_max)
+            {
+                let rgb = force_colour(force.strength >= 0.0);
+                scene.push(Primitive::Circle { center: force.base.pos, radius: force.range, color: [rgb[0], rgb[1], rgb[2], 46] });
+            }
+            // RUSTibites Improved: the selected whirlpool tower shows how far it acts, in its teal.
+            if let Tool::Whirl(whirl) = tool
+                && whirl.base.save_id == selected
+                && circle_visible(whirl.base.pos, whirl.range, view_min, view_max)
+            {
+                scene.push(Primitive::Circle { center: whirl.base.pos, radius: whirl.range, color: [WHIRL_COLOUR[0], WHIRL_COLOUR[1], WHIRL_COLOUR[2], 46] });
+            }
             let Tool::Killer(killer) = tool else {
                 continue;
             };
@@ -1075,7 +1185,9 @@ fn push_tools(
             });
         }
     }
-    for tool in world.tools.tools() {
+    // RUSTibites Improved: with the objects hidden the placed towers are not drawn; the tower being placed (below) and the area of the selected one (above) are the
+    // interface's, and stay.
+    for tool in world.tools.tools().iter().take(if objects { usize::MAX } else { 0 }) {
         let (at, shape, loaded) = match tool {
             Tool::Rad(tower) => (tower.base.pos, ToolShape::Rad { radius: tower.radius }, tower.base.loaded),
             Tool::Phero(tower) => (
@@ -1086,9 +1198,23 @@ fn push_tools(
                 tower.base.loaded,
             ),
             Tool::Killer(killer) => (killer.base.pos, ToolShape::Killer { hue: killer.hue }, false),
+            Tool::Gene(selector) => (selector.base.pos, ToolShape::Gene { hue: gene_hue(selector.gene) }, false),
+            Tool::Vent(vent) => (vent.base.pos, ToolShape::Vent, false),
+            Tool::Force(force) => (force.base.pos, ToolShape::Force { pull: force.strength >= 0.0 }, false),
+            Tool::Whirl(whirl) => (whirl.base.pos, ToolShape::Whirl { clockwise: whirl.spin == bibites_core::whirlpool::Spin::Clockwise }, false),
         };
         // The towers' prefabs are 0.7725 opaque and `Place()` makes them 1: one that comes from a save keeps the prefab's.
-        let alpha = if loaded { LOADED_TOWER_ALPHA } else { 255 };
+        let alpha = if loaded {
+            LOADED_TOWER_ALPHA
+        } else if (matches!(shape, ToolShape::Gene { .. }) && !genes_active)
+            || (matches!(shape, ToolShape::Vent) && !vents_active)
+            || (matches!(shape, ToolShape::Force { .. }) && !forces_active)
+            || (matches!(shape, ToolShape::Whirl { .. }) && !whirls_active)
+        {
+            110
+        } else {
+            255
+        };
         push_tool_body(scene, assets, camera, at, shape, alpha, view_min, view_max);
     }
     // `EffectTower.PlacementMode`: the tower being placed follows the cursor at half opacity (the
@@ -1098,6 +1224,10 @@ fn push_tools(
             GhostKind::Rad => ToolShape::Rad { radius: RadTower::new(0, at, sim_size).radius },
             GhostKind::Phero => ToolShape::Phero { heading: 0.0 },
             GhostKind::Killer => ToolShape::Killer { hue: 0.0 },
+            GhostKind::Gene => ToolShape::Gene { hue: gene_hue(bibites_core::gene_selector::GENE_SELECTOR_DEFAULT_GENE) },
+            GhostKind::Vent => ToolShape::Vent,
+            GhostKind::Force => ToolShape::Force { pull: true },
+            GhostKind::Whirl => ToolShape::Whirl { clockwise: false },
         };
         push_tool_body(scene, assets, camera, at, shape, 128, view_min, view_max);
     }
@@ -1179,6 +1309,63 @@ fn push_tool_body(
                     radius: PHERO_TOWER_SIZE * 0.45,
                     color: [90, 60, 120, alpha],
                 });
+            }
+        }
+        // RUSTibites Improved: the tower's base disc, a ring and a dot in the colour of its gene (the colour killer's crystal spins; this does not).
+        ToolShape::Gene { hue } => {
+            let rgb = hue_to_rgb(hue);
+            let gene_tint = [(rgb[0] * 255.0).round() as u8, (rgb[1] * 255.0).round() as u8, (rgb[2] * 255.0).round() as u8, alpha];
+            if let Some(base) = sprites.and_then(|sprites| sprites.base) {
+                scene.push(instance(base, 0.0, white));
+            } else {
+                scene.push(Primitive::Circle { center: at, radius: TOWER_BASE_SIZE * 0.5, color: [200, 200, 200, alpha] });
+            }
+            scene.push(Primitive::Circle { center: at, radius: TOWER_BASE_SIZE * 0.38, color: gene_tint });
+            scene.push(Primitive::Circle { center: at, radius: TOWER_BASE_SIZE * 0.26, color: [40, 40, 48, alpha] });
+            scene.push(Primitive::Circle { center: at, radius: TOWER_BASE_SIZE * 0.14, color: gene_tint });
+        }
+        // RUSTibites Improved: the tower's base disc with a dark vent mouth, a glowing orange core and a green plant pellet in it.
+        ToolShape::Vent => {
+            if let Some(base) = sprites.and_then(|sprites| sprites.base) {
+                scene.push(instance(base, 0.0, white));
+            } else {
+                scene.push(Primitive::Circle { center: at, radius: TOWER_BASE_SIZE * 0.5, color: [200, 200, 200, alpha] });
+            }
+            scene.push(Primitive::Circle { center: at, radius: TOWER_BASE_SIZE * 0.38, color: [70, 48, 40, alpha] });
+            scene.push(Primitive::Circle { center: at, radius: TOWER_BASE_SIZE * 0.27, color: [236, 118, 44, alpha] });
+            scene.push(Primitive::Circle { center: at, radius: TOWER_BASE_SIZE * 0.13, color: [118, 204, 84, alpha] });
+        }
+        // RUSTibites Improved: the tower's base disc with a dark ring, a core in the colour of its kind (blue pulls, orange pushes) and a light dot in it.
+        ToolShape::Force { pull } => {
+            let rgb = force_colour(pull);
+            if let Some(base) = sprites.and_then(|sprites| sprites.base) {
+                scene.push(instance(base, 0.0, white));
+            } else {
+                scene.push(Primitive::Circle { center: at, radius: TOWER_BASE_SIZE * 0.5, color: [200, 200, 200, alpha] });
+            }
+            scene.push(Primitive::Circle { center: at, radius: TOWER_BASE_SIZE * 0.38, color: [48, 52, 66, alpha] });
+            scene.push(Primitive::Circle { center: at, radius: TOWER_BASE_SIZE * 0.28, color: [rgb[0], rgb[1], rgb[2], alpha] });
+            scene.push(Primitive::Circle { center: at, radius: TOWER_BASE_SIZE * 0.13, color: [236, 240, 248, alpha] });
+        }
+        // RUSTibites Improved: the tower's base disc with a dark ring, a teal band round a dark centre and two arrowheads on the band that point the way it turns.
+        ToolShape::Whirl { clockwise } => {
+            if let Some(base) = sprites.and_then(|sprites| sprites.base) {
+                scene.push(instance(base, 0.0, white));
+            } else {
+                scene.push(Primitive::Circle { center: at, radius: TOWER_BASE_SIZE * 0.5, color: [200, 200, 200, alpha] });
+            }
+            scene.push(Primitive::Circle { center: at, radius: TOWER_BASE_SIZE * 0.38, color: [48, 52, 66, alpha] });
+            scene.push(Primitive::Circle { center: at, radius: TOWER_BASE_SIZE * 0.3, color: [WHIRL_COLOUR[0], WHIRL_COLOUR[1], WHIRL_COLOUR[2], alpha] });
+            scene.push(Primitive::Circle { center: at, radius: TOWER_BASE_SIZE * 0.17, color: [48, 52, 66, alpha] });
+            let sign = if clockwise { -1.0 } else { 1.0 };
+            for turn in [0.0_f32, std::f32::consts::PI] {
+                let outward = Vec2::new(turn.cos(), turn.sin());
+                let tangent = outward.perp() * sign;
+                let middle = at + outward * (TOWER_BASE_SIZE * 0.235);
+                let tip = middle + tangent * (TOWER_BASE_SIZE * 0.1);
+                let back = middle - tangent * (TOWER_BASE_SIZE * 0.05);
+                let wing = outward * (TOWER_BASE_SIZE * 0.075);
+                scene.push(Primitive::Quad { corners: [tip, back + wing, back - wing, back - wing], color: [236, 240, 248, alpha] });
             }
         }
         ToolShape::Killer { hue } => {
@@ -1333,7 +1520,7 @@ fn push_grid(scene: &mut Scene, camera: &Camera, world: &World, view_min: Vec2, 
 /// steps with the `backgroundMat` palette, drawn inside the simulation square.
 fn push_game_grid(
     scene: &mut Scene,
-    _camera: &Camera,
+    camera: &Camera,
     _world: &World,
     _view_min: Vec2,
     _view_max: Vec2,
@@ -1342,15 +1529,39 @@ fn push_game_grid(
     if style.fine_step <= 0.0 {
         return;
     }
+    // The lines fade out as the camera zooms out (`BackgroundManager.UpdateLinesAlpha`): the shader multiplies each line colour's alpha by `_LineAlpha` /
+    // `_LineAlpha2`. The camera's size is its half height in world units.
+    let camera_size = camera.screen.y / (2.0 * camera.zoom.max(1e-6));
+    let screen_side = camera.screen.x.min(camera.screen.y);
+    let faded = |color: Rgba, width: f32| {
+        let alpha = grid_lines_alpha(camera_size, screen_side * width / 2.0);
+        [color[0], color[1], color[2], (f32::from(color[3]) * alpha).round() as u8]
+    };
     // The grid fills the whole view, outside the simulation square too (a live screenshot at the world's corner has its lines out to the screen's edges).
     scene.push(Primitive::GridLines {
         fine_step: style.fine_step,
         fine_width: style.fine_width,
-        fine_color: style.fine_color,
+        fine_color: faded(style.fine_color, style.fine_width),
         coarse_step: style.coarse_step,
         coarse_width: style.coarse_width,
-        coarse_color: style.coarse_color,
+        coarse_color: faded(style.coarse_color, style.coarse_width),
     });
+}
+
+/// `BackgroundManager.UpdateLinesAlpha` for one set of lines: fully drawn while the camera's size is under half of `threshold` (`min(screen width,
+/// height) x line width / 2` in px), fading to nothing at the threshold, gone beyond it.
+fn grid_lines_alpha(camera_size: f32, threshold: f32) -> f32 {
+    if !(threshold > 0.0) {
+        return 0.0;
+    }
+    let ratio = camera_size / threshold;
+    if ratio < 0.5 {
+        1.0
+    } else if ratio < 1.0 {
+        (1.0 - ratio) / 0.5
+    } else {
+        0.0
+    }
 }
 /// `f(v) = 1 - 0.9 * (invLog(v, .001, 100) - 1)^2` from `ZONE_COLOUR.md`.
 fn zone_density_factor(value: f32) -> f32 {
@@ -1585,6 +1796,53 @@ pub fn mix(a: Rgba, b: Rgba, t: f32) -> Rgba {
 
 fn rects_intersect(a_min: Vec2, a_max: Vec2, b_min: Vec2, b_max: Vec2) -> bool {
     a_min.x <= b_max.x && a_max.x >= b_min.x && a_min.y <= b_max.y && a_max.y >= b_min.y
+}
+
+/// The fill of a stream (a transparent blue) and its border and arrowhead (the same blue, nearly solid); fainter while the Streams feature is off (the streams are
+/// there but push nothing).
+const STREAM_FILL: [u8; 3] = [60, 120, 255];
+/// See [`STREAM_FILL`].
+const STREAM_EDGE: [u8; 3] = [70, 140, 255];
+/// The border's width on the screen, in pixels.
+const STREAM_BORDER_PIXELS: f32 = 3.0;
+
+/// RUSTibites Improved: the streams as bands (see `bibites_core::stream`): the band filled, its four sides as thin bands of their own (a line would have round ends)
+/// and a small arrowhead at the finish that shows which way it pushes. A stream with no direction (its start on its finish) has no band to draw.
+fn push_streams(scene: &mut Scene, camera: &Camera, world: &World, view_min: Vec2, view_max: Vec2) {
+    let (fill_alpha, edge_alpha) = if world.improved.is_on(bibites_core::improved::Feature::Streams) { (70, 230) } else { (26, 100) };
+    let border = STREAM_BORDER_PIXELS / camera.zoom.max(Camera::MIN_ZOOM);
+    for stream in &world.streams {
+        let (Some(corners), Some(direction)) = (stream.corners(), stream.direction()) else {
+            continue;
+        };
+        let min = Vec2::new(corners.iter().map(|c| c.x).fold(f32::INFINITY, f32::min), corners.iter().map(|c| c.y).fold(f32::INFINITY, f32::min));
+        let max = Vec2::new(corners.iter().map(|c| c.x).fold(f32::NEG_INFINITY, f32::max), corners.iter().map(|c| c.y).fold(f32::NEG_INFINITY, f32::max));
+        if !rects_intersect(min, max, view_min, view_max) {
+            continue;
+        }
+        scene.push(Primitive::Quad { corners, color: [STREAM_FILL[0], STREAM_FILL[1], STREAM_FILL[2], fill_alpha] });
+        let edge = [STREAM_EDGE[0], STREAM_EDGE[1], STREAM_EDGE[2], edge_alpha];
+        for i in 0..4 {
+            let (from, to) = (corners[i], corners[(i + 1) % 4]);
+            let length = (to - from).length();
+            if length <= 0.0 {
+                continue;
+            }
+            let along = (to - from) * (1.0 / length);
+            let (side, reach) = (along.perp() * (border * 0.5), along * (border * 0.5));
+            let (from, to) = (from - reach, to + reach);
+            scene.push(Primitive::Quad { corners: [from + side, to + side, to - side, from - side], color: edge });
+        }
+        // The arrowhead: its tip just inside the finish, a small one (a third of the width, no longer than a fifth of the stream) and half as strong as the border, so the band stays
+        // a transparent blue with a blue border and the arrow only says which way it runs.
+        let size = (stream.width * 0.3).min(stream.length() * 0.2);
+        if size > border * 2.0 {
+            let tip = stream.end - direction * (border * 1.5);
+            let base = tip - direction * size;
+            let wing = direction.perp() * (size * 0.6);
+            scene.push(Primitive::Quad { corners: [tip, base + wing, base - wing, base - wing], color: [edge[0], edge[1], edge[2], edge_alpha / 2] });
+        }
+    }
 }
 
 fn circle_visible(center: Vec2, radius: f32, view_min: Vec2, view_max: Vec2) -> bool {
@@ -2113,6 +2371,108 @@ fn background_cells(world: Vec2, camera: &Camera, time: f32, color: Rgba, cell: 
     crate::internals_shaders::bg_pixel([0.5, 0.5], [1.0; 4], [world.x, world.y], &cb0, &cb1, &|_| [1.0; 4])
 }
 
+/// Where the Red Death bloom is, from the program's own ring maths (`Shader Graphs/algeaBloom`): `(inner, outer)` radii in world units. The bloom is clear
+/// inside `inner`, fades in up to `outer` and is solid beyond. `shade_end` is `_ShadeEnd`, the global the program's ring reads (1.5 x the simulation size + 1000;
+/// fitted to the original game's pictures: its opacity by radius at fills 0.5 and 0.9 follows it exactly). At `_Fill` 0 the ring lies from `shade_end` to
+/// `shade_end + 1000`, behind the shade's opaque part; as the fill grows the outer edge falls to `(1 - fill) x (width + shade_end)` and the fade narrows
+/// from the fade distance to `_minFade`.
+fn red_bloom_ring(fill: f32, shade_end: f32) -> (f32, f32) {
+    const FADE: f32 = 1000.0;
+    const MIN_FADE: f32 = 10.0;
+    let width = fill * fill * MIN_FADE + (1.0 - fill * fill) * FADE;
+    let outer = (1.0 - fill) * (width + shade_end);
+    (outer - width, outer)
+}
+
+/// The Red Death bloom at a world point: the game's pixel program (`algea_pixel`, `Shader Graphs/algeaBloom`) with the material's values (`redAlgaeMat`, sharedassets2)
+/// and the camera globals the program reads (`cb0[19]` the time, `cb0[21]` the camera's place, `cb0[25]` the orthographic half sizes, `cb0[130].y` `_ShadeStart`).
+/// The material's constants sit in the order the compiled program reads them: `_Color`, `_Fade`, `_CellColor`, then the smooths, densities, sizes,
+/// thicknesses and parallax amounts of the cells, then `_cellSpeed1`, `_cellSpeed2`, `_Fill`, `_stepification`, `_pixelification` and `_minFade`. The four
+/// components of each per-cell slot hold cells 3, 4, 1 and 2 (found by fitting the program's picture to the original game's, a world at several zooms and
+/// places: of the 24 orders this one's red coverage, contrast and cell size match every view; the property order 1, 2, 3, 4 gave a fifth too little red and
+/// cells that were too smooth). `None` where the program discards (no bloom).
+fn red_bloom_cells(world: Vec2, camera: &Camera, time: f32, fill: f32, shade_end: f32) -> Option<[f32; 4]> {
+    let half = Vec2::new(camera.screen.x / camera.zoom * 0.5, camera.screen.y / camera.zoom * 0.5);
+    let cb0: Vec<[f32; 4]> = (0..131)
+        .map(|slot| match slot {
+            19 => [time, 0.0, 0.0, 0.0],
+            21 => [camera.center.x, camera.center.y, 0.0, 0.0],
+            25 => [half.x, half.y, 0.0, 0.0],
+            130 => [0.0, shade_end, 0.0, 0.0],
+            _ => [0.0; 4],
+        })
+        .collect();
+    let cb1 = [
+        [0.278_431_39, 0.0, 0.211_764_71, 1.0],
+        [1000.0, 0.0, 0.0, 0.0],
+        [1.0, 0.0, 0.166_115_76, 1.0],
+        [1.26, 1.6, 1.31, 0.87],
+        [0.0075, 0.01, 0.01, 0.01],
+        [0.2, 0.6, 0.4, 0.2],
+        [0.2, 0.5, 0.3, 0.2],
+        [50.0, 100.0, -10.0, 10.0],
+        [0.25, 0.15, fill, 16.0],
+        [1.0, 10.0, 0.0, 0.0],
+    ];
+    crate::internals_shaders::algea_pixel([0.5, 0.5], [1.0; 4], [world.x, world.y, 0.0], &cb0, &cb1, &|_| [1.0; 4])
+}
+
+/// Draws the grid with the GPU material (see [`GRID_FRAGMENT_SHADER`]): one quad over the window, the shader's maths at every pixel.
+fn draw_grid_gpu(material: &macroquad::material::Material, camera: &Camera, primitive: Primitive) {
+    use macroquad::material::{gl_use_default_material, gl_use_material};
+    use macroquad::prelude::{WHITE, draw_rectangle};
+    let Primitive::GridLines { fine_step, fine_width, fine_color, coarse_step, coarse_width, coarse_color } = primitive else {
+        return;
+    };
+    // Both sets faded out (the camera is too far for them): nothing to draw.
+    if (fine_color[3] == 0 || fine_step <= 0.0) && (coarse_color[3] == 0 || coarse_step <= 0.0) {
+        return;
+    }
+    let unit = |color: Rgba| [f32::from(color[0]) / 255.0, f32::from(color[1]) / 255.0, f32::from(color[2]) / 255.0, f32::from(color[3]) / 255.0];
+    gl_use_material(material);
+    // `_LineFuziness` is 0.1 in the game's material.
+    material.set_uniform("grid_cam", [camera.center.x, camera.center.y, camera.zoom, 0.1]);
+    material.set_uniform("grid_size", [camera.screen.x, camera.screen.y, fine_step, coarse_step]);
+    material.set_uniform("grid_width", [fine_width, coarse_width]);
+    material.set_uniform("grid_fine", unit(fine_color));
+    material.set_uniform("grid_coarse", unit(coarse_color));
+    draw_rectangle(0.0, 0.0, camera.screen.x, camera.screen.y, WHITE);
+    gl_use_default_material();
+}
+
+/// Draws the Red Death bloom in the window: with the GPU material one quad over the window runs the program at every pixel; without it the program runs at a quarter of
+/// the resolution (software) and the picture is stretched, like the background cells.
+fn draw_red_bloom(camera: &Camera, time: f32, fill: f32, shade_end: f32, gpu: Option<&GpuZoneMaterial>) {
+    use macroquad::prelude::{DrawTextureParams, FilterMode, Texture2D, WHITE, draw_texture_ex};
+    // Nothing of the bloom is on the screen while the whole view lies inside its clear disc.
+    let corner = Vec2::new(camera.screen.x * 0.5, camera.screen.y * 0.5) / camera.zoom;
+    if camera.center.length() + corner.length() < red_bloom_ring(fill, shade_end).0 {
+        return;
+    }
+    if let Some(bloom) = gpu.and_then(|gpu| gpu.bloom.as_ref()) {
+        use macroquad::material::{gl_use_default_material, gl_use_material};
+        use macroquad::prelude::draw_rectangle;
+        gl_use_material(&bloom.material);
+        bloom.material.set_texture("hash_a", bloom.hash_a.clone());
+        bloom.material.set_texture("hash_b", bloom.hash_b.clone());
+        bloom.material.set_uniform("bloom_cam", [camera.center.x, camera.center.y, camera.zoom, time]);
+        bloom.material.set_uniform("bloom_size", [camera.screen.x, camera.screen.y, shade_end, fill]);
+        draw_rectangle(0.0, 0.0, camera.screen.x, camera.screen.y, WHITE);
+        gl_use_default_material();
+        return;
+    }
+    let (w, h) = ((camera.screen.x / 4.0).ceil().max(1.0), (camera.screen.y / 4.0).ceil().max(1.0));
+    let mini = Camera { center: camera.center, zoom: camera.zoom / 4.0, screen: Vec2::new(w, h) };
+    let mut scene = Scene::new();
+    scene.background = [0, 0, 0, 0];
+    scene.skin.time = time;
+    scene.push(Primitive::RedBloom { fill, shade_end });
+    let image = render_scene(&scene, &mini, w as u32, h as u32, 1, &[]);
+    let texture = Texture2D::from_rgba8(w as u16, h as u16, &image.rgba);
+    texture.set_filter(FilterMode::Linear);
+    draw_texture_ex(&texture, 0.0, 0.0, WHITE, DrawTextureParams { dest_size: Some(macroquad::prelude::vec2(camera.screen.x, camera.screen.y)), ..Default::default() });
+}
+
 /// Draws the microscope shade in the window: the ring is computed at a quarter of the resolution and stretched (it is a smooth gradient).
 fn draw_microscope_shade(camera: &Camera, start: f32, fade: f32, gpu: Option<&GpuZoneMaterial>) {
     use macroquad::prelude::{DrawTextureParams, FilterMode, Texture2D, WHITE, draw_texture_ex};
@@ -2384,7 +2744,183 @@ pub struct GpuZoneMaterial {
     material: macroquad::material::Material,
     /// `None` when the shade's program was refused: the software picture is the fallback.
     shade: Option<macroquad::material::Material>,
+    /// The background grid's program (the end of `Shader Graphs/background`), per pixel at the window's resolution; `None` when it was refused (the lines are strokes then).
+    grid: Option<macroquad::material::Material>,
+    /// The Red Death bloom's program (`Shader Graphs/algeaBloom`); `None` when it was refused (a quarter-size software picture then).
+    bloom: Option<GpuBloom>,
 }
+
+/// The bloom's material and the table of cell hashes it reads: the game's program hashes the integer coordinates of a cell with 32-bit integer maths, which the
+/// window's GLSL 1.00 cannot do, so the two 24-bit hashes of every cell of a 1024 x 1024 block of cells are made here with the program's own integer maths and
+/// read from two textures (a cell that is further than 512 cells from the origin - 51,200 units at the densest layer - reads the table wrapped).
+struct GpuBloom {
+    material: macroquad::material::Material,
+    hash_a: macroquad::prelude::Texture2D,
+    hash_b: macroquad::prelude::Texture2D,
+}
+
+/// The two 24-bit hashes of the cell `(x, y)` of `Shader Graphs/algeaBloom` (and of `background`): the program's own integer maths, which the shader translation reads as
+/// `ftoi`, `xor 0x41c64e6d`, `iadd`, `imul`, `ushr 5`, `xor`, `imul 0x27d4eb2d`, `ishl 3`, `xor` and `ushr 8`.
+fn cell_hashes(x: i32, y: i32) -> (u32, u32) {
+    let y = (y as u32) ^ 0x41c6_4e6d;
+    let sum = y.wrapping_add(x as u32);
+    let product = y.wrapping_mul(sum);
+    let mixed = product ^ (product >> 5);
+    let scrambled = mixed.wrapping_mul(0x27d4_eb2d);
+    (((scrambled << 3) ^ y) >> 8, scrambled >> 8)
+}
+
+/// The two hash textures (RGBA8, the 24 bits in the colour channels, 1024 x 1024 cells from -512).
+fn cell_hash_textures() -> (macroquad::prelude::Texture2D, macroquad::prelude::Texture2D) {
+    use macroquad::prelude::{FilterMode, Texture2D};
+    const SIDE: i32 = 1024;
+    let mut first = Vec::with_capacity((SIDE * SIDE * 4) as usize);
+    let mut second = Vec::with_capacity((SIDE * SIDE * 4) as usize);
+    for y in -SIDE / 2..SIDE / 2 {
+        for x in -SIDE / 2..SIDE / 2 {
+            let (a, b) = cell_hashes(x, y);
+            first.extend_from_slice(&[(a >> 16) as u8, (a >> 8) as u8, a as u8, 255]);
+            second.extend_from_slice(&[(b >> 16) as u8, (b >> 8) as u8, b as u8, 255]);
+        }
+    }
+    let make = |bytes: &[u8]| {
+        let texture = Texture2D::from_rgba8(SIDE as u16, SIDE as u16, bytes);
+        texture.set_filter(FilterMode::Nearest);
+        texture
+    };
+    (make(&first), make(&second))
+}
+
+/// Fragment shader of the grid material: the end of `Shader Graphs/background`'s pixel program at the world point of the pixel. A line is solid within 0.9 of its half
+/// width and falls to nothing over the rest (`_LineFuziness` 0.1); the mask of a line set is the larger of its two directions; the fine lines are the fine mask less
+/// the coarse one; each set is blended over what is under it with its colour's alpha times its mask (the alpha already holds `_LineAlpha` / `_LineAlpha2`).
+const GRID_FRAGMENT_SHADER: &str = r#"#version 100
+precision highp float;
+
+varying highp vec2 uv;
+
+// the camera's centre x and y, its zoom (pixels per world unit), the lines' fuzziness
+uniform vec4 grid_cam;
+// the window's width and height, the fine step, the coarse step
+uniform vec4 grid_size;
+// the fine width, the coarse width
+uniform vec2 grid_width;
+// rgb and alpha of each set
+uniform vec4 grid_fine;
+uniform vec4 grid_coarse;
+
+float line_mask(float coord, float step_len, float width) {
+    float d = mod(coord + step_len * 0.5, step_len) - step_len * 0.5;
+    float half_width = width * 0.5;
+    float core = (1.0 - grid_cam.w) * half_width;
+    float fade = half_width - core;
+    return clamp((core - abs(d)) / fade + 1.0, 0.0, 1.0);
+}
+
+void main() {
+    vec2 at = uv * grid_size.xy;
+    vec2 world = vec2(grid_cam.x + (at.x - grid_size.x * 0.5) / grid_cam.z, grid_cam.y - (at.y - grid_size.y * 0.5) / grid_cam.z);
+    float coarse = 0.0;
+    float fine = 0.0;
+    if (grid_size.w > 0.0 && grid_width.y > 0.0) {
+        coarse = max(line_mask(world.x, grid_size.w, grid_width.y), line_mask(world.y, grid_size.w, grid_width.y));
+    }
+    if (grid_size.z > 0.0 && grid_width.x > 0.0) {
+        fine = max(max(line_mask(world.x, grid_size.z, grid_width.x), line_mask(world.y, grid_size.z, grid_width.x)) - coarse, 0.0);
+    }
+    float af = fine * grid_fine.a;
+    float ac = coarse * grid_coarse.a;
+    float alpha = 1.0 - (1.0 - af) * (1.0 - ac);
+    if (alpha <= 0.0) {
+        discard;
+    }
+    vec3 colour = (grid_fine.rgb * af * (1.0 - ac) + grid_coarse.rgb * ac) / alpha;
+    gl_FragColor = vec4(colour, alpha);
+}"#;
+
+/// Fragment shader of the bloom material: `Shader Graphs/algeaBloom`'s pixel program read from its compiled form (`algea_pixel`), with the material's values
+/// (`redAlgaeMat`) in the order the program reads its constant buffer (see `red_bloom_cells`). The world point of the pixel is snapped to `_pixelification`;
+/// four layers of cells (a 3 x 3 search for the nearest of a hashed point per cell, shifted against the view by their parallax) each give a band of the distance
+/// to it, the bands add up and are posterised to 1/16; the colour runs from `_Color` to `_CellColor` with them, and the whole is faded in by the ring that
+/// grows in from `_ShadeEnd` (`_Fill`). The hashes come from the two textures.
+const BLOOM_FRAGMENT_SHADER: &str = r#"#version 100
+precision highp float;
+
+varying highp vec2 uv;
+
+uniform sampler2D hash_a;
+uniform sampler2D hash_b;
+
+// the camera's centre x and y, its zoom (pixels per world unit), the time
+uniform vec4 bloom_cam;
+// the window's width and height, _ShadeEnd (the global the ring reads), _Fill
+uniform vec4 bloom_size;
+
+// the per-cell slots of the constant buffer (components hold cells 3, 4, 1 and 2): smooth, density, size, thickness, parallax
+const vec4 s3 = vec4(1.26, 1.6, 1.31, 0.87);
+const vec4 s4 = vec4(0.0075, 0.01, 0.01, 0.01);
+const vec4 s5 = vec4(0.2, 0.6, 0.4, 0.2);
+const vec4 s6 = vec4(0.2, 0.5, 0.3, 0.2);
+const vec4 s7 = vec4(50.0, 100.0, -10.0, 10.0);
+// _cellSpeed1, _cellSpeed2, (_Fill), _stepification
+const vec4 s8 = vec4(0.25, 0.15, 0.0, 16.0);
+
+vec2 cell_hash(vec2 ic) {
+    vec2 at = (mod(ic + 512.0, 1024.0) + 0.5) / 1024.0;
+    vec3 a = floor(texture2D(hash_a, at).rgb * 255.0 + 0.5);
+    vec3 b = floor(texture2D(hash_b, at).rgb * 255.0 + 0.5);
+    return vec2(a.r * 65536.0 + a.g * 256.0 + a.b, b.r * 65536.0 + b.g * 256.0 + b.b);
+}
+
+float nearest(vec2 cell, float angle) {
+    vec2 ic = floor(cell);
+    vec2 fc = cell - ic;
+    float best = 8.0;
+    for (int j = -1; j <= 1; j++) {
+        for (int i = -1; i <= 1; i++) {
+            vec2 n = vec2(float(i), float(j));
+            vec2 h = cell_hash(ic + n);
+            vec2 o = 0.5 * vec2(sin(h.x * angle * 5.9604652e-8), cos(h.y * angle * 5.9604652e-8));
+            best = min(best, length(n + o - fc + 0.5));
+        }
+    }
+    return best;
+}
+
+float smooth_step(float t) {
+    t = clamp(t, 0.0, 1.0);
+    return t * t * (3.0 - 2.0 * t);
+}
+
+float band(float dist, float limit, float thickness, float width) {
+    return smooth_step((dist - limit) * (-1.0 / width)) * smooth_step((dist - (limit - thickness)) / width);
+}
+
+void main() {
+    vec2 at = uv * bloom_size.xy;
+    vec2 world = vec2(bloom_cam.x + (at.x - bloom_size.x * 0.5) / bloom_cam.z, bloom_cam.y - (at.y - bloom_size.y * 0.5) / bloom_cam.z);
+    float fill = bloom_size.w;
+    float fill2 = fill * fill;
+    float spread = fill2 * 10.0 + (1.0 - fill2) * 1000.0;
+    float ring = clamp((length(world) - (1.0 - fill) * (spread + bloom_size.z)) / spread + 1.0, 0.0, 1.0);
+    if (ring <= 0.0) {
+        discard;
+    }
+    float time = bloom_cam.w;
+    vec2 half_view = bloom_size.xy / bloom_cam.z * 0.5;
+    vec2 p = floor(world);
+    vec3 to_camera = vec3(bloom_cam.xy - p, (half_view.x + half_view.y) * 0.5);
+    vec3 unit = normalize(to_camera);
+    vec2 slope = unit.xy / unit.z;
+    float total = 0.0;
+    total += band(nearest((p - s5.x * slope) * s3.w, time * s7.x + 25.0), s4.x, s4.w, 0.5 * s4.w * s6.w);
+    total += band(nearest((p - s5.w * slope) * s7.w, time * s8.x + 87.0), s8.y, s6.x, 0.5 * s3.y * s6.x);
+    total += band(nearest((p - s7.y * slope) * s4.y, time * s8.x + 54.0), s5.y, s6.y, 0.5 * s3.x * s6.y);
+    total += band(nearest((p - s7.z * slope) * s4.z, time * s8.x + 7.0), s5.z, s6.z, 0.5 * s3.z * s6.z);
+    float cells = floor(total * s8.w * 0.25 + 0.5) / s8.w;
+    vec3 colour = mix(vec3(0.27843139, 0.0, 0.21176471), vec3(1.0, 0.0, 0.16611576), cells);
+    gl_FragColor = vec4(colour, ring);
+}"#;
 
 /// Fragment shader of the shade material: black with the alpha of `Shader Graphs/microscopeShade`, `saturate((|p| - start) / fade)` at the world point `p` of the
 /// pixel (the quad is the whole window: its `uv` times its size is the pixel's place, and the camera takes that to the world as `Camera::screen_to_world` does).
@@ -2462,7 +2998,52 @@ impl GpuZoneMaterial {
         )
         .map_err(|error| eprintln!("warning: GPU shade material failed: {error}; the microscope shade is drawn by the software rasteriser"))
         .ok();
-        Ok(Self { material, shade })
+        let blend = || PipelineParams {
+            color_blend: Some(BlendState::new(
+                Equation::Add,
+                BlendFactor::Value(BlendValue::SourceAlpha),
+                BlendFactor::OneMinusValue(BlendValue::SourceAlpha),
+            )),
+            ..Default::default()
+        };
+        let grid = load_material(
+            ShaderSource::Glsl {
+                vertex: ZONE_VERTEX_SHADER,
+                fragment: GRID_FRAGMENT_SHADER,
+            },
+            MaterialParams {
+                pipeline_params: blend(),
+                uniforms: vec![
+                    UniformDesc::new("grid_cam", UniformType::Float4),
+                    UniformDesc::new("grid_size", UniformType::Float4),
+                    UniformDesc::new("grid_width", UniformType::Float2),
+                    UniformDesc::new("grid_fine", UniformType::Float4),
+                    UniformDesc::new("grid_coarse", UniformType::Float4),
+                ],
+                ..Default::default()
+            },
+        )
+        .map_err(|error| eprintln!("warning: GPU grid material failed: {error}; the grid is drawn as strokes"))
+        .ok();
+        let bloom = load_material(
+            ShaderSource::Glsl {
+                vertex: ZONE_VERTEX_SHADER,
+                fragment: BLOOM_FRAGMENT_SHADER,
+            },
+            MaterialParams {
+                pipeline_params: blend(),
+                uniforms: vec![UniformDesc::new("bloom_cam", UniformType::Float4), UniformDesc::new("bloom_size", UniformType::Float4)],
+                textures: vec!["hash_a".to_owned(), "hash_b".to_owned()],
+                ..Default::default()
+            },
+        )
+        .map_err(|error| eprintln!("warning: GPU bloom material failed: {error}; the Red Death bloom is drawn by the software rasteriser"))
+        .ok()
+        .map(|material| {
+            let (hash_a, hash_b) = cell_hash_textures();
+            GpuBloom { material, hash_a, hash_b }
+        });
+        Ok(Self { material, shade, grid, bloom })
     }
 }
 
@@ -2795,7 +3376,14 @@ pub fn draw_scene(
             Primitive::MicroscopeShade { start, fade } => {
                 draw_microscope_shade(camera, start, fade, zone_material);
             }
+            Primitive::RedBloom { fill, shade_end } => {
+                draw_red_bloom(camera, scene.skin.time, fill, shade_end, zone_material);
+            }
             Primitive::GridLines { .. } => {
+                if let Some(material) = zone_material.and_then(|gpu| gpu.grid.as_ref()) {
+                    draw_grid_gpu(material, camera, *primitive);
+                    continue;
+                }
                 for (a, b, thickness, color) in grid_strokes(camera, *primitive) {
                     let (sa, sb) = (camera.world_to_screen(a), camera.world_to_screen(b));
                     draw_line(sa.x, sa.y, sb.x, sb.y, screen_thickness(camera, thickness), to_macroquad(color));
@@ -2910,6 +3498,15 @@ pub fn draw_scene(
                 );
                 draw_triangle(north, east, south, paint);
                 draw_triangle(north, south, west, paint);
+            }
+            Primitive::Quad { corners, color } => {
+                let paint = to_macroquad(color);
+                let screen = corners.map(|corner| {
+                    let point = camera.world_to_screen(corner);
+                    macroquad::prelude::Vec2::new(point.x, point.y)
+                });
+                draw_triangle(screen[0], screen[1], screen[2], paint);
+                draw_triangle(screen[0], screen[2], screen[3], paint);
             }
             Primitive::Capsule {
                 a,
@@ -3459,6 +4056,35 @@ impl<'a> Raster<'a> {
                     }
                 }
             }
+            Primitive::RedBloom { fill, shade_end } => {
+                let (inner, _) = red_bloom_ring(fill, shade_end);
+                let (w, h) = (self.width as i64, self.height as i64);
+                // One evaluation per output pixel of a screenshot (the picture is 2x supersampled: a block of 2 internal pixels), so the cells are as sharp as the game's;
+                // the window's software fallback draws a quarter-size picture (scale 1) and takes blocks of 2 there. None where the whole block is inside the clear disc.
+                let block = (self.scale.round() as i64).max(2);
+                let block_reach = block as f32 / camera.zoom.max(1e-6);
+                let time = self.skin.time;
+                let mut y = 0;
+                while y < h {
+                    let mut x = 0;
+                    while x < w {
+                        let world = camera.screen_to_world(Vec2::new(x as f32 + block as f32 * 0.5, y as f32 + block as f32 * 0.5));
+                        if world.length() + block_reach >= inner
+                            && let Some(out) = red_bloom_cells(world, camera, time, fill, shade_end)
+                        {
+                            let paint = [
+                                (out[0].clamp(0.0, 1.0) * 255.0).round() as u8,
+                                (out[1].clamp(0.0, 1.0) * 255.0).round() as u8,
+                                (out[2].clamp(0.0, 1.0) * 255.0).round() as u8,
+                                (out[3].clamp(0.0, 1.0) * 255.0).round() as u8,
+                            ];
+                            self.fill_rect_px(x, y, (x + block).min(w), (y + block).min(h), paint);
+                        }
+                        x += block;
+                    }
+                    y += block;
+                }
+            }
             Primitive::GridLines { fine_step, fine_width, fine_color, coarse_step, coarse_width, coarse_color } => {
                 let (w, h) = (self.width as i64, self.height as i64);
                 for y in 0..h {
@@ -3608,6 +4234,9 @@ impl<'a> Raster<'a> {
                 let p = camera.world_to_screen(center);
                 let r = self.radius_px(camera, half_diagonal, 0.0);
                 self.fill_diamond(p, r, color);
+            }
+            Primitive::Quad { corners, color } => {
+                self.fill_quad(corners.map(|corner| camera.world_to_screen(corner)), color);
             }
             Primitive::Capsule {
                 a,
@@ -3930,6 +4559,36 @@ impl<'a> Raster<'a> {
                 let dx = (x as f32 + 0.5 - center.x).abs();
                 let dy = (y as f32 + 0.5 - center.y).abs();
                 if dx + dy <= radius {
+                    self.blend(x, y, color);
+                }
+            }
+        }
+    }
+
+    /// A convex four-sided shape given by its screen corners (a pixel is in it when its centre is on the same side of every edge; a shape with no area is nothing).
+    fn fill_quad(&mut self, corners: [Vec2; 4], color: Rgba) {
+        if corners.iter().any(|corner| !corner.x.is_finite() || !corner.y.is_finite()) {
+            return;
+        }
+        let cross = |a: Vec2, b: Vec2, p: Vec2| (b.x - a.x) * (p.y - a.y) - (b.y - a.y) * (p.x - a.x);
+        let area: f32 = (0..4).map(|i| corners[i].x * corners[(i + 1) % 4].y - corners[(i + 1) % 4].x * corners[i].y).sum();
+        if area.abs() < 1.0e-3 {
+            return;
+        }
+        let low = |axis: fn(&Vec2) -> f32| corners.iter().map(axis).fold(f32::INFINITY, f32::min).floor() as i64;
+        let high = |axis: fn(&Vec2) -> f32| corners.iter().map(axis).fold(f32::NEG_INFINITY, f32::max).ceil() as i64;
+        let (x0, x1) = (low(|p| p.x), high(|p| p.x));
+        let (y0, y1) = (low(|p| p.y), high(|p| p.y));
+        for y in y0.max(0)..y1.min(i64::from(self.height)) {
+            for x in x0.max(0)..x1.min(i64::from(self.width)) {
+                let point = Vec2::new(x as f32 + 0.5, y as f32 + 0.5);
+                let (mut before, mut after) = (false, false);
+                for i in 0..4 {
+                    let side = cross(corners[i], corners[(i + 1) % 4], point);
+                    before |= side < 0.0;
+                    after |= side > 0.0;
+                }
+                if !(before && after) {
                     self.blend(x, y, color);
                 }
             }
@@ -4581,6 +5240,81 @@ fn distance_to_segment_sq(point: Vec2, a: Vec2, b: Vec2) -> f32 {
 mod tests {
     use super::*;
 
+    /// The quads of the scene `world` gives, in order: `(corners, colour)`.
+    fn stream_quads(world: &World, camera: &Camera, zones: bool) -> Vec<([Vec2; 4], Rgba)> {
+        let mut scene = Scene::new();
+        let options = SceneOptions { zones, objects: false, grid: false, fov: false, ..SceneOptions::default() };
+        build_scene(&mut scene, world, camera, None, &options, None, None);
+        scene.primitives.iter().filter_map(|primitive| if let Primitive::Quad { corners, color } = primitive { Some((*corners, *color)) } else { None }).collect()
+    }
+
+    #[test]
+    fn a_stream_is_a_transparent_blue_band_with_a_blue_border_and_an_arrowhead_shown_with_the_zones_and_fainter_while_the_feature_is_off() {
+        let mut world = crate::app::LoadedWorld::load(None, 7, 6, 1).expect("starter world").world;
+        let camera = Camera::new(Vec2::ZERO, 1.0, Vec2::new(1920.0, 1080.0));
+        assert!(stream_quads(&world, &camera, true).is_empty(), "no stream, nothing drawn");
+        world.streams.push(bibites_core::stream::Stream::new(Vec2::new(-100.0, 0.0), Vec2::new(100.0, 0.0)));
+        world.improved.set(bibites_core::improved::Feature::Streams, true);
+        let quads = stream_quads(&world, &camera, true);
+        // The band, its four sides and the arrowhead.
+        assert_eq!(quads.len(), 6, "{quads:?}");
+        let (band, band_colour) = quads[0];
+        assert!(band_colour[2] > band_colour[0] && band_colour[2] > band_colour[1] && band_colour[2] == 255, "blue: {band_colour:?}");
+        assert!(band_colour[3] > 20 && band_colour[3] < 128, "transparent: {band_colour:?}");
+        let (low, high) = (band.iter().map(|c| c.y).fold(f32::INFINITY, f32::min), band.iter().map(|c| c.y).fold(f32::NEG_INFINITY, f32::max));
+        assert_eq!((low, high), (-50.0, 50.0), "100 wide, round the line y = 0");
+        for (_, colour) in &quads[1..5] {
+            assert!(colour[2] > colour[0] && colour[3] >= 200, "the border is the same blue, nearly solid: {colour:?}");
+        }
+        assert!(quads[5].1[2] > quads[5].1[0] && quads[5].1[3] > band_colour[3] && quads[5].1[3] < quads[1].1[3], "the arrowhead: the same blue, fainter than the border: {:?}", quads[5].1);
+        // The arrowhead points at the finish: its tip is the corner farthest along the stream, inside the band.
+        let (arrow, _) = quads[5];
+        assert!(arrow[0].x > 90.0 && arrow[0].x < 100.0 && arrow[1].x < arrow[0].x && arrow[1].y.abs() <= 25.0, "{arrow:?}");
+        // Shown and hidden with the zones.
+        assert!(stream_quads(&world, &camera, false).is_empty());
+        // Off: still there, fainter.
+        world.improved.set(bibites_core::improved::Feature::Streams, false);
+        let faint = stream_quads(&world, &camera, true);
+        assert_eq!(faint.len(), 6);
+        assert!(faint[0].1[3] < band_colour[3] && faint[1].1[3] < quads[1].1[3], "{faint:?}");
+        // Out of the view: not drawn at all; with no direction: not drawn.
+        let far = Camera::new(Vec2::new(50_000.0, 50_000.0), 1.0, Vec2::new(1920.0, 1080.0));
+        assert!(stream_quads(&world, &far, true).is_empty());
+        world.streams[0] = bibites_core::stream::Stream::new(Vec2::new(5.0, 5.0), Vec2::new(5.2, 5.0));
+        assert!(stream_quads(&world, &camera, true).is_empty());
+    }
+
+    #[test]
+    fn the_software_raster_fills_a_quad_a_triangle_and_a_slanted_shape_and_nothing_for_a_shape_with_no_area() {
+        let camera = Camera::new(Vec2::ZERO, 1.0, Vec2::new(200.0, 100.0));
+        let draw = |corners: [Vec2; 4]| {
+            let mut scene = Scene::new();
+            scene.background = [0, 0, 0, 255];
+            scene.push(Primitive::Quad { corners, color: [60, 120, 255, 255] });
+            render_scene(&scene, &camera, 200, 100, 1, &[])
+        };
+        let blue = |image: &Image, x: u32, y: u32| image.pixel(x, y).is_some_and(|p| p[0] == 60 && p[1] == 120 && p[2] == 255);
+        // A rectangle from (-50, -20) to (50, 20): the screen's (50..150, 30..70).
+        let rect = draw([Vec2::new(-50.0, -20.0), Vec2::new(50.0, -20.0), Vec2::new(50.0, 20.0), Vec2::new(-50.0, 20.0)]);
+        assert!(blue(&rect, 100, 50) && blue(&rect, 52, 32) && blue(&rect, 147, 67));
+        assert!(!blue(&rect, 48, 50) && !blue(&rect, 152, 50) && !blue(&rect, 100, 28) && !blue(&rect, 100, 72));
+        // The corners may go round either way.
+        let reversed = draw([Vec2::new(-50.0, 20.0), Vec2::new(50.0, 20.0), Vec2::new(50.0, -20.0), Vec2::new(-50.0, -20.0)]);
+        assert!(blue(&reversed, 100, 50) && !blue(&reversed, 100, 28));
+        // A triangle (two corners the same): the left half of the rectangle's top edge to its right corner.
+        let triangle = draw([Vec2::new(-40.0, 0.0), Vec2::new(40.0, 0.0), Vec2::new(0.0, 40.0), Vec2::new(0.0, 40.0)]);
+        assert!(blue(&triangle, 100, 40) && !blue(&triangle, 100, 60) && !blue(&triangle, 62, 28));
+        // A slanted band from (-60, -30) to (60, 30), 20 wide (a parallelogram): its middle is inside, a point well off its line is not.
+        let slanted = draw([Vec2::new(-60.0, -20.0), Vec2::new(60.0, 40.0), Vec2::new(60.0, 20.0), Vec2::new(-60.0, -40.0)]);
+        assert!(blue(&slanted, 100, 50) && !blue(&slanted, 100, 20) && !blue(&slanted, 100, 80));
+        // No area (all four on a line), and a corner that is not a number: nothing.
+        let line = draw([Vec2::new(-50.0, 0.0), Vec2::new(0.0, 0.0), Vec2::new(25.0, 0.0), Vec2::new(50.0, 0.0)]);
+        let broken = draw([Vec2::new(f32::NAN, 0.0), Vec2::new(10.0, 0.0), Vec2::new(10.0, 10.0), Vec2::new(0.0, 10.0)]);
+        for image in [&line, &broken] {
+            assert!((0..100).all(|y| (0..200).all(|x| !blue(image, x, y))), "nothing was drawn");
+        }
+    }
+
     /// All the cells `radio_cells` draws for a whole area at `time`: `(centre distance over the radius, rgba)`.
     fn radio_field(radius: f32, time: f32) -> Vec<(f32, Rgba)> {
         let everything = (Vec2::new(-1.0e6, -1.0e6), Vec2::new(1.0e6, 1.0e6));
@@ -4611,6 +5345,29 @@ mod tests {
         assert!(peak.iter().any(|(_, rgba)| rgba[3] >= 60));
         let cells = |radius: f32| (2.0 * radius / RADIO_UPP).ceil() as usize;
         assert!(radio_field(250.0, 1.0).len() <= cells(250.0) * cells(250.0));
+    }
+
+    #[test]
+    fn hidden_objects_leave_the_background_and_the_tower_being_placed_and_not_a_placed_tower() {
+        let plain = crate::app::LoadedWorld::load(None, 7, 6, 1).expect("starter world").world;
+        let mut with_vent = crate::app::LoadedWorld::load(None, 7, 6, 1).expect("starter world").world;
+        let _ = with_vent.place_vent_at(Vec2::new(40.0, 40.0));
+        let camera = Camera::new(Vec2::ZERO, 1.0, Vec2::new(1920.0, 1080.0));
+        let count = |world: &World, objects: bool, ghost: bool| {
+            let mut scene = Scene::new();
+            scene.tool_view.ghost = ghost.then_some((GhostKind::Vent, Vec2::new(-40.0, -40.0)));
+            let options = SceneOptions { objects, zones: false, grid: false, fov: false, ..SceneOptions::default() };
+            build_scene(&mut scene, world, &camera, None, &options, None, None);
+            scene.len()
+        };
+        // Shown, a vent is something more to draw; hidden, it is not (and neither is a bibite: the same count with a world of any bibites).
+        assert!(count(&with_vent, true, false) > count(&plain, true, false), "a placed tower is an object");
+        assert_eq!(count(&with_vent, false, false), count(&plain, false, false), "hidden, it is not drawn");
+        assert!(count(&plain, true, false) > count(&plain, false, false), "the bibites are objects");
+        // The tower being placed is the interface's own: the same shapes, shown or hidden.
+        let ghost = count(&plain, false, true) - count(&plain, false, false);
+        assert!(ghost > 0, "the ghost is drawn with the objects hidden");
+        assert_eq!(ghost, count(&plain, true, true) - count(&plain, true, false));
     }
 
     #[test]
@@ -4673,6 +5430,133 @@ mod tests {
         assert_eq!(ring(0.4), 0.0);
         assert_eq!(ring(1.0), 0.0);
         assert!(ring(0.6) < ring(0.75));
+    }
+
+    #[test]
+    fn the_red_death_bloom_creeps_in_from_the_shade_and_is_the_games_pixel_program() {
+        // Nothing is claimed at fill 0: the ring lies outside the shade's end (a world of 2000: the shade ends at 4000), 1000 wide.
+        let (inner, outer) = red_bloom_ring(0.0, 4000.0);
+        assert!((inner - 4000.0).abs() < 1e-3 && (outer - 5000.0).abs() < 1e-3, "{inner} {outer}");
+        // The outer edge falls with the fill (the fade narrows from 1000 toward 10 as it goes) and reaches the middle at a full fill.
+        let (_, half) = red_bloom_ring(0.5, 4000.0);
+        assert!((half - 0.5 * (0.25 * 10.0 + 0.75 * 1000.0 + 4000.0)).abs() < 1e-2, "{half}");
+        assert!(red_bloom_ring(1.0, 4000.0).1.abs() < 1e-3);
+        // The program itself: nothing at the middle of the world, solid purple and red cells beyond the ring.
+        let camera = Camera::new(Vec2::ZERO, 1.0, Vec2::new(1920.0, 1080.0));
+        assert!(red_bloom_cells(Vec2::ZERO, &camera, 0.0, 0.0, 4000.0).is_none());
+        let beyond = red_bloom_cells(Vec2::new(5200.0, 100.0), &camera, 12.0, 0.0, 4000.0).expect("bloom beyond the shade");
+        assert!((beyond[3] - 1.0).abs() < 1e-4, "solid: {beyond:?}");
+        assert!(beyond[0] >= 0.27 && beyond[0] <= 1.0 && beyond[1] == 0.0 && beyond[2] >= 0.16 && beyond[2] <= 0.22, "between the two colours: {beyond:?}");
+        // A fill moves the edge in: a point inside the old ring is bloom now (the ring at 0.5 runs from 1623 to 2376).
+        assert!(red_bloom_cells(Vec2::new(2000.0, 0.0), &camera, 0.0, 0.5, 4000.0).is_some());
+        assert!(red_bloom_cells(Vec2::new(1500.0, 0.0), &camera, 0.0, 0.5, 4000.0).is_none());
+    }
+
+    /// `BLOOM_FRAGMENT_SHADER` written out in Rust over the same hash function ([`cell_hashes`]): the window's GLSL program is a line for line copy of this.
+    fn bloom_reference(world: Vec2, camera: &Camera, time: f32, fill: f32, shade_end: f32) -> Option<[f32; 4]> {
+        let (s3, s4, s5, s6, s7) = (
+            [1.26_f32, 1.6, 1.31, 0.87],
+            [0.0075_f32, 0.01, 0.01, 0.01],
+            [0.2_f32, 0.6, 0.4, 0.2],
+            [0.2_f32, 0.5, 0.3, 0.2],
+            [50.0_f32, 100.0, -10.0, 10.0],
+        );
+        let s8 = [0.25_f32, 0.15, 0.0, 16.0];
+        let fill2 = fill * fill;
+        let spread = fill2 * 10.0 + (1.0 - fill2) * 1000.0;
+        let ring = ((world.length() - (1.0 - fill) * (spread + shade_end)) / spread + 1.0).clamp(0.0, 1.0);
+        if ring <= 0.0 {
+            return None;
+        }
+        let half = Vec2::new(camera.screen.x / camera.zoom * 0.5, camera.screen.y / camera.zoom * 0.5);
+        let p = Vec2::new(world.x.floor(), world.y.floor());
+        let to_camera = [camera.center.x - p.x, camera.center.y - p.y, (half.x + half.y) * 0.5];
+        let length = (to_camera[0] * to_camera[0] + to_camera[1] * to_camera[1] + to_camera[2] * to_camera[2]).sqrt();
+        let slope = [to_camera[0] / length / (to_camera[2] / length), to_camera[1] / length / (to_camera[2] / length)];
+        let nearest = |cell: [f32; 2], angle: f32| -> f32 {
+            let ic = [cell[0].floor(), cell[1].floor()];
+            let fc = [cell[0] - ic[0], cell[1] - ic[1]];
+            let mut best = 8.0_f32;
+            for j in -1..=1 {
+                for i in -1..=1 {
+                    let n = [i as f32, j as f32];
+                    let (a, b) = cell_hashes((ic[0] + n[0]) as i32, (ic[1] + n[1]) as i32);
+                    let o = [0.5 * (a as f32 * angle * 5.960_465_2e-8).sin(), 0.5 * (b as f32 * angle * 5.960_465_2e-8).cos()];
+                    let d = [n[0] + o[0] - fc[0] + 0.5, n[1] + o[1] - fc[1] + 0.5];
+                    best = best.min((d[0] * d[0] + d[1] * d[1]).sqrt());
+                }
+            }
+            best
+        };
+        let smooth = |t: f32| {
+            let t = t.clamp(0.0, 1.0);
+            t * t * (3.0 - 2.0 * t)
+        };
+        let band = |dist: f32, limit: f32, thickness: f32, width: f32| smooth((dist - limit) * (-1.0 / width)) * smooth((dist - (limit - thickness)) / width);
+        let cell = |scale: f32, shift: f32| [(p.x - shift * slope[0]) * scale, (p.y - shift * slope[1]) * scale];
+        let mut total = 0.0;
+        total += band(nearest(cell(s3[3], s5[0]), time * s7[0] + 25.0), s4[0], s4[3], 0.5 * s4[3] * s6[3]);
+        total += band(nearest(cell(s7[3], s5[3]), time * s8[0] + 87.0), s8[1], s6[0], 0.5 * s3[1] * s6[0]);
+        total += band(nearest(cell(s4[1], s7[1]), time * s8[0] + 54.0), s5[1], s6[1], 0.5 * s3[0] * s6[1]);
+        total += band(nearest(cell(s4[2], s7[2]), time * s8[0] + 7.0), s5[2], s6[2], 0.5 * s3[2] * s6[2]);
+        let cells = (total * s8[3] * 0.25 + 0.5).floor() / s8[3];
+        let mix = |a: f32, b: f32| a + (b - a) * cells;
+        Some([mix(0.278_431_39, 1.0), mix(0.0, 0.0), mix(0.211_764_71, 0.166_115_76), ring])
+    }
+
+    #[test]
+    fn the_bloom_program_read_from_the_game_is_what_the_window_shader_computes() {
+        // The translated game program against the line for line Rust copy of the window's GLSL, at a spread of places, fills and times. The posterising to
+        // 1/16 and a tie in `round_ne` can move a pixel by a step (1/16 x 0.72 of red = 11 levels) now and then: almost every point must agree to a level.
+        let camera = Camera::new(Vec2::new(300.0, -200.0), 0.5, Vec2::new(1920.0, 1080.0));
+        let mut seed = 12345_u32;
+        let mut next = || {
+            seed = seed.wrapping_mul(1_664_525).wrapping_add(1_013_904_223);
+            (seed >> 8) as f32 / 16_777_216.0
+        };
+        let (mut compared, mut differing) = (0, 0);
+        for (fill, time) in [(0.0_f32, 20.0_f32), (0.5, 20.0), (0.684, 357.25), (0.9, 12.5)] {
+            for _ in 0..400 {
+                let world = Vec2::new((next() - 0.5) * 9000.0, (next() - 0.5) * 9000.0);
+                let game = red_bloom_cells(world, &camera, time, fill, 4000.0);
+                let copy = bloom_reference(world, &camera, time, fill, 4000.0);
+                assert_eq!(game.is_some(), copy.is_some(), "discard at {world:?} fill {fill}");
+                if let (Some(game), Some(copy)) = (game, copy) {
+                    compared += 1;
+                    if (0..4).any(|k| (game[k] - copy[k]).abs() * 255.0 > 1.5) {
+                        differing += 1;
+                    }
+                }
+            }
+        }
+        assert!(compared > 300, "only {compared} points were inside the bloom");
+        assert!(differing * 50 <= compared, "{differing} of {compared} points differ by more than a level");
+    }
+
+    #[test]
+    fn cell_hashes_are_the_programs_integer_maths() {
+        // A few values worked out by hand from the program's instructions (`y ^ 0x41c64e6d`, `y' * (y' + x)`, `t ^ t >> 5`, `* 0x27d4eb2d`, `<< 3`, `>> 8`).
+        let (a, b) = cell_hashes(0, 0);
+        let y = 0x41c6_4e6d_u32;
+        let product = y.wrapping_mul(y);
+        let mixed = product ^ (product >> 5);
+        let scrambled = mixed.wrapping_mul(0x27d4_eb2d);
+        assert_eq!((a, b), ((((scrambled << 3) ^ y) >> 8), scrambled >> 8));
+        // Negative cells go through `ftoi` as two's complement.
+        assert_ne!(cell_hashes(-1, 0), cell_hashes(1, 0));
+        assert!(a < 1 << 24 && b < 1 << 24);
+    }
+
+    #[test]
+    fn grid_lines_fade_with_the_camera_size_like_the_games_update_lines_alpha() {
+        // A 1080 px screen and lines 1 unit wide: the threshold is 540. Solid under half of it, a linear ramp up to it, gone from there on.
+        assert_eq!(grid_lines_alpha(100.0, 540.0), 1.0);
+        assert_eq!(grid_lines_alpha(269.9, 540.0), 1.0);
+        assert!((grid_lines_alpha(405.0, 540.0) - 0.5).abs() < 1e-6);
+        assert_eq!(grid_lines_alpha(540.0, 540.0), 0.0);
+        assert_eq!(grid_lines_alpha(2000.0, 540.0), 0.0);
+        // No width, no line.
+        assert_eq!(grid_lines_alpha(10.0, 0.0), 0.0);
     }
 
     #[test]
@@ -5387,6 +6271,46 @@ mod tests {
             return None;
         }
         GameAssets::load(&root).ok()
+    }
+
+    #[test]
+    fn a_zone_the_player_coloured_is_drawn_in_its_colour_the_others_in_the_fertility_colour_and_the_switch_hides_them() {
+        let Some(assets) = local_game_assets() else {
+            eprintln!("skipping: extracted game art absent");
+            return;
+        };
+        let mut loaded = crate::app::LoadedWorld::load(None, 7, 1, 1).expect("starter world");
+        for number in 0..2 {
+            let mut zone = bibites_core::settings::ZoneSettings::game_defaults();
+            zone.name = format!("Extra {number}");
+            loaded.world.add_zone(zone).expect("a zone");
+        }
+        let camera = Camera::new(Vec2::ZERO, 0.02, Vec2::new(640.0, 640.0));
+        let colours = |world: &bibites_core::world::World, zone_colors: bool| -> Vec<[u8; 3]> {
+            let mut scene = Scene::new();
+            let options = SceneOptions { zone_colors, ..SceneOptions::default() };
+            build_scene(&mut scene, world, &camera, None, &options, Some(&assets), None);
+            scene
+                .primitives
+                .iter()
+                .filter_map(|primitive| match primitive {
+                    Primitive::ZoneDisc { rgb, .. } => Some(*rgb),
+                    _ => None,
+                })
+                .collect()
+        };
+        let base = assets.background.zone_base;
+        // No zone has a colour of its own: all in the Fertility Color, as the game draws them.
+        let plain = colours(&loaded.world, true);
+        assert!(plain.len() >= 3 && plain.iter().all(|rgb| *rgb == base), "{plain:?}");
+        // One zone coloured (the middle one): it alone changes; with the switch off it is in the Fertility Color again.
+        loaded.world.zones.zones[1].tint = Some([10, 200, 30]);
+        let coloured = colours(&loaded.world, true);
+        assert_eq!(coloured.len(), plain.len());
+        assert_eq!(coloured[1], [10, 200, 30]);
+        assert!(coloured.iter().enumerate().all(|(index, rgb)| index == 1 || *rgb == base), "{coloured:?}");
+        assert!(colours(&loaded.world, false).iter().all(|rgb| *rgb == base), "hidden colours are kept but not shown");
+        assert!(SceneOptions::default().zone_colors, "the colours show from the start");
     }
 
     #[test]

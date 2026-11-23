@@ -788,11 +788,15 @@ fn draw_modals(
             crate::app::ConfirmKind::ClearAnimators => {
                 "Delete all settings animators? You will lose all data.".to_owned()
             }
+            crate::app::ConfirmKind::ClearStreams => "Delete all streams? You will lose all data.".to_owned(),
             crate::app::ConfirmKind::RemoveHalfPellets => {
                 "Removing half of all pellets... Are you sure???".to_owned()
             }
             crate::app::ConfirmKind::OverwriteSave(name) => {
                 format!("Overwrite save {name}?")
+            }
+            crate::app::ConfirmKind::OverwriteScenario(name) => {
+                format!("Overwrite scenario {name}?")
             }
             crate::app::ConfirmKind::DeleteSave(path) => format!(
                 "Delete save {}?",
@@ -1447,6 +1451,7 @@ pub fn draw_extra_panels(
     // "Show Targets": the labels of what the selected bibite's field of view sees hang in the world, under everything the HUD draws.
     if app.show_targets
         && app.scene_options.fov
+        && app.objects_shown()
         && let Some(targets) = app.selected.and_then(|id| app.world.fov_targets(id))
     {
         let labels = crate::target_weights::labels(&targets);
@@ -1844,6 +1849,14 @@ fn draw_graphs(
         sz(exit[2], exit[3]),
         UiAction::ClosePanel,
     );
+    // RUSTibites Improved: the time tags' two buttons (and name field) of the page that shows, between the page button and the title.
+    crate::time_tags_ui::Surface { ui, metrics, s }.controls(
+        frame,
+        app,
+        if app.graphs_genes { crate::time_tags::TagPanel::Genes } else { crate::time_tags::TagPanel::Graphs },
+        [300.0, 10.3, 800.0, 39.4],
+        25.0,
+    );
     if app.graphs_genes {
         crate::gene_analysis::draw(frame, ui, metrics, app, s);
         return;
@@ -2022,6 +2035,15 @@ fn draw_graphs(
         }
     }
 
+    // RUSTibites Improved: the time tags stand on the plot at their time (the plot is `span_minutes` wide, now at its right edge).
+    crate::time_tags_ui::draw_graph_tags(
+        frame,
+        &crate::time_tags_ui::Surface { ui, metrics, s },
+        app,
+        [100.0, 201.0, 1745.0, 779.0],
+        f64::from(span_minutes),
+    );
+
     // `GraphTooltipTrigger` -> `BaseLineGraph.UpdateTooltip`: while the pointer is over the plot a white line (3 thick) stands at the
     // point nearest to it, and each curve that shows has a dot on it (10 across, the curve's colour) with its value over its upper
     // right (the prefab's `FloatInfoText`: 16 pt bold white, its bottom left corner 5 right of and above the dot's centre).
@@ -2063,6 +2085,16 @@ fn draw_graphs(
             );
         }
     }
+
+    // RUSTibites Improved: while the time tag's name field is open, a click on the plot sets the tag at the point the white line above stands on.
+    crate::time_tags_ui::draw_graph_pick(
+        frame,
+        &crate::time_tags_ui::Surface { ui, metrics, s },
+        app,
+        [100.0, 201.0, 1745.0, 779.0],
+        f64::from(span_minutes),
+        n_points,
+    );
 
     // The legend of the curves that show hangs under the "?" button while the pointer rests on
     // the button or the legend (`OnHoverShow`, `OnHoverKeep`).
@@ -2106,7 +2138,7 @@ fn draw_graphs(
 }
 
 /// `ListExtend.IndexOfClosest`: the index of the value nearest to `value`; of equal distances the LAST one wins (`!(best < distance)`).
-fn closest_index(values: &[f32], value: f32) -> usize {
+pub(crate) fn closest_index(values: &[f32], value: f32) -> usize {
     let mut best = f32::INFINITY;
     let mut result = 0;
     for (index, candidate) in values.iter().enumerate() {
@@ -2536,6 +2568,194 @@ mod tests {
                 _ => None,
             })
             .collect()
+    }
+
+    /// A state folder of its own, so that a test that stores a setting does not write in the player's.
+    fn private_storage(app: &mut App, name: &str) -> std::path::PathBuf {
+        let root = std::env::temp_dir().join(format!("rustibites_hud_tags_{}_{name}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&root);
+        std::fs::create_dir_all(&root).expect("temp folder");
+        app.storage = bibites_io::storage::StoragePaths::new(&root);
+        root
+    }
+
+    /// The plot's tag lines: the 2 wide, 779 high rectangles (their x and colour).
+    fn tag_lines(frame: &UiFrame) -> Vec<(f32, Rgba)> {
+        frame
+            .draws
+            .iter()
+            .filter_map(|draw| match draw {
+                UiDraw::Rect { pos, size, color } if size.x == 2.0 && size.y == 779.0 && color[3] == 215 => Some((pos.x + 1.0, *color)),
+                _ => None,
+            })
+            .collect()
+    }
+
+    #[test]
+    fn time_tags_stand_on_the_data_graphs_at_their_time_and_the_panels_own_button_hides_them() {
+        use crate::time_tags::TagPanel;
+        let mut app = graphs_app();
+        let root = private_storage(&mut app, "graphs");
+        app.world.simulated_time = 7200.0;
+        let earlier = app.time_tags.add(7200.0 - 600.0, "Early").unwrap();
+        let now_tag = app.time_tags.add(7200.0, "Right now").unwrap();
+        let too_old = app.time_tags.add(10.0, "Long ago").unwrap();
+        let frame = graphs_frame(&app);
+        // The controls of the panel: the button and the switch (which counts the tags).
+        let shown = texts(&frame);
+        assert!(shown.contains(&"Tag time".to_owned()), "{shown:?}");
+        assert!(shown.contains(&"Hide tags (3)".to_owned()), "{shown:?}");
+        for (id, action) in [(0, UiAction::TimeTagStart(TagPanel::Graphs)), (1, UiAction::TimeTagsShow(TagPanel::Graphs))] {
+            assert!(frame.actions.iter().any(|(_, a)| *a == action), "control {id}");
+        }
+        // The line of a tag 10 minutes old stands where the axis says 10 minutes ago, the one set now at the newest point (the right edge); the one older
+        // than the plot's span is not drawn.
+        let depth = app.graphs_scale;
+        let history = &app.world.data_logger.groups[app.graphs_stream_index()].history;
+        let span = history.scale_step(depth) as f32 * history.data_size_at_scale(depth).max(2) as f32;
+        let lines = tag_lines(&frame);
+        let color_of = |id| app.time_tags.get(id).unwrap().color();
+        let at = |id| lines.iter().find(|(_, color)| *color == { let mut c = color_of(id); c[3] = 215; c }).map(|(x, _)| *x);
+        assert!((at(earlier).expect("the early tag's line") - (100.0 + 1745.0 * (1.0 - 10.0 / span))).abs() < 0.01);
+        assert!((at(now_tag).expect("the new tag's line") - 1845.0).abs() < 0.01);
+        assert!(at(too_old).is_none(), "older than the plot is not on it");
+        assert!(shown.contains(&"Early".to_owned()) && shown.contains(&"Right now".to_owned()));
+        assert!(!shown.contains(&"Long ago".to_owned()));
+        // Each chip has a remove button.
+        for id in [earlier, now_tag] {
+            assert!(frame.actions.iter().any(|(_, a)| *a == UiAction::TimeTagRemove(id)), "remove {id}");
+        }
+        // This panel's button hides them: no lines, no chips, the buttons stay (the switch now offers to show them).
+        app.apply_ui_actions(&[UiAction::TimeTagsShow(TagPanel::Graphs)]);
+        let frame = graphs_frame(&app);
+        let shown = texts(&frame);
+        assert!(tag_lines(&frame).is_empty());
+        assert!(!shown.contains(&"Early".to_owned()));
+        assert!(shown.contains(&"Show tags (3)".to_owned()) && shown.contains(&"Tag time".to_owned()), "{shown:?}");
+        // While the name is typed the button reads "Add tag", the field is there and the switch makes room for it.
+        app.apply_ui_actions(&[UiAction::TimeTagStart(TagPanel::Graphs)]);
+        let shown = texts(&graphs_frame(&app));
+        assert!(shown.contains(&"Tag now".to_owned()) && shown.iter().any(|text| text.starts_with("Name")), "{shown:?}");
+        assert!(!shown.iter().any(|text| text.contains("tags (")));
+        let _ = std::fs::remove_dir_all(root);
+    }
+
+    #[test]
+    fn the_gene_analysis_page_marks_the_tags_on_its_time_slider_with_a_switch_of_its_own() {
+        use crate::time_tags::TagPanel;
+        use bibites_core::genes_log::GenesBuckets;
+        let mut app = graphs_app();
+        let root = private_storage(&mut app, "genes");
+        app.world.simulated_time = 36_000.0;
+        for _ in 0..8 {
+            app.world.data_logger.genes.push(GenesBuckets::blank());
+        }
+        // Three hours ago: the third point of the hourly genes log.
+        app.time_tags.add(36_000.0 - 3.0 * 3600.0, "Three hours back").unwrap();
+        app.apply_ui_actions(&[UiAction::GraphsPage(true)]);
+        let frame = graphs_frame(&app);
+        let shown = texts(&frame);
+        assert!(shown.contains(&"Tag time".to_owned()) && shown.contains(&"Three hours back".to_owned()), "{shown:?}");
+        assert!(frame.actions.iter().any(|(_, a)| matches!(a, UiAction::TimeTagRemove(_))));
+        // Its switch is its own: hiding the tags on the data graphs leaves them here, hiding them here leaves the graphs' alone.
+        app.apply_ui_actions(&[UiAction::TimeTagsShow(TagPanel::Graphs)]);
+        assert!(texts(&graphs_frame(&app)).contains(&"Three hours back".to_owned()));
+        app.apply_ui_actions(&[UiAction::TimeTagsShow(TagPanel::Genes)]);
+        let shown = texts(&graphs_frame(&app));
+        assert!(!shown.contains(&"Three hours back".to_owned()) && shown.contains(&"Show tags (1)".to_owned()), "{shown:?}");
+        app.apply_ui_actions(&[UiAction::GraphsPage(false)]);
+        assert!(!texts(&graphs_frame(&app)).contains(&"Three hours back".to_owned()), "the graphs page still has its own switch off");
+        let _ = std::fs::remove_dir_all(root);
+    }
+
+    #[test]
+    fn a_click_on_the_data_graphs_sets_the_tag_at_the_point_under_the_pointer_while_the_name_field_is_open() {
+        use crate::time_tags::TagPanel;
+        let mut app = graphs_app();
+        let root = private_storage(&mut app, "graphs_pick");
+        app.world.simulated_time = 7200.0;
+        let depth = app.graphs_scale;
+        let history = &app.world.data_logger.groups[app.graphs_stream_index()].history;
+        let capacity = history.data_size_at_scale(depth).max(2);
+        let span_seconds = f64::from(history.scale_step(depth) as f32 * capacity as f32) * 60.0;
+        let pick = |app: &mut App, x: f32| -> Option<UiAction> {
+            app.cursor = Vec2::new(x, 500.0);
+            graphs_frame(app).action_at(app.cursor)
+        };
+        // With no name field open the plot takes no click for the tags.
+        assert!(!matches!(pick(&mut app, 600.0), Some(UiAction::TimeTagPlace(..))));
+        app.apply_ui_actions(&[UiAction::TimeTagStart(TagPanel::Graphs)]);
+        // The pointer a third of the way across: the click is for the point nearest to it, the one the white hover line stands on.
+        let k = (capacity as f32 / 3.0).round() as usize;
+        let Some(UiAction::TimeTagPlace(TagPanel::Graphs, seconds)) = pick(&mut app, 100.0 + 1745.0 / 3.0) else {
+            panic!("the plot takes the click");
+        };
+        let age = span_seconds * (1.0 - k as f64 / capacity as f64);
+        assert!((seconds - (7200.0 - age)).abs() < 0.01, "{seconds} vs {}", 7200.0 - age);
+        assert!(texts(&graphs_frame(&app)).iter().any(|text| text.starts_with("Tag here: ")), "the label says how long before now");
+        // The click sets the tag; its line stands on that very point.
+        app.apply_ui_actions(&[UiAction::TimeTagPlace(TagPanel::Graphs, seconds)]);
+        assert!(app.time_tag_edit.is_none() && app.time_tags.len() == 1);
+        let lines = tag_lines(&graphs_frame(&app));
+        let wanted = 100.0 + 1745.0 * k as f32 / capacity as f32;
+        assert!(lines.len() == 1 && (lines[0].0 - wanted).abs() < 0.05, "{lines:?} vs {wanted}");
+        // The point nearest to the pointer at the right edge is now; a point before the world began is not a moment of it (the label says so, the click sets none).
+        app.apply_ui_actions(&[UiAction::TimeTagStart(TagPanel::Graphs)]);
+        let Some(UiAction::TimeTagPlace(_, newest)) = pick(&mut app, 1844.0) else { panic!("the plot takes the click") };
+        assert!((newest - 7200.0).abs() < 0.01, "{newest}");
+        app.world.simulated_time = 100.0;
+        let Some(UiAction::TimeTagPlace(_, early)) = pick(&mut app, 120.0) else { panic!("the plot takes the click") };
+        assert!(early < 0.0);
+        assert!(texts(&graphs_frame(&app)).contains(&"Before the world began".to_owned()));
+        app.apply_ui_actions(&[UiAction::TimeTagPlace(TagPanel::Graphs, early)]);
+        assert!(app.time_tag_edit.is_some() && app.time_tags.len() == 1, "nothing is set before the world's start");
+        let _ = std::fs::remove_dir_all(root);
+    }
+
+    #[test]
+    fn a_click_on_the_gene_slider_sets_the_tag_at_the_moment_under_the_pointer_while_the_name_field_is_open() {
+        use crate::time_tags::TagPanel;
+        use bibites_core::genes_log::{GenesBuckets, SERIAL_HEAVY};
+        let mut app = graphs_app();
+        let root = private_storage(&mut app, "genes_pick");
+        app.world.simulated_time = 36_000.0;
+        for _ in 0..8 {
+            app.world.data_logger.genes.push(GenesBuckets::blank());
+        }
+        app.apply_ui_actions(&[UiAction::GraphsPage(true)]);
+        let pick = |app: &mut App, x: f32| -> Option<UiAction> {
+            app.cursor = Vec2::new(x, 1010.0);
+            graphs_frame(app).action_at(app.cursor)
+        };
+        // The slider is still the slider while no name field is open.
+        assert!(matches!(pick(&mut app, 960.0), Some(UiAction::GenesTimeSlide(..))));
+        app.apply_ui_actions(&[UiAction::TimeTagStart(TagPanel::Genes)]);
+        let (min, max) = app.graphs_gene_range();
+        let slider = [250.0, 1002.42, 1420.0, 20.0];
+        let x = 250.0 + 1420.0 / 2.0;
+        let Some(UiAction::TimeTagPlace(TagPanel::Genes, seconds)) = pick(&mut app, x) else {
+            panic!("the slider's band takes the click");
+        };
+        let place = crate::time_tags_ui::slider_place(slider, (min, max), x).unwrap();
+        let hours = crate::time_tags::serial_ago(&SERIAL_HEAVY, 1.0, place).unwrap();
+        assert!(hours > 0.0 && hours < 20.0, "{hours}");
+        assert!((seconds - (36_000.0 - hours * 3600.0)).abs() < 1e-6);
+        assert!(texts(&graphs_frame(&app)).iter().any(|text| text.starts_with("Tag here: ")), "the label says how long before now");
+        // The click sets the tag, whose line stands on the slider where it was clicked.
+        app.apply_ui_actions(&[UiAction::TimeTagPlace(TagPanel::Genes, seconds)]);
+        assert!(app.time_tag_edit.is_none() && app.time_tags.len() == 1);
+        let mut color = app.time_tags.all()[0].color();
+        color[3] = 215;
+        let lines: Vec<f32> = graphs_frame(&app)
+            .draws
+            .iter()
+            .filter_map(|draw| match draw {
+                UiDraw::Rect { pos, size, color: c } if *c == color && size.x == 2.0 => Some(pos.x + 1.0),
+                _ => None,
+            })
+            .collect();
+        assert!(lines.len() == 1 && (lines[0] - x).abs() < 0.05, "{lines:?} vs {x}");
+        let _ = std::fs::remove_dir_all(root);
     }
 
     #[test]

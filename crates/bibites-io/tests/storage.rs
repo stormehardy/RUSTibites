@@ -895,3 +895,291 @@ fn the_improved_features_file_keeps_the_switches_that_are_on() {
     assert!(bibites_io::storage::read_improved_features(&paths).is_err());
     let _ = std::fs::remove_dir_all(&state);
 }
+
+#[test]
+fn the_zone_colours_are_kept_per_save_name_like_the_time_tags_and_the_autosaves_files_are_cleaned_away_with_theirs() {
+    use bibites_io::storage::{prune_autosave_time_tags, read_zone_colors, write_zone_colors, ZoneColorRecord, ZoneColorsFile};
+    let state = temp_root("zone_colors");
+    let paths = StoragePaths::new(&state);
+    let path = paths.zone_colors_path("My save: 2/3");
+    assert_eq!(path.parent(), Some(state.join("zone_colors").as_path()));
+    assert_eq!(path.file_name().unwrap(), "My save_ 2_3.json");
+    // Nothing stored: no colours, and writing none makes no file.
+    assert!(read_zone_colors(&paths, "a").unwrap().zones.is_empty());
+    write_zone_colors(&paths, "a", &ZoneColorsFile::default()).unwrap();
+    assert!(!state.join("zone_colors").exists());
+    let file = ZoneColorsFile {
+        zones: vec![
+            ZoneColorRecord { name: "World".to_owned(), rgb: [10, 200, 30] },
+            ZoneColorRecord { name: "Pockets0_3".to_owned(), rgb: [255, 0, 128] },
+        ],
+    };
+    write_zone_colors(&paths, "a", &file).unwrap();
+    assert_eq!(read_zone_colors(&paths, "a").unwrap(), file);
+    assert!(read_zone_colors(&paths, "b").unwrap().zones.is_empty(), "another save's colours are its own");
+    // The last colour taken away: the file is rewritten without it.
+    write_zone_colors(&paths, "a", &ZoneColorsFile::default()).unwrap();
+    assert!(read_zone_colors(&paths, "a").unwrap().zones.is_empty());
+    // An autosave's file goes when its zip is gone, the others stay.
+    write_zone_colors(&paths, "autosave_20261117010101", &file).unwrap();
+    write_zone_colors(&paths, "My world", &file).unwrap();
+    prune_autosave_time_tags(&paths);
+    assert!(!paths.zone_colors_path("autosave_20261117010101").exists());
+    assert!(paths.zone_colors_path("My world").is_file());
+    std::fs::write(state.join("zone_colors").join("broken.json"), "not json").unwrap();
+    assert!(read_zone_colors(&paths, "broken").is_err());
+    let _ = std::fs::remove_dir_all(&state);
+}
+
+#[test]
+fn the_time_tags_are_kept_per_save_name_and_the_view_settings_default_to_shown() {
+    use bibites_io::storage::{
+        read_time_tag_view, read_time_tags, write_time_tag_view, write_time_tags, TimeTagRecord, TimeTagViewFile, TimeTagsFile,
+    };
+    let state = temp_root("time_tags");
+    let paths = StoragePaths::new(&state);
+    // A save name becomes a safe file name inside the state folder, whatever it holds.
+    let path = paths.time_tags_path("My save: 2/3");
+    assert_eq!(path.parent(), Some(state.join("time_tags").as_path()));
+    assert_eq!(path.file_name().unwrap(), "My save_ 2_3.json");
+    assert_eq!(paths.time_tags_path("..").file_name().unwrap(), "_.json");
+    // Nothing stored: no tags, and asking or writing nothing makes no file.
+    assert!(read_time_tags(&paths, "a").unwrap().tags.is_empty());
+    write_time_tags(&paths, "a", &TimeTagsFile::default()).unwrap();
+    assert!(!state.join("time_tags").exists());
+    let file = TimeTagsFile {
+        tags: vec![
+            TimeTagRecord { id: 1, seconds: 3600.5, label: "Drought".to_owned() },
+            TimeTagRecord { id: 4, seconds: 7200.0, label: "Predators in".to_owned() },
+        ],
+    };
+    write_time_tags(&paths, "a", &file).unwrap();
+    assert_eq!(read_time_tags(&paths, "a").unwrap(), file);
+    assert!(read_time_tags(&paths, "b").unwrap().tags.is_empty(), "another save's tags are its own");
+    assert!(!state.join("time_tags").join("a.json.tmp").exists());
+    // The last tag removed: the file is rewritten empty (not left holding the old tags).
+    write_time_tags(&paths, "a", &TimeTagsFile::default()).unwrap();
+    assert!(read_time_tags(&paths, "a").unwrap().tags.is_empty());
+    // The view settings: shown everywhere until stored; a field that is missing counts as shown.
+    assert_eq!(read_time_tag_view(&paths).unwrap(), TimeTagViewFile { graphs: true, genes: true, lineage: true });
+    let view = TimeTagViewFile { graphs: false, genes: true, lineage: false };
+    write_time_tag_view(&paths, &view).unwrap();
+    assert_eq!(read_time_tag_view(&paths).unwrap(), view);
+    std::fs::write(state.join("time_tag_view.json"), r#"{"lineage": false}"#).unwrap();
+    assert_eq!(read_time_tag_view(&paths).unwrap(), TimeTagViewFile { graphs: true, genes: true, lineage: false });
+    std::fs::write(state.join("time_tag_view.json"), "not json").unwrap();
+    assert!(read_time_tag_view(&paths).is_err());
+    let _ = std::fs::remove_dir_all(&state);
+}
+
+#[test]
+fn gene_tower_files_are_kept_by_save_name_and_pruned_with_the_autosaves() {
+    use bibites_io::storage::{GeneTowerRecord, GeneTowersFile, StoragePaths, read_gene_towers, write_gene_towers};
+    let root = std::env::temp_dir().join(format!("bibites_io_gene_towers_{}", std::process::id()));
+    let _ = std::fs::remove_dir_all(&root);
+    let paths = StoragePaths::new(&root);
+    assert!(read_gene_towers(&paths, "A save").expect("nothing stored").towers.is_empty());
+    // No towers and no file: nothing is created.
+    write_gene_towers(&paths, "A save", &GeneTowersFile::default()).expect("nothing to write");
+    assert!(!paths.gene_towers_path("A save").exists());
+    let file = GeneTowersFile {
+        towers: vec![GeneTowerRecord {
+            x: 1.5,
+            y: -2.0,
+            gene: "Diet".to_owned(),
+            min: 0.25,
+            max: 0.75,
+            kill_inside: true,
+            any_or_most: false,
+            kills_per_cycle: 3,
+            radius: 400.0,
+            period: 100.0,
+            progress: 12.0,
+            killed: 4,
+            zone: Some("Green".to_owned()),
+        }],
+    };
+    write_gene_towers(&paths, "A save", &file).expect("written");
+    assert_eq!(read_gene_towers(&paths, "A save").expect("read"), file);
+    // The path is safe as a file name, in the folder of its own.
+    let safe = paths.gene_towers_path("a/b:c");
+    assert!(safe.parent().is_some_and(|folder| folder.ends_with("gene_towers")) && safe.file_name().is_some_and(|name| name == "a_b_c.json"), "{safe:?}");
+    // The tower taken away: the file is rewritten empty, not left with the old one.
+    write_gene_towers(&paths, "A save", &GeneTowersFile::default()).expect("rewritten");
+    assert!(read_gene_towers(&paths, "A save").expect("read").towers.is_empty());
+    // Older files without the newer fields still read.
+    std::fs::write(paths.gene_towers_path("Old"), r#"{"towers":[{"x":0,"y":0,"gene":"Diet","min":0,"max":1,"radius":400,"period":100}]}"#).unwrap();
+    let old = read_gene_towers(&paths, "Old").expect("an old file");
+    assert_eq!((old.towers[0].kills_per_cycle, old.towers[0].kill_inside, old.towers[0].zone.clone()), (1, false, None));
+    let _ = std::fs::remove_dir_all(&root);
+}
+
+#[test]
+fn stream_files_are_kept_by_save_name_pruned_with_the_autosaves_and_what_is_not_in_an_old_file_is_the_default() {
+    use bibites_io::storage::{StoragePaths, StreamRecord, StreamsFile, read_streams, write_streams};
+    let root = std::env::temp_dir().join(format!("bibites_io_streams_{}", std::process::id()));
+    let _ = std::fs::remove_dir_all(&root);
+    let paths = StoragePaths::new(&root);
+    assert!(read_streams(&paths, "A save").expect("nothing stored").streams.is_empty());
+    // No streams and no file: nothing is created.
+    write_streams(&paths, "A save", &StreamsFile::default()).expect("nothing to write");
+    assert!(!paths.streams_path("A save").exists());
+    let file = StreamsFile {
+        streams: vec![
+            StreamRecord { start_x: -120.5, start_y: 30.0, end_x: 800.0, end_y: -40.25, width: 220.0, strength: 75.0 },
+            StreamRecord { start_x: 0.0, start_y: 0.0, end_x: 0.0, end_y: 500.0, width: 40.0, strength: 500.0 },
+        ],
+    };
+    write_streams(&paths, "A save", &file).expect("written");
+    assert_eq!(read_streams(&paths, "A save").expect("read"), file);
+    // The path is safe as a file name, in the folder of its own, and an autosave's file is pruned with the autosave.
+    let safe = paths.streams_path("a/b:c");
+    assert!(safe.parent().is_some_and(|folder| folder.ends_with("streams")) && safe.file_name().is_some_and(|name| name == "a_b_c.json"), "{safe:?}");
+    let stale = paths.streams_path("autosave_2026-11-18_01-00");
+    std::fs::create_dir_all(stale.parent().unwrap()).unwrap();
+    std::fs::write(&stale, "{}").unwrap();
+    bibites_io::storage::prune_autosave_time_tags(&paths);
+    assert!(!stale.exists(), "the file of an autosave that is gone is removed");
+    assert!(paths.streams_path("A save").exists(), "the file of a save is kept");
+    // The streams taken away: the file is rewritten empty, not left with the old ones.
+    write_streams(&paths, "A save", &StreamsFile::default()).expect("rewritten");
+    assert!(read_streams(&paths, "A save").expect("read").streams.is_empty());
+    // A short file still reads: what is not there is the default (100 wide, a strength of 100).
+    std::fs::write(paths.streams_path("Old"), r#"{"streams":[{"start_x":1,"start_y":2,"end_x":3,"end_y":4}]}"#).unwrap();
+    let old = read_streams(&paths, "Old").expect("a short file");
+    assert_eq!((old.streams[0].width, old.streams[0].strength), (100.0, 100.0));
+    let _ = std::fs::remove_dir_all(&root);
+}
+
+#[test]
+fn force_tower_files_are_kept_by_save_name_and_what_is_not_in_an_old_file_is_the_default() {
+    use bibites_io::storage::{ForceTowerRecord, ForceTowersFile, StoragePaths, read_force_towers, write_force_towers};
+    let root = std::env::temp_dir().join(format!("bibites_io_force_towers_{}", std::process::id()));
+    let _ = std::fs::remove_dir_all(&root);
+    let paths = StoragePaths::new(&root);
+    assert!(read_force_towers(&paths, "A save").expect("nothing stored").towers.is_empty());
+    // No towers and no file: nothing is created.
+    write_force_towers(&paths, "A save", &ForceTowersFile::default()).expect("nothing to write");
+    assert!(!paths.force_towers_path("A save").exists());
+    let file = ForceTowersFile {
+        towers: vec![ForceTowerRecord {
+            x: 4.5,
+            y: -9.0,
+            range: 750.0,
+            strength: -220.0,
+            falloff: "constant".to_owned(),
+            bibites: true,
+            pellets: false,
+            eggs: false,
+            zone: Some("Green".to_owned()),
+        }],
+    };
+    write_force_towers(&paths, "A save", &file).expect("written");
+    assert_eq!(read_force_towers(&paths, "A save").expect("read"), file);
+    // The path is safe as a file name, in the folder of its own, and an autosave's file is pruned with the autosave.
+    let safe = paths.force_towers_path("a/b:c");
+    assert!(safe.parent().is_some_and(|folder| folder.ends_with("force_towers")) && safe.file_name().is_some_and(|name| name == "a_b_c.json"), "{safe:?}");
+    let stale = paths.force_towers_path("autosave_2026-11-18_01-00");
+    std::fs::create_dir_all(stale.parent().unwrap()).unwrap();
+    std::fs::write(&stale, "{}").unwrap();
+    bibites_io::storage::prune_autosave_time_tags(&paths);
+    assert!(!stale.exists(), "the file of an autosave that is gone is removed");
+    assert!(paths.force_towers_path("A save").exists(), "the file of a save is kept");
+    // The tower taken away: the file is rewritten empty, not left with the old one.
+    write_force_towers(&paths, "A save", &ForceTowersFile::default()).expect("rewritten");
+    assert!(read_force_towers(&paths, "A save").expect("read").towers.is_empty());
+    // A short file still reads: what is not there is the default (a pull of 100 that fades over 300 u, on everything).
+    std::fs::write(paths.force_towers_path("Old"), r#"{"towers":[{"x":0,"y":0}]}"#).unwrap();
+    let old = read_force_towers(&paths, "Old").expect("a short file");
+    let tower = &old.towers[0];
+    assert_eq!((tower.range, tower.strength, tower.falloff.as_str()), (300.0, 100.0, "fading"));
+    assert_eq!((tower.bibites, tower.pellets, tower.eggs, tower.zone.clone()), (true, true, true, None));
+    let _ = std::fs::remove_dir_all(&root);
+}
+
+#[test]
+fn whirlpool_tower_files_are_kept_by_save_name_and_what_is_not_in_an_old_file_is_the_default() {
+    use bibites_io::storage::{StoragePaths, WhirlpoolTowerRecord, WhirlpoolTowersFile, read_whirlpool_towers, write_whirlpool_towers};
+    let root = std::env::temp_dir().join(format!("bibites_io_whirlpool_towers_{}", std::process::id()));
+    let _ = std::fs::remove_dir_all(&root);
+    let paths = StoragePaths::new(&root);
+    assert!(read_whirlpool_towers(&paths, "A save").expect("nothing stored").towers.is_empty());
+    // No towers and no file: nothing is created.
+    write_whirlpool_towers(&paths, "A save", &WhirlpoolTowersFile::default()).expect("nothing to write");
+    assert!(!paths.whirlpool_towers_path("A save").exists());
+    let file = WhirlpoolTowersFile {
+        towers: vec![WhirlpoolTowerRecord {
+            x: 4.5,
+            y: -9.0,
+            range: 750.0,
+            speed: 220.0,
+            spin: "clockwise".to_owned(),
+            falloff: "constant".to_owned(),
+            bibites: true,
+            pellets: false,
+            eggs: false,
+            zone: Some("Green".to_owned()),
+        }],
+    };
+    write_whirlpool_towers(&paths, "A save", &file).expect("written");
+    assert_eq!(read_whirlpool_towers(&paths, "A save").expect("read"), file);
+    // The path is safe as a file name, in the folder of its own, and an autosave's file is pruned with the autosave.
+    let safe = paths.whirlpool_towers_path("a/b:c");
+    assert!(safe.parent().is_some_and(|folder| folder.ends_with("whirlpool_towers")) && safe.file_name().is_some_and(|name| name == "a_b_c.json"), "{safe:?}");
+    let stale = paths.whirlpool_towers_path("autosave_2026-11-18_01-00");
+    std::fs::create_dir_all(stale.parent().unwrap()).unwrap();
+    std::fs::write(&stale, "{}").unwrap();
+    bibites_io::storage::prune_autosave_time_tags(&paths);
+    assert!(!stale.exists(), "the file of an autosave that is gone is removed");
+    assert!(paths.whirlpool_towers_path("A save").exists(), "the file of a save is kept");
+    // The tower taken away: the file is rewritten empty, not left with the old one.
+    write_whirlpool_towers(&paths, "A save", &WhirlpoolTowersFile::default()).expect("rewritten");
+    assert!(read_whirlpool_towers(&paths, "A save").expect("read").towers.is_empty());
+    // A short file still reads: what is not there is the default (counterclockwise, 100 over 300 u fading, on everything).
+    std::fs::write(paths.whirlpool_towers_path("Old"), r#"{"towers":[{"x":0,"y":0}]}"#).unwrap();
+    let old = read_whirlpool_towers(&paths, "Old").expect("a short file");
+    let tower = &old.towers[0];
+    assert_eq!((tower.range, tower.speed, tower.spin.as_str(), tower.falloff.as_str()), (300.0, 100.0, "counterclockwise", "fading"));
+    assert_eq!((tower.bibites, tower.pellets, tower.eggs, tower.zone.clone()), (true, true, true, None));
+    let _ = std::fs::remove_dir_all(&root);
+}
+
+#[test]
+fn vent_tower_files_are_kept_by_save_name_and_pruned_with_the_autosaves() {
+    use bibites_io::storage::{StoragePaths, VentTowerRecord, VentTowersFile, read_vent_towers, write_vent_towers};
+    let root = std::env::temp_dir().join(format!("bibites_io_vent_towers_{}", std::process::id()));
+    let _ = std::fs::remove_dir_all(&root);
+    let paths = StoragePaths::new(&root);
+    assert!(read_vent_towers(&paths, "A save").expect("nothing stored").towers.is_empty());
+    // No towers and no file: nothing is created.
+    write_vent_towers(&paths, "A save", &VentTowersFile::default()).expect("nothing to write");
+    assert!(!paths.vent_towers_path("A save").exists());
+    let file = VentTowersFile {
+        towers: vec![VentTowerRecord {
+            x: 1.5,
+            y: -2.0,
+            velocity: 250.0,
+            range: 640.0,
+            pellet_energy: 400.0,
+            rate: 7.5,
+            recycle: true,
+            cap: 30_000.0,
+            shot: 123,
+            zone: Some("Green".to_owned()),
+        }],
+    };
+    write_vent_towers(&paths, "A save", &file).expect("written");
+    assert_eq!(read_vent_towers(&paths, "A save").expect("read"), file);
+    // The path is safe as a file name, in the folder of its own.
+    let safe = paths.vent_towers_path("a/b:c");
+    assert!(safe.parent().is_some_and(|folder| folder.ends_with("vent_towers")) && safe.file_name().is_some_and(|name| name == "a_b_c.json"), "{safe:?}");
+    // The tower taken away: the file is rewritten empty, not left with the old one.
+    write_vent_towers(&paths, "A save", &VentTowersFile::default()).expect("rewritten");
+    assert!(read_vent_towers(&paths, "A save").expect("read").towers.is_empty());
+    // Older or shorter files still read: what is not there is the default.
+    std::fs::write(paths.vent_towers_path("Old"), r#"{"towers":[{"x":0,"y":0,"velocity":100,"pellet_energy":200,"rate":2,"cap":20000}]}"#).unwrap();
+    let old = read_vent_towers(&paths, "Old").expect("an old file");
+    assert_eq!((old.towers[0].recycle, old.towers[0].shot, old.towers[0].zone.clone()), (false, 0, None));
+    assert_eq!(old.towers[0].range, 200.0, "a file from before the range has the default one");
+    let _ = std::fs::remove_dir_all(&root);
+}

@@ -1148,7 +1148,7 @@ fn name_of(app: &App, id: SpeciesId) -> String {
 pub(crate) struct Drawer<'a> {
     pub(crate) s: f32,
     pub(crate) ui: &'a UiAssets,
-    metrics: Option<&'a crate::text_sdf::SdfFonts>,
+    pub(crate) metrics: Option<&'a crate::text_sdf::SdfFonts>,
     pub(crate) cursor: Vec2,
 }
 
@@ -1341,6 +1341,15 @@ impl Drawer<'_> {
             );
             self.tip(frame, rect, path);
         }
+        // RUSTibites Improved: the time tags' two buttons (and name field) between the title and the bar's own buttons (the bar's left holds the species
+        // panel's tabs when a species is selected).
+        crate::time_tags_ui::Surface { ui: self.ui, metrics: self.metrics, s: self.s }.controls(
+            frame,
+            app,
+            crate::time_tags::TagPanel::Lineage,
+            [(x + widths[2]) / self.s + 30.0, 5.0, bar_button(1)[0] - 10.0, 40.0],
+            22.0,
+        );
         let _ = HIT_BAR;
     }
 
@@ -3129,6 +3138,144 @@ mod tests {
             clip,
         );
         assert!(frame.draws.is_empty());
+    }
+
+    /// The lineage panel's tag lines: the viewport-wide rectangles 2 high in a tag's colour (their y), and the chips' labels.
+    fn tag_line_ys(frame: &UiFrame, tag: &crate::time_tags::TimeTag) -> Vec<f32> {
+        let mut color = tag.color();
+        color[3] = 215;
+        frame
+            .draws
+            .iter()
+            .filter_map(|draw| match draw {
+                UiDraw::Rect { pos, size, color: c } if *c == color && size.y == 2.0 && size.x > 500.0 => Some(pos.y + 1.0),
+                _ => None,
+            })
+            .collect()
+    }
+
+    #[test]
+    fn time_tags_cross_the_lineage_graph_at_the_height_of_their_time_in_the_tree_and_in_the_mesh() {
+        use crate::time_tags::{TagPanel, species_point_of_minutes};
+        let (mut app, _, _) = app_with_tree();
+        app.world.simulated_time = 36_000.0;
+        let root = std::env::temp_dir().join(format!("rustibites_lineage_tags_{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&root);
+        std::fs::create_dir_all(&root).unwrap();
+        app.storage = bibites_io::storage::StoragePaths::new(&root);
+        let twenty = app.time_tags.add(36_000.0 - 20.0 * 60.0, "Twenty minutes back").unwrap();
+        let now_tag = app.time_tags.add(36_000.0, "Now tag").unwrap();
+        let frame = frame_of(&app);
+        let shown = texts(&frame);
+        assert!(shown.contains(&"Twenty minutes back".to_owned()) && shown.contains(&"Now tag".to_owned()), "{shown:?}");
+        assert!(shown.contains(&"Tag time".to_owned()) && shown.contains(&"Hide tags (2)".to_owned()), "{shown:?}");
+        for id in [twenty, now_tag] {
+            assert!(frame.actions.iter().any(|(_, a)| *a == UiAction::TimeTagRemove(id)), "remove {id}");
+        }
+        // The line of the tag 20 minutes old is at the axis' height of that place (between the 3rd and the 4th point), the one set now on the bottom line.
+        let view = &app.lineage_view;
+        let axis = crate::lineage_tree::time_axis();
+        let height = axis.height_of_place(species_point_of_minutes(20.0), view.step());
+        let wanted = view.to_screen(0.0, height)[1];
+        let tag = app.time_tags.get(twenty).unwrap().clone();
+        let ys = tag_line_ys(&frame, &tag);
+        assert_eq!(ys.len(), 1, "{ys:?}");
+        assert!((ys[0] - wanted).abs() < 0.01, "{} vs {wanted}", ys[0]);
+        let viewport = view.geometry().viewport;
+        let bottom = view.to_screen(0.0, 0.0)[1].clamp(viewport[1] + 1.0, viewport[1] + viewport[3] - 1.0);
+        let now_ys = tag_line_ys(&frame, app.time_tags.get(now_tag).unwrap());
+        assert_eq!(now_ys.len(), 1, "{now_ys:?}");
+        assert!((now_ys[0] - bottom).abs() < 0.01, "{} vs {bottom}", now_ys[0]);
+        // The panel's own button hides them; the buttons stay.
+        app.apply_ui_actions(&[UiAction::TimeTagsShow(TagPanel::Lineage)]);
+        let frame = frame_of(&app);
+        let shown = texts(&frame);
+        assert!(!shown.contains(&"Twenty minutes back".to_owned()) && tag_line_ys(&frame, &tag).is_empty());
+        assert!(shown.contains(&"Show tags (2)".to_owned()) && shown.contains(&"Tag time".to_owned()), "{shown:?}");
+        app.apply_ui_actions(&[UiAction::TimeTagsShow(TagPanel::Lineage)]);
+        // The mesh view crosses with the same tags (its own default step).
+        let (mut mesh_app, _, _) = app_with_mesh();
+        mesh_app.storage = app.storage.clone();
+        mesh_app.world.simulated_time = 36_000.0;
+        mesh_app.time_tags.add(36_000.0 - 20.0 * 60.0, "In the mesh").unwrap();
+        let frame = frame_of(&mesh_app);
+        assert!(mesh_app.lineage_view.mesh_mode);
+        assert!(texts(&frame).contains(&"In the mesh".to_owned()));
+        let tag = mesh_app.time_tags.get(1).unwrap();
+        let mesh_view = &mesh_app.lineage_view;
+        let height = axis.height_of_place(species_point_of_minutes(20.0), mesh_view.step());
+        let ys = tag_line_ys(&frame, tag);
+        assert_eq!(ys.len(), 1);
+        assert!((ys[0] - mesh_view.to_screen(0.0, height)[1]).abs() < 0.01);
+        let _ = std::fs::remove_dir_all(root);
+    }
+
+    #[test]
+    fn a_click_on_the_lineage_graph_sets_the_tag_at_the_moment_of_the_axis_under_the_pointer_in_the_tree_and_in_the_mesh() {
+        use crate::time_tags::TagPanel;
+        let root = std::env::temp_dir().join(format!("rustibites_lineage_tags_pick_{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&root);
+        std::fs::create_dir_all(&root).unwrap();
+        let (tree_app, _, _) = app_with_tree();
+        let (mesh_app, _, _) = app_with_mesh();
+        for (mut app, mesh) in [(tree_app, false), (mesh_app, true)] {
+            app.storage = bibites_io::storage::StoragePaths::new(&root);
+            // A world old enough for every height of the view (the log's last scale reaches far back).
+            let now = 1.0e9;
+            app.world.simulated_time = now;
+            assert_eq!(app.lineage_view.mesh_mode, mesh);
+            let viewport = app.lineage_view.geometry().viewport;
+            let pick = |app: &mut App, y: f32| -> Option<UiAction> {
+                app.cursor = Vec2::new(900.0, y);
+                frame_of(app).action_at(app.cursor)
+            };
+            // With no name field open the viewport takes no click for the tags.
+            assert!(!matches!(pick(&mut app, viewport[1] + viewport[3] * 0.5), Some(UiAction::TimeTagPlace(..))), "mesh {mesh}");
+            app.apply_ui_actions(&[UiAction::TimeTagStart(TagPanel::Lineage)]);
+            for fraction in [0.25, 0.5, 0.9] {
+                let y = viewport[1] + viewport[3] * fraction;
+                let Some(UiAction::TimeTagPlace(TagPanel::Lineage, seconds)) = pick(&mut app, y) else {
+                    panic!("the viewport takes the click (mesh {mesh}, {fraction})");
+                };
+                assert!(seconds < now && seconds >= 0.0, "{seconds}");
+                assert!(texts(&frame_of(&app)).iter().any(|text| text.starts_with("Tag here: ")), "the label says how long before now");
+                // The tag set there crosses the graph where the pointer was.
+                app.apply_ui_actions(&[UiAction::TimeTagPlace(TagPanel::Lineage, seconds)]);
+                assert!(app.time_tag_edit.is_none());
+                let tag = app.time_tags.all().iter().find(|tag| tag.seconds == seconds).expect("the tag").clone();
+                let ys = tag_line_ys(&frame_of(&app), &tag);
+                assert_eq!(ys.len(), 1, "mesh {mesh}, {fraction}: {ys:?}");
+                assert!((ys[0] - y).abs() < 0.1, "mesh {mesh}, {fraction}: {} vs {y}", ys[0]);
+                app.apply_ui_actions(&[UiAction::TimeTagStart(TagPanel::Lineage)]);
+            }
+            assert_eq!(app.time_tags.len(), 3);
+            // The pointer at the viewport's bottom edge still has a moment (never after now).
+            let Some(UiAction::TimeTagPlace(_, newest)) = pick(&mut app, viewport[1] + viewport[3] - 0.5) else { panic!("the viewport takes the click") };
+            assert!(newest <= now, "{newest}");
+        }
+        let _ = std::fs::remove_dir_all(root);
+    }
+
+    #[test]
+    fn the_name_field_of_the_lineage_panel_sits_between_the_title_and_the_bars_buttons_and_the_tag_set_there_is_the_apps_one() {
+        use crate::time_tags::TagPanel;
+        let (mut app, _, _) = app_with_tree();
+        let root = std::env::temp_dir().join(format!("rustibites_lineage_tags_field_{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&root);
+        std::fs::create_dir_all(&root).unwrap();
+        app.storage = bibites_io::storage::StoragePaths::new(&root);
+        app.apply_ui_actions(&[UiAction::TimeTagStart(TagPanel::Lineage)]);
+        let shown = texts(&frame_of(&app));
+        assert!(shown.contains(&"Tag now".to_owned()) && shown.iter().any(|text| text.starts_with("Name")), "{shown:?}");
+        app.typed = "Mass extinction".to_owned();
+        key(&mut app, FrameInput::default());
+        key(&mut app, FrameInput { enter: true, ..FrameInput::default() });
+        assert_eq!(app.time_tags.len(), 1);
+        // The same tag is the one the graphs panel's frame lists (the list is the app's, not a panel's).
+        let label = app.time_tags.all()[0].label.clone();
+        assert_eq!(label, "Mass extinction");
+        assert!(texts(&frame_of(&app)).contains(&label));
+        let _ = std::fs::remove_dir_all(root);
     }
 
     #[test]

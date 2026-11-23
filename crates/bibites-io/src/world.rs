@@ -350,6 +350,59 @@ pub fn save_bundle_from_contents(
     })
 }
 
+/// Builds a [`ScenarioBundle`] from the contents of a live world (`ScenarioSaver.SaveScenario` -> `SerializationHelper.SerializeScenario(saveRecommendations:
+/// true)`): its settings (the world's independent settings become the scenario's `recommended` ones), zones, zone groups, default-bibite rows and settings
+/// animators, and none of its entities. `template_bytes` are the `templates/<file>` entries the rows need (`SaveSystem.AddTemplatesToArchive`).
+pub fn scenario_bundle_from_contents(
+    contents: &WorldContents,
+    name: &str,
+    description: &str,
+    version: &str,
+    img_png: Option<Vec<u8>>,
+    template_bytes: Vec<(String, Vec<u8>)>,
+) -> Result<ScenarioBundle> {
+    let mut settings_file = empty_settings_file(contents.settings.clone());
+    settings_file.independents = None;
+    settings_file.recommended = Some(contents.settings.independents.clone());
+    settings_file.zones = contents.zones.clone();
+    settings_file.zone_groups = contents.zone_groups.clone();
+    settings_file.spawns = contents.scene.bibite_spawns.clone();
+    settings_file.changers = contents.settings_changers.clone();
+    let scenario = bibites_core::world::ScenarioData {
+        name: name.to_owned(),
+        version: version.to_owned(),
+        zones: contents.zones.clone(),
+        zone_groups: contents.zone_groups.clone(),
+        bibite_spawns: contents.scene.bibite_spawns.clone(),
+        settings_changers: contents.settings_changers.clone(),
+        ..bibites_core::world::ScenarioData::default()
+    };
+    Ok(ScenarioBundle {
+        settings: contents.settings.clone(),
+        scenario,
+        settings_file,
+        info: crate::bundle::ScenarioInfo {
+            name: name.to_owned(),
+            description: if description.is_empty() {
+                "No description was given for this scenario.".to_owned()
+            } else {
+                description.to_owned()
+            },
+            version: crate::Version::parse(version)?,
+            version_text: version.to_owned(),
+            is_official: false,
+            rank: None,
+            is_challenge: false,
+            stars: [None, None, None],
+            extra: Extra::new(),
+        },
+        templates: Vec::new(),
+        template_bytes,
+        img_png,
+        extra_entries: Vec::new(),
+    })
+}
+
 fn empty_settings_file(settings: SimSettings) -> ScenarioSettingsFile {
     ScenarioSettingsFile {
         scenario: settings.scenario,

@@ -881,6 +881,9 @@ pub struct SpeciesRegistry {
     log_period_seconds: f32,
     prune_point_limit: i32,
     name_rng: Rng,
+    /// RUSTibites Improved: the words this registry names species from instead of the process-wide pool (`species_names::name_pool`); the tests use it so that
+    /// they do not touch the shared one. Not saved, not part of any checkpoint.
+    own_name_pool: Option<std::sync::Arc<crate::species_names::NamePool>>,
     cached_span: f32,
     cached_span_active_count: usize,
     /// Prunes the world has not applied to its members yet (`removed`, `survivor`).
@@ -919,6 +922,7 @@ impl SpeciesRegistry {
             log_period_seconds: SPECIES_LOG_PERIOD_SECONDS,
             prune_point_limit: 2,
             name_rng: Rng::from_seed(seed),
+            own_name_pool: None,
             cached_span: 0.0,
             cached_span_active_count: usize::MAX,
             merges: Vec::new(),
@@ -2141,8 +2145,23 @@ impl SpeciesRegistry {
         (generic, specific)
     }
 
+    /// The words a name is drawn from now: this registry's own pool, else the player's (`species_names::name_pool`), else (`None`) the game's list.
+    fn name_pool(&self) -> Option<std::sync::Arc<crate::species_names::NamePool>> {
+        self.own_name_pool.clone().or_else(crate::species_names::name_pool)
+    }
+
+    /// Makes this registry name its species from `pool` (and not from the process-wide one) from now on; `None` takes its own pool away.
+    pub fn set_own_name_pool(&mut self, pool: Option<crate::species_names::NamePool>) {
+        self.own_name_pool = pool.map(std::sync::Arc::new);
+    }
+
+    /// How many different words the name generator can draw from (the loops that look for an unused name count by it).
+    fn name_reach(&self) -> usize {
+        self.name_pool().map_or(LATIN_NAMES.len(), |pool| pool.reach())
+    }
+
     fn random_unused_genus(&mut self) -> String {
-        let mut attempts = LATIN_NAMES.len() * 2;
+        let mut attempts = self.name_reach() * 2;
         loop {
             let name = self.weighted_random_patron(4.0);
             if !self
@@ -2159,7 +2178,7 @@ impl SpeciesRegistry {
     }
 
     fn random_unused_specific(&mut self, genus: Option<&str>) -> String {
-        let mut attempts = LATIN_NAMES.len() / 2;
+        let mut attempts = self.name_reach() / 2;
         loop {
             let name = self.weighted_random_patron(1.5).to_lowercase();
             let used = self.records.iter().any(|record| {
@@ -2178,7 +2197,12 @@ impl SpeciesRegistry {
     /// number is near 1 for most draws (U^4 for a genus, U^1.5 for an epithet), so the
     /// words at the END of the list are the common ones and the first are rare.
     fn weighted_random_patron(&mut self, weight: f32) -> String {
-        let sample = 1.0 - self.name_rng.f32().powf(weight);
+        // One draw of the name stream, as ever; RUSTibites Improved's pool of the player's words (when there is one) turns it into a word of its own.
+        let draw = self.name_rng.f32();
+        if let Some(pool) = self.name_pool() {
+            return pool.pick(draw, weight);
+        }
+        let sample = 1.0 - draw.powf(weight);
         let len = LATIN_NAMES.len();
         let index = ((len as f32 * sample).floor() as usize).min(len - 1);
         LATIN_NAMES[index].to_string()
@@ -3020,6 +3044,47 @@ mod tests {
     }
 
     #[test]
+    fn a_registry_with_the_players_own_words_names_its_species_from_them_and_one_without_names_them_as_the_game_does() {
+        use crate::species_names::{NameMode, NamePool};
+        let mine = ["fluffy", "bubbles", "mossy", "tiny"];
+        let pool = |mode| NamePool::new(mine.iter().map(|word| (*word).to_owned()).collect(), mode);
+        // Only the player's words: both words of every name are theirs (the genus with its first letter raised, the epithet as it is).
+        let mut registry = SpeciesRegistry::with_seed(7);
+        registry.set_own_name_pool(pool(NameMode::Mine));
+        for _ in 0..200 {
+            let generic = registry.random_unused_genus();
+            let specific = registry.random_unused_specific(Some(&generic));
+            assert!(mine.iter().any(|word| capitalize(word) == generic), "{generic:?}");
+            assert!(mine.contains(&specific.as_str()), "{specific:?}");
+        }
+        // Both lists: some of each.
+        let mut both = SpeciesRegistry::with_seed(7);
+        both.set_own_name_pool(pool(NameMode::Both));
+        let names: Vec<String> = (0..400).map(|_| both.random_unused_specific(None)).collect();
+        let theirs = names.iter().filter(|name| mine.contains(&name.as_str())).count();
+        assert!((150..=250).contains(&theirs), "{theirs} of 400 from the player's words");
+        assert!(names.iter().any(|name| LATIN_NAMES.iter().any(|word| word.to_lowercase() == *name)));
+        // The name stream is used the same with a pool as without one: after the same number of names the next draw is the same number.
+        let mut plain = SpeciesRegistry::with_seed(7);
+        let mut with_pool = SpeciesRegistry::with_seed(7);
+        with_pool.set_own_name_pool(pool(NameMode::Mine));
+        for _ in 0..10 {
+            let _ = plain.weighted_random_patron(1.5);
+            let _ = with_pool.weighted_random_patron(1.5);
+        }
+        assert_eq!(plain.name_rng.next_u64(), with_pool.name_rng.next_u64());
+        // Taking the pool away gives the game's names again, the same ones as a registry that never had one.
+        with_pool.set_own_name_pool(None);
+        let mut never = SpeciesRegistry::with_seed(11);
+        let mut taken = SpeciesRegistry::with_seed(11);
+        taken.set_own_name_pool(pool(NameMode::Mine));
+        taken.set_own_name_pool(None);
+        for _ in 0..50 {
+            assert_eq!(never.random_unused_genus(), taken.random_unused_genus());
+        }
+    }
+
+    #[test]
     fn species_are_named_after_the_games_own_latin_words() {
         // `SpeciesNameGenerator.latinNames`: the words of the game's `patreon_supporters` asset (the four the source names, then the
         // supporters', the biggest pledges first), exactly as the game has them: some end in a space.
@@ -3461,7 +3526,15 @@ mod tests {
     /// Pinned again (0xc2bc_ff31_8241_1f0e before) on 2026-11-13: the test is ignored and had not been run since the contact physics, the pellet friction and the grabs of
     /// 2026-11-11 changed what a population does; the code of the day before the glitch fixes gave this very value, and so do the fixes (a lethal spend that stands,
     /// a hold that is checked against its prey's generation, a dead holder that lets go, poses that are numbers: none of it happens in this run).
-    const EVOLUTION_REGRESSION_FINGERPRINT: u64 = 0xc40a_a2b2_b958_ec7c;
+    /// Pinned again (0xc40a_a2b2_b958_ec7c before) on 2026-11-19 when the brain's arithmetic became the game's (a C# expression is done in double and rounded to float only at
+    /// a store, a call argument and a return: Sigmoid, Gaussian, Integrator, Inhibitory, SoftLatch; the Herding output is computed with herding off; `tanh(pheroSum / 5)` in double;
+    /// measured bit for bit against the original game, `tools/braincheck/game_diff`): the nodes after a node that was one ulp off carry it on, so a population moves.
+    /// Pinned again (0x160b_d186_45b3_8cc5 before) on 2026-11-19 when the senses became the game's, measured against the original game (`sense_vs_game`): Unity's vector maths in double
+    /// (`magnitude`, `SignedAngle` by `acos`, `normalized`), the field-of-view weights as one double expression, `Transform.up` from the quaternion, the pheromone sense one tick late,
+    /// the cadence counters subtracting the period, the growth and upkeep expressions in double: the population moves (births 25 -> 20, deaths 41 -> 44).
+    /// Pinned again (0xa818_5c92_2bf4_bf31 before) on 2026-11-19 when a child's brain started fresh as in the game (`CopyBrain` copies only the structure and `FinalizeEditing` runs every
+    /// non-input node once, so a node nothing feeds holds `f(bias)`; the port cloned the parent's running node values, which stayed for ever in an unfed node): births 20 -> 20, deaths 44 -> 43.
+    const EVOLUTION_REGRESSION_FINGERPRINT: u64 = 0xf292_be2d_a8ad_d122;
 
     /// An evolving population (births, deaths, mutations, species changes, eaten and rotting pellets) with every parallel
     /// stage forced on gives the same checkpoint, byte for byte, as the serial run.

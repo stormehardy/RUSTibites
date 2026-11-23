@@ -1,0 +1,11 @@
+[package]
+name = "bibites-audio"
+description = "Plays one music file at a time through the operating system's own player (RUSTibites Improved's jukebox)"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+
+# No dependencies: on Windows the file is played by the system's MCI player (`winmm.dll`, which decodes mp3, wav, wma and m4a/aac with the codecs
+# Windows ships), so the project takes no audio library and no codec of its own. The few `unsafe` calls of that are all in `src/mci.rs`.
+[dependencies]

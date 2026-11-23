@@ -52,6 +52,21 @@ pub const GROUP_BASE: u16 = 0xC000;
 pub const ANIMATOR_BASE: u16 = 0xE000;
 /// The animator creator panel (its sliders are addressed by the creator's field ids).
 pub const CREATOR_REF: u16 = 0xFFFF;
+/// RUSTibites Improved: `STREAM_BASE` up to the creator's number addresses stream `index - STREAM_BASE` of the Zones tab's Streams list (the cards reuse the zone sliders'
+/// actions). It is above the animators', so no animator list is long enough to reach it; the app asks [`stream_index`] before it asks [`zone_ref`].
+pub const STREAM_BASE: u16 = 0xF000;
+/// A stream's start x.
+pub const STREAM_START_X: u8 = 40;
+/// A stream's start y.
+pub const STREAM_START_Y: u8 = 41;
+/// A stream's finish x.
+pub const STREAM_END_X: u8 = 42;
+/// A stream's finish y.
+pub const STREAM_END_Y: u8 = 43;
+/// A stream's width.
+pub const STREAM_WIDTH: u8 = 44;
+/// A stream's strength.
+pub const STREAM_STRENGTH: u8 = 45;
 /// An animator card's Start Time slider.
 pub const ANIM_START: u8 = 30;
 /// An animator card's Repeat toggle.
@@ -118,6 +133,103 @@ pub fn group_ref(group: usize) -> u16 {
 #[must_use]
 pub fn animator_ref(changer: usize) -> u16 {
     ANIMATOR_BASE + changer as u16
+}
+
+/// The zone index that addresses stream `stream`.
+#[must_use]
+pub fn stream_ref(stream: usize) -> u16 {
+    STREAM_BASE + (stream as u16).min(CREATOR_REF - STREAM_BASE - 1)
+}
+
+/// The stream a zone index of an action addresses, `None` when it addresses something else.
+#[must_use]
+pub fn stream_index(index: u16) -> Option<usize> {
+    (STREAM_BASE..CREATOR_REF).contains(&index).then(|| usize::from(index - STREAM_BASE))
+}
+
+/// The label of a stream's slider.
+#[must_use]
+pub fn stream_name_of(field: u8) -> &'static str {
+    match field {
+        STREAM_START_X => "Start X",
+        STREAM_START_Y => "Start Y",
+        STREAM_END_X => "End X",
+        STREAM_END_Y => "End Y",
+        STREAM_WIDTH => "Width",
+        STREAM_STRENGTH => "Strength",
+        _ => "",
+    }
+}
+
+/// The slider of a stream's field: the coordinates run over the whole world (`-sim_size` to `sim_size`), the width over 10 to 3000 u on a log scale, the strength over 0 to
+/// 500 u/s per second.
+#[must_use]
+pub fn stream_slider_info(field: u8, sim_size: f32) -> Option<SliderInfo> {
+    use bibites_core::stream::{STREAM_STRENGTH_DEFAULT, STREAM_STRENGTH_MAX, STREAM_STRENGTH_MIN, STREAM_WIDTH_DEFAULT, STREAM_WIDTH_MAX, STREAM_WIDTH_MIN};
+    Some(match field {
+        STREAM_START_X | STREAM_START_Y | STREAM_END_X | STREAM_END_Y => SliderInfo {
+            min: -sim_size,
+            max: sim_size,
+            default: 0.0,
+            mode: SliderMode::Linear,
+            units: " u",
+            precision: 0,
+            si: false,
+            factor: 1.0,
+        },
+        STREAM_WIDTH => SliderInfo {
+            min: STREAM_WIDTH_MIN,
+            max: STREAM_WIDTH_MAX,
+            default: STREAM_WIDTH_DEFAULT,
+            mode: SliderMode::Log { base: 10.0, span: None },
+            units: " u",
+            precision: 0,
+            si: false,
+            factor: 1.0,
+        },
+        STREAM_STRENGTH => SliderInfo {
+            min: STREAM_STRENGTH_MIN,
+            max: STREAM_STRENGTH_MAX,
+            default: STREAM_STRENGTH_DEFAULT,
+            mode: SliderMode::Linear,
+            units: " u/s\u{b2}",
+            precision: 0,
+            si: false,
+            factor: 1.0,
+        },
+        _ => return None,
+    })
+}
+
+/// The current value of a stream's field.
+#[must_use]
+pub fn stream_value_of(stream: &bibites_core::stream::Stream, field: u8) -> f32 {
+    match field {
+        STREAM_START_X => stream.start.x,
+        STREAM_START_Y => stream.start.y,
+        STREAM_END_X => stream.end.x,
+        STREAM_END_Y => stream.end.y,
+        STREAM_WIDTH => stream.width,
+        STREAM_STRENGTH => stream.strength,
+        _ => 0.0,
+    }
+}
+
+/// Writes a stream's field (every value is kept inside its range: the world for a coordinate, the stream's own limits for the width and the strength).
+pub fn set_stream_value(stream: &mut bibites_core::stream::Stream, field: u8, value: f32, sim_size: f32) {
+    if !value.is_finite() {
+        return;
+    }
+    let coordinate = value.clamp(-sim_size, sim_size);
+    match field {
+        STREAM_START_X => stream.set_start(bibites_core::math::Vec2::new(coordinate, stream.start.y)),
+        STREAM_START_Y => stream.set_start(bibites_core::math::Vec2::new(stream.start.x, coordinate)),
+        STREAM_END_X => stream.set_end(bibites_core::math::Vec2::new(coordinate, stream.end.y)),
+        STREAM_END_Y => stream.set_end(bibites_core::math::Vec2::new(stream.end.x, coordinate)),
+        STREAM_WIDTH => stream.set_width(value),
+        STREAM_STRENGTH => stream.set_strength(value),
+        _ => {}
+    }
 }
 
 /// Slider description of a zone group's count or density (`LogIntSettingSlider(10)` over 1 to 1000, `LogFloatSettingSlider(10)` over 0.01 to 50).
@@ -886,6 +998,54 @@ pub fn reset_material_field(material: &mut MaterialSetting, kind: MaterialKind, 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn a_stream_index_is_told_apart_from_the_zones_groups_animators_and_the_creator() {
+        for (index, expected) in [(0, None), (TEMPLATE_BASE, None), (GROUP_BASE + 3, None), (ANIMATOR_BASE + 7, None), (CREATOR_REF, None), (STREAM_BASE, Some(0)), (STREAM_BASE + 5, Some(5))] {
+            assert_eq!(stream_index(index), expected, "{index:#x}");
+        }
+        for stream in [0, 1, 40] {
+            assert_eq!(stream_index(stream_ref(stream)), Some(stream));
+        }
+        assert!(STREAM_BASE > ANIMATOR_BASE && stream_ref(usize::MAX / 2) < CREATOR_REF, "a huge number does not become the creator's");
+    }
+
+    #[test]
+    fn a_streams_sliders_cover_the_world_and_the_values_written_stay_in_range() {
+        use bibites_core::math::Vec2;
+        use bibites_core::stream::{STREAM_STRENGTH_MAX, STREAM_WIDTH_MAX, STREAM_WIDTH_MIN, Stream};
+        let sim = 2000.0;
+        for field in [STREAM_START_X, STREAM_START_Y, STREAM_END_X, STREAM_END_Y, STREAM_WIDTH, STREAM_STRENGTH] {
+            let info = stream_slider_info(field, sim).expect("a slider");
+            assert!(info.min < info.max && (info.min..=info.max).contains(&info.default), "field {field}");
+            assert!(!stream_name_of(field).is_empty());
+        }
+        assert!(stream_slider_info(0, sim).is_none() && stream_slider_info(STREAM_STRENGTH + 1, sim).is_none());
+        let coordinate = stream_slider_info(STREAM_START_X, sim).unwrap();
+        assert_eq!((coordinate.min, coordinate.max), (-sim, sim));
+        let mut stream = Stream::new(Vec2::new(-100.0, 0.0), Vec2::new(100.0, 0.0));
+        set_stream_value(&mut stream, STREAM_START_X, 250.0, sim);
+        set_stream_value(&mut stream, STREAM_START_Y, -75.0, sim);
+        set_stream_value(&mut stream, STREAM_END_X, 1.0e9, sim);
+        set_stream_value(&mut stream, STREAM_END_Y, -1.0e9, sim);
+        assert_eq!((stream.start, stream.end), (Vec2::new(250.0, -75.0), Vec2::new(sim, -sim)));
+        set_stream_value(&mut stream, STREAM_WIDTH, 1.0e9, sim);
+        assert_eq!(stream.width, STREAM_WIDTH_MAX);
+        set_stream_value(&mut stream, STREAM_WIDTH, 0.0, sim);
+        assert_eq!(stream.width, STREAM_WIDTH_MIN);
+        set_stream_value(&mut stream, STREAM_STRENGTH, 1.0e9, sim);
+        assert_eq!(stream.strength, STREAM_STRENGTH_MAX);
+        let before = stream;
+        set_stream_value(&mut stream, STREAM_STRENGTH, f32::NAN, sim);
+        set_stream_value(&mut stream, STREAM_START_X, f32::INFINITY, sim);
+        assert_eq!(stream, before, "not a number: unchanged");
+        for field in [STREAM_START_X, STREAM_START_Y, STREAM_END_X, STREAM_END_Y, STREAM_WIDTH, STREAM_STRENGTH] {
+            let value = stream_value_of(&stream, field);
+            let mut copy = stream;
+            set_stream_value(&mut copy, field, value, sim);
+            assert_eq!(copy, stream, "writing back what a field reads changes nothing (field {field})");
+        }
+    }
 
     fn zone(name: &str, id: u32) -> ZoneSettings {
         let mut zone = ZoneSettings::game_defaults();

@@ -2014,7 +2014,9 @@ pub struct SettingsChanger {
     pub points: Vec<SplinePoint>,
     /// Whether the curve repeats forever.
     pub repeat: bool,
-    /// Delay before the animator starts, in simulated seconds.
+    /// Delay before the animator starts, in simulated seconds. The game never checks the sign (`SettingsChanger.Update`: `time -= start`, nothing runs
+    /// while the time is below zero), so a negative start is a phase shift: the curve is already `-start` seconds along at the first tick (the
+    /// "Seasonal Desert v3" scenario starts its winter animators at -43,200).
     pub start: f32,
 }
 
@@ -2050,7 +2052,7 @@ impl SettingsChanger {
                 self.name
             )));
         }
-        if !self.start.is_finite() || self.start < 0.0 {
+        if !self.start.is_finite() {
             return Err(Error::invalid_data(format!(
                 "settings changer '{}' has invalid start {}",
                 self.name, self.start
@@ -3252,9 +3254,11 @@ mod tests {
         changer.points = vec![SplinePoint::new(0.0, 1.0)];
         changer.start = -1.0;
         assert!(
-            changer.validate().is_err(),
-            "negative start must be rejected"
+            changer.validate().is_ok(),
+            "a negative start is a phase shift in the game (a published scenario starts at -43200)"
         );
+        changer.start = f32::NAN;
+        assert!(changer.validate().is_err(), "a start that is not a number must be rejected");
         changer.start = 0.0;
         changer.points[0].x = f32::NAN;
         assert!(

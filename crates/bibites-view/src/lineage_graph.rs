@@ -236,7 +236,96 @@ impl Drawer<'_> {
                 self.node(frame, app, view, node, outlined, clip, &mut next_hit);
             }
         }
+        if (view.mesh_mode && view.mesh.built) || (!view.mesh_mode && view.layout.built) {
+            self.time_tag_lines(frame, app, view, g.viewport, clip);
+            self.time_tag_pick(frame, app, view, g.viewport, clip);
+        }
         self.scroll_bars(frame, view, g);
+    }
+
+    /// RUSTibites Improved: the time tags as coloured lines across the viewport at the height of their time on the axis (the tree's and the mesh's alike),
+    /// each with its label chip hung above the line at the right (the species panel covers the left) and shifted to the left when chips would meet. `viewport` is in reference px, `clip` the same in
+    /// screen px.
+    fn time_tag_lines(&self, frame: &mut UiFrame, app: &App, view: &View, viewport: Rect, clip: Rect) {
+        use crate::time_tags::{self, TagPanel};
+        use crate::time_tags_ui::{CHIP_HEIGHT, Surface, assign_rows, chip_width};
+        if !app.time_tags_shown(TagPanel::Lineage) {
+            return;
+        }
+        let now = app.simulated_time();
+        let axis = crate::lineage_tree::time_axis();
+        // (the tag, the line's y in reference px), the newest tag (the lowest line) first.
+        let mut lines: Vec<(&crate::time_tags::TimeTag, f32)> = app
+            .time_tags
+            .up_to(now)
+            .map(|tag| {
+                let place = time_tags::species_point_of_minutes(time_tags::minutes_ago(now, tag.seconds));
+                (tag, view.to_screen(0.0, axis.height_of_place(place, view.step()))[1])
+            })
+            // A tag set this very moment stands on the bottom edge: it is kept a pixel inside so that its line shows whole.
+            .filter(|(_, y)| *y >= viewport[1] - 1.0 && *y <= viewport[1] + viewport[3] + 1.0)
+            .map(|(tag, y)| (tag, y.clamp(viewport[1] + 1.0, viewport[1] + viewport[3] - 1.0)))
+            .collect();
+        lines.sort_by(|a, b| a.1.total_cmp(&b.1));
+        for (tag, y) in &lines {
+            let mut color = tag.color();
+            color[3] = 215;
+            clip_rect(frame, [clip[0], y * self.s - self.s, clip[2], 2.0 * self.s], color, clip);
+        }
+        // Chips whose rows (their heights) meet go to the next column of chips.
+        let surface = Surface { ui: self.ui, metrics: self.metrics, s: self.s };
+        let spans: Vec<(f32, f32)> = lines.iter().map(|(_, y)| (y - CHIP_HEIGHT - 2.0, *y)).collect();
+        let columns = assign_rows(&spans, 4, 2.0);
+        for (index, (tag, y)) in lines.iter().enumerate() {
+            let top = (y - CHIP_HEIGHT - 2.0).max(viewport[1]);
+            let width = chip_width(self.metrics, tag);
+            // The right edge keeps clear of the axis' labels ("2h 10m ago") at the viewport's edge.
+            let left = viewport[0] + viewport[2] - 100.0 - width - columns[index] as f32 * 330.0;
+            if left < viewport[0] {
+                continue;
+            }
+            surface.chip(frame, tag, left, top, TagPanel::Lineage.remove_base() + index as u32);
+        }
+    }
+
+    /// RUSTibites Improved: while the lineage panel's time tag name field is open the viewport takes the click and sets the tag at the moment of the axis
+    /// under the pointer (the tree's and the mesh's alike: the axis is the same, with the view's own first step). A white line across the viewport and a label
+    /// (how long before now) show where. `viewport` is in reference px, `clip` the same in screen px.
+    fn time_tag_pick(&self, frame: &mut UiFrame, app: &App, view: &View, viewport: Rect, clip: Rect) {
+        use crate::time_tags::{self, TagPanel};
+        use crate::time_tags_ui::{CHIP_HEIGHT, Surface, is_picking, pick_text, width_of};
+        if !is_picking(app, TagPanel::Lineage) {
+            return;
+        }
+        let cursor = [self.cursor.x / self.s, self.cursor.y / self.s];
+        let y = cursor[1].clamp(viewport[1], viewport[1] + viewport[3]);
+        // The height of the axis under the pointer (up from the bottom, where now is), and the place on the log's points it is.
+        let height = view.to_content(0.0, y)[1].max(0.0);
+        let place = crate::lineage_tree::time_axis().place_of_height(height, view.step());
+        let Some(minutes) = time_tags::species_minutes_of_place(place) else {
+            return;
+        };
+        let now = app.simulated_time();
+        frame.hit(
+            TagPanel::Lineage.hit_base() + 3,
+            Vec2::new(clip[0], clip[1]),
+            Vec2::new(clip[2], clip[3]),
+            UiAction::TimeTagPlace(TagPanel::Lineage, now - minutes * 60.0),
+        );
+        let over = cursor[0] >= viewport[0]
+            && cursor[0] < viewport[0] + viewport[2]
+            && cursor[1] >= viewport[1]
+            && cursor[1] < viewport[1] + viewport[3];
+        if !over {
+            return;
+        }
+        clip_rect(frame, [clip[0], y * self.s - self.s, clip[2], 2.0 * self.s], [255, 255, 255, 210], clip);
+        let surface = Surface { ui: self.ui, metrics: self.metrics, s: self.s };
+        let text = pick_text(minutes * 60.0, now);
+        let width = width_of(self.metrics, &text, 15.0) + 16.0;
+        // Beside the tags' chips at the right, clear of the axis' labels, above the line (below it at the top of the viewport).
+        let top = if y - CHIP_HEIGHT - 4.0 < viewport[1] { y + 4.0 } else { y - CHIP_HEIGHT - 4.0 };
+        surface.readout(frame, &text, viewport[0] + viewport[2] - 100.0 - width, top, f32::INFINITY);
     }
 
     /// A rectangle in reference px as screen px.

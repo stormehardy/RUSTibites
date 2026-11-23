@@ -59,6 +59,43 @@ impl TipRect {
 /// The trigger of the captured control at scene path `path`.
 #[must_use]
 pub fn find(path: &str) -> Option<Tip> {
+    // RUSTibites Improved: the gene selector tower's button of the placer panel (the captures know only the game's own).
+    if path.ends_with("/Placers/GeneSelector") {
+        return Some(Tip {
+            path: "",
+            title: "Gene Selector Tower",
+            content: "Place a tower that kills bibites by the value of one gene, every cycle, as the Color Selector does by colour",
+            ui: true,
+            instant: false,
+        });
+    }
+    if path.ends_with("/Placers/VentTower") {
+        return Some(Tip {
+            path: "",
+            title: "Hydrothermal Vent Tower",
+            content: "Place a tower that shoots plant pellets in random directions, at a speed, size and rate you set, up to a cap",
+            ui: true,
+            instant: false,
+        });
+    }
+    if path.ends_with("/Placers/ForceTower") {
+        return Some(Tip {
+            path: "",
+            title: "Force Tower",
+            content: "Place a tower that pulls the bibites, pellets and eggs in its range towards it, or pushes them away (a negative strength)",
+            ui: true,
+            instant: false,
+        });
+    }
+    if path.ends_with("/Placers/WhirlTower") {
+        return Some(Tip {
+            path: "",
+            title: "Whirlpool Tower",
+            content: "Place a tower that turns the bibites, pellets and eggs in its range round it, clockwise or counterclockwise, as fast as you set",
+            ui: true,
+            instant: false,
+        });
+    }
     let tips = crate::tooltip_data::TOOLTIPS;
     tips.binary_search_by(|tip| tip.path.cmp(path))
         .ok()
@@ -121,6 +158,20 @@ pub fn of_user_setting(label: &str) -> Option<Tip> {
             content: item.help,
             ui: true,
             instant: false,
+        })
+        // RUSTibites Improved: the rows of the Music page and of the Species Names page.
+        .or_else(|| {
+            crate::jukebox::help_of(label)
+                .or_else(|| crate::name_list::help_of(label))
+                .or_else(|| crate::improved_settings::help_of(label))
+                .or_else(|| crate::machine_calibration::help_of(label))
+                .map(|(title, content)| Tip {
+                path: "",
+                title,
+                content,
+                ui: true,
+                instant: false,
+            })
         })
 }
 

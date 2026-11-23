@@ -97,6 +97,40 @@ impl TimeAxis {
         default_step * units
     }
 
+    /// The height of a place between two points of the log (`place` as `time_tags::species_point_of_minutes` gives it: `-1.0` is now, whole numbers are
+    /// the points, and between two the height is in proportion): RUSTibites Improved's time tags stand there.
+    #[must_use]
+    pub fn height_of_place(&self, place: f64, default_step: f32) -> f32 {
+        if place <= -1.0 {
+            return 0.0;
+        }
+        let below = place.floor();
+        let fraction = (place - below) as f32;
+        let low = self.height_of_point(below as i32, default_step);
+        let high = self.height_of_point(below as i32 + 1, default_step);
+        low + (high - low) * fraction
+    }
+
+    /// The inverse of [`TimeAxis::height_of_place`]: the place on the log's point scale (`-1.0` is now) that stands `height` up the axis for a step of
+    /// `default_step`. A height at or below the top (now) is now. Clicking a height on the lineage graph turns into a time with this.
+    #[must_use]
+    pub fn place_of_height(&self, height: f32, default_step: f32) -> f64 {
+        let units = f64::from(height) / f64::from(default_step.max(f32::EPSILON));
+        if units.is_nan() || units <= 0.0 {
+            return -1.0;
+        }
+        let last = f64::from(*self.progress.last().unwrap_or(&0.0));
+        // Past the finite scales every point is one unit further.
+        if units >= last {
+            return self.non_infinite_max_n as f64 - 1.0 + (units - last);
+        }
+        // `progress` only grows: the first point at or beyond `units`, and the one before it.
+        let after = self.progress.partition_point(|value| f64::from(*value) < units);
+        let before = if after == 0 { 0.0 } else { f64::from(self.progress[after - 1]) };
+        let upto = f64::from(self.progress[after]);
+        after as f64 - 1.0 + (units - before) / (upto - before)
+    }
+
     /// `StepOfPoint(i)`: the gap between point `i` and the one before it (the game only hands it to the axis
     /// lines as their largest label size, which nothing reads).
     #[must_use]
@@ -752,6 +786,27 @@ mod tests {
     }
 
     const VIEWPORT: [f32; 2] = [1865.0, 990.0];
+
+    #[test]
+    fn a_place_between_two_points_is_a_height_between_theirs() {
+        let axis = time_axis();
+        // Now is the bottom; whole places are the points; halfway is halfway; far past the finite scales still grows.
+        assert_eq!(axis.height_of_place(-1.0, 75.0), 0.0);
+        assert_eq!(axis.height_of_place(-3.0, 75.0), 0.0, "a place before now is now");
+        assert_eq!(axis.height_of_place(0.0, 75.0), axis.height_of_point(0, 75.0));
+        assert_eq!(axis.height_of_place(40.0, 50.0), axis.height_of_point(40, 50.0));
+        let half = axis.height_of_place(2.5, 75.0);
+        assert!((half - (axis.height_of_point(2, 75.0) + axis.height_of_point(3, 75.0)) / 2.0).abs() < 1e-3);
+        assert!((axis.height_of_place(-0.5, 75.0) - 37.5).abs() < 1e-3, "half way from now to the first point");
+        // The way back: every place makes the same place again through its height, and a height above now is now.
+        for place in [-1.0, -0.5, 0.0, 0.25, 2.5, 11.0, 11.5, 12.0, 40.0, 100.5, 400.5] {
+            let back = axis.place_of_height(axis.height_of_place(place, 75.0), 75.0);
+            assert!((back - place).abs() < 1e-3, "place {place} came back as {back}");
+        }
+        assert_eq!(axis.place_of_height(0.0, 75.0), -1.0);
+        assert_eq!(axis.place_of_height(-20.0, 75.0), -1.0);
+        assert!(axis.height_of_place(400.5, 75.0) > axis.height_of_place(400.0, 75.0));
+    }
 
     #[test]
     fn the_time_axis_grows_with_the_points_and_the_older_scales_take_more_height() {

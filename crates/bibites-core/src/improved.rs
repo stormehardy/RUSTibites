@@ -24,17 +24,37 @@
 pub enum Feature {
     /// Does nothing to the simulation: proves that a switch reaches the world (see the module's documentation).
     SwitchProbe,
+    /// The gene selector tower acts: every cycle it kills bibites by the value of one gene (`gene_selector.rs`). Towers exist in a world only when the player
+    /// places or loads them, so with none nothing changes whether the switch is on or off.
+    GeneSelectorTower,
+    /// The hydrothermal vent tower acts: it shoots plant pellets in random directions (`vent.rs`). Towers exist in a world only when the player places or loads
+    /// them, so with none nothing changes whether the switch is on or off.
+    HydrothermalVent,
+    /// The force tower acts: it pulls bodies towards itself or pushes them away from itself (`force_tower.rs`). Towers exist in a world only when the player
+    /// places or loads them, so with none nothing changes whether the switch is on or off.
+    ForceTower,
+    /// Streams act: a band of the world the player defines (a start, a finish, a width, a strength) pushes the bodies in it from the start towards the finish
+    /// (`stream.rs`). Streams exist in a world only when the player makes or loads them, so with none nothing changes whether the switch is on or off.
+    Streams,
+    /// The whirlpool tower acts: it turns the bodies round it, clockwise or counterclockwise (`whirlpool.rs`). Towers exist in a world only when the player places
+    /// or loads them, so with none nothing changes whether the switch is on or off.
+    Whirlpool,
 }
 
 impl Feature {
     /// Every feature, in the order they are listed to the player.
-    pub const ALL: &'static [Feature] = &[Feature::SwitchProbe];
+    pub const ALL: &'static [Feature] = &[Feature::SwitchProbe, Feature::GeneSelectorTower, Feature::HydrothermalVent, Feature::ForceTower, Feature::Streams, Feature::Whirlpool];
 
     /// The feature's place in the switches' bit set (stable: never reuse a number of a removed feature that a settings file may still name).
     #[must_use]
     const fn index(self) -> u32 {
         match self {
             Feature::SwitchProbe => 0,
+            Feature::GeneSelectorTower => 1,
+            Feature::HydrothermalVent => 2,
+            Feature::ForceTower => 3,
+            Feature::Streams => 4,
+            Feature::Whirlpool => 5,
         }
     }
 
@@ -43,6 +63,11 @@ impl Feature {
     pub const fn key(self) -> &'static str {
         match self {
             Feature::SwitchProbe => "switch_probe",
+            Feature::GeneSelectorTower => "gene_selector_tower",
+            Feature::HydrothermalVent => "hydrothermal_vent",
+            Feature::ForceTower => "force_tower",
+            Feature::Streams => "streams",
+            Feature::Whirlpool => "whirlpool",
         }
     }
 
@@ -51,6 +76,11 @@ impl Feature {
     pub const fn title(self) -> &'static str {
         match self {
             Feature::SwitchProbe => "Switch probe",
+            Feature::GeneSelectorTower => "Gene selector towers",
+            Feature::HydrothermalVent => "Hydrothermal vents",
+            Feature::ForceTower => "Force towers",
+            Feature::Streams => "Streams",
+            Feature::Whirlpool => "Whirlpool towers",
         }
     }
 
@@ -59,6 +89,11 @@ impl Feature {
     pub const fn description(self) -> &'static str {
         match self {
             Feature::SwitchProbe => "Changes nothing in the simulation; it only shows that the switches reach the world.",
+            Feature::GeneSelectorTower => "Gene selector towers kill bibites by the value of a gene, every cycle, as the colour killer does by colour.",
+            Feature::HydrothermalVent => "Hydrothermal vents shoot plant pellets in random directions at a set speed, size and rate, up to a cap.",
+            Feature::ForceTower => "Force towers pull the bibites, pellets and eggs in their range towards them, or push them away.",
+            Feature::Streams => "Streams push the bibites, pellets and eggs in a band of the world from its start towards its finish.",
+            Feature::Whirlpool => "Whirlpool towers turn the bibites, pellets and eggs in their range round the tower, clockwise or counterclockwise.",
         }
     }
 

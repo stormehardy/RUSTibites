@@ -33,8 +33,13 @@ pub const FIRST_OUTPUT: usize = N_INPUTS;
 pub const FIRST_HIDDEN: usize = N_INPUTS + N_OUTPUTS;
 /// Output clamp applied by `ExecuteNeuron` (`NEATBrain.cs:639`).
 pub const OUTPUT_CLAMP: f32 = 1024.0;
-/// Node index of the `Herding` output (`33 + 2`, `NEATBrain.cs:515,694`).
+/// Node index of the `Herding` output (`33 + 2`, `NEATBrain.cs:694`).
 pub const HERDING_OUTPUT_NODE: usize = FIRST_OUTPUT + 2;
+/// The node `ComputeProcessingStructure` leaves out when herding is off (`NEATBrain.cs:515`: `herdingEnabled || Synapses[i].NodeOut != 2`). The author meant the
+/// Herding output, but the line compares with the literal `2`, which is an INPUT node (`LifeRatio`) that no synapse ends in: with herding off the game still
+/// computes the Herding output when synapses end in it (found 2026-11-19 against the original game: its value moves tick by tick, `brain_vs_game` in
+/// `crates/bibites-cli/examples`). The port copies the literal. (`AddSynapse`, `:694`, does compare with `NInputs + 2`, and does not create such a synapse.)
+pub const HERDING_SKIPPED_NODE: usize = 2;
 /// Default brain period (s) at the game's default settings: `brain_tps/sim_tps`
 /// = `2/30` (`docs/spec/01-brain-genetics.md` ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§3.1).
 pub const DEFAULT_BRAIN_PERIOD: f32 = 2.0 / 30.0;
@@ -684,7 +689,10 @@ impl BrainUpkeep {
     /// Energy per second at the given upkeep settings.
     #[inline]
     pub fn energy_per_second(&self, synapse_upkeep: f32, neuron_upkeep: f32) -> f32 {
-        self.synapses as f32 * synapse_upkeep + self.hidden as f32 * neuron_upkeep
+        // `(float)nSynaps * synapseUpkeepCost + (float)nHidden * neuronUpkeepCost` is one expression of the game's `double` arithmetic, rounded once as the property
+        // returns it (see `activation_function`).
+        (f64::from(self.synapses as f32) * f64::from(synapse_upkeep)
+            + f64::from(self.hidden as f32) * f64::from(neuron_upkeep)) as f32
     }
 }
 
@@ -1002,19 +1010,34 @@ pub(crate) fn activation(
     prev_in: f32,
     period: f32,
 ) -> (f32, f32) {
+    // `if (!TypeUsesBiasDifferently(Type)) input += baseActivation; else if (Type == Mult) input *= baseActivation;` (`input` is a `float` parameter: the result is
+    // stored as a `float`).
     let x = if kind.uses_bias_differently() {
         if kind == NodeType::Mult {
             raw_input * bias
         } else {
             raw_input
         }
-    } else if kind.has_bias() {
-        raw_input + bias
     } else {
-        raw_input
+        raw_input + bias
     };
+    (
+        clamp(activation_function(kind, bias, x, prev_out, prev_in, period), -OUTPUT_CLAMP, OUTPUT_CLAMP),
+        x,
+    )
+}
 
-    let out = match kind {
+/// The `switch` of `ExecuteNeuron` on the node's full activation `x` (before the `Mathf.Clamp`).
+///
+/// The game runs on Mono, which does the arithmetic of a C# expression in `double` and rounds to `float` only where the value is stored in a variable or field,
+/// passed to a method (`Mathf.Exp`, `Mathf.Pow`, `Mathf.Clamp`) or returned. Every expression below that holds more than one operation is therefore written as
+/// ONE `double` expression with the roundings at those places; `f32` steps give 1 ulp differences that the nodes after then carry on (checked against the
+/// original game with `tools/braincheck/game_diff`: Sigmoid 4,593, Gaussian 2,605, Integrator 653, Inhibitory 1,306 and SoftLatch 658 nodes, all bit-exact now;
+/// with `f32` steps 3,841, 1,768, 649, 1,281 and 631 of them were). A single operation is the same either way (`double` holds the exact result of one
+/// `f32` operation, and rounding that once is the `f32` operation).
+#[inline]
+fn activation_function(kind: NodeType, bias: f32, x: f32, prev_out: f32, prev_in: f32, period: f32) -> f32 {
+    match kind {
         NodeType::Input | NodeType::Linear | NodeType::Mult => x,
         NodeType::Sigmoid => sigmoid(x),
         NodeType::TanH => tanh(x),
@@ -1030,13 +1053,35 @@ pub(crate) fn activation(
                 prev_out
             }
         }
-        NodeType::Differential => (x - prev_in) / period,
+        // `(input - node.LastInput) / period`
+        NodeType::Differential => ((f64::from(x) - f64::from(prev_in)) / f64::from(period)) as f32,
         NodeType::Abs => x.abs(),
-        NodeType::Integrator => prev_out + x * period,
-        NodeType::Inhibitory => x - prev_in + prev_out * exp(-bias * period),
+        // `node.LastOutput + input * period`
+        NodeType::Integrator => (f64::from(prev_out) + f64::from(x) * f64::from(period)) as f32,
+        // `input - node.LastInput + node.LastOutput * Mathf.Exp((0f - node.baseActivation) * period)`: the `Exp` takes and returns a float.
+        NodeType::Inhibitory => {
+            ((f64::from(x) - f64::from(prev_in)) + f64::from(prev_out) * f64::from(exp(-bias * period))) as f32
+        }
         NodeType::SoftLatch => soft_latch(bias, x, prev_out, prev_in),
-    };
-    (clamp(out, -OUTPUT_CLAMP, OUTPUT_CLAMP), x)
+    }
+}
+
+/// The activation functions alone, for the game-vs-port test (`brain_vs_game --acts`): `x` is the node's FULL activation (what the game keeps as `LastInput`: the sum
+/// with the bias already added or multiplied in), and the result is the node's new output, clamped as `ExecuteNeuron` clamps it, and `x` again.
+#[doc(hidden)]
+#[must_use]
+pub fn execute_neuron_from_activation(
+    kind: NodeType,
+    bias: f32,
+    x: f32,
+    prev_out: f32,
+    prev_in: f32,
+    period: f32,
+) -> (f32, f32) {
+    (
+        clamp(activation_function(kind, bias, x, prev_out, prev_in, period), -OUTPUT_CLAMP, OUTPUT_CLAMP),
+        x,
+    )
 }
 
 /// `NEATBrain.ExecuteNeuron` on plain numbers, for a simulator that steps nodes one by one (the Bibite Editor's brain tab): returns
@@ -1053,7 +1098,8 @@ pub fn execute_neuron(
     activation(kind, bias, input, last_output, last_input, period)
 }
 
-/// `NEATBrain.SoftLatchFunc` (`NEATBrain.cs:1105-1133`), exact branch structure.
+/// `NEATBrain.SoftLatchFunc` (`NEATBrain.cs:1105-1133`), exact branch structure and the game's evaluation (see [`activation_function`]): the `Mathf.Exp` calls
+/// take and return floats, `num3` is a float local, the rest of each `return` expression is one `double` expression.
 #[inline]
 pub(crate) fn soft_latch(bias: f32, x: f32, last_output: f32, last_input: f32) -> f32 {
     if x >= 0.999 {
@@ -1069,11 +1115,18 @@ pub(crate) fn soft_latch(bias: f32, x: f32, last_output: f32, last_input: f32) -
     if li <= 0.001 {
         li = 0.0;
     }
+    let lo = f64::from(last_output);
     if x < li {
-        return last_output / (1.0 - exp(-bias * li)) * (1.0 - exp(-bias * x));
+        // `lastOutput / (1f - Mathf.Exp((0f - baseActivation) * num)) * (1f - Mathf.Exp((0f - baseActivation) * x))`
+        let a = f64::from(exp(-bias * li));
+        let c = f64::from(exp(-bias * x));
+        return (lo / (1.0 - a) * (1.0 - c)) as f32;
     }
-    let t = (last_output - exp(bias * (li - 1.0))) / (1.0 - exp(bias * (li - 1.0)));
-    t + (1.0 - t) * exp(bias * (x - 1.0))
+    // `baseActivation * (num - 1f)` is one double expression handed to `Mathf.Exp` as a float.
+    let e1 = f64::from(exp((f64::from(bias) * (f64::from(li) - 1.0)) as f32));
+    let num3 = ((lo - e1) / (1.0 - e1)) as f32; // a float local
+    let e2 = f64::from(exp((f64::from(bias) * (f64::from(x) - 1.0)) as f32));
+    (f64::from(num3) + (1.0 - f64::from(num3)) * e2) as f32
 }
 
 /// One node of the compiled plan that has incoming synapses: its edges are `plan_edges[begin..end]`.
@@ -1246,6 +1299,35 @@ impl Brain {
         let mut brain = Self::build(nodes, synapses, false)?;
         brain.repair_floating_hidden();
         Ok(brain)
+    }
+
+    /// A node with no enabled incoming synapse is never run (`brainTargets` holds only the nodes some enabled synapse ends in), so in the game it holds what `FinalizeEditing`
+    /// gave it for ever: `f(0 + bias)` (measured on the original game's own saves: 4,881 such nodes of 622 evolved bibites, none holds anything else). A save the port wrote
+    /// while a child kept its parent's running node values (before [`Brain::reset_runtime_state`]) can hold the parent's last output in such a node, a constant pheromone or
+    /// herding output with the synapse disabled and no bias; this puts those back. A value that already is `f(bias)` (every value a game save holds, to a rounding) is left alone.
+    ///
+    /// The world calls this when it loads a bibite from a save; [`Brain::from_records`] itself keeps the records' node state exactly (the replay of the game's brain ticks and the
+    /// editor depend on that).
+    pub fn heal_unfed_nodes(&mut self) {
+        let mut fed = vec![false; self.kind.len()];
+        for (index, &enabled) in self.syn_enabled.iter().enumerate() {
+            if enabled && let Some(slot) = fed.get_mut(self.syn_out[index] as usize) {
+                *slot = true;
+            }
+        }
+        for i in FIRST_OUTPUT..self.kind.len() {
+            if fed[i] {
+                continue;
+            }
+            let (fresh, last_in) = activation(self.kind[i], self.bias[i], 0.0, 0.0, 0.0, 1.0);
+            let tolerance = 1e-4 * fresh.abs().max(1.0);
+            let close = |held: f32| (held - fresh).abs() <= tolerance || held.to_bits() == fresh.to_bits();
+            if !close(self.value[i]) || !close(self.last_out[i]) {
+                self.value[i] = fresh;
+                self.last_out[i] = fresh;
+                self.last_in[i] = last_in;
+            }
+        }
     }
 
     /// Builds a brain from records exactly as they are: no repair of a floating hidden node and no clamp of a soft latch's bias.
@@ -1957,6 +2039,22 @@ impl Brain {
         }
     }
 
+    /// The state a brain has when the game has just built it for a new bibite or egg (`NEATBrain.CopyBrain(..)` then `FinalizeEditing()`): `CopyNode` copies only a node's
+    /// structure (type, innovation, bias, ...), never its `Value`, `LastInput` or `LastOutput`, so the new node array starts at zero, and `FinalizeEditing` then runs every
+    /// non-input node once with input 0 (`Value = f(0 + bias)`).
+    ///
+    /// A node with no enabled incoming synapse is never run again, so it rests at this value for ever: a child that kept its parent's live node values (a clone of the
+    /// running brain) held the parent's last output in such a node for its whole life, for example a constant pheromone or herding output with the synapse disabled
+    /// and no bias. Call this on every brain copied from a parent, an egg or a template; not on a brain loaded from a save (a save keeps its node values).
+    pub fn reset_runtime_state(&mut self, period: f32) {
+        for i in 0..FIRST_OUTPUT.min(self.kind.len()) {
+            self.value[i] = 0.0;
+            self.last_in[i] = 0.0;
+            self.last_out[i] = 0.0;
+        }
+        self.initialize_states(period);
+    }
+
     /// Re-runs the game's `FinalizeEditing`/`ResumeBrain` state initialisation
     /// on a loaded brain, without touching input node state.
     ///
@@ -2079,7 +2177,7 @@ impl Brain {
                 continue;
             }
             let out = self.syn_out[s] as usize;
-            if !self.herding_enabled && out == HERDING_OUTPUT_NODE {
+            if !self.herding_enabled && out == HERDING_SKIPPED_NODE {
                 continue;
             }
             if slot[out] == u32::MAX {
@@ -2102,7 +2200,7 @@ impl Brain {
                 continue;
             }
             let out = self.syn_out[s] as usize;
-            if !self.herding_enabled && out == HERDING_OUTPUT_NODE {
+            if !self.herding_enabled && out == HERDING_SKIPPED_NODE {
                 continue;
             }
             let g = slot[out] as usize;
@@ -3182,10 +3280,141 @@ mod tests {
             activation(NodeType::Gaussian, 0.0, 2.0, 0.0, 0.0, period).0,
             1.0 / 5.0,
         );
+        // `ExecuteNeuron` adds the bias for every type but the four that use it differently (`!TypeUsesBiasDifferently`, `NEATBrain.cs:614`), the Input type
+        // included (an input node's bias is 0 and a brain never executes it).
         approx(
             activation(NodeType::Input, 5.0, 0.25, 0.0, 0.0, period).0,
-            0.25,
+            5.25,
         );
+    }
+
+    /// The game does the arithmetic of one C# expression in double and rounds to float only at a store, a call argument and a return (see
+    /// `activation_function`): these are cases where float steps give another float (found with `brain_vs_game` against the original game, 2026-11-19).
+    /// A save written while children kept their parents' running node values can hold a stale value in a node nothing feeds: healing puts it back to `f(bias)` and leaves
+    /// everything else (a fed node, a value that already is `f(bias)`) alone.
+    #[test]
+    fn loading_heals_a_stale_value_in_an_unfed_node() {
+        let base = Brain::starter();
+        let nodes = base.to_node_records();
+        let synapses = base.to_synapse_records();
+        let unfed: Vec<usize> = (FIRST_OUTPUT..FIRST_HIDDEN).filter(|&i| !synapses.iter().any(|s| s.enabled && s.node_out as usize == i)).collect();
+        assert!(unfed.len() >= 3, "the starter brain leaves outputs unfed: {unfed:?}");
+        let (a, b, c) = (unfed[0], unfed[1], unfed[2]);
+        let mut stale = nodes.clone();
+        for index in [a, b] {
+            stale[index].value = 5.0;
+            stale[index].last_output = 5.0;
+        }
+        let mut loaded = Brain::from_records(&stale, &synapses).expect("brain");
+        assert_eq!(loaded.node_value(a), Some(5.0), "from_records keeps the records' state exactly");
+        loaded.heal_unfed_nodes();
+        for index in [a, b] {
+            assert_eq!(loaded.node_value(index).map(f32::to_bits), Some(nodes[index].value.to_bits()), "node {index} is back to f(bias)");
+        }
+        assert_eq!(loaded.node_value(c).map(f32::to_bits), Some(nodes[c].value.to_bits()), "a value that already is f(bias) is left alone");
+        // a fed node keeps whatever it holds
+        let fed = (0..nodes.len()).filter(|&i| i >= FIRST_OUTPUT).find(|&i| synapses.iter().any(|s| s.enabled && s.node_out as usize == i)).expect("a fed node");
+        let mut running = nodes.clone();
+        running[fed].value = 0.3;
+        running[fed].last_output = 0.3;
+        let mut loaded = Brain::from_records(&running, &synapses).expect("brain");
+        loaded.heal_unfed_nodes();
+        assert_eq!(loaded.node_value(fed), Some(0.3));
+    }
+
+    /// A child brain starts fresh (`CopyBrain` + `FinalizeEditing`): a node that nothing feeds rests at `f(bias)`, whatever its parent's node held when the copy was made.
+    #[test]
+    fn a_reset_brain_has_no_stale_node_values() {
+        let base = Brain::starter();
+        let nodes = base.to_node_records();
+        let mut synapses = base.to_synapse_records();
+        let phere = FIRST_OUTPUT + Output::PhereOut1.index();
+        let feed = synapses.len();
+        synapses.push(SynapseRecord {
+            innovation: 40,
+            node_in: Input::EnergyRatio.index() as u32,
+            node_out: phere as u32,
+            weight: 2.0,
+            enabled: true,
+        });
+        let mut parent = Brain::from_template_records(&nodes, &synapses, 0.1).expect("brain");
+        let mut inputs = BrainInputs::new();
+        inputs.set(Input::EnergyRatio, 0.8);
+        for _ in 0..3 {
+            let _ = parent.step(&inputs, 0.1);
+        }
+        let running = parent.output_value(Output::PhereOut1);
+        assert!(running > 1.0, "the parent emits pheromone: {running}");
+        // The child is a clone whose synapse into PhereOut1 ends up disabled (a mutation, or an edit in the Bibite Editor): the clone still holds the parent's value, and nothing
+        // runs the node any more.
+        let mut child = parent.clone();
+        assert!(child.set_synapse_enabled(feed, false));
+        for _ in 0..3 {
+            let _ = child.step(&inputs, 0.1);
+        }
+        assert_eq!(child.output_value(Output::PhereOut1), running, "the stale value is kept (what the reset is for)");
+        // The reset: every node is what a freshly built brain holds.
+        child.reset_runtime_state(0.1);
+        let fresh = Brain::from_template_records(&nodes, &synapses, 0.1).expect("brain");
+        assert_eq!(child.output_value(Output::PhereOut1), 0.0);
+        for i in 0..child.node_count() {
+            let (a, b) = (child.node_state(i).expect("node"), fresh.node_state(i).expect("node"));
+            if i < FIRST_OUTPUT {
+                assert_eq!((a.value, a.last_input, a.last_output), (0.0, 0.0, 0.0), "input node {i}");
+            } else if i != phere {
+                assert_eq!((a.value.to_bits(), a.last_input.to_bits(), a.last_output.to_bits()), (b.value.to_bits(), b.last_input.to_bits(), b.last_output.to_bits()), "node {i}");
+            }
+        }
+        for _ in 0..3 {
+            let _ = child.step(&inputs, 0.1);
+        }
+        assert_eq!(child.output_value(Output::PhereOut1), 0.0, "nothing feeds it, no bias: it stays at 0");
+    }
+
+    #[test]
+    fn expressions_are_evaluated_the_games_way() {
+        // Sigmoid at x = 11.674102 (bits 0x413ac91f): the game gave 0x3f7fff71, float steps 0x3f7fff72.
+        assert_eq!(sigmoid(f32::from_bits(0x413a_c91f)).to_bits(), 0x3f7f_ff71);
+        assert_eq!(sigmoid(f32::from_bits(0x3bc6_2ba7)).to_bits(), 0x3f00_6316);
+        assert_eq!(sigmoid(f32::from_bits(0x4043_407b)).to_bits(), 0x3f74_6eec);
+        // Gaussian at x = -1.1747949 / 0.44233978 / -2.8215325 / -0.06625184: the game 0x3ed71cf6 / 0x3f561b5d / 0x3de48b75 / 0x3f7ee199.
+        for (x, game) in [(0xbf96_5fae_u32, 0x3ed7_1cf6_u32), (0x3ee2_7a5c, 0x3f56_1b5d), (0xc034_93fd, 0x3de4_8b75), (0xbd87_af0b, 0x3f7e_e199)] {
+            assert_eq!(gaussian(f32::from_bits(x)).to_bits(), game, "gaussian({x:08x})");
+        }
+        // Inhibitory (bias 0.10207629, period 0.13333334, x 0.11302659, last input 0.082166806, last output -0.016380552): the game 0x3c70db0d, float steps 0x3c70db0c.
+        let out = activation_function(NodeType::Inhibitory, 0.102_076_29, 0.113_026_59, -0.016_380_552, 0.082_166_806, 0.133_333_34);
+        assert_eq!(out.to_bits(), 0x3c70_db0d, "inhibitory gave {out:e}");
+    }
+
+    /// With herding off the game still computes the Herding output: `ComputeProcessingStructure` skips `NodeOut != 2` (an input node), not node 35.
+    #[test]
+    fn herding_off_still_runs_the_herding_output() {
+        let base = Brain::starter();
+        let nodes = base.to_node_records();
+        let mut synapses = base.to_synapse_records();
+        synapses.push(SynapseRecord {
+            innovation: 40,
+            node_in: Input::EnergyRatio.index() as u32,
+            node_out: HERDING_OUTPUT_NODE as u32,
+            weight: 1.0,
+            enabled: true,
+        });
+        let mut on = Brain::from_template_records(&nodes, &synapses, 0.1).expect("brain");
+        let mut off = on.clone();
+        off.set_herding_enabled(false);
+        let mut inputs = BrainInputs::new();
+        inputs.set(Input::EnergyRatio, 0.75);
+        // (the synapses read the inputs of the tick before: two steps)
+        for _ in 0..2 {
+            let _ = on.step(&inputs, 0.1);
+            let _ = off.step(&inputs, 0.1);
+        }
+        assert_eq!(
+            on.output_value(Output::Herding).to_bits(),
+            off.output_value(Output::Herding).to_bits(),
+            "the Herding output must not depend on the herding switch"
+        );
+        assert_ne!(off.node_value(HERDING_OUTPUT_NODE), Some(0.0));
     }
 
     #[test]
@@ -3819,7 +4048,7 @@ mod tests {
                 continue;
             }
             let out = brain.syn_out[s] as usize;
-            if !brain.herding_enabled && out == HERDING_OUTPUT_NODE {
+            if !brain.herding_enabled && out == HERDING_SKIPPED_NODE {
                 continue;
             }
             match targets.iter().position(|target| *target == out) {

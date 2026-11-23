@@ -1540,3 +1540,111 @@ new performance freeze — the published matrix above remains the task-131 final
 
 Do not compare this binary's throughput with the task-131 freeze without a fresh same-machine A/B.
 
+## Machine calibration (2026-11-21)
+
+`rustibites calibrate` (and Settings > Calibration in the window) times synthetic worlds (`calibration::synthetic_world`: the benchmarks' starter bibites at the
+2,000-bibite density) inline and on the pool at each of the four levels, and hands the simulation a first guess for the machine (`USER_GUIDE.md` 6b). Ryzen 5 3600
+(6 cores, 12 threads), perf-profile CLI, the machine otherwise idle (full test: 20-22 s, noise between blocks of the same way 14 %), ms per tick:
+
+| bibites | inline | level 0 | level 1 | level 2 | level 3 | best way |
+|---:|---:|---:|---:|---:|---:|---|
+| 150 | 0.133 | 0.192 | 0.270 | 0.308 | 0.437 | inline |
+| 300 | 0.272 | 0.389 | 0.433 | 0.550 | 0.581 | inline |
+| 600 | 0.525 | 0.669 | 0.653 | 0.786 | 0.936 | inline |
+| 1,000 | 0.958 | 0.904 | 1.056 | 1.070 | 1.072 | level 0, 1.06x |
+| 1,600 | 1.366 | 1.155 | 1.259 | 1.247 | 1.298 | level 0, 1.18x |
+| 2,500 | 2.455 | 2.065 | 1.884 | 1.946 | 2.028 | level 1, 1.30x |
+| 4,000 | 4.199 | 2.807 | 2.634 | 2.774 | 2.766 | level 1, 1.59x |
+| 6,500 | 7.269 | 4.193 | 4.095 | 3.865 | 4.486 | level 2, 1.88x |
+| 10,000 | 12.717 | 6.452 | 6.110 | 5.890 | 5.876 | level 3, 2.16x |
+
+The pool pays from about 1,100 bibites (the reference machine's first guess was 1,200), and a world that big starts at level 1. This agrees with the 2026-11-15
+landscape above; the point of the test is that a machine that is not this one gets its own numbers.
+
+**Workers.** At 3,000 bibites the time is flat from 3 to 12 workers (1.89-2.14 ms; the tick is memory-bound), and the order of the fastest changes from run to run:
+2, 12 and 6 workers were each the fastest in one of four runs, differing by up to 10 % (the test's own noise). The test therefore takes the most workers within 12 %
+of the fastest, and measures them in a world of 3,000 to 8,000 bibites (500 a thread).
+
+**Two traps of the method** (both found by the first real runs). (1) A synthetic world's ticks get dearer as it runs for its first thousand ticks, so counts of workers
+measured one after the other favour the first (the first run read 1.90 ms at 2 workers rising smoothly to 2.78 ms at 12, and chose 2): every (workers, level) pair is
+measured in every round, in turn. (2) A world that is told another number of threads drops or grows the per-worker buffers of its stages, so the first ticks after a
+change are slower for more workers: every number of workers has a world of its own. Real window (Calibration page's test with the title menu up): 12 workers, from 1,519
+bibites, up to 2.2x (noise 13 %; the menu and the window cost the test about a fifth of its precision); the GPU shader and the processor's way of drawing 1,417
+primitives measured 3.9 and 3.5 ms (GTX 1660 SUPER; both are dominated by the per-sprite drawing calls, so the shader stays the default unless it measures 1.5x slower).
+
+## Pellet decay, recounts, producers, split eating turns and the physics bridge (2026-11-22)
+
+The request was to thread the pellet decay, the zones' production and recycling, the producers and the eating, and then to optimise the physics. What each of those costs was measured first
+(optimized CLI, 12 threads, ms per tick). Big Pellet (500 bibites, 55,000 pellets): decay 0.030 (1.3 %), zones 0.011 (0.5 %), producers 0.000, the bibites' eating turns that run in dense
+order (`pass-b`) 0.082 (3.7 %), physics 69 %. 5,000 synthetic bibites: decay, zones and producers 0.001-0.002 ms; `pass-b` 0.82 of 4.3 ms (19 %); at 20,000 it is 1.96 of 12.3 (16 %).
+
+**What runs on the pool now** (every result is bit-identical to the serial tick: serial-vs-pool checkpoint tests, `state_fingerprint` equal to the build before on Big Pellet, 5,000, 20,000 and
+Default at 1 and 12 threads, and a mutation check of every path that breaks only the pooled or split way):
+- **Decay** (`PelletStore::process_decay_with`): the freshness, rot and chop test of each pellet reads and writes its own slot, so stretches of the slot columns go to the pool above
+  `ParallelGates::scans` slots. The chops are put back in dense order and the removals stay serial: the order they are made in decides which slots, and so which ids, the next spawns get.
+- **Zone recounts** (`ZoneData::recount_with`): the look at every owned pellet is on the pool; the pruning and the (order-dependent `f32`) sum stay in list order. The zones' per-tick production
+  and recycling stay serial on purpose: each spawn or removal changes the pellet store, and each zone draws from its own random stream. The recount runs once per 10 simulated seconds.
+- **Producers**: the look at every record for `isSource` is on the pool (`filter_map_dense_into`); progress and spawns keep the dense order. Only worlds with source bibites do any of it.
+- **Eating.** A bibite whose mouth had a target, held a pellet, had to vomit or had a puff to make ran its whole turn in dense order (17 % of the turns at 5,000 bibites). The turn is cut in
+  three: the **head** (feeding counters, stomach, womb, fat, movement, the mouth's latching of the outputs: the record only) runs in the sweep on the pool; the **hooks** (the plant-contact
+  count, vomit, let go, bite, swallow, grab: the world's stores, and the one place a bibite reads another's snapshot) stay in dense order; the **rest** (pheromone, growth, healing, clock,
+  propulsion bookkeeping) runs on the pool after the dense stretch, for the bibites no later turn reads (a target that comes before its viewer in dense order stays whole, so do turns with a
+  puff to emit; eggs, the dead and revivals are whole turns as before). `RUSTIBITES_NOSPLIT=1` puts every heavy turn back whole; the bench prints how many were cut. In the bench worlds the
+  dense `pass-b` stage drops 15-23 % (0.47 -> 0.37 ms at 5,000 bibites) while `sweep` grows 5-10 %.
+- **Physics bridge**, found by stage tables and, for `build-eggs+held`, by throw-away probes (100-165 us a tick of its 200-240 in Big Pellet were the loop that asks the grid of resting pellets who
+  is overlapped, mostly computing a box for each awake pellet): (1) a held pellet was found by a linear search through the awake pellets for each holder (holders x pellets a tick): now a binary
+  search by dense position; (2) with resting pellets skipped, the awake pellets' bodies are built on the pool above the bodies gate (as the no-sleep path was); (3) the promoted sleepers are merged into
+  the awake bodies, each moved once, instead of sorting all of them (224 bytes each) with their keys: 0.15 -> 0.03-0.07 ms; (4) the serial build lists the holders in its own loop (no second pass over
+  all records); (5) the box of a pellet or an egg (one circle on the origin) is worked out without the rotation's `sin/cos`: the same bits as the general path (a test over 40,000 random bodies with signed
+  zeros, huge values, NaN and offset or second colliders), stage `aabb` 0.013 -> 0.007 ms.
+
+**Measured** (interleaved base / new, fixed gates, Big Pellet, ms per tick, three pairs): decay 0.023-0.024 -> 0.017-0.019; aabb 0.013 -> 0.007; pass-b 0.111-0.114 -> 0.086-0.096; build-eggs+held 0.226-0.248 ->
+0.173-0.220; sweep 0.151-0.161 -> 0.158-0.178; the rest unchanged within 3 %. Whole ticks: Big Pellet 0 to -6 %, 5,000 and 20,000 bibites -1 to -4 % (the split alone, in one binary, -3 to -4 % at 2,000-20,000),
+2,000 bibites level. That is inside this machine's noise on the whole-tick numbers (the same binary moved 10 % between runs while the player's browser and chat ran, and the self-tuning gates add their own
+choice of level to a run), which is why the stage rows, taken in one process, are the evidence. **Nothing here changed the picture:** physics is still 50-80 % of a tick and is bound by bandwidth and by serial stages
+(`solve`, `bridge-after`, sensing's serial copy), and the three things asked to be threaded were at most 2 % of a tick to begin with. Candidates left, each a few percent: the brain-input ring (-0.8 ms at 100,000),
+the incremental x-order, and moving the mouth's own hooks (bites, swallows) off the dense order, which needs a conflict design because they change the pellet store and
+draw from the world's random stream.
+
+**Traps found.** (1) A script that ran the light-profile wrapper and then the perf build in one process leaked `CARGO_PROFILE_RELEASE_OPT_LEVEL=1` into the perf build (`perf` inherits `release`): the CLI came out at
+opt-level 1, 4-20 % slower in stages nobody had touched. The tell is the binary: `objdump -d` shows no `mulps` or `addps` (the good build has 290 and 143). Run every build step in its own process.
+(2) A mutant that breaks code the serial tick runs as well leaves serial equal to pooled and proves nothing: break only the pooled or split path. (3) The loop that asks the resting-pellet grid is the main
+user of boxes in a pellet world; a stage that looks like "build" cost can be a box computation.
+
+One test of the CLI crate fails before and after this work: `capture::tests::default_capture_lifecycle_and_feeding_stream_600` (the Default world's energy mean is 113.55 against a pin of 108.49 set on 2026-11-03;
+the build before this work gives the same trajectory, so the pin is stale, not broken by it).
+
+## Grid broadphase (2026-11-22)
+
+The candidate pairs of the physics step were found by sweep and prune: the bodies sorted by where their boxes start (the x order), each body paired with the ones whose boxes start before its own ends
+(about 180 candidates a body at 100,000 bibites, almost none a hit). The grid finds **the same pairs, the first of each pair the body that comes first in the sweep's order** (the box's start in the order of
+`f32::total_cmp`, then the body index), so that once the step has put them in order by tag the list is the same bit for bit, with no x order at all. Every box goes in each cell it overlaps (a box over 36 cells
+is kept aside and looked at against every body), a pair of overlapping boxes is reported in the cell that holds the corner of their common part and nowhere else, and the cells are found by hashing, so a world of any
+size costs the table its bodies need.
+
+**The first version lost, 2-4 times over.** One hashed table for the whole world, a serial counting sort of the members into it, and the pair tests on the pool: 0.56 ms against the sweep's 0.30 at 5,000
+bodies, 5.75 against 1.36 at 50,000, and 5-27 % more per tick (broadphase stages, `x-order` plus `broadphase`, best of three alternating runs in one binary, `RUSTIBITES_BROADPHASE=sweep` / `grid`). Its passes were serial
+and the sweep's are on the pool, which is the "a parallel grid build costs about what the sort does" of the 100,000-bibite notes above.
+
+**The version that stays cuts the world into stripes** of columns of cells (four a worker) and puts every phase on the pool: the look at the boxes (finite? how big? how dense?), the sorting of the bodies into the stripes
+they reach (a chunk of bodies fills its own lists), and then each stripe on its own with a small hashed grid that stays in a core's cache. A pair is found by the stripe that holds its corner cell and by no other, so
+nothing depends on how many stripes there are or in what order they finished. Cell = 3 times the mean box (1, 1.5, 2, 3 and 4 were measured: 5,000 bodies 0.229 / 0.228 / 0.213 / 0.201 / 0.196 ms).
+
+| bodies | sweep (x order + sweep) | grid | tick |
+|---:|---:|---:|---:|
+| 2,000 | 0.104 ms | not used (below the gate) | the same |
+| 5,000 | 0.298 | 0.201 (-32 %) | -3.3 % |
+| 10,000 | 0.445 | 0.325 (-27 %) | -5.1 % |
+| 20,000 | 0.700 | 0.566 (-19 %) | -1.9 % |
+| 50,000 | 1.413 | 1.299 (-8 %) | -1.4 % |
+
+(Synthetic worlds, 12 threads, fixed gates, best of five alternating runs of the default mode against `sweep`.) Below a few thousand bodies the grid loses (a tick 9 % longer at 300 and at 1,000 bibites, level at 2,000), so it
+has a gate of its own: `ParallelGates::grid_bodies`, 4,000 bodies (`usize::MAX`: never), which the pool tuner's levels do not lower, and only a tick on a pool of four workers or more asks it (the serial tick carries its
+x order from one step to the next). `RUSTIBITES_BROADPHASE=sweep` never uses the grid and `=grid` uses it from 8 bodies (to time the two against each other). It **declines** and the sweep answers when a box is not a
+finite box, when the world is dense enough that the sweep would hand it to the capped dense grid (by a margin of two, so that the order the areas are added in cannot matter), when it finds more candidates than the
+sweep keeps (50,000), and when the large boxes times the bodies would cost more than a million tests (a maze with thousands of walls).
+
+**Checks:** the pair lists after the tag sort are equal to the sweep's over 400 random worlds (12 to 4,000 bodies, worlds of 200 to 40,000 units, boxes on whole numbers so that they touch exactly and start at the same x, boxes of no size, big boxes, repeated tags, layers
+that do not collide, bodies that take no part), serial and on four threads; whole-world checkpoints equal byte for byte, grid against sweep, in a spread world and a packed one on 4 and 8 threads; `state_fingerprint` equal at
+5,000, 20,000 and 50,000 bibites and Big Pellet at 1 and 4 threads and in every mode; six mutants of the grid (the corner rule, the order of a pair, a pair of two large boxes found twice, a stripe's columns, touching boxes,
+equal tags) were each caught.

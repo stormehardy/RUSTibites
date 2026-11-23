@@ -14,7 +14,7 @@ const INK: f32 = 0.164_705_88;
 
 /// Whether a card at `cursor` of `height` shows in the viewport at all (a card that is only partly in it is drawn clipped: its parts that lie wholly
 /// inside are emitted).
-fn overlaps(ctx: &Ctx<'_>, cursor: f32, height: f32) -> bool {
+pub(super) fn overlaps(ctx: &Ctx<'_>, cursor: f32, height: f32) -> bool {
     !ctx.dry && cursor + height > ctx.view_top && cursor < ctx.view_bottom
 }
 
@@ -201,7 +201,7 @@ fn paint_section(ctx: &mut Ctx<'_>, root: &mut Node, base: &str, binding: Bindin
 }
 
 /// The unframed delete button of a card header: a 30 x 30 button whose icon, 50 x 50, is centred on it.
-fn delete_button(ctx: &mut Ctx<'_>, root: &mut Node, base: &str, x1: f32, top: f32, action: UiAction) {
+pub(super) fn delete_button(ctx: &mut Ctx<'_>, root: &mut Node, base: &str, x1: f32, top: f32, action: UiAction) {
     let (cx, cy) = (x1 - 25.0, top + 25.0);
     root.children.push(sprite_node(&format!("{base}/Header/Delete/Text (TMP)"), "exit_icon", [cx - 25.0, cy - 25.0, cx + 25.0, cy + 25.0], [1.0; 4]));
     ctx.hits.push(DynHit {
@@ -235,7 +235,7 @@ pub(super) fn mover(ctx: &mut Ctx<'_>, lists: &ListsInput<'_>, list: u8, index: 
 
 /// The bar at the bottom of an open card (`CloseButton`) or under a closed one (`OpenButton`): a framed bar with a 35 x 17 arrow, turned over
 /// while the card is closed.
-fn bar(ctx: &mut Ctx<'_>, root: &mut Node, base: &str, (x0, x1): (f32, f32), top: f32, open: bool, action: UiAction) {
+pub(super) fn bar(ctx: &mut Ctx<'_>, root: &mut Node, base: &str, (x0, x1): (f32, f32), top: f32, open: bool, action: UiAction) {
     let name = if open { "CloseButton" } else { "OpenButton" };
     root.children.push(sprite_node(&format!("{base}/{name}"), "base_icon", [x0, top, x1, top + BAR_H], [1.0; 4]));
     let centre = (x0 + x1) * 0.5;

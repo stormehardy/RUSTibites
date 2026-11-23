@@ -1446,6 +1446,17 @@ fn material_kind_from_settings(kind: settings::MaterialKind) -> crate::pellet::M
     crate::zone::material_from_settings(kind)
 }
 
+/// The tag a template spawn gets (`BibiteGenes.StartGenesFromTemplate`, cs:272-278): the species name, `Bibite` and a random number below
+/// `int.MaxValue` (`Random.Range(0, int.MaxValue)`), the custom text, or none.
+fn template_tag(tagging: settings::Tagging, custom: &str, species_name: Option<String>, rng: &mut Rng) -> Option<String> {
+    match tagging {
+        settings::Tagging::NoTagging => None,
+        settings::Tagging::SpeciesTagging => species_name,
+        settings::Tagging::RandomTagging => Some(format!("Bibite{}", rng.next_u64() % i32::MAX as u64)),
+        settings::Tagging::CustomTagging => Some(custom.to_owned()),
+    }
+}
+
 /// Bounding radius registered for eggs in the spatial hash (eggs are small; the
 /// exact collider lives in the physics bridge, the hash only serves queries).
 const EGG_HASH_RADIUS: f32 = 0.5;
@@ -1731,7 +1742,8 @@ fn senses_due_from(
         settings.vision_lookup_updates,
         settings.vision_sense_updates,
     );
-    brain_tick && (cadence.lookup_due || cadence.sense_due || needs_pheromones)
+    // The pheromone sense is computed in every tick of a bibite that uses it (the game's `PherosenseAround` runs at the end of every fixed update); the vision only on brain ticks.
+    (brain_tick && (cadence.lookup_due || cadence.sense_due)) || needs_pheromones
 }
 
 /// Immutable snapshot of the stores the sensing pass reads.
@@ -1778,7 +1790,7 @@ pub(crate) fn compute_senses(
         data.settings.vision_lookup_updates,
         data.settings.vision_sense_updates,
     );
-    let phero_needed = brain_tick && record.brain.needs_pheromone_sensing();
+    let phero_needed = record.brain.needs_pheromone_sensing();
     if !cadence.lookup_due && !cadence.sense_due && !phero_needed {
         return None;
     }
@@ -1802,10 +1814,10 @@ pub(crate) fn compute_senses(
             steering = fov_steering;
         }
         if phero_needed {
-            let up = Vec2::Y.rotate(record.rot);
+            let up = crate::math::unity::transform_up(record.rot);
             let phero_radius = record.genome.gene(Gene::PheroSense).max(0.0);
             if data.pheromones.is_empty() && !data.red_death.enabled {
-                senses.apply_phero(&senses::PheroSenses::default());
+                delayed_phero(&mut senses, &senses::PheroSenses::default(), brain_tick);
             } else {
                 let mut accumulator = senses::PheroAccumulator::new(record.pos);
                 if !data.pheromones.is_empty() {
@@ -1827,12 +1839,22 @@ pub(crate) fn compute_senses(
                     accumulator.add_red_death(data.red_death.safe_radius, phero_radius);
                 }
                 let phero = accumulator.finish(up);
-                senses.apply_phero(&phero);
+                delayed_phero(&mut senses, &phero, brain_tick);
             }
         }
         result = Some((senses, steering));
     }
     Some((result, cache_update))
+}
+
+/// The game's order for the pheromone sense: a brain tick reads the values the fixed update before wrote (`Pherosense.pheroSum1..` and the angles are set at the end of every
+/// fixed update, from the pose and the pheromones of that moment), and this tick's own values wait for the next one. A bibite that has not sensed yet (just loaded) reads zeros,
+/// as a freshly loaded game does.
+fn delayed_phero(senses: &mut SenseOutputs, phero: &senses::PheroSenses, brain_tick: bool) {
+    if brain_tick {
+        senses.apply_pending_phero();
+    }
+    senses.set_pending_phero(phero);
 }
 
 /// `FieldOfView.FindSeenEntities`: overlap-query candidates only (the FOV cone
@@ -1885,7 +1907,7 @@ fn fov_lookup_cache(
                 half.sin()
             };
         let size = Vec2::new(width + 2.0 * margin, radius - behind + 2.0 * margin);
-        let up = Vec2::Y.rotate(record.rot);
+        let up = crate::math::unity::transform_up(record.rot);
         let center = record.pos + up * ((radius + behind) / 2.0);
         data.hash
             .query_rotated_box(center, size * 0.5, record.rot, class_mask, scratch)
@@ -1916,7 +1938,7 @@ fn fov_senses_from_cache(
     cache: &FovSeenCache,
 ) -> (SenseOutputs, Option<SteeringInputs>) {
     let mut senses = data.bibites.senses(record.id).copied().unwrap_or_default();
-    let up = Vec2::Y.rotate(record.rot);
+    let up = crate::math::unity::transform_up(record.rot);
     let mut steering = None;
     let params = FovParams {
         view_radius: record.genome.gene(Gene::ViewRadius) * record.derived.d1_size,
@@ -1935,7 +1957,10 @@ fn fov_senses_from_cache(
                 let Some(view) = data.pellets.get(*pellet) else {
                     continue;
                 };
-                if view.amount < 0.01 || record.is_held(crate::body::pellet_tag(*pellet)) {
+                // `FieldOfView.PelletIsHeld` compares the pellet with `held[i] = mouth.links[i].attachedRigidbody.transform`: a joint's `attachedRigidbody` is the body the
+                // joint is ON (the holder), not the one it is connected to, so no pellet ever matches and a held pellet stays in the holder's view (measured 2026-11-18: a
+                // shrek holding a plant pellet in front of its mouth reads PlantCloseness 1.0 in the game and 0.0 with the pellet left out).
+                if view.amount < 0.01 {
                     continue;
                 }
                 match view.material {
@@ -1985,7 +2010,7 @@ fn fov_senses_from_cache(
 impl World {
     /// What the field of view of bibite `id` sees now, object by object with its weight: the lists the game's `FieldOfView` keeps for
     /// `FieldOfViewDisplay`'s labels ("Show Targets"). The candidates are the bibite's cached lookup and the test and weight functions are the ones
-    /// `fov_senses_from_cache` runs on them (a pellet that is held or empty, and a bibite that is the subject itself, are left out the same way);
+    /// `fov_senses_from_cache` runs on them (an empty pellet, and a bibite that is the subject itself, are left out the same way; a held pellet stays in);
     /// nothing of the simulation changes. Empty while the bibite is dead or its brain uses no field of view input.
     #[must_use]
     pub fn fov_targets(&self, id: BibiteId) -> Option<senses::FovTargets> {
@@ -2005,14 +2030,14 @@ impl World {
         if record.body.dead || !params.is_enabled() || !mask.any() {
             return Some(targets);
         }
-        let up = Vec2::Y.rotate(record.rot);
-        let weight_of = |pos: Vec2, radius: f32, size_term: f32| -> Option<f32> {
+        let up = crate::math::unity::transform_up(record.rot);
+        let weight_of = |pos: Vec2, radius: f32, what: senses::WeightOf| -> Option<f32> {
             let view = senses::target_in_view(record.pos, up, &params, pos, radius)?;
-            Some(senses::fov_weight(
+            Some(senses::fov_weight_of(
                 view.distance,
                 view.angle_deg,
                 &params,
-                size_term,
+                what,
             ))
         };
         if mask.plant || mask.meat {
@@ -2020,7 +2045,7 @@ impl World {
                 let Some(view) = self.pellets.get(*pellet) else {
                     continue;
                 };
-                if view.amount < 0.01 || record.is_held(crate::body::pellet_tag(*pellet)) {
+                if view.amount < 0.01 {
                     continue;
                 }
                 let list = match view.material {
@@ -2029,7 +2054,7 @@ impl World {
                     _ => continue,
                 };
                 let size_term = senses::pellet_size_term(view.amount);
-                if let Some(weight) = weight_of(view.pos, view.radius, size_term) {
+                if let Some(weight) = weight_of(view.pos, view.radius, senses::WeightOf::Pellet(size_term)) {
                     list.push(SeenTarget {
                         key: crate::body::pellet_tag(*pellet),
                         pos: view.pos,
@@ -2049,7 +2074,10 @@ impl World {
                 };
                 let key = crate::body::bibite_tag(*other);
                 if view.dead {
-                    let corpse = senses::corpse_size_term(view.base_body_area, view.health_ratio);
+                    let corpse = senses::WeightOf::Corpse {
+                        base_body_area: view.base_body_area,
+                        health_ratio: view.health_ratio,
+                    };
                     if let Some(weight) = weight_of(view.pos, view.side_radius(), corpse) {
                         targets.meat.push(SeenTarget {
                             key,
@@ -2059,8 +2087,10 @@ impl World {
                         });
                     }
                 }
-                let size_term = senses::bibite_size_term(view.max_health);
-                if let Some(weight) = weight_of(view.pos, view.side_radius(), size_term) {
+                let size = senses::WeightOf::Bibite {
+                    max_health: view.max_health,
+                };
+                if let Some(weight) = weight_of(view.pos, view.side_radius(), size) {
                     targets.bibites.push(SeenTarget {
                         key,
                         pos: view.pos,
@@ -2162,6 +2192,48 @@ fn capture_tools_checkpoint(tools: &crate::tools::ToolStore) -> Vec<u8> {
                 cp_push_f32(&mut out, killer.progress);
                 cp_push_u32(&mut out, killer.killed);
             }
+            // RUSTibites Improved: a gene selector (the checkpoint keeps its runtime state; its settings are in the world's tool).
+            Tool::Gene(tower) => {
+                out.push(3);
+                cp_push_u64(&mut out, tower.base.save_id);
+                cp_push_vec2(&mut out, tower.base.pos);
+                cp_push_zone(&mut out, tower.base.attached_zone);
+                cp_push_f32(&mut out, tower.progress);
+                cp_push_u32(&mut out, tower.killed);
+            }
+            // RUSTibites Improved: a hydrothermal vent (its runtime state and the pellets it counts; its settings are in the world's tool).
+            Tool::Vent(vent) => {
+                out.push(4);
+                cp_push_u64(&mut out, vent.base.save_id);
+                cp_push_vec2(&mut out, vent.base.pos);
+                cp_push_zone(&mut out, vent.base.attached_zone);
+                cp_push_f32(&mut out, vent.progress);
+                cp_push_u32(&mut out, vent.shot);
+                cp_push_u32(&mut out, vent.alive);
+                cp_push_f32(&mut out, vent.biomass);
+                let list = tools.vent_pellets(vent.base.save_id);
+                cp_push_u32(&mut out, list.map_or(0, |list| list.len() as u32));
+                for pellet in list.into_iter().flatten() {
+                    cp_push_u32(&mut out, pellet.handle().slot());
+                    cp_push_u32(&mut out, pellet.handle().generation());
+                }
+            }
+            // RUSTibites Improved: a force tower (its runtime figure; its settings are in the world's tool).
+            Tool::Force(tower) => {
+                out.push(5);
+                cp_push_u64(&mut out, tower.base.save_id);
+                cp_push_vec2(&mut out, tower.base.pos);
+                cp_push_zone(&mut out, tower.base.attached_zone);
+                cp_push_u32(&mut out, tower.affected);
+            }
+            // RUSTibites Improved: a whirlpool tower (its runtime figure; its settings are in the world's tool).
+            Tool::Whirl(tower) => {
+                out.push(6);
+                cp_push_u64(&mut out, tower.base.save_id);
+                cp_push_vec2(&mut out, tower.base.pos);
+                cp_push_zone(&mut out, tower.base.attached_zone);
+                cp_push_u32(&mut out, tower.affected);
+            }
         }
     }
     out
@@ -2180,6 +2252,7 @@ fn restore_tools_checkpoint(
             tools.len()
         )));
     }
+    let mut vent_lists: Vec<(u64, std::collections::VecDeque<crate::ids::PelletId>)> = Vec::new();
     for _ in 0..count {
         let tag = reader.u8()?;
         let save_id = reader.u64()?;
@@ -2219,12 +2292,48 @@ fn restore_tools_checkpoint(
                 killer.progress = reader.f32()?;
                 killer.killed = reader.u32()?;
             }
+            (3, Tool::Gene(tower)) => {
+                tower.base.pos = reader.vec2()?;
+                tower.base.attached_zone = reader.zone()?;
+                tower.progress = reader.f32()?;
+                tower.killed = reader.u32()?;
+            }
+            (4, Tool::Vent(vent)) => {
+                vent.base.pos = reader.vec2()?;
+                vent.base.attached_zone = reader.zone()?;
+                vent.progress = reader.f32()?;
+                vent.shot = reader.u32()?;
+                vent.alive = reader.u32()?;
+                vent.biomass = reader.f32()?;
+                let listed = reader.u32()? as usize;
+                let mut list = std::collections::VecDeque::with_capacity(listed.min(1 << 20));
+                for _ in 0..listed {
+                    list.push_back(crate::ids::PelletId::from_handle(crate::arena::Handle::new(
+                        reader.u32()?,
+                        reader.u32()?,
+                    )));
+                }
+                vent_lists.push((save_id, list));
+            }
+            (5, Tool::Force(tower)) => {
+                tower.base.pos = reader.vec2()?;
+                tower.base.attached_zone = reader.zone()?;
+                tower.affected = reader.u32()?;
+            }
+            (6, Tool::Whirl(tower)) => {
+                tower.base.pos = reader.vec2()?;
+                tower.base.attached_zone = reader.zone()?;
+                tower.affected = reader.u32()?;
+            }
             _ => {
                 return Err(crate::error::Error::invalid_data(
                     "checkpoint tool variant/id mismatch",
                 ));
             }
         }
+    }
+    for (save_id, list) in vent_lists {
+        tools.put_vent_pellets(save_id, list);
     }
     Ok(())
 }
@@ -2658,6 +2767,9 @@ pub struct World {
     pub zone_groups: Vec<settings::ZoneGroupSettings>,
     /// Settings animators (`settingsChangers`; drive phase 2 of the tick).
     pub settings_changers: Vec<SettingsChanger>,
+    /// RUSTibites Improved: the streams (`stream.rs`): bands that push what is in them. Not part of a save (the viewer keeps them beside it), of a checkpoint or of
+    /// the state fingerprint; they act only while [`crate::improved::Feature::Streams`] is on.
+    pub streams: Vec<crate::stream::Stream>,
     /// Decoded templates available to the spawner (`TemplateSource` contract).
     pub templates: Vec<TemplateSource>,
     /// Spawner cadence accumulator (1 s scaled coroutine in the game).
@@ -2784,6 +2896,7 @@ impl World {
             bibite_spawns: Vec::new(),
             zone_groups: Vec::new(),
             settings_changers: Vec::new(),
+            streams: Vec::new(),
             templates: Vec::new(),
             spawner_accumulator: 0.0,
             spawn_progress: Vec::new(),
@@ -2803,9 +2916,9 @@ impl World {
             threads: 1,
             sensing_pool: None,
             pool_wanted: true,
-            parallel_gates: crate::sim::ParallelGates::default(),
-            active_gates: crate::sim::ParallelGates::default(),
-            pool_tuner: PoolTuner::new(crate::sim::ParallelGates::default().pool_prior()),
+            parallel_gates: crate::sim::ParallelGates::calibrated(),
+            active_gates: crate::sim::ParallelGates::calibrated(),
+            pool_tuner: PoolTuner::new(crate::sim::ParallelGates::calibrated().pool_prior()),
             improved: crate::improved::ImprovedFeatures::default(),
             sensing_worker_scratch: Vec::new(),
             sensing_chunks: Vec::new(),
@@ -2899,6 +3012,13 @@ impl World {
         world.clock = FixedClock::new(settings.sim_tps);
         world.decay_tps = settings.decay_tps;
         world.decay = DecayThrottle::new(settings.decay_tps);
+        // Red Death (`RedDeathBloomManager` subscribes to the loaded settings and starts as they say): a world made from a save or a scenario with the bloom
+        // switched on has it from its first tick. Only an edit of the settings panel (`apply_settings`) set it before, so a loaded bloom hurt nothing, was
+        // not smelled and drew nothing until some setting was touched.
+        world.tools.red_death.base_damage = settings.scenario.red_death_base_damages;
+        world.tools.red_death.damage_velocity = settings.scenario.red_death_damage_velocity;
+        world.tools.red_death.set_enabled(settings.scenario.enable_red_death);
+        world.tools.red_death.set_fill(settings.scenario.red_death_fill);
 
         // Material table from settings (spec §7: settings overrides defaults).
         let mut materials = MaterialTable::default();
@@ -3151,6 +3271,14 @@ impl World {
                     killer.base.loaded = false;
                     color_killers.push(killer);
                 }
+                // RUSTibites Improved: the game has no gene selector, so a save of its format does not hold one (the viewer keeps them beside the save).
+                crate::tools::Tool::Gene(_) => {}
+                // RUSTibites Improved: nor a hydrothermal vent (its pellets are ordinary pellets and are saved as such).
+                crate::tools::Tool::Vent(_) => {}
+                // RUSTibites Improved: nor a force tower.
+                crate::tools::Tool::Force(_) => {}
+                // RUSTibites Improved: nor a whirlpool tower.
+                crate::tools::Tool::Whirl(_) => {}
             }
         }
         let mut pellets = Vec::new();
@@ -3496,12 +3624,9 @@ impl World {
         pos: Vec2,
         randomize: RandomizeGenes,
     ) -> Result<BibiteId> {
+        // The tag is set below, once the species is known (`StartGenesFromTemplate`: species name / random / custom / none).
         let mut meta = template.meta.clone();
-        match tagging {
-            Tagging::NoTagging => meta.species_tag = None,
-            Tagging::CustomTagging => meta.species_tag = Some(tag.to_owned()),
-            _ => {}
-        }
+        meta.species_tag = None;
         // `WorldObjectsSpawner.SpawnBibiteFromTemplate` (cs:148-176): AllGenes
         // randomises every gene (keeping the template generation),
         // NormalMutations runs one `Mutate()` pass, Color re-rolls the colour.
@@ -3523,11 +3648,15 @@ impl World {
                 genome = mutated;
             }
         }
-        let mut spawn = BibiteSpawn::new(genome, meta, template.brain.clone());
+        // `WorldObjectsSpawner`: `CopyBrain(template.nodes, template.synapses, mutate: false)`: a template's saved node values are not kept.
+        let mut template_brain = template.brain.clone();
+        template_brain.reset_runtime_state(self.settings.brain_period());
+        let mut spawn = BibiteSpawn::new(genome, meta, template_brain);
         spawn.vitals = SpawnVitals::from_growth_at_spawn(growth_at_spawn);
         spawn.pos = pos;
         spawn.rot = self.rng.f32() * TAU;
-        let id = self.bibites.spawn(spawn)?;
+        // The size a growth mode asks for comes from the TEMPLATE's genes (cs:182-188), however the spawned genes were randomised.
+        let id = self.bibites.spawn_with_growth_basis(spawn, &template.genome)?;
         if let Some(record) = self.bibites.get_mut(id) {
             let genome = record.genome.clone();
             let brain = record.brain.clone();
@@ -3535,6 +3664,10 @@ impl World {
             // `BibiteGenes.StartGenesFromTemplate`: `FindSpeciesFromTemplate` - the species the template names (every template names one), founded by the first bibite.
             let species = self.species.find_species_from_template(&template.game_species_name(), "", &genome, &brain, false);
             meta.species = Some(species);
+            // The same call sets the tag (`speciesTag = tagStyle switch ...`). The game's AllGenes branch of a live spawn never calls it (cs:163-167: it only copies
+            // the generation), so there the original leaves the bibite untagged; the player asked for Random Tag with Random (All) Genes to tag, so this port tags it.
+            let species_name = self.species.get(species).map(|found| found.name());
+            meta.species_tag = template_tag(tagging, tag, species_name, &mut self.rng);
             record.meta = meta;
             let parent = record.meta.species.unwrap_or(species);
             self.species
@@ -3552,7 +3685,8 @@ impl World {
     /// `angle_radians = None` uses a random orientation like the game. With
     /// [`GrowthAtSpawn::Egg`] this creates an incubating egg using
     /// `LayBodyEnergy` as the initial energy; other modes create a live bibite.
-    /// Randomize-gene modes are not exposed yet (see `docs/UI_ACTIONS_BODY.md`).
+    /// The egg takes the ordinary child mutation of the game's egg spawn (`Mutate((int)genes[9])`); for the other randomise-gene modes use
+    /// [`Self::spawn_template_at_randomized`].
     ///
     /// # Errors
     ///
@@ -3566,20 +3700,40 @@ impl World {
         tagging: Tagging,
         tag: &str,
     ) -> Result<TemplateSpawn> {
+        self.spawn_template_at_randomized(template, pos, angle_radians, growth_at_spawn, tagging, tag, RandomizeGenes::NormalMutations)
+    }
+
+    /// [`Self::spawn_template_at`] with the spawn row's `randomizeGenes` choice for an EGG (`WorldObjectsSpawner.SpawnEggFromTemplate`,
+    /// cs:207-219): AllGenes replaces every gene (`RandomGenes()`), Color re-rolls the colour after the usual `Mutate((int)genes[9])`, and
+    /// the brain is mutated whatever the choice. The live (non-egg) modes ignore `randomize`: [`Self::spawn_bibite_from_template`] spawns those.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error for an invalid saved body size or egg spawn.
+    #[allow(clippy::too_many_arguments)] // the game's `SpawnBibiteFromTemplate` takes the same seven
+    pub fn spawn_template_at_randomized(
+        &mut self,
+        template: &TemplateSource,
+        pos: Vec2,
+        angle_radians: Option<f32>,
+        growth_at_spawn: GrowthAtSpawn,
+        tagging: Tagging,
+        tag: &str,
+        randomize: RandomizeGenes,
+    ) -> Result<TemplateSpawn> {
         if growth_at_spawn != GrowthAtSpawn::Egg {
             let mut meta = template.meta.clone();
-            match tagging {
-                Tagging::NoTagging => meta.species_tag = None,
-                Tagging::CustomTagging => meta.species_tag = Some(tag.to_owned()),
-                _ => {}
-            }
+            // The tag is set below, with the species (`StartGenesFromTemplate`).
+            meta.species_tag = None;
             let mut capped = template.genome.clone();
             capped.cap();
-            let mut spawn = BibiteSpawn::new(capped, meta, template.brain.clone());
+            let mut template_brain = template.brain.clone();
+            template_brain.reset_runtime_state(self.settings.brain_period());
+            let mut spawn = BibiteSpawn::new(capped, meta, template_brain);
             spawn.vitals = SpawnVitals::from_growth_at_spawn(growth_at_spawn);
             spawn.pos = pos;
             spawn.rot = angle_radians.unwrap_or_else(|| self.rng.f32() * TAU);
-            let id = self.bibites.spawn(spawn)?;
+            let id = self.bibites.spawn_with_growth_basis(spawn, &template.genome)?;
             if let Some(record) = self.bibites.get_mut(id) {
                 let genome = record.genome.clone();
                 let brain = record.brain.clone();
@@ -3587,6 +3741,8 @@ impl World {
                 // `StartGenesFromTemplate`: the species the template names (the placer's bibites join it, the first founds it, named for the template).
                 let species = self.species.find_species_from_template(&template.game_species_name(), "", &genome, &brain, false);
                 meta.species = Some(species);
+                let species_name = self.species.get(species).map(|found| found.name());
+                meta.species_tag = template_tag(tagging, tag, species_name, &mut self.rng);
                 record.meta = meta;
                 let parent = record.meta.species.unwrap_or(species);
                 self.species
@@ -3598,20 +3754,26 @@ impl World {
             return Ok(TemplateSpawn::Bibite(id));
         }
         let mut meta = template.meta.clone();
-        match tagging {
-            Tagging::NoTagging => meta.species_tag = None,
-            Tagging::CustomTagging => meta.species_tag = Some(tag.to_owned()),
-            _ => {}
-        }
-        // `SpawnEggFromTemplate`: `Mutate((int)genes[9])` (a fixed count, the average mutation number) and `CopyBrain(..., mutate: true)`.
+        // The tag is set below, with the species (`StartGenesFromTemplate` comes first in `SpawnEggFromTemplate`, so even an AllGenes egg is tagged).
+        meta.species_tag = None;
+        // `SpawnEggFromTemplate`: `Mutate((int)genes[9])` (a fixed count, the average mutation number) and `CopyBrain(..., mutate: true)`;
+        // AllGenes calls `RandomGenes()` instead of the mutation, Color re-rolls the colour after it.
         let mut genome = template.genome.clone();
         genome.cap();
         let mut brain = template.brain.clone();
-        if !self.settings.scenario.prevent_mutations {
+        if randomize == RandomizeGenes::AllGenes {
+            genome.randomize_in_place(&mut self.rng);
+        } else if !self.settings.scenario.prevent_mutations {
             let count = genome.gene(crate::genome::Gene::AverageMutationNumber) as usize;
             genome.mutate_times(count, &mut self.rng, &self.settings, &MutationFactor::default());
+        }
+        if randomize == RandomizeGenes::Color {
+            genome.randomize_color(&mut self.rng);
+        }
+        if !self.settings.scenario.prevent_mutations {
             brain.mutate(&mut self.rng, &self.settings, &genome, &MutationFactor::default());
         }
+        brain.reset_runtime_state(self.settings.brain_period());
         let upkeep_counts = brain.upkeep();
         let upkeep = upkeep_counts.synapses as f32 * self.settings.scenario.synapse_upkeep_cost
             + upkeep_counts.hidden as f32 * self.settings.scenario.neuron_upkeep_cost;
@@ -3625,7 +3787,10 @@ impl World {
         let size_ratio = genome.gene(crate::genome::Gene::SizeRatio);
         let _ = size_ratio;
         // The egg's genes come from `StartGenesFromTemplate` too: it is of the template's species.
-        meta.species = Some(self.species.find_species_from_template(&template.game_species_name(), "", &genome, &brain, false));
+        let species = self.species.find_species_from_template(&template.game_species_name(), "", &genome, &brain, false);
+        meta.species = Some(species);
+        let species_name = self.species.get(species).map(|found| found.name());
+        meta.species_tag = template_tag(tagging, tag, species_name, &mut self.rng);
         let id = self.eggs.spawn(crate::body::EggSpawn {
             pos,
             vel: Vec2::ZERO,
@@ -4284,9 +4449,14 @@ impl World {
         self.mark_phase(Phase::RedDeath, start);
         let start = Instant::now();
         self.step_color_killers(dt); // phase 11
+        self.step_gene_selectors(dt); // RUSTibites Improved, beside the colour killers
         self.mark_phase(Phase::ColourKillers, start);
         let start = Instant::now();
         self.step_pellet_producers(dt); // phase 12
+        self.step_vents(dt); // RUSTibites Improved, beside the pellet producers
+        self.step_force_towers(dt); // RUSTibites Improved, before the bodies move
+        self.step_whirlpools(dt); // RUSTibites Improved, before the bodies move
+        self.step_streams(dt); // RUSTibites Improved, before the bodies move
         self.mark_phase(Phase::Producers, start);
         let start = Instant::now();
         self.step_death_resolution(); // world-inflicted kills become corpses/events
@@ -4532,7 +4702,10 @@ impl World {
     /// and parallel runs are bit-identical; only which thread computes each item changes.
     pub fn set_threads(&mut self, threads: usize) {
         let requested = if threads == 0 {
-            std::thread::available_parallelism().map_or(1, std::num::NonZeroUsize::get)
+            // Automatic: the workers the machine's calibration found the best ([`crate::calibration`]), or every thread the machine has.
+            crate::sim::machine_profile()
+                .map(|profile| profile.workers)
+                .unwrap_or_else(|| std::thread::available_parallelism().map_or(1, std::num::NonZeroUsize::get))
         } else {
             threads
         }
@@ -4566,6 +4739,22 @@ impl World {
         self.active_gates = gates;
         self.bibites.set_parallel_gates(gates);
         self.pool_tuner = PoolTuner::new(gates.pool_prior());
+    }
+
+    /// Takes the calibration of the machine ([`crate::sim::machine_profile`]) now, or the reference machine's numbers when there is none (the
+    /// player switched it off): its workers (a world that was set to a number of threads by hand keeps that: pass `automatic` false) and
+    /// its first guess of where the pool pays, which the world's pool tuner then starts from. The world keeps ticking the same: nothing a
+    /// tick computes depends on any of it.
+    pub fn apply_machine_profile(&mut self, automatic: bool) {
+        if automatic {
+            self.set_threads(0);
+        }
+        // (`calibrated` is the profile's gates, the reference machine's when there is no profile, or the ones `RUSTIBITES_GATES` names.) A
+        // world whose gates were set by hand (a benchmark, a test: not measuring) keeps them.
+        let gates = crate::sim::ParallelGates::calibrated();
+        if self.parallel_gates.adaptive && self.parallel_gates != gates {
+            self.set_parallel_gates(gates);
+        }
     }
 
     /// What the world's pool tuner has done so far: ticks each way, probes, switches and the mean tick time of each way (all zero for
@@ -5427,10 +5616,12 @@ impl World {
         }
         for index in 0..self.hatched.len() {
             let id = self.hatched[index];
-            let Some(payload) = self.eggs.hatch_payload(id) else {
+            let Some(mut payload) = self.eggs.hatch_payload(id) else {
                 self.eggs.remove(id);
                 continue;
             };
+            // `newBornBrain.CopyBrain(eggBrain.Nodes, eggBrain.Synapses, mutate: false)`: the newborn's nodes start fresh.
+            payload.brain.reset_runtime_state(self.settings.brain_period());
             self.eggs.remove(id);
             self.hash.remove(id.handle(), SpatialClass::Egg);
             let mut meta = payload.meta.clone();
@@ -5784,6 +5975,372 @@ impl World {
         }
     }
 
+    /// RUSTibites Improved, beside phase 11: the gene selector towers (`gene_selector.rs`). Only while [`crate::improved::Feature::GeneSelectorTower`] is on and
+    /// the world has one; draws nothing from the world's random numbers, so a world without one is untouched.
+    pub fn step_gene_selectors(&mut self, dt: f32) {
+        if !self.improved.is_on(crate::improved::Feature::GeneSelectorTower)
+            || !self.tools.tools().iter().any(|tool| matches!(tool, crate::tools::Tool::Gene(_)))
+        {
+            return;
+        }
+        let mut due: Vec<usize> = Vec::new();
+        for (index, tool) in self.tools.tools_mut().iter_mut().enumerate() {
+            if let crate::tools::Tool::Gene(selector) = tool
+                && selector.tick(dt)
+            {
+                due.push(index);
+            }
+        }
+        for index in due {
+            let Some(crate::tools::Tool::Gene(selector)) = self.tools.tools().get(index).copied() else {
+                continue;
+            };
+            let hits = self.hash.query_circle(
+                selector.base.pos,
+                // Colliders reach beyond their bibite's centre: look a body's length further, the touch test below decides.
+                selector.radius + 40.0,
+                ClassMask::BIBITE,
+                &mut self.query_scratch,
+            );
+            let mut found: Vec<((u32, u32), BibiteId, f32)> = Vec::new();
+            for hit in hits.hits {
+                let id = BibiteId::from_handle(hit.handle);
+                let Some(record) = self.bibites.get(id) else {
+                    continue;
+                };
+                if record.body.dead || !record.touches_circle(selector.base.pos, selector.radius) {
+                    continue;
+                }
+                found.push((id_key(id), id, record.genome.values()[usize::from(selector.gene)]));
+            }
+            found.sort_unstable_by_key(|entry| entry.0);
+            found.dedup_by_key(|entry| entry.0);
+            let values: Vec<f32> = found.iter().map(|entry| entry.2).collect();
+            let kills = crate::gene_selector::pick_kills(&selector, &values);
+            let mut killed = 0;
+            for at in kills {
+                self.bibites.kill(found[at].1, DeathCause::Hazard);
+                killed += 1;
+            }
+            if killed > 0
+                && let Some(crate::tools::Tool::Gene(live)) = self.tools.tools_mut().get_mut(index)
+            {
+                live.killed += killed;
+            }
+        }
+    }
+
+    /// RUSTibites Improved: places a gene selector at `pos` (viewer tool action): the colour killer's radius and period, `Diet` with its whole range.
+    pub fn place_gene_selector_at(&mut self, pos: Vec2) -> ToolId {
+        let save_id = self.tools.next_save_id();
+        self.tools.add_gene_selector(crate::gene_selector::GeneSelector::new(save_id, pos))
+    }
+
+    /// RUSTibites Improved: places a hydrothermal vent at `pos` (viewer tool action): the default velocity, rate and cap, shooting pellets of the world's default
+    /// pellet size, with recycling off.
+    pub fn place_vent_at(&mut self, pos: Vec2) -> ToolId {
+        let save_id = self.tools.next_save_id();
+        let pellet_energy = self.settings.scenario.pellet_energy;
+        self.tools.add_vent(crate::vent::HydrothermalVent::new(save_id, pos, pellet_energy))
+    }
+
+    /// RUSTibites Improved, after the force towers and before the bodies move (phase 13): the streams (`stream.rs`). Only while [`crate::improved::Feature::Streams`]
+    /// is on and the world has one that pushes. Each stream adds its strength times the tick to the velocity of every body inside its band (the bibites, the dead ones too;
+    /// the pellets that no mouth holds; the eggs) in the direction from its start to its finish; the physics step then moves them. It draws nothing from the world's
+    /// random numbers, so a world without a stream is untouched.
+    pub fn step_streams(&mut self, dt: f32) {
+        if !self.improved.is_on(crate::improved::Feature::Streams) || !self.streams.iter().any(crate::stream::Stream::is_active) {
+            return;
+        }
+        for index in 0..self.streams.len() {
+            let stream = self.streams[index];
+            let Some(corners) = stream.corners().filter(|_| stream.is_active()) else {
+                continue;
+            };
+            // The box of the band: a body outside it is not in the band, which is the cheap answer for almost every body of a big world.
+            let (low, high) = corners.iter().fold((corners[0], corners[0]), |(low, high), corner| (low.min(*corner), high.max(*corner)));
+            let near = |at: Vec2| at.x >= low.x && at.x <= high.x && at.y >= low.y && at.y <= high.y;
+            self.ids_scratch.clear();
+            self.ids_scratch.extend(self.bibites.ids());
+            for at in 0..self.ids_scratch.len() {
+                let id = self.ids_scratch[at];
+                let Some(pos) = self.bibites.get(id).map(|record| record.pos).filter(|pos| near(*pos)) else {
+                    continue;
+                };
+                let kick = stream.kick(pos, dt);
+                if kick != Vec2::ZERO
+                    && kick.is_finite()
+                    && let Some(record) = self.bibites.get_mut(id)
+                    && record.vel.is_finite()
+                {
+                    record.vel += kick;
+                }
+            }
+            self.pellet_ids_scratch.clear();
+            self.pellet_ids_scratch.extend(self.pellets.ids());
+            for at in 0..self.pellet_ids_scratch.len() {
+                let id = self.pellet_ids_scratch[at];
+                let Some(view) = self.pellets.get(id) else {
+                    continue;
+                };
+                if view.held || !near(view.pos) {
+                    continue;
+                }
+                let kick = stream.kick(view.pos, dt);
+                if kick != Vec2::ZERO && kick.is_finite() {
+                    self.pellets.add_velocity(id, kick);
+                }
+            }
+            let eggs: Vec<_> = self.eggs.ids().collect();
+            for id in eggs {
+                let Some(pos) = self.eggs.get(id).map(|egg| egg.pos).filter(|pos| near(*pos)) else {
+                    continue;
+                };
+                let kick = stream.kick(pos, dt);
+                if kick != Vec2::ZERO
+                    && kick.is_finite()
+                    && let Some(egg) = self.eggs.get_mut(id)
+                    && egg.vel.is_finite()
+                {
+                    egg.vel += kick;
+                }
+            }
+        }
+    }
+
+    /// RUSTibites Improved: places a force tower at `pos` (viewer tool action): a pull of the default strength and range that fades with the distance, acting on
+    /// bibites, pellets and eggs.
+    pub fn place_force_tower_at(&mut self, pos: Vec2) -> ToolId {
+        let save_id = self.tools.next_save_id();
+        self.tools.add_force_tower(crate::force_tower::ForceTower::new(save_id, pos))
+    }
+
+    /// RUSTibites Improved, after phase 12 and before the bodies move (phase 13): the force towers (`force_tower.rs`). Only while
+    /// [`crate::improved::Feature::ForceTower`] is on and the world has one. Each tower adds its acceleration times the tick to the velocity of every body of the kinds
+    /// it acts on that is inside its range (the bibites, the dead ones too; the pellets that no mouth holds; the eggs); the physics step then moves them. It draws
+    /// nothing from the world's random numbers, so a world without a tower is untouched.
+    pub fn step_force_towers(&mut self, dt: f32) {
+        use crate::tools::Tool;
+        if !self.improved.is_on(crate::improved::Feature::ForceTower) || !self.tools.tools().iter().any(|tool| matches!(tool, Tool::Force(_))) {
+            return;
+        }
+        for index in 0..self.tools.len() {
+            let Some(Tool::Force(tower)) = self.tools.tools().get(index).copied() else {
+                continue;
+            };
+            let moved = if tower.is_active() {
+                self.kick_bodies(tower.base.pos, tower.range, (tower.bibites, tower.pellets, tower.eggs), |at, _| tower.kick(at, dt))
+            } else {
+                0
+            };
+            if let Some(Tool::Force(live)) = self.tools.tools_mut().get_mut(index) {
+                live.affected = moved;
+            }
+        }
+    }
+
+    /// RUSTibites Improved: gives every body of the chosen kinds `(bibites, pellets, eggs)` that is nearer than `range` to `centre` the change of velocity
+    /// `kick(its position, its velocity)` (a zero or a value that is not a number leaves it alone) and says how many it moved. The bibites are the dead ones too; the pellets are
+    /// the ones no mouth holds (a pellet that is pushed wakes up); the eggs. It walks the stores themselves, not the spatial hash (whose query is capped at 128 hits),
+    /// and draws nothing from the world's random numbers. What the force towers and the whirlpool towers share.
+    fn kick_bodies(&mut self, centre: Vec2, range: f32, (bibites, pellets, eggs): (bool, bool, bool), kick: impl Fn(Vec2, Vec2) -> Vec2) -> u32 {
+        let reach_sq = range * range;
+        let near = |at: Vec2| (centre - at).length_sq() < reach_sq;
+        let mut moved = 0_u32;
+        if bibites {
+            self.ids_scratch.clear();
+            self.ids_scratch.extend(self.bibites.ids());
+            for at in 0..self.ids_scratch.len() {
+                let id = self.ids_scratch[at];
+                let Some((pos, vel)) = self.bibites.get(id).map(|record| (record.pos, record.vel)).filter(|(pos, _)| near(*pos)) else {
+                    continue;
+                };
+                let kick = kick(pos, vel);
+                if kick != Vec2::ZERO
+                    && kick.is_finite()
+                    && let Some(record) = self.bibites.get_mut(id)
+                    && record.vel.is_finite()
+                {
+                    record.vel += kick;
+                    moved += 1;
+                }
+            }
+        }
+        if pellets {
+            self.pellet_ids_scratch.clear();
+            self.pellet_ids_scratch.extend(self.pellets.ids());
+            for at in 0..self.pellet_ids_scratch.len() {
+                let id = self.pellet_ids_scratch[at];
+                let Some(view) = self.pellets.get(id) else {
+                    continue;
+                };
+                if view.held || !near(view.pos) {
+                    continue;
+                }
+                let kick = kick(view.pos, view.velocity);
+                if kick != Vec2::ZERO && kick.is_finite() && self.pellets.add_velocity(id, kick) {
+                    moved += 1;
+                }
+            }
+        }
+        if eggs {
+            let eggs: Vec<_> = self.eggs.ids().collect();
+            for id in eggs {
+                let Some((pos, vel)) = self.eggs.get(id).map(|egg| (egg.pos, egg.vel)).filter(|(pos, _)| near(*pos)) else {
+                    continue;
+                };
+                let kick = kick(pos, vel);
+                if kick != Vec2::ZERO
+                    && kick.is_finite()
+                    && let Some(egg) = self.eggs.get_mut(id)
+                    && egg.vel.is_finite()
+                {
+                    egg.vel += kick;
+                    moved += 1;
+                }
+            }
+        }
+        moved
+    }
+
+    /// RUSTibites Improved: places a whirlpool tower at `pos` (viewer tool action): counterclockwise, the default speed and range, fading with the distance, acting on
+    /// bibites, pellets and eggs.
+    pub fn place_whirlpool_at(&mut self, pos: Vec2) -> ToolId {
+        let save_id = self.tools.next_save_id();
+        self.tools.add_whirlpool(crate::whirlpool::WhirlpoolTower::new(save_id, pos))
+    }
+
+    /// RUSTibites Improved, beside the force towers (before the bodies move, phase 13): the whirlpool towers (`whirlpool.rs`). Only while
+    /// [`crate::improved::Feature::Whirlpool`] is on and the world has one. Each tower adds its acceleration times the tick to the velocity of every body of the kinds it
+    /// acts on that is inside its range, along the circle round the tower; the physics step then moves them. It draws nothing from the world's random numbers, so a world
+    /// without a whirlpool is untouched.
+    pub fn step_whirlpools(&mut self, dt: f32) {
+        use crate::tools::Tool;
+        if !self.improved.is_on(crate::improved::Feature::Whirlpool) || !self.tools.tools().iter().any(|tool| matches!(tool, Tool::Whirl(_))) {
+            return;
+        }
+        for index in 0..self.tools.len() {
+            let Some(Tool::Whirl(tower)) = self.tools.tools().get(index).copied() else {
+                continue;
+            };
+            let moved = if tower.is_active() {
+                self.kick_bodies(tower.base.pos, tower.range, (tower.bibites, tower.pellets, tower.eggs), |at, vel| tower.kick(at, vel, dt))
+            } else {
+                0
+            };
+            if let Some(Tool::Whirl(live)) = self.tools.tools_mut().get_mut(index) {
+                live.affected = moved;
+            }
+        }
+    }
+
+    /// RUSTibites Improved, beside phase 12: the hydrothermal vents (`vent.rs`). Only while [`crate::improved::Feature::HydrothermalVent`] is on and the world has
+    /// one. Each vent tidies the list of the pellets it shot (what was eaten, decayed or merged away is gone from it), shoots the pellets that are due, and, with
+    /// Recycle on, takes the energy of its oldest pellets back until it is at its cap. The draws (direction, speed, size of each shot) come from the world's
+    /// random numbers, so a world without a vent is untouched.
+    pub fn step_vents(&mut self, dt: f32) {
+        use crate::tools::Tool;
+        if !self.improved.is_on(crate::improved::Feature::HydrothermalVent)
+            || !self.tools.tools().iter().any(|tool| matches!(tool, Tool::Vent(_)))
+        {
+            return;
+        }
+        for index in 0..self.tools.len() {
+            let Some(Tool::Vent(mut vent)) = self.tools.tools().get(index).copied() else {
+                continue;
+            };
+            let save_id = vent.base.save_id;
+            let mut list = self.tools.take_vent_pellets(save_id);
+            list.retain(|pellet| self.pellets.contains(*pellet));
+            // A pellet that has slowed down is an ordinary pellet again: the game's drag takes the rest.
+            for pellet in &list {
+                if self.pellets.drag_factor(*pellet).is_some_and(|factor| factor < 1.0)
+                    && self.pellets.velocity(*pellet).is_some_and(|speed| speed.length() < crate::vent::VENT_GLIDE_END_SPEED)
+                {
+                    self.pellets.set_drag_factor(*pellet, 1.0);
+                }
+            }
+            let mut biomass: f32 = list.iter().filter_map(|pellet| self.pellets.energy(*pellet)).sum();
+            let due = vent.due_shots(dt, !vent.may_shoot(biomass));
+            for _ in 0..due {
+                if !vent.may_shoot(biomass) {
+                    break;
+                }
+                let shot = vent.shot(self.rng.f32(), self.rng.f32(), self.rng.f32());
+                let amount = self.pellets.materials().get(MaterialKind::Plant).amount_of_energy(shot.energy);
+                let spec = PelletSpawn {
+                    material: MaterialKind::Plant,
+                    amount,
+                    pos: vent.base.pos + shot.offset,
+                    velocity: shot.velocity,
+                    rotation: 0.0,
+                    angular_velocity: 0.0,
+                    owner_zone: None,
+                    held: false,
+                };
+                if let Some(pellet) = self.spawn_pellet(spec) {
+                    // The range: the pellet's drag is lowered so that it slides about that far (the game's drag stops a pellet within a few tens of units).
+                    let base_drag = self.pellets.linear_drag(pellet, self.settings.scenario.drag_coefficient, false).unwrap_or(0.0);
+                    let factor = vent.glide_factor(shot.velocity.length(), base_drag);
+                    if factor < 1.0 {
+                        self.pellets.set_drag_factor(pellet, factor);
+                    }
+                    let energy = self.pellets.energy(pellet).unwrap_or(0.0);
+                    list.push_back(pellet);
+                    biomass += energy;
+                    self.accounting.produced_plant_energy += f64::from(energy);
+                    vent.shot = vent.shot.saturating_add(1);
+                }
+            }
+            if vent.recycle && biomass > vent.cap {
+                biomass -= self.recycle_vent_pellets(&mut list, biomass - vent.cap);
+            }
+            vent.alive = list.len() as u32;
+            vent.biomass = biomass;
+            if let Some(Tool::Vent(live)) = self.tools.tools_mut().get_mut(index) {
+                live.progress = vent.progress;
+                live.shot = vent.shot;
+                live.alive = vent.alive;
+                live.biomass = vent.biomass;
+            }
+            self.tools.put_vent_pellets(save_id, list);
+        }
+    }
+
+    /// Takes `overage` energy back from the front of a vent's list, oldest first (`Zone.RecyclePellets`: the oldest pellet gives
+    /// `min(what is left to take, its energy + 1)`; one that is used up is removed, one that is not shrinks). Returns the energy taken.
+    fn recycle_vent_pellets(&mut self, list: &mut std::collections::VecDeque<PelletId>, overage: f32) -> f32 {
+        let mut remaining = overage.max(0.0);
+        let mut taken = 0.0_f32;
+        while remaining > 0.01 {
+            let Some(&oldest) = list.front() else {
+                break;
+            };
+            if !self.pellets.contains(oldest) {
+                list.pop_front();
+                continue;
+            }
+            let energy = self.pellets.energy(oldest).unwrap_or(0.0);
+            let removed = self.pellets.remove_energy(oldest, remaining.min(energy + 1.0));
+            if removed <= 0.0 {
+                break;
+            }
+            self.accounting.recycled_plant_energy += f64::from(removed);
+            taken += removed;
+            remaining -= removed;
+            if self.pellets.contains(oldest) {
+                // Partly taken: its radius shrank, the hash follows.
+                if let (Some(pos), Some(radius)) = (self.pellets.pos(oldest), self.pellets.radius(oldest)) {
+                    self.hash.update(oldest.handle(), SpatialClass::Pellet, pos, radius);
+                }
+            } else {
+                self.hash.remove(oldest.handle(), SpatialClass::Pellet);
+                list.pop_front();
+            }
+        }
+        taken
+    }
+
     /// Phase 12: `isSource` bibites emit free plant pellets.
     ///
     /// `period = 0.5 / metabolicRate`, pellet energy = `0.1 · baseArea ·
@@ -5792,22 +6349,25 @@ impl World {
         if !self.has_sources {
             return;
         }
-        self.ids_scratch.clear();
-        self.ids_scratch.extend(self.bibites.ids());
-        let mut any = false;
-        for index in 0..self.ids_scratch.len() {
-            let id = self.ids_scratch[index];
-            let Some(record) = self.bibites.get(id) else {
-                continue;
-            };
-            if !record.meta.is_source || record.body.dead {
-                continue;
-            }
-            any = true;
-            let period = 0.5 / record.genome.metabolic_rate().max(f32::EPSILON);
-            let pellet_size = record.body.geometry.base_body_area * 0.1;
-            let energy = pellet_size * self.settings.materials.plant.energy_density;
-            let pos = record.pos - Vec2::Y.rotate(record.rot) * (8.0 * record.derived.d1_size);
+        // Finding the sources is a look at every record (a cache miss on each, in a world of thousands), so the pool takes it
+        // when the world is on it; the progress and the spawns that follow keep the dense order of the plain loop.
+        let plant_density = self.settings.materials.plant.energy_density;
+        let mut sources: Vec<(BibiteId, f32, f32, Vec2)> = Vec::new();
+        self.bibites
+            .filter_map_dense_into(self.executor(), &mut sources, |id, record| {
+                if !record.meta.is_source || record.body.dead {
+                    return None;
+                }
+                let period = 0.5 / record.genome.metabolic_rate().max(f32::EPSILON);
+                let pellet_size = record.body.geometry.base_body_area * 0.1;
+                let energy = pellet_size * plant_density;
+                let pos = record.pos
+                    - crate::math::unity::transform_up(record.rot)
+                        * (8.0 * record.derived.d1_size);
+                Some((id, period, energy, pos))
+            });
+        let any = !sources.is_empty();
+        for (id, period, energy, pos) in sources {
             let progress = acc_entry_f32(&mut self.producer_progress, id);
             *progress += dt;
             // `PelletProducer.FixedUpdate` (cs:25-31) spawns at most one
@@ -6365,8 +6925,9 @@ impl World {
                 culled += 1;
             }
         }
-        let zones = &mut self.zones;
-        zones.recount_all(&self.pellets);
+        let executor = crate::sim::ParallelExecutor::new(self.sensing_pool.as_ref());
+        self.zones
+            .recount_all_with(&self.pellets, executor, self.active_gates.scans);
         self.sync_pellet_hash();
         culled
     }
@@ -6379,9 +6940,15 @@ impl World {
             .red_death
             .enabled
             .then_some(self.tools.red_death.safe_radius);
-        let report = self
-            .zones
-            .update_phase(dt, &mut self.pellets, &mut self.hash, safe_radius);
+        let executor = crate::sim::ParallelExecutor::new(self.sensing_pool.as_ref());
+        let report = self.zones.update_phase_with(
+            dt,
+            &mut self.pellets,
+            &mut self.hash,
+            safe_radius,
+            executor,
+            self.active_gates.scans,
+        );
         self.accounting.produced_plant_energy += report.produced_plant_energy;
         self.accounting.produced_meat_energy += report.produced_meat_energy;
         self.accounting.recycled_plant_energy += report.recycled_plant_energy;
@@ -6663,6 +7230,13 @@ impl World {
             if let Some(spot) = tower.spot {
                 self.hash.remove(spot.handle(), SpatialClass::Pheromone);
                 self.pheromones.remove(spot);
+            }
+        }
+        // RUSTibites Improved: a vent that is taken away lets go of its pellets: the ones still flying have the game's drag again.
+        if let Some(crate::tools::Tool::Vent(vent)) = self.tools.get(id) {
+            let save_id = vent.base.save_id;
+            for pellet in self.tools.take_vent_pellets(save_id) {
+                self.pellets.set_drag_factor(pellet, 1.0);
             }
         }
         self.tools.remove_tool(id).is_some()
@@ -7478,7 +8052,12 @@ impl World {
             return crate::pellet::DecayReport::default();
         }
         let period = self.decay.period() as f32;
-        let report = self.pellets.process_decay(dt * period);
+        let executor = crate::sim::ParallelExecutor::new(self.sensing_pool.as_ref());
+        let report = self.pellets.process_decay_with(
+            dt * period,
+            executor,
+            self.active_gates.scans,
+        );
         self.accounting.decayed_plant_energy +=
             report.plant_amount * f64::from(self.settings.materials.plant.energy_density);
         self.accounting.decayed_meat_energy +=
@@ -8917,6 +9496,24 @@ mod tests {
         assert!(world.step_red_death_timer(0.5));
     }
 
+    /// A world made from settings that have the Red Death bloom on starts with it on (`RedDeathBloomManager` reads the loaded settings): a saved world with
+    /// Red Death enabled hurt nothing, was not smelled and drew nothing until some setting was edited.
+    #[test]
+    fn a_world_made_from_settings_with_red_death_on_has_the_bloom() {
+        let mut settings = default_settings();
+        settings.scenario.enable_red_death = true;
+        settings.scenario.red_death_fill = 0.75;
+        settings.scenario.red_death_base_damages = 2.0;
+        let world = World::new(settings, ScenarioData::default(), 1).expect("world");
+        let bloom = world.red_death();
+        assert!(bloom.enabled);
+        assert!((bloom.fill - 0.75).abs() < 1e-6 && (bloom.base_damage - 2.0).abs() < 1e-6);
+        assert!(bloom.safe_radius.is_finite() && (bloom.safe_radius - bloom.shade_end * 0.5).abs() < 1e-3);
+        // Switched off in the settings, it stays off.
+        let off = World::new(default_settings(), ScenarioData::default(), 1).expect("world");
+        assert!(!off.red_death().enabled && off.red_death().safe_radius == f32::INFINITY);
+    }
+
     // ----- World::new / ScenarioData -----
 
     fn default_settings() -> SimSettings {
@@ -9312,6 +9909,35 @@ mod tests {
         assert!((world.settings.scenario.pellet_energy - 150.0).abs() < 1.0);
     }
 
+    /// A negative `start` is a phase shift, not an error (`SettingsChanger.Update` only holds the animator back while `time - start` is below zero): the
+    /// published scenario "Seasonal Desert v3" starts its winter animators at -43,200 and its world refused to build (the tester's Start returned to the menu).
+    #[test]
+    fn a_negative_animator_start_has_the_curve_already_under_way() {
+        use crate::settings::{SettingBase, SettingsChanger, SplinePoint};
+        let changer = SettingsChanger {
+            name: "shifted".to_owned(),
+            settings_bases: vec![SettingBase {
+                key: "pelletEnergy".to_owned(),
+                base: 100.0,
+            }],
+            points: vec![SplinePoint::new(0.0, 1.0), SplinePoint::new(2.0, 3.0)],
+            repeat: false,
+            start: -1.0,
+        };
+        let mut world = World::new(
+            default_settings(),
+            ScenarioData {
+                settings_changers: vec![changer],
+                ..ScenarioData::default()
+            },
+            44,
+        )
+        .expect("a negative start is a valid animator");
+        world.run(15); // 0.5 s: the curve is 1.5 s along -> factor 2.5
+        let energy = world.settings.scenario.pellet_energy;
+        assert!((230.0..=255.0).contains(&energy), "{energy}");
+    }
+
     #[test]
     fn full_tick_empty_world_is_stable_and_samples_schema() {
         let mut world = World::new(default_settings(), ScenarioData::default(), 5).expect("world");
@@ -9539,6 +10165,1017 @@ mod tests {
         let record = world.bibites.get(id).expect("bibite still alive");
         assert!(record.mutation_factor.probability_increase > 0.0);
         assert!(record.mutation_factor.intensity_increase > 0.0);
+    }
+
+    /// A world with a gene selector at the origin (radius 2000, a cycle every 0.1 s) and two bibites whose Diet genes are `low` and `high`.
+    fn world_with_a_gene_selector(on: bool, low: f32, high: f32, setup: impl FnOnce(&mut crate::gene_selector::GeneSelector)) -> (World, BibiteId, BibiteId) {
+        use crate::improved::{Feature, ImprovedFeatures};
+        let mut world = World::new(default_settings(), ScenarioData::default(), 23).expect("world");
+        world.improved = ImprovedFeatures::FAITHFUL.with(Feature::GeneSelectorTower, on);
+        let a = spawn_test_bibite(&mut world, Vec2::new(0.0, 10.0));
+        let b = spawn_test_bibite(&mut world, Vec2::new(0.0, 20.0));
+        world.bibites.get_mut(a).unwrap().genome.set_gene(Gene::Diet, low);
+        world.bibites.get_mut(b).unwrap().genome.set_gene(Gene::Diet, high);
+        let id = world.place_gene_selector_at(Vec2::ZERO);
+        let Some(crate::tools::Tool::Gene(selector)) = world.tools.get_mut(id) else {
+            panic!("the tool is a gene selector");
+        };
+        selector.radius = 2000.0;
+        selector.period = 0.1;
+        setup(selector);
+        (world, a, b)
+    }
+
+    fn alive(world: &World, id: BibiteId) -> bool {
+        world.bibites.get(id).is_some_and(|record| !record.body.dead)
+    }
+
+    #[test]
+    fn a_gene_selector_kills_the_bibite_outside_its_range_only_while_the_switch_is_on() {
+        // Diet 0 (herbivore) and 1 (carnivore); the range keeps the low one.
+        let narrow = |selector: &mut crate::gene_selector::GeneSelector| selector.set_range(0.0, 0.4);
+        let (mut world, low, high) = world_with_a_gene_selector(true, 0.1, 0.9, narrow);
+        world.run(30);
+        assert!(alive(&world, low), "inside the range: spared");
+        assert!(!alive(&world, high), "outside the range: killed");
+        let Some(crate::tools::Tool::Gene(selector)) = world.tools.tools().first().copied() else {
+            panic!("the tower");
+        };
+        assert!(selector.killed >= 1, "the tower counts its kills");
+        // The switch off: the same tower, the same bibites, nobody dies.
+        let (mut off, low, high) = world_with_a_gene_selector(false, 0.1, 0.9, narrow);
+        off.run(30);
+        assert!(alive(&off, low) && alive(&off, high), "an inactive tower kills nobody");
+    }
+
+    #[test]
+    fn a_gene_selector_with_kill_inside_culls_the_bibite_in_its_range_and_a_new_tower_with_the_whole_range_kills_nobody() {
+        let (mut world, low, high) = world_with_a_gene_selector(true, 0.1, 0.9, |selector| {
+            selector.set_range(0.0, 0.4);
+            selector.kill_inside = true;
+        });
+        world.run(30);
+        assert!(!alive(&world, low) && alive(&world, high), "a cull kills the bibite inside the range");
+        let (mut untouched, low, high) = world_with_a_gene_selector(true, 0.1, 0.9, |_| {});
+        untouched.run(30);
+        assert!(alive(&untouched, low) && alive(&untouched, high), "the whole range: nobody is outside it");
+    }
+
+    #[test]
+    fn a_gene_selector_kills_up_to_its_kills_per_cycle_and_is_not_written_into_a_save() {
+        let (mut world, a, b) = world_with_a_gene_selector(true, 0.9, 0.95, |selector| {
+            selector.set_range(0.0, 0.4);
+            selector.kills_per_cycle = 1;
+            selector.period = 50.0; // one cycle in 30 s of ticks? none: the first scan is a period after placing
+        });
+        world.run(30);
+        assert!(alive(&world, a) && alive(&world, b), "the first scan is a period after the tower was placed");
+        let (mut two, a, b) = world_with_a_gene_selector(true, 0.9, 0.95, |selector| {
+            selector.set_range(0.0, 0.4);
+            selector.set_kills_per_cycle(2);
+        });
+        two.run(30);
+        assert!(!alive(&two, a) && !alive(&two, b), "two kills in a cycle");
+        // The game-format contents do not hold the tower (the original game could not read it).
+        let contents = two.to_contents();
+        assert!(contents.rad_towers.is_empty() && contents.phero_towers.is_empty() && contents.color_killers.is_empty());
+    }
+
+    #[test]
+    fn a_gene_selector_that_follows_a_zone_goes_where_the_zone_goes_and_scans_there() {
+        use crate::improved::{Feature, ImprovedFeatures};
+        let mut world = World::new(default_settings(), scenario_with_zone_group(), 24).expect("world");
+        world.improved = ImprovedFeatures::FAITHFUL.with(Feature::GeneSelectorTower, true);
+        let zone = world.zones.zones[1].id;
+        let zone_pos = world.zones.zones[1].pos;
+        // A carnivore at the zone's centre, and a tower with a short reach far from it, keeping only the herbivores.
+        let victim = spawn_test_bibite(&mut world, zone_pos);
+        world.bibites.get_mut(victim).unwrap().genome.set_gene(Gene::Diet, 0.9);
+        let id = world.place_gene_selector_at(zone_pos + Vec2::new(900.0, 0.0));
+        let Some(crate::tools::Tool::Gene(selector)) = world.tools.get_mut(id) else {
+            panic!("the tool is a gene selector");
+        };
+        selector.radius = 100.0;
+        selector.period = 0.1;
+        selector.set_range(0.0, 0.4);
+        world.run(30);
+        assert!(alive(&world, victim), "out of the tower's reach: spared");
+        // Following the zone: the tower is on the zone at once, and after every tick of its own phase.
+        assert!(world.set_tool_attached_zone(id, Some(zone)));
+        assert_eq!(world.tools.get(id).expect("the tower").base().pos, zone_pos);
+        world.run(30);
+        assert!(!alive(&world, victim), "the tower went to the zone and scanned there");
+    }
+
+    /// A world with a hydrothermal vent at the origin (the switch `on`), set up by `setup`, and the vent's id.
+    fn world_with_a_vent(on: bool, setup: impl FnOnce(&mut crate::vent::HydrothermalVent)) -> (World, ToolId) {
+        use crate::improved::{Feature, ImprovedFeatures};
+        let mut world = World::new(default_settings(), ScenarioData::default(), 31).expect("world");
+        world.improved = ImprovedFeatures::FAITHFUL.with(Feature::HydrothermalVent, on);
+        let id = world.place_vent_at(Vec2::ZERO);
+        let Some(crate::tools::Tool::Vent(vent)) = world.tools.get_mut(id) else {
+            panic!("the tool is a vent");
+        };
+        setup(vent);
+        (world, id)
+    }
+
+    fn vent_of(world: &World, id: ToolId) -> crate::vent::HydrothermalVent {
+        match world.tools.get(id) {
+            Some(crate::tools::Tool::Vent(vent)) => *vent,
+            _ => panic!("the tool is a vent"),
+        }
+    }
+
+    /// The pellets a vent counts as its own, oldest first.
+    fn vent_pellet_ids(world: &World, id: ToolId) -> Vec<PelletId> {
+        let save_id = world.tools.get(id).expect("the tool").save_id();
+        world.tools.vent_pellets(save_id).map_or_else(Vec::new, |list| list.iter().copied().collect())
+    }
+
+    #[test]
+    fn a_vent_shoots_plant_pellets_in_every_direction_at_its_rate_and_books_their_energy() {
+        let (mut world, id) = world_with_a_vent(true, |vent| {
+            vent.set_rate(20.0);
+            vent.set_velocity(300.0);
+        });
+        world.run(80);
+        let vent = vent_of(&world, id);
+        let elapsed = world.simulated_time;
+        assert!((f64::from(vent.shot) - 20.0 * elapsed).abs() <= 2.0, "{} shots in {elapsed} s at 20 a second", vent.shot);
+        let pellets = vent_pellet_ids(&world, id);
+        assert_eq!(pellets.len() as u32, vent.alive);
+        assert!(vent.alive > 0 && vent.alive <= vent.shot, "{} alive of {} shot", vent.alive, vent.shot);
+        // Plant, free (no zone owns them), and out in every quarter of the plane round the vent.
+        let mut quarters = [0usize; 4];
+        for pellet in &pellets {
+            assert_eq!(world.pellets.material(*pellet), Some(MaterialKind::Plant));
+            assert_eq!(world.pellets.owner_zone(*pellet), Some(None));
+            let pos = world.pellets.pos(*pellet).expect("position");
+            quarters[usize::from(pos.x >= 0.0) * 2 + usize::from(pos.y >= 0.0)] += 1;
+        }
+        assert!(quarters.iter().all(|&n| n >= 1), "pellets in every direction: {quarters:?}");
+        // The energy is booked as produced, and the vent's figure is what is in the world.
+        let stock = world.pellets.counts().plant_biomass;
+        let produced = world.accounting.produced_plant_energy;
+        assert!((produced - stock).abs() <= 1.0 + 1e-3 * produced, "produced {produced}, in the world {stock}");
+        assert!((f64::from(vent.biomass) - stock).abs() <= 1.0 + 1e-3 * stock, "the vent counts {} of {stock}", vent.biomass);
+    }
+
+    #[test]
+    fn a_vent_that_is_switched_off_or_that_is_not_there_changes_nothing() {
+        let (mut off, id) = world_with_a_vent(false, |vent| vent.set_rate(50.0));
+        off.run(60);
+        assert_eq!((off.pellets.len(), vent_of(&off, id).shot), (0, 0), "an inactive vent shoots nothing");
+        // The switch on with no vent in the world: the same world as with the switch off, down to its random numbers.
+        let mut plain = World::new(default_settings(), ScenarioData::default(), 31).expect("world");
+        let mut armed = World::new(default_settings(), ScenarioData::default(), 31).expect("world");
+        armed.improved = crate::improved::ImprovedFeatures::FAITHFUL.with(crate::improved::Feature::HydrothermalVent, true);
+        plain.run(40);
+        armed.run(40);
+        assert_eq!(crate::sim::state_fingerprint(&plain), crate::sim::state_fingerprint(&armed));
+        assert_eq!(plain.rng.state(), armed.rng.state());
+    }
+
+    #[test]
+    fn a_pellet_is_the_size_that_was_set_varied_by_a_quarter() {
+        let (mut world, id) = world_with_a_vent(true, |vent| {
+            vent.set_rate(4.0);
+            vent.set_pellet_energy(800.0);
+            vent.set_velocity(200.0);
+        });
+        world.run(30);
+        let pellets = vent_pellet_ids(&world, id);
+        assert!(pellets.len() >= 3, "{} pellets", pellets.len());
+        for pellet in pellets {
+            let energy = world.pellets.energy(pellet).expect("energy");
+            assert!((600.0 - 1.0..=1000.0 + 1.0).contains(&energy), "{energy} E from a vent set to 800 E");
+        }
+    }
+
+    #[test]
+    fn a_vent_at_its_cap_without_recycling_stops_shooting_and_starts_again_when_pellets_are_eaten() {
+        let (mut world, id) = world_with_a_vent(true, |vent| {
+            vent.set_rate(20.0);
+            vent.set_pellet_energy(200.0);
+            vent.set_cap(1000.0);
+            vent.recycle = false;
+        });
+        world.run(100);
+        let vent = vent_of(&world, id);
+        assert!(vent.biomass >= 1000.0 && vent.biomass < 1000.0 + 250.0, "at the cap, at most one pellet over it: {}", vent.biomass);
+        let at_the_cap = vent.shot;
+        let elapsed = world.simulated_time;
+        assert!(f64::from(at_the_cap) < 20.0 * elapsed - 5.0, "{at_the_cap} shots: it stopped");
+        world.run(40);
+        assert_eq!(vent_of(&world, id).shot, at_the_cap, "nothing more is shot while it is at the cap");
+        // The bibites eat them (here: the world removes them): it shoots again, and stops at the cap again (the pellets that waited were one at most).
+        for pellet in vent_pellet_ids(&world, id) {
+            world.despawn_pellet(pellet);
+        }
+        world.run(5);
+        let after = vent_of(&world, id);
+        assert!(after.shot > at_the_cap, "shooting again: {} after {at_the_cap}", after.shot);
+        assert!(after.shot - at_the_cap <= 7, "no burst: {} shots to fill {} E", after.shot - at_the_cap, after.cap);
+        assert!(after.biomass < 1000.0 + 250.0, "stopped at the cap again: {}", after.biomass);
+    }
+
+    #[test]
+    fn a_vent_with_recycling_goes_on_shooting_at_its_cap_and_takes_back_its_oldest_pellets() {
+        let (mut world, id) = world_with_a_vent(true, |vent| {
+            vent.set_rate(20.0);
+            vent.set_pellet_energy(200.0);
+            vent.set_cap(1000.0);
+            vent.recycle = true;
+        });
+        world.run(10);
+        let first = *vent_pellet_ids(&world, id).first().expect("a first pellet");
+        world.run(150);
+        let vent = vent_of(&world, id);
+        let elapsed = world.simulated_time;
+        assert!(f64::from(vent.shot) >= 20.0 * elapsed - 3.0, "it went on shooting: {} shots in {elapsed} s", vent.shot);
+        assert!(vent.biomass <= 1000.0 + 1.0, "never over the cap: {}", vent.biomass);
+        assert!(vent.biomass >= 1000.0 - 300.0, "kept near the cap: {}", vent.biomass);
+        assert!(!world.pellets.contains(first), "the oldest pellet was taken back");
+        // What was taken back is booked as recycled, and the books balance: what was produced is in the world or was recycled.
+        let produced = world.accounting.produced_plant_energy;
+        let recycled = world.accounting.recycled_plant_energy;
+        let stock = world.pellets.counts().plant_biomass;
+        assert!(recycled > 0.0);
+        assert!((produced - recycled - stock).abs() <= 2.0 + 1e-3 * produced, "produced {produced}, recycled {recycled}, in the world {stock}");
+        // The newest are the last of its list and are alive; the list holds only pellets of the world.
+        let list = vent_pellet_ids(&world, id);
+        assert!(list.iter().all(|pellet| world.pellets.contains(*pellet)) && list.len() as u32 == vent.alive);
+    }
+
+    /// The mean distance from the vent of the pellets it has shot, after `ticks` ticks at `rate` shots a second.
+    fn vent_spread(velocity: f32, range: f32, rate: f32, ticks: u64) -> f32 {
+        let (mut world, id) = world_with_a_vent(true, |vent| {
+            vent.set_rate(rate);
+            vent.set_velocity(velocity);
+            vent.set_range(range);
+        });
+        world.run(ticks);
+        let pellets = vent_pellet_ids(&world, id);
+        assert!(!pellets.is_empty());
+        pellets.iter().map(|pellet| world.pellets.pos(*pellet).expect("position").length()).sum::<f32>() / pellets.len() as f32
+    }
+
+    #[test]
+    fn the_longer_the_vents_range_the_further_its_pellets_slide_about_that_far_in_open_ground() {
+        // One pellet at a time, at the top speed, left to come to rest (a minute of simulated time).
+        let (short, middle, long) = (vent_spread(400.0, 60.0, 0.5, 1800), vent_spread(400.0, 300.0, 0.5, 1800), vent_spread(400.0, 1200.0, 0.5, 1800));
+        assert!(middle > short * 2.5 && long > middle * 2.5, "mean distance from the vent: {short} for a range of 60, {middle} for 300, {long} for 1200");
+        assert!(long > 600.0 && long < 1500.0, "about the range it was set to: {long} for 1200");
+        assert!(middle > 150.0 && middle < 450.0, "about the range it was set to: {middle} for 300");
+    }
+
+    #[test]
+    fn the_faster_the_vent_the_sooner_its_pellets_are_out_but_the_range_decides_how_far() {
+        // A third of a second after the first shot (the clock's tick is a thirtieth of a second): the faster shot is further out.
+        let (slow, fast) = (vent_spread(30.0, 200.0, 20.0, 10), vent_spread(400.0, 200.0, 20.0, 10));
+        assert!(fast > slow * 2.0, "mean distance from the vent soon after the shots: {slow} at 30 u/s, {fast} at 400 u/s");
+        // Left to come to rest: the same range, about the same distance, whatever the speed.
+        let (slow, fast) = (vent_spread(60.0, 200.0, 0.5, 3000), vent_spread(400.0, 200.0, 0.5, 3000));
+        assert!((slow / fast - 1.0).abs() < 0.5, "the range decides: {slow} at 60 u/s, {fast} at 400 u/s");
+    }
+
+    #[test]
+    fn a_pellet_that_has_stopped_has_the_games_drag_again_and_a_removed_vent_lets_go_of_its_pellets() {
+        let (mut world, id) = world_with_a_vent(true, |vent| {
+            vent.set_rate(2.0);
+            vent.set_velocity(400.0);
+            vent.set_range(300.0);
+        });
+        world.run(30);
+        let early = vent_pellet_ids(&world, id);
+        assert!(!early.is_empty());
+        assert!(early.iter().any(|pellet| world.pellets.drag_factor(*pellet).is_some_and(|factor| factor < 0.5)), "a pellet in flight has a lowered drag");
+        // A removed vent: whatever is still flying has the game's drag at once.
+        let (mut other, other_id) = world_with_a_vent(true, |vent| {
+            vent.set_rate(5.0);
+            vent.set_velocity(400.0);
+            vent.set_range(2000.0);
+        });
+        other.run(15);
+        let flying = vent_pellet_ids(&other, other_id);
+        assert!(flying.iter().any(|pellet| other.pellets.drag_factor(*pellet).is_some_and(|factor| factor < 1.0)));
+        assert!(other.remove_tool(other_id));
+        assert!(flying.iter().all(|pellet| other.pellets.drag_factor(*pellet) == Some(1.0)), "every pellet is an ordinary pellet after the vent is gone");
+        // Left to come to rest, the vent's own pellets have the game's drag again.
+        world.run(1801);
+        let at_rest: Vec<PelletId> = vent_pellet_ids(&world, id).into_iter().filter(|pellet| world.pellets.velocity(*pellet).is_some_and(|speed| speed.length() < crate::vent::VENT_GLIDE_END_SPEED)).collect();
+        assert!(!at_rest.is_empty(), "a minute on, most of its pellets have stopped");
+        assert!(at_rest.iter().all(|pellet| world.pellets.drag_factor(*pellet) == Some(1.0)), "a pellet that has stopped has the game's drag");
+    }
+
+    #[test]
+    fn a_vent_that_follows_a_zone_shoots_from_the_zone_and_a_removed_vent_forgets_its_pellets() {
+        let mut world = World::new(default_settings(), scenario_with_zone_group(), 33).expect("world");
+        world.improved = crate::improved::ImprovedFeatures::FAITHFUL.with(crate::improved::Feature::HydrothermalVent, true);
+        let zone = world.zones.zones[1].id;
+        let zone_pos = world.zones.zones[1].pos;
+        let id = world.place_vent_at(zone_pos + Vec2::new(1200.0, 0.0));
+        if let Some(crate::tools::Tool::Vent(vent)) = world.tools.get_mut(id) {
+            vent.set_rate(10.0);
+            vent.set_velocity(20.0);
+        }
+        assert!(world.set_tool_attached_zone(id, Some(zone)));
+        assert_eq!(world.tools.get(id).expect("the tower").base().pos, zone_pos);
+        world.run(30);
+        let pellets = vent_pellet_ids(&world, id);
+        assert!(!pellets.is_empty());
+        for pellet in &pellets {
+            let pos = world.pellets.pos(*pellet).expect("position");
+            assert!(pos.distance(zone_pos) < 600.0, "a pellet {} u from the zone it follows", pos.distance(zone_pos));
+        }
+        // Taking the vent away leaves the pellets as ordinary pellets and drops its list.
+        let save_id = world.tools.get(id).expect("the tool").save_id();
+        let before = world.pellets.len();
+        assert!(world.remove_tool(id));
+        assert!(world.tools.vent_pellets(save_id).is_none());
+        assert_eq!(world.pellets.len(), before, "its pellets stay");
+    }
+
+    #[test]
+    fn a_vent_is_not_written_into_a_save_but_its_pellets_are_in_the_world() {
+        let (mut world, id) = world_with_a_vent(true, |vent| vent.set_rate(10.0));
+        world.run(30);
+        assert!(vent_of(&world, id).alive > 0);
+        let contents = world.to_contents();
+        assert!(contents.rad_towers.is_empty() && contents.phero_towers.is_empty() && contents.color_killers.is_empty());
+    }
+
+    #[test]
+    fn a_checkpoint_keeps_the_vents_state_and_its_list_of_pellets() {
+        let make = || {
+            let (world, id) = world_with_a_vent(true, |vent| {
+                vent.set_rate(15.0);
+                vent.set_cap(1500.0);
+                vent.recycle = true;
+            });
+            (world, id)
+        };
+        let (mut source, id) = make();
+        source.run(60);
+        source.forget_contact_impulses();
+        let snapshot = source.capture_checkpoint_state().expect("capture");
+        let bytes = snapshot.encode().expect("encode");
+        let decoded = crate::sim::SimSnapshot::decode(&bytes).expect("decode");
+        let (mut restored, restored_id) = make();
+        restored.restore_checkpoint_state(&decoded).expect("restore");
+        let (a, b) = (vent_of(&source, id), vent_of(&restored, restored_id));
+        assert_eq!((a.progress, a.shot, a.alive, a.biomass), (b.progress, b.shot, b.alive, b.biomass));
+        assert_eq!(vent_pellet_ids(&source, id), vent_pellet_ids(&restored, restored_id));
+        // The next ticks stay bit-identical: the same shots, the same recycling.
+        source.run(20);
+        restored.run(20);
+        assert_eq!(crate::sim::state_fingerprint(&source), crate::sim::state_fingerprint(&restored));
+        assert_eq!(vent_pellet_ids(&source, id), vent_pellet_ids(&restored, restored_id));
+        assert_eq!(source.rng.state(), restored.rng.state());
+    }
+
+    /// A world with a force tower at the origin (the switch `on`), set up by `setup`, and the tower's id.
+    fn world_with_a_force_tower(on: bool, setup: impl FnOnce(&mut crate::force_tower::ForceTower)) -> (World, ToolId) {
+        use crate::improved::{Feature, ImprovedFeatures};
+        let mut world = World::new(default_settings(), ScenarioData::default(), 41).expect("world");
+        world.improved = ImprovedFeatures::FAITHFUL.with(Feature::ForceTower, on);
+        let id = world.place_force_tower_at(Vec2::ZERO);
+        let Some(crate::tools::Tool::Force(tower)) = world.tools.get_mut(id) else {
+            panic!("the tool is a force tower");
+        };
+        setup(tower);
+        (world, id)
+    }
+
+    fn force_tower_of(world: &World, id: ToolId) -> crate::force_tower::ForceTower {
+        match world.tools.get(id) {
+            Some(crate::tools::Tool::Force(tower)) => *tower,
+            _ => panic!("the tool is a force tower"),
+        }
+    }
+
+    /// A plant pellet of `energy` E at rest at `pos` (held in a mouth when `held`).
+    fn rest_pellet(world: &mut World, pos: Vec2, energy: f32, held: bool) -> PelletId {
+        let amount = world.pellets.materials().get(MaterialKind::Plant).amount_of_energy(energy);
+        let mut spec = PelletSpawn::new(MaterialKind::Plant, amount, pos);
+        spec.held = held;
+        world.spawn_pellet(spec).expect("a pellet")
+    }
+
+    /// An egg at rest at `pos` that does not hatch for a long time.
+    fn rest_egg(world: &mut World, pos: Vec2) -> crate::ids::EggId {
+        use crate::body::EggSpawn;
+        use crate::brain::Brain;
+        use crate::genome::{Genome, GenomeMeta};
+        let egg = world.eggs.spawn(EggSpawn {
+            pos,
+            vel: Vec2::ZERO,
+            rot: 0.0,
+            ang_vel: 0.0,
+            genome: Genome::starter(),
+            meta: GenomeMeta::default(),
+            brain: Brain::starter(),
+            energy: 50.0,
+            hatch_time: 100_000.0,
+            total_required_energy: 1.0,
+            birth_orientation: -Vec2::Y,
+        });
+        world.sync_egg_hash();
+        egg
+    }
+
+    /// The distance from the origin of every pellet of the world.
+    fn pellet_distances(world: &World) -> Vec<f32> {
+        world.pellets.ids().filter_map(|id| world.pellets.pos(id)).map(|pos| pos.length()).collect()
+    }
+
+    fn ring_of_pellets(world: &mut World, radius: f32, count: usize) -> Vec<PelletId> {
+        (0..count)
+            .map(|k| {
+                let angle = std::f32::consts::TAU * k as f32 / count as f32;
+                rest_pellet(world, Vec2::new(angle.cos(), angle.sin()) * radius, 200.0, false)
+            })
+            .collect()
+    }
+
+    #[test]
+    fn a_force_tower_that_is_switched_off_or_that_is_not_there_changes_nothing() {
+        // The tower is there, the switch is off: the pellets stay where they were put.
+        let (mut off, _) = world_with_a_force_tower(false, |tower| {
+            tower.set_strength(500.0);
+            tower.set_range(1000.0);
+        });
+        let ring = ring_of_pellets(&mut off, 200.0, 12);
+        let before: Vec<Vec2> = ring.iter().filter_map(|id| off.pellets.pos(*id)).collect();
+        off.run(60);
+        let after: Vec<Vec2> = ring.iter().filter_map(|id| off.pellets.pos(*id)).collect();
+        assert_eq!(before, after, "an inactive tower moves nothing");
+        // The switch on with no tower in the world: the same world as with the switch off, down to its random numbers.
+        let mut plain = World::new(default_settings(), ScenarioData::default(), 41).expect("world");
+        let mut armed = World::new(default_settings(), ScenarioData::default(), 41).expect("world");
+        armed.improved = crate::improved::ImprovedFeatures::FAITHFUL.with(crate::improved::Feature::ForceTower, true);
+        plain.run(40);
+        armed.run(40);
+        assert_eq!(crate::sim::state_fingerprint(&plain), crate::sim::state_fingerprint(&armed));
+        assert_eq!(plain.rng.state(), armed.rng.state());
+        // A strength of 0, or every kind switched off, is the same as no tower.
+        for variant in 0..2 {
+            let (mut world, id) = world_with_a_force_tower(true, |tower| {
+                if variant == 0 {
+                    tower.set_strength(0.0);
+                } else {
+                    (tower.bibites, tower.pellets, tower.eggs) = (false, false, false);
+                }
+            });
+            let ring = ring_of_pellets(&mut world, 200.0, 8);
+            let before: Vec<Vec2> = ring.iter().filter_map(|id| world.pellets.pos(*id)).collect();
+            world.run(30);
+            assert_eq!(before, ring.iter().filter_map(|id| world.pellets.pos(*id)).collect::<Vec<_>>());
+            assert_eq!(force_tower_of(&world, id).affected, 0);
+        }
+    }
+
+    #[test]
+    fn a_pull_gathers_the_pellets_towards_the_tower_and_a_push_drives_them_away() {
+        let mean = |world: &World| {
+            let distances = pellet_distances(world);
+            distances.iter().sum::<f32>() / distances.len() as f32
+        };
+        for (strength, label) in [(150.0, "pull"), (-150.0, "push")] {
+            let (mut world, id) = world_with_a_force_tower(true, |tower| {
+                tower.set_strength(strength);
+                tower.set_range(600.0);
+                tower.falloff = crate::force_tower::ForceFalloff::Constant;
+            });
+            let _ = ring_of_pellets(&mut world, 200.0, 16);
+            let start = mean(&world);
+            world.run(90);
+            let end = mean(&world);
+            if strength > 0.0 {
+                assert!(end < start - 20.0, "{label}: the mean distance went from {start} to {end}");
+            } else {
+                assert!(end > start + 20.0, "{label}: the mean distance went from {start} to {end}");
+            }
+            assert_eq!(force_tower_of(&world, id).affected, 16, "{label}: every pellet in range was moved in the last tick");
+        }
+    }
+
+    #[test]
+    fn the_acceleration_is_the_same_for_a_heavy_body_and_a_light_one_and_the_size_is_strength_times_the_tick() {
+        let (mut world, _) = world_with_a_force_tower(true, |tower| {
+            tower.set_strength(90.0);
+            tower.set_range(500.0);
+            tower.falloff = crate::force_tower::ForceFalloff::Constant;
+        });
+        let light = rest_pellet(&mut world, Vec2::new(150.0, 0.0), 20.0, false);
+        let heavy = rest_pellet(&mut world, Vec2::new(0.0, 150.0), 4000.0, false);
+        let bibite = spawn_test_bibite(&mut world, Vec2::new(-150.0, 0.0));
+        let dt = world.clock.dt();
+        world.step_force_towers(dt);
+        let pulled = 90.0 * dt;
+        let light_v = world.pellets.velocity(light).expect("velocity");
+        let heavy_v = world.pellets.velocity(heavy).expect("velocity");
+        assert!((light_v.x + pulled).abs() < 1e-4 && light_v.y.abs() < 1e-5, "{light_v:?}");
+        assert!((heavy_v.y + pulled).abs() < 1e-4 && heavy_v.x.abs() < 1e-5, "{heavy_v:?}");
+        let record = world.bibites.get(bibite).expect("the bibite");
+        assert!((record.vel.x - pulled).abs() < 1e-4 && record.vel.y.abs() < 1e-5, "{:?}", record.vel);
+    }
+
+    #[test]
+    fn each_kind_has_its_own_switch_and_a_corpse_is_a_body_too() {
+        let place = |world: &mut World| {
+            let pellet = rest_pellet(world, Vec2::new(100.0, 0.0), 200.0, false);
+            let egg = rest_egg(world, Vec2::new(0.0, 100.0));
+            let bibite = spawn_test_bibite(world, Vec2::new(-100.0, 0.0));
+            (pellet, egg, bibite)
+        };
+        // Only the pellets.
+        let (mut world, id) = world_with_a_force_tower(true, |tower| (tower.bibites, tower.eggs) = (false, false));
+        let (pellet, egg, bibite) = place(&mut world);
+        let dt = world.clock.dt();
+        world.step_force_towers(dt);
+        assert!(world.pellets.velocity(pellet).expect("velocity").length() > 0.0);
+        assert_eq!(world.eggs.get(egg).expect("egg").vel, Vec2::ZERO);
+        assert_eq!(world.bibites.get(bibite).expect("bibite").vel, Vec2::ZERO);
+        assert_eq!(force_tower_of(&world, id).affected, 1);
+        // Only the eggs and the bibites.
+        let (mut world, id) = world_with_a_force_tower(true, |tower| tower.pellets = false);
+        let (pellet, egg, bibite) = place(&mut world);
+        world.step_force_towers(dt);
+        assert_eq!(world.pellets.velocity(pellet).expect("velocity"), Vec2::ZERO);
+        assert!(world.eggs.get(egg).expect("egg").vel.length() > 0.0);
+        assert!(world.bibites.get(bibite).expect("bibite").vel.length() > 0.0);
+        assert_eq!(force_tower_of(&world, id).affected, 2);
+        // A corpse is pulled like a living bibite.
+        world.bibites.kill(bibite, DeathCause::Hazard);
+        world.step_death_resolution();
+        let corpse = world.bibites.ids().next().expect("the corpse");
+        let before = world.bibites.get(corpse).expect("corpse").vel;
+        world.step_force_towers(dt);
+        assert_ne!(world.bibites.get(corpse).expect("corpse").vel, before, "a dead body is moved too");
+    }
+
+    #[test]
+    fn nothing_outside_the_range_or_on_the_tower_is_moved_and_a_pellet_in_a_mouth_is_left_alone() {
+        let (mut world, id) = world_with_a_force_tower(true, |tower| {
+            tower.set_strength(200.0);
+            tower.set_range(100.0);
+            tower.falloff = crate::force_tower::ForceFalloff::Constant;
+        });
+        let inside = rest_pellet(&mut world, Vec2::new(60.0, 0.0), 200.0, false);
+        let outside = rest_pellet(&mut world, Vec2::new(140.0, 0.0), 200.0, false);
+        let on_it = rest_pellet(&mut world, Vec2::new(0.5, 0.0), 200.0, false);
+        let held = rest_pellet(&mut world, Vec2::new(0.0, 60.0), 200.0, true);
+        let dt = world.clock.dt();
+        world.step_force_towers(dt);
+        assert!(world.pellets.velocity(inside).expect("velocity").length() > 0.0);
+        for (name, pellet) in [("outside", outside), ("on the tower", on_it), ("held", held)] {
+            assert_eq!(world.pellets.velocity(pellet).expect("velocity"), Vec2::ZERO, "{name}");
+        }
+        assert_eq!(force_tower_of(&world, id).affected, 1);
+    }
+
+    #[test]
+    fn a_fading_force_pulls_a_near_pellet_harder_than_a_far_one() {
+        let (mut world, _) = world_with_a_force_tower(true, |tower| {
+            tower.set_strength(100.0);
+            tower.set_range(400.0);
+            tower.falloff = crate::force_tower::ForceFalloff::Fading;
+        });
+        let near = rest_pellet(&mut world, Vec2::new(40.0, 0.0), 200.0, false);
+        let far = rest_pellet(&mut world, Vec2::new(0.0, 300.0), 200.0, false);
+        let dt = world.clock.dt();
+        world.step_force_towers(dt);
+        let (near_v, far_v) = (world.pellets.velocity(near).expect("velocity").length(), world.pellets.velocity(far).expect("velocity").length());
+        assert!((near_v - 100.0 * 0.9 * dt).abs() < 1e-4, "{near_v}");
+        assert!((far_v - 100.0 * 0.25 * dt).abs() < 1e-4, "{far_v}");
+    }
+
+    #[test]
+    fn a_force_tower_that_follows_a_zone_acts_from_the_zone() {
+        let mut world = World::new(default_settings(), scenario_with_zone_group(), 33).expect("world");
+        world.improved = crate::improved::ImprovedFeatures::FAITHFUL.with(crate::improved::Feature::ForceTower, true);
+        let zone = world.zones.zones[1].id;
+        let zone_pos = world.zones.zones[1].pos;
+        let id = world.place_force_tower_at(zone_pos + Vec2::new(1200.0, 0.0));
+        if let Some(crate::tools::Tool::Force(tower)) = world.tools.get_mut(id) {
+            tower.set_strength(200.0);
+            tower.set_range(300.0);
+            tower.falloff = crate::force_tower::ForceFalloff::Constant;
+        }
+        assert!(world.set_tool_attached_zone(id, Some(zone)));
+        assert_eq!(world.tools.get(id).expect("the tower").base().pos, zone_pos);
+        let pellet = rest_pellet(&mut world, zone_pos + Vec2::new(100.0, 0.0), 200.0, false);
+        let dt = world.clock.dt();
+        world.step_force_towers(dt);
+        let velocity = world.pellets.velocity(pellet).expect("velocity");
+        assert!(velocity.x < 0.0 && velocity.y.abs() < 1e-5, "pulled towards the zone's centre: {velocity:?}");
+    }
+
+    #[test]
+    fn a_force_tower_is_not_written_into_a_save() {
+        let (world, _) = world_with_a_force_tower(true, |_| {});
+        let contents = world.to_contents();
+        assert!(contents.rad_towers.is_empty() && contents.phero_towers.is_empty() && contents.color_killers.is_empty());
+    }
+
+    #[test]
+    fn a_checkpoint_keeps_the_force_towers_state_and_the_next_ticks_stay_bit_identical() {
+        let make = || {
+            let (mut world, id) = world_with_a_force_tower(true, |tower| {
+                tower.set_strength(120.0);
+                tower.set_range(500.0);
+            });
+            let _ = ring_of_pellets(&mut world, 250.0, 10);
+            (world, id)
+        };
+        let (mut source, id) = make();
+        source.run(40);
+        source.forget_contact_impulses();
+        let snapshot = source.capture_checkpoint_state().expect("capture");
+        let bytes = snapshot.encode().expect("encode");
+        let decoded = crate::sim::SimSnapshot::decode(&bytes).expect("decode");
+        let (mut restored, restored_id) = make();
+        restored.restore_checkpoint_state(&decoded).expect("restore");
+        assert_eq!(force_tower_of(&source, id).affected, force_tower_of(&restored, restored_id).affected);
+        assert!(force_tower_of(&source, id).affected > 0);
+        source.run(20);
+        restored.run(20);
+        assert_eq!(crate::sim::state_fingerprint(&source), crate::sim::state_fingerprint(&restored));
+        assert_eq!(source.rng.state(), restored.rng.state());
+    }
+
+    /// Not a test of the code: what a strength does to a bibite and to a pellet in a real tick (run with `--ignored --nocapture` to calibrate the defaults).
+    #[test]
+    #[ignore = "calibration"]
+    fn calibration_of_the_strength() {
+        for strength in [20.0_f32, 60.0, 100.0, 200.0, 500.0] {
+            let (mut world, _) = world_with_a_force_tower(true, |tower| {
+                tower.set_strength(strength);
+                tower.set_range(2000.0);
+                tower.falloff = crate::force_tower::ForceFalloff::Constant;
+            });
+            let bibite = spawn_test_bibite(&mut world, Vec2::new(900.0, 0.0));
+            let pellet = rest_pellet(&mut world, Vec2::new(0.0, 900.0), 200.0, false);
+            world.run(30);
+            let bibite_speed = world.bibites.get(bibite).map_or(0.0, |record| record.vel.length());
+            let pellet_speed = world.pellets.velocity(pellet).map_or(0.0, |v| v.length());
+            eprintln!("strength {strength}: after 1 s the bibite goes {bibite_speed:.1} u/s, the pellet {pellet_speed:.1} u/s");
+        }
+    }
+
+    /// A world with a whirlpool tower at the origin (the switch `on`), set up by `setup`, and the tower's id.
+    fn world_with_a_whirlpool(on: bool, setup: impl FnOnce(&mut crate::whirlpool::WhirlpoolTower)) -> (World, ToolId) {
+        use crate::improved::{Feature, ImprovedFeatures};
+        let mut world = World::new(default_settings(), ScenarioData::default(), 47).expect("world");
+        world.improved = ImprovedFeatures::FAITHFUL.with(Feature::Whirlpool, on);
+        let id = world.place_whirlpool_at(Vec2::ZERO);
+        let Some(crate::tools::Tool::Whirl(tower)) = world.tools.get_mut(id) else {
+            panic!("the tool is a whirlpool tower");
+        };
+        setup(tower);
+        (world, id)
+    }
+
+    fn whirlpool_of(world: &World, id: ToolId) -> crate::whirlpool::WhirlpoolTower {
+        match world.tools.get(id) {
+            Some(crate::tools::Tool::Whirl(tower)) => *tower,
+            _ => panic!("the tool is a whirlpool tower"),
+        }
+    }
+
+    /// How far round the origin a point has gone from `from` to `to`, in radians, counterclockwise positive (between -PI and PI).
+    fn turned(from: Vec2, to: Vec2) -> f32 {
+        (from.x * to.y - from.y * to.x).atan2(from.dot(to))
+    }
+
+    #[test]
+    fn a_whirlpool_that_is_switched_off_or_that_is_not_there_changes_nothing() {
+        let (mut off, _) = world_with_a_whirlpool(false, |tower| {
+            tower.set_speed(500.0);
+            tower.set_range(1000.0);
+        });
+        let ring = ring_of_pellets(&mut off, 200.0, 12);
+        let before: Vec<Vec2> = ring.iter().filter_map(|id| off.pellets.pos(*id)).collect();
+        off.run(60);
+        assert_eq!(before, ring.iter().filter_map(|id| off.pellets.pos(*id)).collect::<Vec<_>>(), "an inactive tower moves nothing");
+        // The switch on with no tower in the world: the same world as with the switch off, down to its random numbers.
+        let mut plain = World::new(default_settings(), ScenarioData::default(), 47).expect("world");
+        let mut armed = World::new(default_settings(), ScenarioData::default(), 47).expect("world");
+        armed.improved = crate::improved::ImprovedFeatures::FAITHFUL.with(crate::improved::Feature::Whirlpool, true);
+        plain.run(40);
+        armed.run(40);
+        assert_eq!(crate::sim::state_fingerprint(&plain), crate::sim::state_fingerprint(&armed));
+        assert_eq!(plain.rng.state(), armed.rng.state());
+        // A speed of 0, or every kind switched off, is the same as no tower.
+        for variant in 0..2 {
+            let (mut world, id) = world_with_a_whirlpool(true, |tower| {
+                if variant == 0 {
+                    tower.set_speed(0.0);
+                } else {
+                    (tower.bibites, tower.pellets, tower.eggs) = (false, false, false);
+                }
+            });
+            let ring = ring_of_pellets(&mut world, 200.0, 8);
+            let before: Vec<Vec2> = ring.iter().filter_map(|id| world.pellets.pos(*id)).collect();
+            world.run(30);
+            assert_eq!(before, ring.iter().filter_map(|id| world.pellets.pos(*id)).collect::<Vec<_>>());
+            assert_eq!(whirlpool_of(&world, id).affected, 0);
+        }
+    }
+
+    #[test]
+    fn a_counterclockwise_whirlpool_carries_a_ring_of_pellets_round_it_and_a_clockwise_one_the_other_way() {
+        use crate::whirlpool::Spin;
+        for spin in [Spin::Counterclockwise, Spin::Clockwise] {
+            let (mut world, id) = world_with_a_whirlpool(true, |tower| {
+                tower.set_speed(200.0);
+                tower.set_range(500.0);
+                tower.spin = spin;
+                tower.falloff = crate::force_tower::ForceFalloff::Constant;
+            });
+            let ring = ring_of_pellets(&mut world, 150.0, 12);
+            let before: Vec<Vec2> = ring.iter().filter_map(|id| world.pellets.pos(*id)).collect();
+            world.run(60);
+            let after: Vec<Vec2> = ring.iter().filter_map(|id| world.pellets.pos(*id)).collect();
+            assert_eq!(after.len(), 12);
+            for (from, to) in before.iter().zip(&after) {
+                let angle = turned(*from, *to) * spin.sign();
+                assert!(angle > 0.1, "{spin:?}: a pellet turned {angle} rad the right way");
+                assert!((to.length() - from.length()).abs() < 40.0, "{spin:?}: a pellet kept its distance ({} -> {})", from.length(), to.length());
+            }
+            assert_eq!(whirlpool_of(&world, id).affected, 12, "{spin:?}: every pellet in range was moved in the last tick");
+        }
+    }
+
+    #[test]
+    fn the_push_is_along_the_circle_the_same_for_a_heavy_body_and_a_light_one_and_the_size_is_speed_times_the_tick() {
+        let (mut world, _) = world_with_a_whirlpool(true, |tower| {
+            tower.set_speed(90.0);
+            tower.set_range(500.0);
+            tower.falloff = crate::force_tower::ForceFalloff::Constant;
+        });
+        // Counterclockwise: east goes north, north goes west, west goes south.
+        let light = rest_pellet(&mut world, Vec2::new(150.0, 0.0), 20.0, false);
+        let heavy = rest_pellet(&mut world, Vec2::new(0.0, 150.0), 4000.0, false);
+        let bibite = spawn_test_bibite(&mut world, Vec2::new(-150.0, 0.0));
+        let dt = world.clock.dt();
+        world.step_whirlpools(dt);
+        let pushed = 90.0 * dt;
+        let light_v = world.pellets.velocity(light).expect("velocity");
+        let heavy_v = world.pellets.velocity(heavy).expect("velocity");
+        assert!(light_v.x.abs() < 1e-5 && (light_v.y - pushed).abs() < 1e-4, "{light_v:?}");
+        assert!(heavy_v.y.abs() < 1e-5 && (heavy_v.x + pushed).abs() < 1e-4, "{heavy_v:?}");
+        let record = world.bibites.get(bibite).expect("the bibite");
+        assert!(record.vel.x.abs() < 1e-5 && (record.vel.y + pushed).abs() < 1e-4, "{:?}", record.vel);
+    }
+
+    #[test]
+    fn each_kind_of_whirlpool_body_has_its_own_switch_and_a_corpse_is_a_body_too() {
+        let place = |world: &mut World| {
+            let pellet = rest_pellet(world, Vec2::new(100.0, 0.0), 200.0, false);
+            let egg = rest_egg(world, Vec2::new(0.0, 100.0));
+            let bibite = spawn_test_bibite(world, Vec2::new(-100.0, 0.0));
+            (pellet, egg, bibite)
+        };
+        // Only the pellets.
+        let (mut world, id) = world_with_a_whirlpool(true, |tower| (tower.bibites, tower.eggs) = (false, false));
+        let dt = world.clock.dt();
+        let (pellet, egg, bibite) = place(&mut world);
+        world.step_whirlpools(dt);
+        assert!(world.pellets.velocity(pellet).expect("velocity").length() > 0.0);
+        assert_eq!(world.eggs.get(egg).expect("egg").vel, Vec2::ZERO);
+        assert_eq!(world.bibites.get(bibite).expect("bibite").vel, Vec2::ZERO);
+        assert_eq!(whirlpool_of(&world, id).affected, 1);
+        // Only the eggs and the bibites; a pellet a mouth holds is left alone either way.
+        let (mut world, id) = world_with_a_whirlpool(true, |tower| tower.pellets = false);
+        let (pellet, egg, bibite) = place(&mut world);
+        world.step_whirlpools(dt);
+        assert_eq!(world.pellets.velocity(pellet).expect("velocity"), Vec2::ZERO);
+        assert!(world.eggs.get(egg).expect("egg").vel.length() > 0.0);
+        assert!(world.bibites.get(bibite).expect("bibite").vel.length() > 0.0);
+        assert_eq!(whirlpool_of(&world, id).affected, 2);
+        let (mut world, _) = world_with_a_whirlpool(true, |_| {});
+        let held = rest_pellet(&mut world, Vec2::new(100.0, 0.0), 200.0, true);
+        world.step_whirlpools(dt);
+        assert_eq!(world.pellets.velocity(held).expect("velocity"), Vec2::ZERO, "a held pellet is not carried");
+        // A corpse is carried like a living bibite.
+        let (mut world, _) = world_with_a_whirlpool(true, |_| {});
+        let bibite = spawn_test_bibite(&mut world, Vec2::new(-100.0, 0.0));
+        world.bibites.kill(bibite, DeathCause::Hazard);
+        world.step_death_resolution();
+        let corpse = world.bibites.ids().next().expect("the corpse");
+        let before = world.bibites.get(corpse).expect("corpse").vel;
+        world.step_whirlpools(dt);
+        assert_ne!(world.bibites.get(corpse).expect("corpse").vel, before, "a dead body is moved too");
+    }
+
+    #[test]
+    fn a_whirlpool_that_follows_a_zone_turns_things_round_the_zone() {
+        let mut world = World::new(default_settings(), scenario_with_zone_group(), 33).expect("world");
+        world.improved = crate::improved::ImprovedFeatures::FAITHFUL.with(crate::improved::Feature::Whirlpool, true);
+        let zone = world.zones.zones[1].id;
+        let zone_pos = world.zones.zones[1].pos;
+        let id = world.place_whirlpool_at(zone_pos + Vec2::new(1200.0, 0.0));
+        if let Some(crate::tools::Tool::Whirl(tower)) = world.tools.get_mut(id) {
+            tower.set_speed(200.0);
+            tower.set_range(300.0);
+            tower.falloff = crate::force_tower::ForceFalloff::Constant;
+        }
+        assert!(world.set_tool_attached_zone(id, Some(zone)));
+        assert_eq!(world.tools.get(id).expect("the tower").base().pos, zone_pos);
+        let pellet = rest_pellet(&mut world, zone_pos + Vec2::new(100.0, 0.0), 200.0, false);
+        let dt = world.clock.dt();
+        world.step_whirlpools(dt);
+        let velocity = world.pellets.velocity(pellet).expect("velocity");
+        assert!(velocity.y > 0.0 && velocity.x.abs() < 1e-5, "east of the zone's centre, so pushed north: {velocity:?}");
+    }
+
+    #[test]
+    fn a_whirlpool_is_not_written_into_a_save() {
+        let (world, _) = world_with_a_whirlpool(true, |_| {});
+        let contents = world.to_contents();
+        assert!(contents.rad_towers.is_empty() && contents.phero_towers.is_empty() && contents.color_killers.is_empty());
+    }
+
+    #[test]
+    fn a_checkpoint_keeps_the_whirlpools_state_and_the_next_ticks_stay_bit_identical() {
+        let make = || {
+            let (mut world, id) = world_with_a_whirlpool(true, |tower| {
+                tower.set_speed(120.0);
+                tower.set_range(500.0);
+            });
+            let _ = ring_of_pellets(&mut world, 250.0, 10);
+            (world, id)
+        };
+        let (mut source, id) = make();
+        source.run(40);
+        source.forget_contact_impulses();
+        let snapshot = source.capture_checkpoint_state().expect("capture");
+        let bytes = snapshot.encode().expect("encode");
+        let decoded = crate::sim::SimSnapshot::decode(&bytes).expect("decode");
+        let (mut restored, restored_id) = make();
+        restored.restore_checkpoint_state(&decoded).expect("restore");
+        assert_eq!(whirlpool_of(&source, id).affected, whirlpool_of(&restored, restored_id).affected);
+        assert!(whirlpool_of(&source, id).affected > 0);
+        source.run(20);
+        restored.run(20);
+        assert_eq!(crate::sim::state_fingerprint(&source), crate::sim::state_fingerprint(&restored));
+        assert_eq!(source.rng.state(), restored.rng.state());
+    }
+
+    #[test]
+    fn a_bibite_that_is_turned_by_a_whirlpool_goes_round_it_and_is_held_on_its_circle_instead_of_spiralling_out() {
+        for (speed, spin) in [(100.0, crate::whirlpool::Spin::Counterclockwise), (300.0, crate::whirlpool::Spin::Clockwise)] {
+            let (mut world, _) = world_with_a_whirlpool(true, |tower| {
+                tower.set_speed(speed);
+                tower.set_range(1500.0);
+                tower.spin = spin;
+                tower.falloff = crate::force_tower::ForceFalloff::Constant;
+            });
+            let start = Vec2::new(300.0, 0.0);
+            let bibite = spawn_test_bibite(&mut world, start);
+            world.run(120);
+            let end = world.bibites.get(bibite).map_or(Vec2::ZERO, |record| record.pos);
+            assert!(turned(start, end) * spin.sign() > 0.3, "{spin:?} at {speed}: it went round by {} rad", turned(start, end));
+            assert!((end.length() - 300.0).abs() < 45.0, "{spin:?} at {speed}: it was at 300 u from the tower and is at {} u after 4 s", end.length());
+        }
+    }
+
+    /// Not a test of the code: how a whirlpool turns a bibite and a pellet in real ticks, and how far each drifts out (run with `--ignored --nocapture`).
+    #[test]
+    #[ignore = "calibration"]
+    fn calibration_of_the_whirlpool() {
+        for speed in [50.0_f32, 100.0, 200.0, 500.0] {
+            let (mut world, _) = world_with_a_whirlpool(true, |tower| {
+                tower.set_speed(speed);
+                tower.set_range(1500.0);
+                tower.falloff = crate::force_tower::ForceFalloff::Constant;
+            });
+            let bibite = spawn_test_bibite(&mut world, Vec2::new(300.0, 0.0));
+            let pellet = rest_pellet(&mut world, Vec2::new(0.0, 300.0), 200.0, false);
+            for second in 1..=4 {
+                world.run(30);
+                let b = world.bibites.get(bibite).map_or(Vec2::ZERO, |record| record.pos);
+                let p = world.pellets.pos(pellet).unwrap_or(Vec2::ZERO);
+                eprintln!("speed {speed}, {second} s: bibite at r {:.0} (started 300), angle {:.0} deg; pellet at r {:.0}, angle {:.0} deg", b.length(), b.y.atan2(b.x).to_degrees(), p.length(), p.y.atan2(p.x).to_degrees());
+            }
+        }
+    }
+
+    /// A world (the switch `on`) with the streams `streams`.
+    fn world_with_streams(on: bool, streams: Vec<crate::stream::Stream>) -> World {
+        use crate::improved::{Feature, ImprovedFeatures};
+        let mut world = World::new(default_settings(), ScenarioData::default(), 43).expect("world");
+        world.improved = ImprovedFeatures::FAITHFUL.with(Feature::Streams, on);
+        world.streams = streams;
+        world
+    }
+
+    /// A stream from (-200, 0) to (200, 0), 100 wide, of the given strength.
+    fn east_stream(strength: f32) -> crate::stream::Stream {
+        let mut stream = crate::stream::Stream::new(Vec2::new(-200.0, 0.0), Vec2::new(200.0, 0.0));
+        stream.set_strength(strength);
+        stream
+    }
+
+    #[test]
+    fn a_stream_that_is_switched_off_or_that_is_not_there_changes_nothing() {
+        let mut off = world_with_streams(false, vec![east_stream(500.0)]);
+        let ring: Vec<PelletId> = (0..6).map(|k| rest_pellet(&mut off, Vec2::new(-150.0 + 60.0 * k as f32, 10.0), 200.0, false)).collect();
+        let before: Vec<Vec2> = ring.iter().filter_map(|id| off.pellets.pos(*id)).collect();
+        off.run(60);
+        assert_eq!(before, ring.iter().filter_map(|id| off.pellets.pos(*id)).collect::<Vec<_>>(), "an inactive stream moves nothing");
+        // The switch on with no stream: the same world as with the switch off, down to its random numbers.
+        let mut plain = World::new(default_settings(), ScenarioData::default(), 43).expect("world");
+        let mut armed = World::new(default_settings(), ScenarioData::default(), 43).expect("world");
+        armed.improved = crate::improved::ImprovedFeatures::FAITHFUL.with(crate::improved::Feature::Streams, true);
+        plain.run(40);
+        armed.run(40);
+        assert_eq!(crate::sim::state_fingerprint(&plain), crate::sim::state_fingerprint(&armed));
+        assert_eq!(plain.rng.state(), armed.rng.state());
+        // A strength of 0 is no stream.
+        let mut still = world_with_streams(true, vec![east_stream(0.0)]);
+        let pellet = rest_pellet(&mut still, Vec2::new(0.0, 0.0), 200.0, false);
+        let start = still.pellets.pos(pellet).expect("position");
+        still.run(30);
+        assert_eq!(still.pellets.pos(pellet), Some(start));
+    }
+
+    #[test]
+    fn a_stream_carries_the_pellets_in_it_from_its_start_towards_its_finish_and_leaves_those_outside_alone() {
+        let mut world = world_with_streams(true, vec![east_stream(300.0)]);
+        let inside = rest_pellet(&mut world, Vec2::new(-150.0, 0.0), 200.0, false);
+        let off_to_the_side = rest_pellet(&mut world, Vec2::new(-150.0, 300.0), 200.0, false);
+        let behind = rest_pellet(&mut world, Vec2::new(-400.0, 0.0), 200.0, false);
+        let (start_inside, start_side, start_behind) = (
+            world.pellets.pos(inside).expect("pos"),
+            world.pellets.pos(off_to_the_side).expect("pos"),
+            world.pellets.pos(behind).expect("pos"),
+        );
+        world.run(30);
+        let moved = world.pellets.pos(inside).expect("pos");
+        assert!(moved.x > start_inside.x + 10.0, "carried east: {start_inside:?} -> {moved:?}");
+        assert!(moved.y.abs() < 5.0, "and not sideways: {moved:?}");
+        assert_eq!(world.pellets.pos(off_to_the_side), Some(start_side), "outside the band");
+        assert_eq!(world.pellets.pos(behind), Some(start_behind), "behind the start");
+    }
+
+    #[test]
+    fn a_body_that_reaches_the_finish_is_out_of_the_stream_and_stops_being_pushed() {
+        let mut world = world_with_streams(true, vec![east_stream(500.0)]);
+        let pellet = rest_pellet(&mut world, Vec2::new(150.0, 0.0), 200.0, false);
+        world.run(300);
+        let at = world.pellets.pos(pellet).expect("pos");
+        // It went out of the end of the band and the world's drag stopped it there: well past the finish, never at the far side of the world.
+        assert!(at.x > 200.0 && at.x < 800.0, "carried out of the end: {at:?}");
+        let speed = world.pellets.velocity(pellet).expect("velocity").length();
+        assert!(speed < 1.0, "at rest again after the finish: {speed}");
+    }
+
+    #[test]
+    fn a_stream_pushes_bibites_and_eggs_too_and_two_streams_that_overlap_add_up() {
+        let mut world = world_with_streams(true, vec![east_stream(90.0), east_stream(60.0)]);
+        let bibite = spawn_test_bibite(&mut world, Vec2::new(-100.0, 0.0));
+        let egg = rest_egg(&mut world, Vec2::new(0.0, 20.0));
+        let dt = world.clock.dt();
+        world.step_streams(dt);
+        let expected = 150.0 * dt;
+        let record = world.bibites.get(bibite).expect("the bibite");
+        assert!((record.vel.x - expected).abs() < 1e-4 && record.vel.y.abs() < 1e-5, "{:?}", record.vel);
+        let egg_vel = world.eggs.get(egg).expect("egg").vel;
+        assert!((egg_vel.x - expected).abs() < 1e-4 && egg_vel.y.abs() < 1e-5, "{egg_vel:?}");
+        // A corpse is carried like a living bibite, a pellet in a mouth is not.
+        world.bibites.kill(bibite, DeathCause::Hazard);
+        world.step_death_resolution();
+        let corpse = world.bibites.ids().next().expect("the corpse");
+        let before = world.bibites.get(corpse).expect("corpse").vel;
+        world.step_streams(dt);
+        assert_ne!(world.bibites.get(corpse).expect("corpse").vel, before, "a dead body is carried too");
+        let held = rest_pellet(&mut world, Vec2::new(10.0, 0.0), 200.0, true);
+        world.step_streams(dt);
+        assert_eq!(world.pellets.velocity(held).expect("velocity"), Vec2::ZERO);
+    }
+
+    #[test]
+    fn a_stream_pushes_along_a_slanted_band_in_the_direction_of_its_finish() {
+        let mut stream = crate::stream::Stream::new(Vec2::new(-100.0, -100.0), Vec2::new(100.0, 100.0));
+        stream.set_strength(200.0);
+        let mut world = world_with_streams(true, vec![stream]);
+        let pellet = rest_pellet(&mut world, Vec2::new(0.0, 0.0), 200.0, false);
+        let dt = world.clock.dt();
+        world.step_streams(dt);
+        let velocity = world.pellets.velocity(pellet).expect("velocity");
+        assert!(velocity.x > 0.0 && velocity.y > 0.0 && (velocity.x - velocity.y).abs() < 1e-5, "north-east: {velocity:?}");
+        assert!((velocity.length() - 200.0 * dt).abs() < 1e-4);
+    }
+
+    #[test]
+    fn streams_are_not_written_into_a_save() {
+        let world = world_with_streams(true, vec![east_stream(100.0)]);
+        let contents = world.to_contents();
+        assert!(contents.rad_towers.is_empty() && contents.phero_towers.is_empty() && contents.color_killers.is_empty());
     }
 
     #[test]
@@ -11946,6 +13583,91 @@ mod tests {
         );
     }
 
+    /// The pellet decay, the producers' look at every record and the zones' recounts on the pool (their gates lowered to 1), against
+    /// the serial tick, with twenty source bibites, plenty of meat that rots at once and a decay pass in every tick (so the chops, the
+    /// removals and the pellets that take the freed slots follow each other all the time): the whole checkpoint, byte for byte.
+    #[test]
+    fn decay_producers_and_recounts_on_the_pool_give_the_serial_worlds_results() {
+        use crate::brain::Brain;
+        use crate::genome::{Genome, GenomeMeta};
+        let build = |threads: usize| {
+            let mut world = audit_world(200);
+            world.set_parallel_gates(crate::sim::ParallelGates::EAGER);
+            world.set_threads(threads);
+            for index in 0..20 {
+                let meta = GenomeMeta {
+                    is_source: true,
+                    ..GenomeMeta::default()
+                };
+                let mut spawn = BibiteSpawn::new(Genome::starter(), meta, Brain::starter());
+                spawn.vitals = crate::body::SpawnVitals::Adult;
+                spawn.pos = Vec2::new(index as f32 * 40.0 - 400.0, 25.0);
+                let id = world.bibites.spawn(spawn).expect("source bibite");
+                world.register_bibite(id);
+            }
+            for index in 0..1_500usize {
+                let pos = Vec2::new(
+                    ((index * 37) % 900) as f32 - 450.0,
+                    ((index * 91) % 700) as f32 - 350.0,
+                );
+                let amount = 3.0 + ((index * 13) % 40) as f32;
+                let _ = world.spawn_pellet_with_amount(MaterialKind::Meat, pos, amount);
+            }
+            world.decay = DecayThrottle::new(1);
+            world.pellets.materials_mut().meat.decay_rate = 30.0;
+            world
+                .pellets
+                .update_decay_parameters(MaterialKind::Meat, -5_000.0);
+            world
+        };
+        let worlds = run_same_checkpoints(
+            vec![
+                ("serial".to_owned(), build(1)),
+                ("3 threads".to_owned(), build(3)),
+                ("8 threads".to_owned(), build(8)),
+            ],
+            4,
+            15,
+            |_, _| {},
+        );
+        for (name, world) in &worlds {
+            assert!(world.has_sources, "{name}");
+            assert!(
+                world.accounting.decayed_meat_energy > 0.0,
+                "{name}: nothing decayed, the test does not look at the decay"
+            );
+        }
+    }
+
+    /// The grid broadphase (from a handful of bodies, the way the pool's gates lowered to 1 ask for it, on a pool of four workers or more) against the sweep
+    /// (a grid gate no world reaches): the whole checkpoint, byte for byte, in a spread world and a packed one.
+    #[test]
+    fn the_grid_broadphase_gives_the_sweeps_worlds() {
+        let build = |packed: bool, threads: usize, sweep_only: bool| {
+            let mut world = if packed { packed_world(400, 300.0) } else { audit_world(700) };
+            let mut gates = crate::sim::ParallelGates::EAGER;
+            if sweep_only {
+                gates.grid_bodies = usize::MAX;
+            }
+            world.set_parallel_gates(gates);
+            world.set_threads(threads);
+            world
+        };
+        for packed in [false, true] {
+            assert_same_checkpoints(
+                vec![
+                    ("sweep".to_owned(), build(packed, 1, true)),
+                    ("sweep, 8 threads".to_owned(), build(packed, 8, true)),
+                    ("grid, serial".to_owned(), build(packed, 1, false)),
+                    ("grid, 4 threads".to_owned(), build(packed, 4, false)),
+                    ("grid, 8 threads".to_owned(), build(packed, 8, false)),
+                ],
+                4,
+                10,
+            );
+        }
+    }
+
     /// A world of sixty bibites has no stage that pays for the pool: with the sizes a world starts with (and no measuring) it ticks on
     /// the calling thread, every stage inline (the body sweep never runs on the pool), and a world of sixteen hundred bibites puts the
     /// sweep (from 1,500 records) and the rest of its stages that have the work on the pool. A world that measures its own ticks (what a
@@ -12545,6 +14267,11 @@ mod tests {
                     && lanes.emit > 0
                     && lanes.dead > 0,
                 "{name}: some kind of turn never happened: {lanes:?}"
+            );
+            // The heavy turns were cut in parts: the sweep took heads, and the pool took the last part of some of them.
+            assert!(
+                lanes.head_in_sweep > 0 && lanes.post_on_pool > 0,
+                "{name}: no heavy turn was cut in parts: {lanes:?}"
             );
             assert!(!world.eggs.is_empty(), "{name}: no egg was ever laid");
         }
@@ -13395,6 +15122,111 @@ mod tests {
         assert!(egg_stats.total_required_energy <= 2.0 * egg_stats.energy);
         assert_eq!(egg_stats.free_energy, egg_stats.energy);
     }
+    /// "Mutate Genes: All Genes ... spawning wayyy too big of bibites": the size a growth mode asks for is read from the TEMPLATE's genes
+    /// (`SpawnBibiteFromTemplate`: `StartBodyAtGrowthAndNormalize(GrowthAtMature(template.genes))`), however every gene was randomised. The spawned
+    /// genome's own `GrowthAtMature` is not the game's answer: a random womb share makes it reach the hundreds.
+    #[test]
+    fn an_all_genes_spawn_takes_its_size_from_the_templates_genes() {
+        use crate::brain::Brain;
+        let mut world = World::new(default_settings(), ScenarioData::default(), 5).expect("world");
+        let template = TemplateSource::new("all-genes", Genome::starter(), GenomeMeta::default(), Brain::starter());
+        let wanted_adult = template.genome.growth_at_mature();
+        let wanted_baby = template.genome.growth_at_birth();
+        let mut own_growth_differed = false;
+        for _ in 0..40 {
+            for (mode, wanted) in [(GrowthAtSpawn::Adult, wanted_adult), (GrowthAtSpawn::Baby, wanted_baby), (GrowthAtSpawn::Elder, 2.0 * wanted_adult)] {
+                let id = world
+                    .spawn_bibite_from_template(&template, mode, Tagging::NoTagging, "", Vec2::ZERO, RandomizeGenes::AllGenes)
+                    .expect("spawn");
+                let record = world.bibites.get(id).expect("record");
+                assert!((record.growth.growth - wanted).abs() < 1e-3 * wanted.max(1.0), "{mode:?}: growth {} for the template's {wanted}", record.growth.growth);
+                own_growth_differed |= (record.genome.growth_at_mature() - wanted_adult).abs() > 1.0;
+            }
+        }
+        // The test would not notice the old behaviour if no random genome had a growth of its own to go wrong with.
+        assert!(own_growth_differed, "forty random genomes all had the template's growth at mature");
+    }
+
+    /// `BibiteGenes.StartGenesFromTemplate` tags what it spawns (`speciesTag = tagStyle switch ...`): the species name, `Bibite` and a random number,
+    /// the custom text, or no tag. Random and Species tagging did nothing in a live spawn or an egg (only None and Custom were handled). The original's
+    /// live All Genes spawn never calls it (it only copies the generation) and stays untagged; this port tags that one too, on the player's request.
+    #[test]
+    fn a_template_spawn_is_tagged_the_way_start_genes_from_template_tags_it() {
+        use crate::brain::Brain;
+        let mut world = World::new(default_settings(), ScenarioData::default(), 9).expect("world");
+        let template = TemplateSource::new("tagged template", Genome::starter(), GenomeMeta::default(), Brain::starter());
+        let live_tag = |world: &mut World, tagging: Tagging, custom: &str, randomize: RandomizeGenes| {
+            let id = world
+                .spawn_bibite_from_template(&template, GrowthAtSpawn::Adult, tagging, custom, Vec2::ZERO, randomize)
+                .expect("spawn");
+            let record = world.bibites.get(id).expect("record");
+            (record.meta.species_tag.clone(), record.meta.species)
+        };
+        let egg_tag = |world: &mut World, tagging: Tagging, custom: &str, randomize: RandomizeGenes| {
+            let id = match world
+                .spawn_template_at_randomized(&template, Vec2::ZERO, None, GrowthAtSpawn::Egg, tagging, custom, randomize)
+                .expect("spawn egg")
+            {
+                TemplateSpawn::Egg(id) => id,
+                TemplateSpawn::Bibite(_) => panic!("an egg was asked for"),
+            };
+            let egg = world.eggs.get(id).expect("egg");
+            (egg.meta.species_tag.clone(), egg.meta.species)
+        };
+        // None and Custom.
+        assert_eq!(live_tag(&mut world, Tagging::NoTagging, "", RandomizeGenes::No).0, None);
+        assert_eq!(live_tag(&mut world, Tagging::CustomTagging, "mine", RandomizeGenes::No).0.as_deref(), Some("mine"));
+        assert_eq!(egg_tag(&mut world, Tagging::CustomTagging, "mine", RandomizeGenes::No).0.as_deref(), Some("mine"));
+        // Random: `Bibite` and a number, a different one each time.
+        let mut seen = Vec::new();
+        for _ in 0..4 {
+            for tag in [
+                live_tag(&mut world, Tagging::RandomTagging, "", RandomizeGenes::No).0,
+                egg_tag(&mut world, Tagging::RandomTagging, "", RandomizeGenes::NormalMutations).0,
+            ] {
+                let tag = tag.expect("a random tag");
+                let number = tag.strip_prefix("Bibite").expect("starts with Bibite");
+                assert!(!number.is_empty() && number.bytes().all(|byte| byte.is_ascii_digit()), "{tag}");
+                assert!(number.parse::<u64>().expect("a number") < i32::MAX as u64, "{tag}");
+                seen.push(tag);
+            }
+        }
+        seen.sort();
+        seen.dedup();
+        assert_eq!(seen.len(), 8, "every random tag is its own: {seen:?}");
+        // Species: the name of the species the spawn joined.
+        let (tag, species) = live_tag(&mut world, Tagging::SpeciesTagging, "", RandomizeGenes::No);
+        let name = world.species.get(species.expect("a species")).expect("record").name();
+        assert_eq!(tag.as_deref(), Some(name.as_str()));
+        let (tag, species) = egg_tag(&mut world, Tagging::SpeciesTagging, "", RandomizeGenes::No);
+        let name = world.species.get(species.expect("a species")).expect("record").name();
+        assert_eq!(tag.as_deref(), Some(name.as_str()));
+        // All Genes plus a tag style tags too (the original leaves a live All Genes spawn untagged; the player wants it tagged), live and egg alike.
+        let all_genes_tag = live_tag(&mut world, Tagging::RandomTagging, "", RandomizeGenes::AllGenes).0.expect("a random tag on an All Genes spawn");
+        assert!(all_genes_tag.starts_with("Bibite"), "{all_genes_tag}");
+        assert_eq!(live_tag(&mut world, Tagging::CustomTagging, "mine", RandomizeGenes::AllGenes).0.as_deref(), Some("mine"));
+        assert_eq!(live_tag(&mut world, Tagging::NoTagging, "", RandomizeGenes::AllGenes).0, None);
+        assert!(egg_tag(&mut world, Tagging::RandomTagging, "", RandomizeGenes::AllGenes).0.is_some());
+    }
+
+    /// A placed egg takes the spawn row's "Mutate Genes" choice (`SpawnEggFromTemplate`): AllGenes replaces every gene, the others mutate as an egg always does.
+    #[test]
+    fn an_all_genes_egg_has_every_gene_redrawn() {
+        use crate::brain::Brain;
+        let mut world = World::new(default_settings(), ScenarioData::default(), 13).expect("world");
+        let template = TemplateSource::new("egg template", Genome::starter(), GenomeMeta::default(), Brain::starter());
+        let id = match world
+            .spawn_template_at_randomized(&template, Vec2::ZERO, None, GrowthAtSpawn::Egg, Tagging::NoTagging, "", RandomizeGenes::AllGenes)
+            .expect("egg")
+        {
+            TemplateSpawn::Egg(id) => id,
+            TemplateSpawn::Bibite(_) => panic!("an egg was asked for"),
+        };
+        let genome = &world.eggs.get(id).expect("egg").genome;
+        let moved = crate::genome::ALL_GENES.iter().filter(|gene| (genome.gene(**gene) - template.genome.gene(**gene)).abs() > 1e-4).count();
+        assert!(moved >= 25, "{moved} of {} genes differ from the template's", crate::genome::N_GENES);
+    }
+
     #[test]
     fn inspector_actions_tags_force_lay_revive_and_save_views() {
         use crate::brain::Brain;
@@ -13811,5 +15643,30 @@ mod spline_jump_tests {
         // A point before its predecessor is still refused.
         changer.points.push(SplinePoint::new(50.0, 2.0));
         assert!(changer.validate().is_err());
+    }
+
+    /// The game computes the pheromone sense at the END of every fixed update and the next brain tick reads it (`Pherosense.PherosenseAround` / `NEATBrain.UpdateSenses`): a brain
+    /// tick sees the values of the tick before, and a tick that is not a brain tick only stores its own.
+    #[test]
+    fn the_pheromone_sense_is_read_one_tick_late() {
+        let sense = |a: f32, b: f32, c: f32| senses::PheroSenses {
+            sum: [0.0; 3],
+            sense: [a, a, a],
+            angle: [b, b, b],
+            heading: [c, c, c],
+        };
+        let mut s = SenseOutputs::zeroed();
+        // tick 1 is not a brain tick: the inputs stay as they were, the values wait
+        delayed_phero(&mut s, &sense(0.1, 0.2, 0.3), false);
+        assert_eq!((s.phero_sense_1, s.phero_1_angle, s.phero_1_heading), (0.0, 0.0, 0.0));
+        assert_eq!(s.pending_phero, [0.1, 0.1, 0.1, 0.2, 0.2, 0.2, 0.3, 0.3, 0.3]);
+        // tick 2 is a brain tick: it reads tick 1's values, and its own wait
+        delayed_phero(&mut s, &sense(0.4, 0.5, 0.6), true);
+        assert_eq!((s.phero_sense_2, s.phero_2_angle, s.phero_2_heading), (0.1, 0.2, 0.3));
+        assert_eq!(s.pending_phero[0], 0.4);
+        // a bibite that has not sensed before (just loaded) reads zeros on its first brain tick, as a freshly loaded game does
+        let mut fresh = SenseOutputs::zeroed();
+        delayed_phero(&mut fresh, &sense(0.7, 0.8, 0.9), true);
+        assert_eq!((fresh.phero_sense_3, fresh.phero_3_angle, fresh.phero_3_heading), (0.0, 0.0, 0.0));
     }
 }

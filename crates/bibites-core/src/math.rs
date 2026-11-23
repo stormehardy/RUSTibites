@@ -359,14 +359,15 @@ pub fn pow(base: f32, exponent: f32) -> f32 {
 /// Logistic sigmoid, exactly as `NEATBrain.ExecuteNeuron`
 /// (`:625`): `1f / (1f + Mathf.Pow((float)Math.E, 0f - input))`.
 ///
-/// `Mathf.Pow` is evaluated in `double` and cast back to `f32`; the result is
-/// overflow-safe because the `double` power saturates before the cast (the
-/// reciprocal then rounds to 0/1).
+/// The game's code runs on Mono, which evaluates the arithmetic of a C# expression in `double` and rounds to `float` only where a value is stored, passed to a
+/// method or returned (measured 2026-11-19 against the original game: 4,593 of 4,593 sigmoid nodes bit-exact this way, 3,841 with `f32` steps). So
+/// `Mathf.Pow` hands back a `float` (the double power rounded), and the `1 + p` and the reciprocal are one `double` expression rounded once.
+/// The double power saturates before the cast (the reciprocal then rounds to 0/1).
 #[inline]
 pub fn sigmoid(x: f32) -> f32 {
     // `(float)Math.E` in the game: the f32 constant 2.7182817.
     let base = std::f32::consts::E;
-    1.0 / (1.0 + pow(base, -x))
+    (1.0 / (1.0 + f64::from(pow(base, -x)))) as f32
 }
 
 /// Hyperbolic tangent: `(f32)Math.Tanh((double)x)`.
@@ -379,10 +380,10 @@ pub fn tanh(x: f32) -> f32 {
 }
 
 /// Gaussian-shaped bump, exactly as the game:
-/// `1f / (1f + Mathf.Pow(input, 2f))` (double power, cast to `f32`).
+/// `1f / (1f + Mathf.Pow(input, 2f))`: the power is a `float` (a method result), the sum and the reciprocal one `double` expression (see [`sigmoid`]).
 #[inline]
 pub fn gaussian(x: f32) -> f32 {
-    1.0 / (1.0 + pow(x, 2.0))
+    (1.0 / (1.0 + f64::from(pow(x, 2.0)))) as f32
 }
 
 /// Rectified linear unit.
@@ -413,9 +414,163 @@ pub fn approx_eq(a: f32, b: f32, eps: f32) -> bool {
     (a - b).abs() <= eps
 }
 
+/// Unity's `Vector2` / `Vector3` / `Mathf` members the game's senses call, written the way the game runs them.
+///
+/// Unity's managed code runs on Mono like the game's own, so a C# expression is evaluated in `double` and rounded to `float` only where a value is stored, passed to a
+/// method or returned (see [`sigmoid`]): `Vector2.magnitude` is `(float)Math.Sqrt(x * x + y * y)` with the sum in double (one rounding at the end, not three), the
+/// `Vector2.Angle` root of a product of two squared lengths takes the exact double product, and so on. Each function says which source line it copies. The plain `f32`
+/// versions (`Vec2::length`, `Vec2::normalize_or`, `atan2`) are one to a few units in the last place away from these, which is what the field of view's sense values showed
+/// against the original game (2026-11-19, `crates/bibites-cli/examples/sense_vs_game.rs`).
+pub mod unity {
+    use super::Vec2;
+
+    /// `Rad2Deg` as the game's `float` constant (`57.29578f`).
+    pub const RAD_TO_DEG: f32 = 57.295_78;
+    /// `(float)Math.PI / 180f` in the game's IL: `(float)Math.PI` (3.1415927f) divided by `180f` in double, not rounded to a float before the next operation.
+    pub const DEG_TO_RAD_FACTOR: f64 = 3.141_592_741_012_573_2 / 180.0;
+    /// `Vector2.kEpsilonNormalSqrt`.
+    pub const EPSILON_NORMAL_SQRT: f32 = 1e-15;
+
+    /// `Mathf.Cos(float)`: `(float)Math.Cos((double)f)`.
+    #[inline]
+    #[must_use]
+    pub fn cos(f: f32) -> f32 {
+        f64::from(f).cos() as f32
+    }
+
+    /// `Mathf.Sin(float)`: `(float)Math.Sin((double)f)`.
+    #[inline]
+    #[must_use]
+    pub fn sin(f: f32) -> f32 {
+        f64::from(f).sin() as f32
+    }
+
+    /// `Vector2.sqrMagnitude`: `x * x + y * y`, the sum in double, rounded once on return.
+    #[inline]
+    #[must_use]
+    pub fn sqr_magnitude(v: Vec2) -> f32 {
+        (f64::from(v.x) * f64::from(v.x) + f64::from(v.y) * f64::from(v.y)) as f32
+    }
+
+    /// `Vector2.magnitude`: `(float)Math.Sqrt(x * x + y * y)`.
+    #[inline]
+    #[must_use]
+    pub fn magnitude(v: Vec2) -> f32 {
+        (f64::from(v.x) * f64::from(v.x) + f64::from(v.y) * f64::from(v.y)).sqrt() as f32
+    }
+
+    /// `Vector2.Dot`: `lhs.x * rhs.x + lhs.y * rhs.y`, the sum in double, rounded once on return.
+    #[inline]
+    #[must_use]
+    pub fn dot(a: Vec2, b: Vec2) -> f32 {
+        (f64::from(a.x) * f64::from(b.x) + f64::from(a.y) * f64::from(b.y)) as f32
+    }
+
+    /// `Vector2.normalized`: `Normalize` divides by the magnitude when that is above 1e-5 and gives the zero vector otherwise.
+    #[inline]
+    #[must_use]
+    pub fn normalized(v: Vec2) -> Vec2 {
+        let m = magnitude(v);
+        if m > 1e-5 { Vec2::new(v.x / m, v.y / m) } else { Vec2::ZERO }
+    }
+
+    /// `Transform.up` of a body rotated by `angle` radians about z (what a `Rigidbody2D` writes back after a physics step). Unity's native code keeps the rotation as the
+    /// quaternion `(0, 0, sin(a/2), cos(a/2))` and rotates `(0, 1, 0)` with `RotateVectorByQuat` in single precision: for this quaternion that is
+    /// `(-(w * (2z)), 1 - z * (2z))`, which is not `(-sin a, cos a)` to the last bit (and loses precision near a quarter turn, as the game does).
+    #[inline]
+    #[must_use]
+    pub fn transform_up(angle: f32) -> Vec2 {
+        let half = angle * 0.5;
+        let (z, w) = (half.sin(), half.cos());
+        let z2 = z * 2.0;
+        Vec2::new(-(w * z2), 1.0 - z * z2)
+    }
+
+    /// `Mathf.Max(a, b)`: `a > b ? a : b` (a NaN `a` gives `b`, a NaN `b` gives NaN).
+    #[inline]
+    #[must_use]
+    pub fn max(a: f32, b: f32) -> f32 {
+        if a > b { a } else { b }
+    }
+
+    /// `Mathf.Min(a, b)`: `a < b ? a : b`.
+    #[inline]
+    #[must_use]
+    pub fn min(a: f32, b: f32) -> f32 {
+        if a < b { a } else { b }
+    }
+
+    /// `Mathf.Sign`: `f >= 0 ? 1 : -1` (so `-0` and NaN-free zeros give +1).
+    #[inline]
+    #[must_use]
+    pub fn sign(f: f32) -> f32 {
+        if f >= 0.0 { 1.0 } else { -1.0 }
+    }
+
+    /// `Vector2.Angle(from, to)` in degrees: `(float)Math.Sqrt(from.sqrMagnitude * to.sqrMagnitude)` (an exact double product), 0 below `kEpsilonNormalSqrt`, then
+    /// `Mathf.Clamp(Dot(from, to) / denominator, -1, 1)` (the quotient rounded to a float as an argument) and `(float)Math.Acos(..) * 57.29578f`.
+    #[inline]
+    #[must_use]
+    pub fn angle(from: Vec2, to: Vec2) -> f32 {
+        let denominator = (f64::from(sqr_magnitude(from)) * f64::from(sqr_magnitude(to))).sqrt() as f32;
+        if denominator < EPSILON_NORMAL_SQRT {
+            return 0.0;
+        }
+        let cosine = ((f64::from(dot(from, to)) / f64::from(denominator)) as f32).clamp(-1.0, 1.0);
+        (f64::from(cosine).acos() as f32) * RAD_TO_DEG
+    }
+
+    /// `Vector2.SignedAngle(from, to)` in degrees: [`angle`] times `Mathf.Sign(from.x * to.y - from.y * to.x)` (the cross product a double expression rounded to a float
+    /// as the argument).
+    #[inline]
+    #[must_use]
+    pub fn signed_angle(from: Vec2, to: Vec2) -> f32 {
+        let unsigned = angle(from, to);
+        let cross = (f64::from(from.x) * f64::from(to.y) - f64::from(from.y) * f64::from(to.x)) as f32;
+        unsigned * sign(cross)
+    }
+
+    /// `VectorExtend.Rotate(v, delta)`: `new Vector2(v.x * Mathf.Cos(delta) - v.y * Mathf.Sin(delta), v.x * Mathf.Sin(delta) + v.y * Mathf.Cos(delta))`: `Cos` and `Sin`
+    /// are floats (method results), each component one double expression.
+    #[inline]
+    #[must_use]
+    pub fn rotate(v: Vec2, delta: f32) -> Vec2 {
+        let (c, s) = (f64::from(cos(delta)), f64::from(sin(delta)));
+        Vec2::new(
+            (f64::from(v.x) * c - f64::from(v.y) * s) as f32,
+            (f64::from(v.x) * s + f64::from(v.y) * c) as f32,
+        )
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn unity_helpers_follow_the_engine() {
+        // `Vector2.magnitude`, `Angle`, `SignedAngle` (acos based, 0 for a zero vector), `normalized` (zero below 1e-5), `Mathf.Max/Min/Sign`.
+        assert_eq!(unity::magnitude(Vec2::new(3.0, 4.0)), 5.0);
+        assert!((unity::signed_angle(Vec2::Y, Vec2::X) + 90.0).abs() < 1e-3);
+        assert!((unity::signed_angle(Vec2::Y, -Vec2::X) - 90.0).abs() < 1e-3);
+        assert!((unity::angle(Vec2::X, -Vec2::X) - 180.0).abs() < 1e-3);
+        assert_eq!(unity::signed_angle(Vec2::Y, Vec2::ZERO), 0.0);
+        assert_eq!(unity::angle(Vec2::ZERO, Vec2::X), 0.0);
+        assert_eq!(unity::normalized(Vec2::new(1e-6, 0.0)), Vec2::ZERO);
+        assert!((unity::normalized(Vec2::new(0.0, 5.0)).y - 1.0).abs() < 1e-6);
+        assert_eq!(unity::max(f32::NAN, 0.001), 0.001);
+        assert!(unity::max(0.001, f32::NAN).is_nan());
+        assert_eq!(unity::min(2.0, 1.0), 1.0);
+        assert_eq!(unity::sign(-0.0), 1.0);
+        assert_eq!(unity::sign(-2.0), -1.0);
+        // `Transform.up` of a body turned by 0.7 rad: a unit vector pointing the way (-sin, cos) says, to a few units in the last place.
+        let up = unity::transform_up(0.7);
+        assert!((up.x + 0.7_f32.sin()).abs() < 1e-6 && (up.y - 0.7_f32.cos()).abs() < 1e-6);
+        assert!((unity::magnitude(up) - 1.0).abs() < 1e-6);
+        // `Rotate`: a quarter turn counter-clockwise takes +x to +y.
+        let turned = unity::rotate(Vec2::X, std::f32::consts::FRAC_PI_2);
+        assert!(turned.x.abs() < 1e-6 && (turned.y - 1.0).abs() < 1e-6);
+    }
 
     #[test]
     fn vector_arithmetic() {

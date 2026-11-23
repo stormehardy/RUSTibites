@@ -413,8 +413,10 @@ impl UiAssets {
 /// together must not share an id (a click on the Save Bibite dialog closed the Information panel behind it when both had 8801). Each panel owns a block
 /// of its own, written down at its constants: below 8000 the curated HUD (`hud.rs`), 8000.. the Graphs page and the pause menu, 8150 the achievements'
 /// pop-up, 8210.. the Gene Analysis page, 8500.. the selection panel, 8600.. the tower panel, 8700.. the placers, 8800.. the Information panel, 8900.. the
-/// Zones preview, 8950.. the Lineage panel, 9000.. the Biology pop-ups, 9010.. the Save Bibite dialog, 9400.. the challenge tracker and end pop-up,
-/// 9500.. the Save Game panel; 20_000.. the captured runtime frames, 46_000.. the dropdown and the editors; the lists that grow with the world's
+/// Zones preview (8901 the click area of its zones), 8950.. the Lineage panel, 9000.. the Biology pop-ups, 9010.. the Save Bibite dialog, 9300.. the zone colour
+/// pop-up (`zone_color_ui.rs`), 9400.. the challenge tracker and end pop-up,
+/// 9500.. the Save Game panel, 9600.. the time tags' controls of the three panels that show them and 9700.. 9800.. 9900.. their tags' remove buttons
+/// (`time_tags::TagPanel::hit_base`); 20_000.. the captured runtime frames, 46_000.. the dropdown and the editors; the lists that grow with the world's
 /// content start far apart (lineage shapes 200_000, neurons 900_000.., tags 930_000). `UiFrame::shared_ids` (tests) lists the ids a frame has twice.
 pub type UiId = u32;
 
@@ -472,8 +474,27 @@ pub enum MenuCommand {
     Unavailable(u8),
     /// Open a link (`URLManager`), by its place in `menu::URLS`: 0 wiki, 1 research Discord, 2 Patreon, 3 Reddit, 4 Twitter, 5 BlueSky, 6 YouTube.
     OpenUrl(u8),
-    /// Select a settings tab (0 graphics, 1 gameplay, 2 hotkeys).
+    /// Select a settings tab (0 graphics, 1 gameplay, 2 hotkeys, 3 music, 4 species names, 5 towers, 6 extra hotkeys and 7 calibration: RUSTibites Improved's, and the
+    /// calibration page Faithful has too).
     SettingsTab(u8),
+    /// The Calibration page's "Run Test" button: starts the calibration test, or stops the one that is going on.
+    CalibrationRun,
+    /// The Extra Hotkeys page's key button (RUSTibites Improved): the next key pressed is the Hide Objects hotkey's key.
+    KeyRebind,
+    /// The Extra Hotkeys page's "Reset" button: every extra hotkey has its default key again.
+    KeysReset,
+    /// The Species Names page's "Open File" button (RUSTibites Improved): the file of the player's words in their text editor.
+    NamesOpenFile,
+    /// The Species Names page's "Reload" button: the file is read again now.
+    NamesReload,
+    /// The Species Names page's "Show New" button: other sample names.
+    NamesSamples,
+    /// The Music page's "Open Folder" button (RUSTibites Improved): the folder of the music in the file manager.
+    MusicOpenFolder,
+    /// The Music page's "Previous" button.
+    MusicPrevious,
+    /// The Music page's "Next" button.
+    MusicNext,
     /// Select the n-th row of the Bibite Library template list.
     SelectTemplate(u16),
     /// The Library's submit button (`SubmitTemplate`): hands the selected template to whoever opened the Library to pick one, and in
@@ -535,6 +556,8 @@ pub enum DropdownTarget {
     PelletMaterial,
     /// The selected tower's Follow Zone dropdown.
     ToolZone,
+    /// RUSTibites Improved: the selected gene selector's gene dropdown.
+    ToolGene,
     /// The dropdown row of the Settings screens' setting `.0` (an index of `user_settings::DEFS`).
     Setting(u16),
     /// New Game screen modifier `.0` (size, biomass, fertility, radioactivity, bibite limit).
@@ -586,6 +609,31 @@ pub enum UiAction {
     SetGraphsScale(usize),
     /// "Go To Gene Analysis" (`true`) / "Go To Data Graphs" (`false`): `GraphsPanel.OpenGeneAnalysis` / `OpenHistoricalGraph`.
     GraphsPage(bool),
+    /// RUSTibites Improved: a panel's "Tag time" button (the name field opens; pressed again as "Add tag" it sets the tag).
+    TimeTagStart(crate::time_tags::TagPanel),
+    /// RUSTibites Improved: a press on the name field of a time tag (keeps it open).
+    TimeTagField,
+    /// RUSTibites Improved: the remove button of time tag `.0`.
+    TimeTagRemove(u32),
+    /// RUSTibites Improved: a panel's show / hide button of the time tags.
+    TimeTagsShow(crate::time_tags::TagPanel),
+    /// RUSTibites Improved: a click on a panel's graph while its time tag name field is open: the tag is set at `.1` (seconds of the world's clock), the
+    /// moment the pointer stood on when the frame was drawn.
+    TimeTagPlace(crate::time_tags::TagPanel, f64),
+    /// RUSTibites Improved: a click on zone number `.0` in the Zones tab's Preview: the zone's colour pop-up opens at the pointer.
+    ZoneColorOpen(u16),
+    /// RUSTibites Improved: the colour pop-up's colour wheel was pressed (the wheel follows the pointer while the button is held, see `App::zone_color_drag_to`).
+    ZoneColorWheel,
+    /// RUSTibites Improved: the colour pop-up's brightness bar was pressed (held like the wheel).
+    ZoneColorValueBar,
+    /// RUSTibites Improved: the colour pop-up's hex field was pressed: the keyboard is in it.
+    ZoneColorHexField,
+    /// RUSTibites Improved: "Fertility Color" of the colour pop-up of zone `.0`: the zone's colour is taken away.
+    ZoneColorClear(u16),
+    /// RUSTibites Improved: "All different" of the colour pop-up: every zone of the world gets a colour of its own.
+    ZoneColorSpread,
+    /// RUSTibites Improved: "Done" or a click outside the colour pop-up: it closes and the zone keeps its colour.
+    ZoneColorClose,
     /// A control of the Bibite Editor.
     Editor(crate::template_editor_ui::EditorAction),
     /// A control of the Expanded Brain View.
@@ -628,6 +676,10 @@ pub enum UiAction {
     BrainToggleDifferences,
     /// The Sort toggle of the Biology panel's Flow details pop-up (`UserSettings.SortBiologyPanelEnergyDetails`).
     ToggleEnergySort,
+    /// RUSTibites Improved: the "Zone names" check box of the Species Distribution window.
+    ToggleMapZoneNames,
+    /// RUSTibites Improved: the "Zone biomass" check box of the Species Distribution window.
+    ToggleMapZoneBiomass,
     /// A neuron of the inspector's Brain tab was pressed (its index): it follows the cursor while held.
     InspectorBrainNode(u16),
     /// The inspector's Brain tab's Sort button (`SortN`).
@@ -718,6 +770,8 @@ pub enum UiAction {
     SaveDialogFocus(u8),
     /// The Save Bibite dialog: flip a checkbox (`.0`: 0 "Save as template", 1 "Format JSON").
     SaveDialogToggle(u8),
+    /// The scenario saver: a control of its form (`.0`: one of `scenario_saver::ACTION_*`).
+    ScenarioSaver(u8),
     /// The pellet placer's material dropdown: the other material (`PelletPlacer.ChangeMaterial`).
     PelletMaterial,
     /// Pressed on a pellet placer slider (`.0`: 0 pellet size factor, 1 pellet number; track x range
@@ -1054,6 +1108,12 @@ pub enum ControlCommand {
     DeleteZoneGroup(u16),
     /// The reroll button of zone group `.0` (`ZoneGroupHandle.GenerateZones`): its zones are generated again at new places.
     RerollZoneGroup(u16),
+    /// RUSTibites Improved: the `+` of the Zones tab's Streams list: a new stream across the middle of the view, its card open.
+    AddStream,
+    /// The Streams list's "remove all" button: asks first.
+    RequestClearStreams,
+    /// The delete button of stream `.0`: the stream goes at once.
+    DeleteStream(u16),
     /// The `+` of the Animation tab (`SettingsChangersEditor.AddNewChanger`): the creator panel opens.
     OpenAnimatorCreator,
     /// The creator's OK button (`SettingsChangerCreator.Submit`): the animator it describes is added and its card opens.
@@ -1186,6 +1246,14 @@ pub enum ToolKind {
     PheroTower,
     /// Place a colour killer (`WorldObjectsSpawner.GenerateColorSelector`).
     Killer,
+    /// RUSTibites Improved: place a gene selector tower (`gene_selector.rs`).
+    GeneSelector,
+    /// RUSTibites Improved: place a hydrothermal vent tower (`vent.rs`).
+    Vent,
+    /// RUSTibites Improved: place a force tower (`force_tower.rs`).
+    Force,
+    /// RUSTibites Improved: place a whirlpool tower (`whirlpool.rs`).
+    Whirl,
     /// Inspect entities.
     Inspect,
 }
@@ -1209,6 +1277,8 @@ pub enum OverlayKind {
     Grid,
     /// Zone fills.
     Zones,
+    /// RUSTibites Improved: each zone in a colour of its own (the toolbar's View panel).
+    ZoneColors,
     /// Pellets.
     Pellets,
     /// Pheromone spots.
