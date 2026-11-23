@@ -175,7 +175,13 @@ pub fn close_tab_rect(panel_width: f32) -> [f32; 4] {
 /// A top bar button: `0` Mesh, `1` Tree, `2` Settings, `3` Exit.
 #[must_use]
 pub fn bar_button(index: usize) -> [f32; 4] {
-    [1745.0 + index as f32 * 50.0 - 20.0, 5.0, 40.0, 40.0]
+    bar_button_in(index, 1920.0)
+}
+
+/// A top bar button on a canvas `canvas_width` reference px wide: `TopRight` is anchored to the bar's right edge, so the buttons keep to it.
+#[must_use]
+pub fn bar_button_in(index: usize, canvas_width: f32) -> [f32; 4] {
+    [canvas_width - 175.0 + index as f32 * 50.0 - 20.0, 5.0, 40.0, 40.0]
 }
 
 /// The top bar's title: `LiberationSans SDF - Fallback`, 24, bold style (TMP widens the regular atlas), white.
@@ -396,6 +402,22 @@ impl App {
             .collect()
     }
 
+    /// The canvas the panels are drawn on, in reference px: the window over the UI scale (what `emit` is given as `width / scale`).
+    #[must_use]
+    pub fn lineage_canvas(&self) -> [f32; 2] {
+        let scale = UiFrame::scaler(self.camera.screen.x, self.camera.screen.y);
+        [self.camera.screen.x / scale, self.camera.screen.y / scale]
+    }
+
+    /// The lineage window stretches with the canvas (`LineageView` is anchored to all four sides): when the window changes shape the view follows,
+    /// the tree is placed again for it and the mesh is made again (`RectTransformChangeHandler`).
+    pub fn sync_lineage_canvas(&mut self) {
+        let canvas = self.lineage_canvas();
+        if self.lineage_view.set_canvas(canvas) && self.lineage_view.mesh_mode && self.lineage_view.mesh.built {
+            self.rebuild_lineage_view();
+        }
+    }
+
     /// The recorded species as the lineage tree needs them (`LineageTreePanel.BuildTree`'s input).
     #[must_use]
     pub fn lineage_infos(&self) -> Vec<crate::lineage_tree::SpeciesInfo> {
@@ -417,6 +439,7 @@ impl App {
     /// The view that shows is laid out afresh with the current options (`LineageTreePanel.BuildTree` for the tree,
     /// `LineageMeshPanel.ResetState` + `GenerateMesh` for the mesh).
     pub fn rebuild_lineage_view(&mut self) {
+        self.sync_lineage_canvas();
         let settings = self.lineage_tree_settings();
         if self.lineage_view.mesh_mode {
             // The shapes start from what the species have now: the members are counted again first (the registry keeps
@@ -498,9 +521,7 @@ impl App {
     /// The tree's window takes the wheel (Ctrl zooms, Shift scrolls sideways), the right button (a drag
     /// pans) and the scroll bars (`LineageWindow.Update`, `AncestralLineageScroll`).
     pub fn lineage_input(&mut self, input: &FrameInput) {
-        use crate::lineage_view::{
-            Drag, VIEW, WHEEL_ZOOM, handle_rect, horizontal_track, vertical_track,
-        };
+        use crate::lineage_view::{Drag, WHEEL_ZOOM, handle_rect, horizontal_track, vertical_track};
         // The window loop hands the panel what the pointer really did (see `App::lineage_raw`).
         let raw = self.lineage_raw.take();
         let merged;
@@ -534,6 +555,7 @@ impl App {
             return;
         }
         let s = UiFrame::scaler(self.camera.screen.x, self.camera.screen.y);
+        self.sync_lineage_canvas();
         let cursor = [input.cursor.x / s, input.cursor.y / s];
         let inside = |rect: [f32; 4]| {
             cursor[0] >= rect[0]
@@ -542,13 +564,15 @@ impl App {
                 && cursor[1] < rect[1] + rect[3]
         };
         let g = self.lineage_view.geometry();
-        let over_settings = self.lineage_settings_open && inside(crate::lineage_settings::PANEL);
+        let view = g.view;
+        let settings_panel = crate::lineage_settings::panel(self.lineage_canvas()[0]);
+        let over_settings = self.lineage_settings_open && inside(settings_panel);
         self.lineage_settings_input(input, cursor, over_settings);
         // The wheel: with Ctrl and no Shift it zooms (anywhere), else it scrolls the content under the pointer.
         if input.wheel != 0.0 && !over_settings {
             if ctrl && !input.shift_down {
                 self.lineage_view.zoom_by(input.wheel * WHEEL_ZOOM);
-            } else if !ctrl && inside(VIEW) {
+            } else if !ctrl && inside(view) {
                 self.lineage_view.scroll(input.wheel, input.shift_down);
             }
         }
@@ -561,7 +585,7 @@ impl App {
                 self.lineage_view.drag = Drag::Pan(cursor);
             }
             Drag::Pan(_) => self.lineage_view.drag = Drag::None,
-            Drag::None if right && !self.lineage_right_was_down && inside(VIEW) => {
+            Drag::None if right && !self.lineage_right_was_down && inside(view) => {
                 self.lineage_view.drag = Drag::Pan(cursor);
             }
             _ => {}
@@ -636,7 +660,7 @@ impl App {
 
     /// The Settings panel's scroll view: the wheel over it and its bar (`ScrollRect`, vertical, clamped, 35 a notch).
     fn lineage_settings_input(&mut self, input: &FrameInput, cursor: [f32; 2], over: bool) {
-        use crate::lineage_settings::{BAR_TRACK, PANEL, layout};
+        use crate::lineage_settings::{PANEL, bar_track, layout, panel};
         use crate::lineage_view::{BarState, SCROLL_SENSITIVITY, handle_rect};
         if !self.lineage_settings_open {
             self.lineage_settings_grab = None;
@@ -645,7 +669,7 @@ impl App {
         // The mesh view has no "Lineage Tree" group (`ShowSettingsOfType`).
         let column = layout(!self.lineage_view.mesh_mode);
         let max = column.max_scroll();
-        let _ = PANEL;
+        let bar_track = bar_track(panel(self.lineage_canvas()[0]));
         if over && input.wheel != 0.0 && !input.ctrl_down {
             self.lineage_settings_scroll =
                 (self.lineage_settings_scroll - input.wheel * SCROLL_SENSITIVITY).clamp(0.0, max);
@@ -659,7 +683,7 @@ impl App {
         let size = (PANEL[3] / column.height).clamp(0.0, 1.0);
         let value = (self.lineage_settings_scroll / max).clamp(0.0, 1.0);
         let handle = handle_rect(
-            BAR_TRACK,
+            bar_track,
             BarState {
                 value: 1.0 - value,
                 size,
@@ -672,7 +696,7 @@ impl App {
                 && cursor[0] < rect[0] + rect[2]
                 && cursor[1] < rect[1] + rect[3]
         };
-        if input.primary_pressed && inside(BAR_TRACK) {
+        if input.primary_pressed && inside(bar_track) {
             if inside(handle) {
                 self.lineage_settings_grab = Some((cursor[1] - handle[1]) / handle[3].max(1.0));
             } else {
@@ -684,8 +708,8 @@ impl App {
         }
         if let Some(grab) = self.lineage_settings_grab {
             if input.primary_down {
-                let sliding_top = BAR_TRACK[1] + 10.0;
-                let sliding_h = BAR_TRACK[3] - 20.0;
+                let sliding_top = bar_track[1] + 10.0;
+                let sliding_h = bar_track[3] - 20.0;
                 let room = sliding_h * (1.0 - size);
                 if room > 0.0 {
                     let top = cursor[1] - grab * (sliding_h * size + 20.0) + 10.0;
@@ -1101,6 +1125,7 @@ pub fn emit(
     }
     let s = UiFrame::scaler(width, height);
     let draw = Drawer {
+        canvas: [width / s, height / s],
         s,
         ui,
         metrics,
@@ -1146,6 +1171,8 @@ fn name_of(app: &App, id: SpeciesId) -> String {
 
 /// What the drawing needs: the scale, the sprites, the text metrics and the pointer.
 pub(crate) struct Drawer<'a> {
+    /// The canvas the panel is drawn on, in reference px (`window / scale`; 1920 x 1080 unless the window has another shape).
+    pub(crate) canvas: [f32; 2],
     pub(crate) s: f32,
     pub(crate) ui: &'a UiAssets,
     pub(crate) metrics: Option<&'a crate::text_sdf::SdfFonts>,
@@ -1161,6 +1188,7 @@ impl<'a> Drawer<'a> {
         cursor: Vec2,
     ) -> Self {
         Self {
+            canvas: [1920.0, 1080.0],
             s,
             ui,
             metrics,
@@ -1289,7 +1317,8 @@ impl Drawer<'_> {
         let gap = 10.0 * self.s;
         let total = widths.iter().sum::<f32>() + 2.0 * gap;
         let top = 25.0 * self.s - px * 0.6;
-        let mut x = 960.0 * self.s - total * 0.5;
+        // `Middle` is anchored to the middle of the bar.
+        let mut x = self.canvas[0] * 0.5 * self.s - total * 0.5;
         frame.draws.push(UiDraw::Text {
             font: Some(TITLE_FONT.to_owned()),
             text: title.to_owned(),
@@ -1324,7 +1353,7 @@ impl Drawer<'_> {
                 (1, false) => (&sprites[0], paths[0]),
                 _ => (sprite, paths[index]),
             };
-            let rect = bar_button(index);
+            let rect = bar_button_in(index, self.canvas[0]);
             self.slice(frame, "base_icon", 5.0, 1.0 / 0.75, rect, WHITE);
             self.icon(frame, sprite, rect, WHITE);
             let action = match index {
@@ -1347,7 +1376,7 @@ impl Drawer<'_> {
             frame,
             app,
             crate::time_tags::TagPanel::Lineage,
-            [(x + widths[2]) / self.s + 30.0, 5.0, bar_button(1)[0] - 10.0, 40.0],
+            [(x + widths[2]) / self.s + 30.0, 5.0, bar_button_in(1, self.canvas[0])[0] - 10.0, 40.0],
             22.0,
         );
         let _ = HIT_BAR;
@@ -4115,6 +4144,102 @@ mod tests {
         let second = key(&frame_of(&app));
         let kept = second.iter().filter(|tile| first.contains(tile)).count();
         assert!(kept > 0, "{first:?} then {second:?}");
+    }
+
+    /// The lineage window stretches with the canvas: `LineageView` is anchored to all four sides, `TopRight` to the bar's right edge, `Middle` to the middle of the bar
+    /// and the Settings panel to the overlay's top right corner. It was drawn in a 1920 x 1080 corner of the window (grey beside it in a wider window, grey under it in a
+    /// taller one, the buttons and the title in the middle of the corner), and only that corner answered the wheel and the right button.
+    #[test]
+    fn the_lineage_panel_fills_a_window_of_any_shape() {
+        let navy: Rgba = [0, 0, 27, 255];
+        for (w, h) in [
+            (1920.0_f32, 1080.0_f32),
+            (2560.0, 1080.0),
+            (1920.0, 1200.0),
+            (3440.0, 1440.0),
+            (1280.0, 800.0),
+            (3840.0, 2160.0),
+            (1000.0, 1000.0),
+        ] {
+            let (mut app, _, _) = app_with_tree();
+            app.camera.set_screen(Vec2::new(w, h));
+            app.sync_lineage_canvas();
+            app.lineage_settings_open = true;
+            let s = UiFrame::scaler(w, h);
+            let canvas = [w / s, h / s];
+            let mut frame = UiFrame::new(s);
+            emit(&mut frame, &app, &UiAssets::empty(), None, w, h);
+            let g = app.lineage_view.geometry();
+            let label = format!("window {w} x {h}, canvas {canvas:?}");
+            // The view reaches 10 short of the canvas' right and bottom edges, 15 and 50 from the left and the top.
+            assert_eq!(g.view, crate::lineage_view::view_in(canvas), "{label}");
+            assert!((g.view[0] + g.view[2] - (canvas[0] - 10.0)).abs() < 0.01, "{label}");
+            assert!((g.view[1] + g.view[3] - (canvas[1] - 10.0)).abs() < 0.01, "{label}");
+            // The navy viewport is drawn where the geometry says (the bars' room is what it gives up).
+            let drawn = frame.draws.iter().find_map(|draw| match draw {
+                UiDraw::Rect { pos, size, color } if *color == navy => Some((*pos, *size)),
+                _ => None,
+            });
+            let (pos, size) = drawn.expect("the navy viewport");
+            let (vx, vy, vw, vh) = (g.viewport[0] * s, g.viewport[1] * s, g.viewport[2] * s, g.viewport[3] * s);
+            assert!((pos.x - vx).abs() < 0.01 && (pos.y - vy).abs() < 0.01, "{label}: {pos:?}");
+            assert!((size.x - vw).abs() < 0.01 && (size.y - vh).abs() < 0.01, "{label}: {size:?}");
+            // The buttons keep to the bar's right edge (the Exit button's right edge is 5 in from the canvas', its middle 25), the Settings panel to the overlay's (40 in).
+            let hit_of = |id: u32| frame.hits.iter().find(|(hit, _, _)| *hit == id).map(|(_, pos, size)| (*pos, *size));
+            let (exit_pos, exit_size) = hit_of(HIT_BAR_BUTTON + 3).expect("the Exit button");
+            assert!(((exit_pos.x + exit_size.x) / s - (canvas[0] - 5.0)).abs() < 0.01, "{label}: the Exit button");
+            assert_eq!(bar_button_in(3, canvas[0])[0] + 20.0, canvas[0] - 25.0);
+            let (panel_pos, panel_size) = hit_of(210_000).expect("the Settings panel");
+            assert!(((panel_pos.x + panel_size.x) / s - (canvas[0] - 40.0)).abs() < 0.01, "{label}");
+            assert!((panel_size.x / s - 745.5).abs() < 0.01, "{label}");
+            // The title is centred on the canvas: its three runs are laid out about the middle.
+            let px = 24.0 * s;
+            let runs: Vec<(f32, usize, f32)> = frame
+                .draws
+                .iter()
+                .filter_map(|draw| match draw {
+                    UiDraw::Text { text, pos, px: size, .. } if (*size - px).abs() < 0.01 && pos.y < 50.0 * s => Some((pos.x, text.chars().count(), *size)),
+                    _ => None,
+                })
+                .collect();
+            assert!(runs.len() >= 3, "{label}: {runs:?}");
+            let (left, last) = (runs[0].0, runs[2]);
+            let right = last.0 + last.1 as f32 * last.2 * 0.56;
+            assert!(((left + right) / 2.0 - canvas[0] / 2.0 * s).abs() < 1.5 * s, "{label}: the title is centred: {left} .. {right}");
+            // The tree was placed for the viewport: the content never leaves it (clamping changes nothing).
+            let pos = app.lineage_view.pos;
+            app.lineage_view.clamp();
+            assert_eq!(app.lineage_view.pos, pos, "{label}");
+            // The far corner of the view answers the right button (a drag pans) and the wheel; the corner of a 1920 x 1080 canvas did only.
+            let corner = Vec2::new((g.view[0] + g.view[2] - 40.0) * s, (g.view[1] + g.view[3] - 40.0) * s);
+            key(&mut app, FrameInput { cursor: corner, secondary_down: true, ..FrameInput::default() });
+            assert!(matches!(app.lineage_view.drag, crate::lineage_view::Drag::Pan(_)), "{label}: {:?}", app.lineage_view.drag);
+            key(&mut app, FrameInput { cursor: corner, ..FrameInput::default() });
+            assert_eq!(app.lineage_view.drag, crate::lineage_view::Drag::None, "{label}");
+        }
+    }
+
+    /// The mesh view is made for the viewport again when the window changes shape (`GenerateMesh` for the new `RectTransform`), and the tree view keeps its zoom.
+    #[test]
+    fn a_resized_window_places_the_tree_and_the_mesh_again() {
+        let (mut app, _, _) = app_with_tree();
+        let zoom = app.lineage_view.zoom;
+        app.camera.set_screen(Vec2::new(2560.0, 1080.0));
+        app.sync_lineage_canvas();
+        let wide = app.lineage_view.geometry();
+        assert!(wide.view[2] > 2000.0, "{:?}", wide.view);
+        assert!(app.lineage_view.zoom >= app.lineage_view.min_zoom() - 1e-4);
+        assert!(app.lineage_view.zoom >= zoom - 1e-4 || app.lineage_view.zoom <= app.lineage_view.min_zoom() + 1e-4);
+        app.lineage_select_panel(false);
+        if app.lineage_view.mesh.built {
+            let g = app.lineage_view.geometry();
+            assert!((app.lineage_view.mesh.size[0] - g.viewport[2]).abs() < 0.5, "{:?} vs {:?}", app.lineage_view.mesh.size, g.viewport);
+            app.camera.set_screen(Vec2::new(1920.0, 1200.0));
+            app.sync_lineage_canvas();
+            let g = app.lineage_view.geometry();
+            assert!((g.view[3] - 1140.0).abs() < 0.01, "{:?}", g.view);
+            assert!((app.lineage_view.mesh.size[0] - g.viewport[2]).abs() < 0.5, "{:?} vs {:?}", app.lineage_view.mesh.size, g.viewport);
+        }
     }
 }
 

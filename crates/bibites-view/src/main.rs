@@ -3066,6 +3066,10 @@ fn run_window(
                 save_window_capture();
             }
             let section = std::time::Instant::now();
+            // `RUSTIBITES_FRAME_PAD_MS`: the display takes longer to show every frame (a model of a slow one, to look at the frame pacing).
+            if let Some(pad) = app::frame_pad() {
+                std::thread::sleep(pad);
+            }
             next_frame().await;
             frame_log.present += section.elapsed();
             let section = std::time::Instant::now();

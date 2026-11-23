@@ -55,6 +55,27 @@ pub const MAX_HUD_SPECIES: usize = 8;
 /// cannot keep up (slow machine, huge population) it drops backlog instead of
 /// spiralling; the simulation itself is unaffected.
 pub const MAX_CATCHUP_TICKS: u32 = 32;
+
+/// `RUSTIBITES_FRAME_PAD_MS=N`: every frame of the window takes N milliseconds longer to be shown (a model of a big window on a slow graphics card, to look at the
+/// frame pacing: the window sleeps before it presents). Unset or 0: nothing.
+#[must_use]
+pub fn frame_pad() -> Option<std::time::Duration> {
+    static PAD: std::sync::OnceLock<Option<std::time::Duration>> = std::sync::OnceLock::new();
+    *PAD.get_or_init(|| {
+        std::env::var("RUSTIBITES_FRAME_PAD_MS")
+            .ok()
+            .and_then(|value| value.trim().parse::<f64>().ok())
+            .filter(|ms| *ms > 0.0)
+            .map(|ms| std::time::Duration::from_secs_f64(ms / 1000.0))
+    })
+}
+
+/// `RUSTIBITES_LEGACY_PACING=1`: the frame pacing of the builds before 2026-11-23 (the ticks' room is a frame of the minimum FPS whatever the drawing takes, and the
+/// minimum-FPS rule takes the time scale down whenever the frames are slow, even when they are slow for the drawing and not for the ticks), to compare with.
+fn legacy_pacing() -> bool {
+    static LEGACY: std::sync::OnceLock<bool> = std::sync::OnceLock::new();
+    *LEGACY.get_or_init(|| std::env::var("RUSTIBITES_LEGACY_PACING").is_ok_and(|value| value != "0"))
+}
 /// Time-speed range of `TimeController.targetTimeScale` (0.1..100); keys `1`..`8`
 /// select presets inside it.
 pub const MAX_SPEED: f32 = 100.0;
@@ -1610,6 +1631,19 @@ pub struct App {
     frame_started: Option<std::time::Instant>,
     /// Ticks the last join brought in (the frame's challenge and autosave clocks count them).
     joined_ticks: u32,
+    /// When the last batch of ticks was handed to the helper: the drawing and the wait for the display have run beside it since.
+    overlap_dispatched: Option<std::time::Instant>,
+    /// How long the drawing and the wait for the display take beside the ticks (an average over the recent frames, seconds): the ticks may run that long
+    /// without holding the frame up. A big window on a modest graphics card makes it long, and the ticks' room must not stay a frame of the minimum FPS.
+    overlap_hidden: f64,
+    /// Seconds the frames of the current measurement of the frame rate waited for ticks that outlasted the drawing, and the batches of ticks of the window.
+    overlap_wait_secs: f64,
+    overlap_batches: u32,
+    /// `wall_time` at which the current measurement of the frame rate began.
+    govern_since: f64,
+    /// Tests: the drawing and the display of every frame take this many seconds beside the ticks (a model machine, with `model_tick_secs`).
+    #[cfg(test)]
+    model_beside_secs: Option<f64>,
     /// The simulation thread, when `--sim-thread` asked for one (see [`crate::sim_thread`]).
     pub sim: Option<crate::sim_thread::SimThread>,
     /// RUSTibites Improved's simulation switches for this run (see [`crate::improved_switches`]). Whatever world the app holds gets them before it ticks.
@@ -2200,6 +2234,13 @@ impl App {
             ticks_deferred: false,
             frame_started: None,
             joined_ticks: 0,
+            overlap_dispatched: None,
+            overlap_hidden: 0.0,
+            overlap_wait_secs: 0.0,
+            overlap_batches: 0,
+            govern_since: 0.0,
+            #[cfg(test)]
+            model_beside_secs: None,
             sim: None,
             improved: crate::improved_switches::configured(),
             world_away: false,
@@ -7276,6 +7317,7 @@ impl App {
 
     /// `TimeController.CheckMinFPS` after a measurement of the frame rate.
     fn check_min_fps(&mut self, present_fps: f32) {
+        let present_fps = self.frame_rate_for_governor(present_fps);
         if let Some(engine) = crate::time_keeper::min_fps_scale(
             self.engine_speed(),
             self.speed,
@@ -9857,8 +9899,13 @@ impl App {
         let before = self
             .frame_started
             .map_or(0.0, |started| started.elapsed().as_secs_f64());
-        let room = (self.prefs.min_fps >= 1)
-            .then(|| (1.0 / f64::from(self.prefs.min_fps) - before).max(0.0));
+        // A frame whose drawing and display take longer than that (`overlap_hidden`) has the ticks for as long as they last: they run beside it and
+        // hold nothing up, and a window that is slow to draw (4K) must not get the simulation less than a small one.
+        let room = (self.prefs.min_fps >= 1).then(|| {
+            (1.0 / f64::from(self.prefs.min_fps) - before)
+                .max(if legacy_pacing() { 0.0 } else { self.overlap_hidden })
+                .max(0.0)
+        });
         let husk = self
             .world_husk
             .take()
@@ -9875,6 +9922,7 @@ impl App {
             .get_or_insert_with(crate::tick_overlap::TickWorker::spawn)
             .start(batch);
         self.ticks_in_flight = true;
+        self.overlap_dispatched = Some(std::time::Instant::now());
     }
 
     /// Takes the world back from the tick helper, waiting for the ticks it is running, and does what `advance` does for every tick
@@ -9885,11 +9933,21 @@ impl App {
         if !self.ticks_in_flight {
             return 0;
         }
+        let beside = self
+            .overlap_dispatched
+            .take()
+            .map_or(0.0, |at| at.elapsed().as_secs_f64());
+        let waiting_since = std::time::Instant::now();
         let finished = self
             .tick_worker
             .as_mut()
             .expect("ticks are out, so the helper exists")
             .finish();
+        let waited = waiting_since.elapsed().as_secs_f64();
+        let (beside, waited) = self
+            .model_overlap(finished.spent)
+            .unwrap_or((beside, waited));
+        self.note_overlap(beside, waited);
         self.ticks_in_flight = false;
         let husk = std::mem::replace(&mut self.world, *finished.world);
         self.world_husk = Some(husk);
@@ -9909,6 +9967,52 @@ impl App {
         self.tick_cost = finished.tick_cost;
         self.joined_ticks += finished.ticks;
         finished.ticks
+    }
+
+    /// What a batch of ticks that ran beside `beside` seconds of drawing and display, and made the frame wait `waited` seconds for them, tells the pacing.
+    fn note_overlap(&mut self, beside: f64, waited: f64) {
+        // (One stall is not what the display usually takes.)
+        let beside = beside.min(0.5);
+        self.overlap_hidden = if self.overlap_hidden == 0.0 {
+            beside
+        } else if beside > self.overlap_hidden {
+            0.5 * self.overlap_hidden + 0.5 * beside
+        } else {
+            0.8 * self.overlap_hidden + 0.2 * beside
+        };
+        self.overlap_wait_secs += waited;
+        self.overlap_batches += 1;
+    }
+
+    /// Tests: a model machine's `(beside, waited)` for a batch of ticks that took `spent` seconds, if the machine has a model display.
+    fn model_overlap(&self, spent: f64) -> Option<(f64, f64)> {
+        #[cfg(test)]
+        {
+            if self.model_tick_secs.is_some() {
+                if let Some(beside) = self.model_beside_secs {
+                    return Some((beside, (spent - beside).max(0.0)));
+                }
+            }
+        }
+        let _ = spent;
+        None
+    }
+
+    /// The frame rate `TimeController.CheckMinFPS` is asked about after a measurement of `present_fps`. The game slows the simulation when the frames fall under
+    /// the minimum because its ticks and its drawing take turns, so fewer ticks mean quicker frames. Here the ticks run beside the drawing: when the frames of the
+    /// window did not wait for them (the drawing and the display held the frame up, a window of 4K on a modest graphics card), fewer ticks would not make the
+    /// frames quicker and only slowed the simulation down to a tenth, so the rule is asked as if the frame rate were twice the minimum: it takes nothing off the
+    /// time scale and raises it towards the target again. When the frames did wait for the ticks the measured frame rate goes to the rule as it is.
+    fn frame_rate_for_governor(&mut self, present_fps: f32) -> f32 {
+        let window = (self.wall_time - self.govern_since).max(1e-3);
+        let batches = std::mem::take(&mut self.overlap_batches);
+        let waited = std::mem::take(&mut self.overlap_wait_secs);
+        self.govern_since = self.wall_time;
+        let minimum = self.prefs.min_fps as f32;
+        if !legacy_pacing() && batches > 0 && minimum >= 1.0 && present_fps < minimum && waited < 0.05 * window {
+            return 2.0 * minimum;
+        }
+        present_fps
     }
 
     /// The ticks the joins have brought in since the last call (the frame's challenge and autosave clocks count them).
@@ -10101,6 +10205,9 @@ impl App {
 
     pub fn rebuild_scene(&mut self) {
         self.join_overlapped_ticks();
+        if self.panels.is_open(crate::ui::PanelKind::Lineage) {
+            self.sync_lineage_canvas();
+        }
         if self.world_away {
             // The simulation thread builds it (see `drawn_scene`).
             return;
@@ -10624,6 +10731,72 @@ mod tests {
         }
         assert_eq!(handed, 20);
         assert!(app.sim_ticks > 50);
+    }
+
+    /// One frame of a model machine in the window: the frame's owed ticks, the hand-over, the drawing and the display taking `beside` seconds beside the ticks (a
+    /// big window on a modest graphics card), the join. Returns the frame's length (nothing came before the ticks in the model): the longer of the two.
+    fn model_window_frame(app: &mut App, frame_dt: f64, beside: f64) -> f64 {
+        app.model_beside_secs = Some(beside);
+        app.advance(frame_dt as f32);
+        app.begin_frame();
+        app.dispatch_overlapped_ticks();
+        app.join_overlapped_ticks();
+        beside.max(app.last_tick_secs)
+    }
+
+    /// Runs `frames` frames of a model machine and returns (simulated seconds per real second over the second half, the frame rate over it).
+    fn model_window_speed(app: &mut App, frames: usize, beside: f64) -> (f64, f64) {
+        let (mut dt, mut time) = (0.01_f64, 0.0_f64);
+        let (mut ticks_then, mut time_then) = (0_u64, 0.0_f64);
+        for frame in 0..frames {
+            if frame == frames / 2 {
+                (ticks_then, time_then) = (app.sim_ticks, time);
+            }
+            dt = model_window_frame(app, dt, beside);
+            time += dt;
+        }
+        let fixed = f64::from(app.world.settings.fixed_dt());
+        let seconds = time - time_then;
+        ((app.sim_ticks - ticks_then) as f64 * fixed / seconds, (frames - frames / 2) as f64 / seconds)
+    }
+
+    /// The testers' "at 4K it does not let you go fast, but as soon as the window is smaller it goes super fast (4,200 bibites at 3x)": the ticks run beside the drawing
+    /// and the display, so a window whose drawing takes long (a 4K window on a modest graphics card: 10 frames a second and less) costs the simulation nothing as long as
+    /// the ticks fit in the drawing. The minimum-FPS rule used to slow the simulation to a tenth below 13 frames a second as if the ticks held the frames up (they did
+    /// in the game, where ticks and drawing take turns), and the ticks' room was a frame of the minimum's length whatever the frame really took.
+    #[test]
+    fn a_slow_display_does_not_slow_the_simulation_down() {
+        for beside in [0.005_f64, 0.04, 0.08, 0.2] {
+            // A tick takes 4 ms: 3x of 30 ticks a second is 90 ticks, 0.36 s of every second.
+            let mut app = overlap_app(9_020, 40, true, 0.004, 15);
+            app.set_target_speed(3.0);
+            let (speed, fps) = model_window_speed(&mut app, 1_200, beside);
+            assert!(speed > 2.85, "drawing and display {} ms ({fps:.1} frames a second): the simulation ran at x{speed:.2}", beside * 1000.0);
+            assert_eq!(app.engine_speed(), 3.0, "drawing and display {} ms: the time scale was lowered", beside * 1000.0);
+        }
+    }
+
+    /// The rule still works when the ticks ARE what holds the frames up: 20 ms a tick, a quick display and 10x asked for.
+    #[test]
+    fn ticks_that_outlast_the_drawing_still_hold_the_frame_rate_near_the_minimum() {
+        let mut app = overlap_app(9_021, 40, true, 0.020, 15);
+        app.set_target_speed(10.0);
+        let (speed, fps) = model_window_speed(&mut app, 1_200, 0.005);
+        assert!((12.0..=19.0).contains(&fps), "frames a second {fps:.1}: held near the minimum of 15");
+        // 20 ms a tick is at most 50 ticks a second, 1.7 simulated seconds a second at 30; the asked-for 10x is far out of reach.
+        assert!((0.9..=1.8).contains(&speed), "simulated seconds per second {speed:.2}");
+        assert_eq!(app.speed, 10.0, "the slider keeps what was asked for");
+    }
+
+    /// A time scale the rule lowered while the ticks held the frames up comes back when they no longer do (a slow display, ticks that fit in its drawing).
+    #[test]
+    fn a_time_scale_lowered_for_slow_ticks_recovers_under_a_slow_display() {
+        let mut app = overlap_app(9_022, 40, true, 0.004, 15);
+        app.set_target_speed(3.0);
+        app.engine_fraction = 0.2;
+        let (speed, _) = model_window_speed(&mut app, 1_200, 0.1);
+        assert!(speed > 2.85, "x{speed:.2}");
+        assert_eq!(app.engine_speed(), 3.0);
     }
 
     #[test]

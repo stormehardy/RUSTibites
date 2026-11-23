@@ -14,8 +14,21 @@ use bibites_core::species::SpeciesRegistry;
 use crate::lineage_mesh::MeshLayout;
 use crate::lineage_tree::{Layout, MAX_ZOOM, SIDE_PADDING, SpeciesInfo, TreeSettings};
 
-/// `LineageView`: `x, y, w, h` in reference pixels.
+/// `LineageView`: `x, y, w, h` in reference pixels, for the 1920 x 1080 canvas the prefab was captured on (see [`view_in`]).
 pub const VIEW: [f32; 4] = [15.0, 50.0, 1895.0, 1020.0];
+
+/// `LineageView` in a canvas of `canvas` reference px (`window / UI scale`): the prefab stretches it over the panel (anchors (0, 0) to (1, 1), offsets 15 from
+/// the left, 50 from the top, 10 from the right and 10 from the bottom), so it grows and shrinks with the window's shape.
+#[must_use]
+pub fn view_in(canvas: [f32; 2]) -> [f32; 4] {
+    // (A canvas too small for the two scroll bars keeps one of their room's worth of view.)
+    [
+        VIEW[0],
+        VIEW[1],
+        (canvas[0] - (VIEW[0] + 10.0)).max(BAR_ROOM + 1.0),
+        (canvas[1] - (VIEW[1] + 10.0)).max(BAR_ROOM + 1.0),
+    ]
+}
 /// A scroll bar's width (20) and its spacing (10): what the viewport gives up for one.
 pub const BAR_ROOM: f32 = 30.0;
 /// A scroll bar's thickness.
@@ -44,6 +57,8 @@ pub enum Drag {
 /// The viewport and the bars that show, for the current zoom and position.
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct Geometry {
+    /// The whole view (`LineageView`, `x, y, w, h`, reference px): the viewport and the room of the scroll bars.
+    pub view: [f32; 4],
     /// The viewport (`x, y, w, h`, reference px): the part of the view that shows the graph.
     pub viewport: [f32; 4],
     /// The vertical bar shows.
@@ -63,14 +78,16 @@ pub struct BarState {
 
 /// The vertical bar's track (`Scrollbar Vertical`: 20 wide at the view's right edge, 30 shorter than the view).
 #[must_use]
-pub fn vertical_track(_geometry: Geometry) -> [f32; 4] {
-    [VIEW[0] + VIEW[2] - BAR, VIEW[1], BAR, VIEW[3] - BAR_ROOM]
+pub fn vertical_track(geometry: Geometry) -> [f32; 4] {
+    let view = geometry.view;
+    [view[0] + view[2] - BAR, view[1], BAR, view[3] - BAR_ROOM]
 }
 
 /// The horizontal bar's track (`Scrollbar Horizontal`: 20 high at the view's bottom, 30 narrower than the view).
 #[must_use]
-pub fn horizontal_track(_geometry: Geometry) -> [f32; 4] {
-    [VIEW[0], VIEW[1] + VIEW[3] - BAR, VIEW[2] - BAR_ROOM, BAR]
+pub fn horizontal_track(geometry: Geometry) -> [f32; 4] {
+    let view = geometry.view;
+    [view[0], view[1] + view[3] - BAR, view[2] - BAR_ROOM, BAR]
 }
 
 /// A bar's sliding area: the track inset by 10 on every side (`Sliding Area`, size -20 x -20).
@@ -127,6 +144,8 @@ pub struct View {
     pub pos: [f32; 2],
     /// A drag in progress.
     pub drag: Drag,
+    /// `LineageView` for the canvas the panel is drawn on (`x, y, w, h`, reference px; see [`view_in`]).
+    pub view: [f32; 4],
 }
 
 impl Default for View {
@@ -139,6 +158,7 @@ impl Default for View {
             zoom: 1.0,
             pos: [0.0, 0.0],
             drag: Drag::None,
+            view: VIEW,
         }
     }
 }
@@ -212,8 +232,34 @@ impl View {
         } else if !self.mesh_mode && self.layout.built {
             self.layout.graph_size
         } else {
-            [VIEW[2] - BAR_ROOM, DEFAULT_CONTENT_HEIGHT]
+            [self.view[2] - BAR_ROOM, DEFAULT_CONTENT_HEIGHT]
         }
+    }
+
+    /// The panel is drawn on a canvas of `canvas` reference px (`window / UI scale`): the view stretches with it
+    /// (`RectTransformChangeHandler`: the tree is placed again for the new viewport, and the ScrollRect keeps the content in view).
+    /// Returns whether the view changed; the mesh view is made for its viewport by the caller (it needs the species).
+    pub fn set_canvas(&mut self, canvas: [f32; 2]) -> bool {
+        let view = view_in(canvas);
+        if view.iter().zip(self.view).all(|(a, b)| (a - b).abs() < 0.01) {
+            return false;
+        }
+        self.view = view;
+        if !self.mesh_mode && self.layout.built {
+            let mut viewport = self.viewport_size();
+            for _ in 0..6 {
+                self.layout.place(viewport);
+                let now = self.viewport_size();
+                if (now[0] - viewport[0]).abs() < 0.01 && (now[1] - viewport[1]).abs() < 0.01 {
+                    break;
+                }
+                viewport = now;
+            }
+            self.zoom_to(self.zoom);
+        } else {
+            self.clamp();
+        }
+        true
     }
 
     /// `LineageWindow.ResetView` (`SpeciesPanel.SelectPanel`, only when the view is switched): `ZoomToScale(1)` from the zoom the
@@ -230,7 +276,7 @@ impl View {
     pub fn geometry(&self) -> Geometry {
         let content = self.content_size();
         let (cw, ch) = (content[0] * self.zoom, content[1] * self.zoom);
-        let mut size = [VIEW[2], VIEW[3]];
+        let mut size = [self.view[2], self.view[3]];
         let (mut vertical, mut horizontal) = (false, false);
         if ch > size[1] + 0.01 {
             vertical = true;
@@ -246,7 +292,8 @@ impl View {
             size[0] -= BAR_ROOM;
         }
         Geometry {
-            viewport: [VIEW[0], VIEW[1], size[0], size[1]],
+            view: self.view,
+            viewport: [self.view[0], self.view[1], size[0], size[1]],
             vertical,
             horizontal,
         }
@@ -262,7 +309,7 @@ impl View {
     pub fn rebuild(&mut self, infos: &[SpeciesInfo], settings: TreeSettings) {
         self.settings = settings;
         // The first layout is made for the prefab's viewport (both bars); the viewport then follows the content.
-        let mut viewport = [VIEW[2] - BAR_ROOM, VIEW[3] - BAR_ROOM];
+        let mut viewport = [self.view[2] - BAR_ROOM, self.view[3] - BAR_ROOM];
         self.layout = Layout::build(infos, settings, viewport);
         self.drag = Drag::None;
         if !self.layout.built {
@@ -292,7 +339,7 @@ impl View {
         self.settings = settings;
         // (`GenerateMesh` does not reset the view: a rebuild for a changed option keeps the zoom and the place.)
         self.drag = Drag::None;
-        let mut viewport = [VIEW[2], VIEW[3]];
+        let mut viewport = [self.view[2], self.view[3]];
         for _ in 0..4 {
             self.mesh = MeshLayout::build(
                 registry,
@@ -867,5 +914,27 @@ mod tests {
         assert!(!view.built());
         assert!(view.content_size()[1] > 0.0);
         assert!(view.displayed().is_empty());
+    }
+
+    #[test]
+    fn the_view_stretches_with_the_canvas_like_the_prefabs_anchors() {
+        // `LineageView`: anchors (0, 0) to (1, 1), 15 from the left, 50 from the top, 10 from the right and from the bottom.
+        assert_eq!(view_in([1920.0, 1080.0]), VIEW);
+        assert_eq!(view_in([2560.0, 1080.0]), [15.0, 50.0, 2535.0, 1020.0]);
+        assert_eq!(view_in([1920.0, 1200.0]), [15.0, 50.0, 1895.0, 1140.0]);
+        let mut view = View::default();
+        assert!(!view.set_canvas([1920.0, 1080.0]), "the capture's canvas is the default");
+        assert!(view.set_canvas([2560.0, 1200.0]));
+        assert_eq!(view.geometry().view, [15.0, 50.0, 2535.0, 1140.0]);
+        assert!(!view.set_canvas([2560.0, 1200.0]), "nothing changed");
+        // The bars' tracks keep to the view's right and bottom edges.
+        let g = view.geometry();
+        let vertical = vertical_track(g);
+        assert_eq!(vertical[0] + vertical[2], 15.0 + 2535.0);
+        assert_eq!(vertical[1] + vertical[3], 50.0 + 1140.0 - BAR_ROOM);
+        let horizontal = horizontal_track(g);
+        assert_eq!(horizontal[1] + horizontal[3], 50.0 + 1140.0);
+        // A canvas smaller than the bars' room still leaves a view.
+        assert!(view_in([10.0, 10.0])[2] > 0.0 && view_in([10.0, 10.0])[3] > 0.0);
     }
 }
