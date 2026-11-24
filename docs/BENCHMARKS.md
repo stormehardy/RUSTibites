@@ -44,7 +44,7 @@ All artifacts referenced below (`runs.csv`, `summary.csv`, `matrix.md`,
 Measured with the optimized CLI (`cargo build --profile perf -p bibites-cli`: opt-level 3, no LTO, 16 codegen units; the
 repository's fat-LTO `release` profile is not needed to measure) on the reference machine (Ryzen 5 3600, 6C/12T).
 `rustibites bench` prints a per-stage table (indented under body and physics), the share of pass-B turns that ran on the pool,
-and the resting-pellet counters. `RUSTIBITES_GATES` (read by the CLI and the viewer) picks the size gates: `scaled` (the default since 2026-11-15: a world below about 1,200 bibites ticks on
+and the resting-pellet counters. `RUSTIBITES_GATES` (read by the CLI and the viewer; `exact` and `sleep:<pellets>` pick the resting-pellet layer, see "Pellet worlds (2026-11-23)") picks the size gates: `scaled` (the default since 2026-11-15: a world below about 1,200 bibites ticks on
 one thread, a bigger one runs every stage that gains from it on the pool; `scaled:<percent>` scales every size), `always` (every stage of every world on the pool from one item), `eager` (also the
 resting-pellet layer from one pellet) and `nosleep` (`scaled` with resting pellets kept in the physics step). The table below was measured with the sizes of 2026-11-05 (a stage on the pool from
 3,000 records, 4,096 bodies, 20,000 due bibites for sensing: `RUSTIBITES_GATES=tuned` of the build before 2026-11-15).
@@ -1648,3 +1648,63 @@ sweep keeps (50,000), and when the large boxes times the bodies would cost more 
 that do not collide, bodies that take no part), serial and on four threads; whole-world checkpoints equal byte for byte, grid against sweep, in a spread world and a packed one on 4 and 8 threads; `state_fingerprint` equal at
 5,000, 20,000 and 50,000 bibites and Big Pellet at 1 and 4 threads and in every mode; six mutants of the grid (the corner rule, the order of a pair, a pair of two large boxes found twice, a stripe's columns, touching boxes,
 equal tags) were each caught.
+
+
+## Pellet worlds (2026-11-23)
+
+The request: "optimize pellets further, I want to run many pellet scenarios at high speeds". Measured first, in all the scenarios of the owner's `Scenarios` folder (`rustibites bench --scenario X --ticks 6000
+--threads 12`, 12 threads, the player at the machine, best of two alternating runs of one binary): the worlds with a few hundred to two thousand pellets and a handful of bibites spent most of a tick in the
+physics step on pellets that did not move (the resting-pellet layer started at 2,048 pellets), and in the bigger pellet worlds 2 - 10 % of the pellets never came to rest, and were most of the tick.
+
+**1. The layer starts at 64 pellets** (`ParallelGates::sleep_pellets`, was 2,048; `RUSTIBITES_GATES=sleep:<pellets>` moves it). Exact: the state fingerprints are equal with the layer on, off (`nosleep`) and exact.
+33 scenarios: +60 % to +810 % in every world under 2,048 pellets, 0 +- 3 % elsewhere (the worlds of many bibites and few pellets are kept out by the bridge's rule, pellets x 4 >= bibites: synthetic worlds of
+50 to 10,000 bibites unchanged).
+
+**2. Pellets that touch and only turn by rounding noise rest** (`ParallelGates::settle_rotation`, `pellet_sleep` relaxed mode, `docs/DEVIATIONS.md` D24; the owner agreed on 2026-11-23). What kept them awake
+(`examples/pellet_awake_probe.rs`): two pellets that touch settle where the position solver's last correction is below the rounding of a position of a thousand units, and the same correction still
+turns each by about 8e-10 radians a tick (the rounding of the contact's lever arm: the rotation of such a pellet drifts in a straight line, `-8.93e-9, -9.74e-9, -1.06e-8, ...`), so the pellet's pose was
+never the same twice and it was never put to rest; 624 of 630 awake pellets in Britian Proper were this. Now a rotation that moved by less than 1e-6 radians counts as not moved, resting pellets may overlap up
+to three others each, and promotion is transitive (the sleepers that overlap a promoted sleeper come with it, so a touched pile is in the step whole). The saved worlds (`.bb8scene`: pellets and bibites) of the
+old and the new build are equal in 10 scenarios after 5,000 ticks (a pellet's rotation is not stored in a save); the checkpoint's pellet rotations are what differs. Tests: the whole-checkpoint comparison with
+rotations put back to zero (`relaxed_resting_pellets_change_nothing_but_the_rotation_of_the_pellets`), the exact layer's comparison unchanged, five mutants of the new code killed.
+
+**3. The decay pass is skipped while nothing decays** (`BitSet::ones`; most scenarios have the Decay switch off, and the pass walked every pellet of the world every `decayTPS` tick to find nothing), and when
+something does decay the serial pass walks the slot columns instead of the dense list (the pooled pass's stretch kernel over the whole store; the old walk is a test oracle). Exact.
+
+**4. The command line loads only the templates a spawn row can name** (`World::template_name_matches`): `rustibites run` read all 224 template files of the owner's folder (10 MB, 0.2 s) before every run, twenty times
+the run of a small pellet scenario. A 1,000-tick run of Like Rabbits takes 0.015 s of wall time instead of 0.24 s, Britian 0.03 s instead of 0.25 s. The saved worlds are equal.
+
+**5. The window's cap of 32 ticks a frame follows the cost of a tick** (`App::catchup_cap`: half a frame of the minimum FPS at the cost the ticks had, up to 2,000). On a 60 Hz display the top speed (100x of 30 ticks a
+second is 3,000 ticks) needs 50 ticks a frame in a world whose ticks cost 10 microseconds; the backlog was dropped instead. Real window, 1920 x 1080, 145 Hz, `--speed 100` (the static alpha builds):
+
+| world (a save of the scenario) | old build | new build, Faithful | new build, Improved |
+|---|---:|---:|---:|
+| Britian (1,500 pellets) | x84 (105 fps, 32 ticks a frame, join 8 ms) | x99 | x100 |
+| Square (4,600 pellets) | x91 | x100 | x100 |
+| Like Rabbits (470 pellets) | x70 | x98 | x100 |
+| Pixel Art (1,000 pellets) | x68 | x100 | x102 |
+
+**Ticks a second, before -> after** (one binary pair, 12 threads, 4,000 ticks, best of two; the old column is the build of the morning of 2026-11-23):
+
+| scenario | pellets | before | after |
+|---|---:|---:|---:|
+| Like Rabbits | 480 | 15,000 | 210,000 |
+| Britian | 1,500 | 3,900 | 91,000 |
+| USA | 1,600 | 4,300 | 63,000 |
+| Pixel Art | 1,000 | 6,400 | 62,000 |
+| Triforce 2 | 16,000 | 10,500 | 156,000 |
+| The Forest, The Wastes, And The Oasis | 1,700 | 3,900 | 26,000 |
+| 3 Islands | 1,750 | 3,200 | 22,000 |
+| RadTower | 5,800 | 2,400 | 21,000 |
+| Britian Proper | 24,000 | 2,500 | 21,000 |
+| USA Proper | 27,000 | 3,500 | 20,000 |
+| TestScenario | 7,000 | 1,960 | 16,000 |
+| Defaulty | 15,700 | 6,900 | 28,000 |
+| Whales and parasites | 9,500 | 1,700 | 7,000 |
+| Butterfly 5 (500 bibites) | 6,200 | 2,150 | 2,270 |
+| Big Pellet (1,000 bibites) | 55,000 | 550 | 620 |
+| Britian Proper with the plant Decay switch on | 24,000 | 2,100 | 12,500 |
+
+What is left in a tick of those worlds is the bibites' own work (sensing, bodies) and the zones, 5 - 15 microseconds each; the bibite-heavy worlds (Big Pellet, Butterfly) are limited by the bibites, not the
+pellets. Traps met: a survey over a folder of scenarios must run each scenario for thousands of ticks (the first 600 show the pellets' settling, not the steady state); the state fingerprint does not see pellet
+rotation or velocity (compare saved worlds); `Start-Process -File` takes an array parameter as one comma-joined string.

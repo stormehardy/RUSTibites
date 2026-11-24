@@ -45,6 +45,9 @@ pub const MAX_HUD_SPECIES: usize = 8;
 /// spiralling; the simulation itself is unaffected.
 pub const MAX_CATCHUP_TICKS: u32 = 32;
 
+/// The most ticks a frame may run in a world whose ticks are cheap (see [`App::catchup_cap`]).
+pub const MAX_CHEAP_CATCHUP_TICKS: u32 = 2_000;
+
 /// `RUSTIBITES_FRAME_PAD_MS=N`: every frame of the window takes N milliseconds longer to be shown (a model of a big window on a slow graphics card, to look at the
 /// frame pacing: the window sleeps before it presents). Unset or 0: nothing.
 #[must_use]
@@ -9627,7 +9630,8 @@ impl App {
             });
             let mut spent = 0.0_f64;
             let mut steps = 0_u32;
-            while self.accumulator >= fixed && steps < MAX_CATCHUP_TICKS {
+            let cap = self.catchup_cap();
+            while self.accumulator >= fixed && steps < cap {
                 // One tick always runs when one is owed; more only while the next is expected to fit the room.
                 if steps >= 1 && room.is_some_and(|room| spent + self.tick_cost > room) {
                     break;
@@ -9664,6 +9668,22 @@ impl App {
         }
         self.fps = self.time_keeper.fps().round() as i32;
         self.achievements_frame(frame_dt, true);
+    }
+
+    /// The most ticks one frame may run: [`MAX_CATCHUP_TICKS`], or, in a world whose ticks are cheap (a world of pellets at rest ticks in tens of microseconds),
+    /// as many as fit in half a frame of the minimum FPS at the cost the ticks have had (up to [`MAX_CHEAP_CATCHUP_TICKS`]). The room the pacing gives the ticks
+    /// stops a batch when they run long; this is the cap on how many a frame OWES, and at the top time speed (100x of 30 ticks a second is 3,000 ticks a second)
+    /// 32 a frame is as far as a 60 Hz display goes in a world that could run twice as fast: the backlog was dropped and the speed stopped at 64x.
+    fn catchup_cap(&self) -> u32 {
+        if self.tick_cost <= 0.0 {
+            return MAX_CATCHUP_TICKS;
+        }
+        let frame = if self.prefs.min_fps >= 1 {
+            1.0 / f64::from(self.prefs.min_fps)
+        } else {
+            1.0 / 15.0
+        };
+        ((0.5 * frame / self.tick_cost) as u32).clamp(MAX_CATCHUP_TICKS, MAX_CHEAP_CATCHUP_TICKS)
     }
 
     /// Whether this frame's owed ticks go to the tick helper: always, whatever the size of the world (a world of a few bibites
@@ -9705,7 +9725,7 @@ impl App {
             return;
         }
         let fixed = f64::from(self.world.settings.fixed_dt());
-        let owed = ((self.accumulator / fixed).floor().max(0.0) as u32).min(MAX_CATCHUP_TICKS);
+        let owed = ((self.accumulator / fixed).floor().max(0.0) as u32).min(self.catchup_cap());
         if owed == 0 {
             return;
         }
@@ -10362,8 +10382,10 @@ mod tests {
         // Speed 100 in frames of a tenth of a second asks for 300 ticks a frame; the catch-up cap lets 32 run, 320 a second:
         // the panel says so (and not 100 x 30 = 3000, nor the setting of 30).
         let mut app = App::new(synthetic(9_003, 8), Vec2::new(800.0, 600.0), None);
-        // Without a minimum FPS only the catch-up cap limits the ticks of a frame.
+        // Without a minimum FPS only the catch-up cap limits the ticks of a frame (a tick of 4 ms: the cap is the 32 of a world of bibites; ticks that
+        // cost next to nothing have a higher one, see `cheap_ticks_are_not_held_to_32_a_frame_at_the_top_time_speed`).
         app.prefs.min_fps = 0;
+        app.model_tick_secs = Some(0.004);
         app.speed = 100.0;
         for _ in 0..60 {
             app.advance(0.1);
@@ -10613,6 +10635,22 @@ mod tests {
         let (speed, _) = model_window_speed(&mut app, 1_200, 0.1);
         assert!(speed > 2.85, "x{speed:.2}");
         assert_eq!(app.engine_speed(), 3.0);
+    }
+
+    /// The top time speed in a world whose ticks cost almost nothing (pellets at rest: tens of microseconds): 100x of the world's ticks a second is more than 32
+    /// ticks in a 60 Hz frame, and the old cap (32 a frame) held it to 64x.
+    #[test]
+    fn cheap_ticks_are_not_held_to_32_a_frame_at_the_top_time_speed() {
+        let mut app = overlap_app(9_023, 40, true, 0.0001, 15);
+        app.set_target_speed(100.0);
+        let (speed, fps) = model_window_speed(&mut app, 600, 1.0 / 60.0);
+        assert!(speed > 95.0, "x{speed:.1} at {fps:.1} frames a second");
+        assert!(app.catchup_cap() > MAX_CATCHUP_TICKS);
+        // Ticks that cost what a world of bibites costs keep the old cap.
+        let mut slow = overlap_app(9_024, 40, true, 0.004, 15);
+        slow.set_target_speed(100.0);
+        let _ = model_window_speed(&mut slow, 100, 1.0 / 60.0);
+        assert_eq!(slow.catchup_cap(), MAX_CATCHUP_TICKS);
     }
 
     #[test]

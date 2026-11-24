@@ -185,6 +185,11 @@ pub struct ParallelGates {
     /// Pellets from which resting pellets skip the physics step (`usize::MAX`: never). Unlike the other gates this one is not
     /// about the pool: it works with one thread too.
     pub sleep_pellets: usize,
+    /// Relaxed resting pellets (see [`crate::pellet_sleep`]): a pellet whose rotation drifts by rounding noise (under 1e-6 radians a
+    /// tick) while its position, velocity and angular velocity do not change counts as resting, and resting pellets that touch each
+    /// other rest together. **Unlike every other gate this one changes what a world holds**: the stored rotation of such a pellet stops
+    /// drifting (nothing but the picture reads it). Off, the layer is exact (the world is the same bit for bit as with no layer).
+    pub settle_rotation: bool,
     /// Bodies in the physics step from which the candidate pairs are found by a grid, on the pool, instead of the sweep over the x order (`usize::MAX`:
     /// never). Like `sleep_pellets` it is not a size the levels lower: the grid is slower than the sweep below a few thousand bodies (about 10 % of a
     /// tick at 300 to 1,000 bibites) and from 4,000 or so it is faster (a stage that is 15-30 % shorter, 1-2 % of a tick).
@@ -214,6 +219,9 @@ impl ParallelGates {
         island_bodies: 1,
         island_constraints: 1,
         sleep_pellets: 1,
+        // (As in SCALED: the gates of the pool never change what a world holds. The tests that compare the layer with no layer byte for byte ask for the
+        // exact layer, `settle_rotation: false`, themselves.)
+        settle_rotation: true,
         grid_bodies: 8,
         start_level: 0,
     };
@@ -222,6 +230,7 @@ impl ParallelGates {
     /// [`ParallelGates::SCALED`] with. The resting-pellet layer keeps the size from which it pays (it is not about the pool).
     pub const ALWAYS: Self = Self {
         sleep_pellets: Self::SCALED.sleep_pellets,
+        settle_rotation: Self::SCALED.settle_rotation,
         ..Self::EAGER
     };
 
@@ -245,7 +254,11 @@ impl ParallelGates {
         sorts: 4_096,
         island_bodies: 256,
         island_constraints: 512,
-        sleep_pellets: 2_048,
+        // From 64 pellets (it was 2,048 until 2026-11-23): in the scenarios with a few hundred to two thousand pellets and a handful of bibites
+        // (a world of pellets at rest) the physics step was most of the tick, and with the layer on those ticks run 1.6 to 9 times faster; worlds
+        // with many bibites and a few pellets are kept out by the ratio rule in the bridge (pellets x 4 >= bibites).
+        sleep_pellets: 64,
+        settle_rotation: true,
         grid_bodies: 4_000,
         start_level: 0,
     };
@@ -259,8 +272,10 @@ impl ParallelGates {
 
     /// The gates a benchmark's mode name stands for (any case): `scaled`, `scaled:<percent>` (the sizes of `scaled` times that
     /// percentage, to find where a stage starts to pay), `fixed` (`scaled` without the measuring), `pooled:<level>` (every world on the
-    /// pool at that level of eagerness, 0 to 3, without measuring: `pooled:3` is `always`), `always`, `eager`, or `nosleep`
-    /// (`scaled` with the resting-pellet layer off, the reference the layer is checked against). `None` for any other name.
+    /// pool at that level of eagerness, 0 to 3, without measuring: `pooled:3` is `always`), `always`, `eager`, `nosleep`
+    /// (`scaled` with the resting-pellet layer off, the reference the layer is checked against), `exact` (`scaled` with the layer that
+    /// does not let the rotation noise of touching pellets rest: bit for bit the world with no layer) or `sleep:<pellets>` (`scaled`
+    /// with the layer from that many pellets on: where it pays). `None` for any other name.
     #[must_use]
     pub fn from_mode(mode: &str) -> Option<Self> {
         let is = |name: &str| mode.eq_ignore_ascii_case(name);
@@ -274,6 +289,22 @@ impl ParallelGates {
             Some(Self::EAGER)
         } else if is("nosleep") {
             Some(Self::SCALED.without_sleep())
+        } else if is("exact") {
+            // The layer that changes nothing at all (see `settle_rotation`).
+            Some(Self {
+                settle_rotation: false,
+                ..Self::SCALED
+            })
+        } else if let Some(from) = mode
+            .to_ascii_lowercase()
+            .strip_prefix("sleep:")
+            .and_then(|from| from.parse::<usize>().ok())
+        {
+            // The resting-pellet layer from `from` pellets on (1: from the first), everything else as SCALED: where the layer pays.
+            Some(Self {
+                sleep_pellets: from.max(1),
+                ..Self::SCALED
+            })
         } else if let Some(level) = mode
             .to_ascii_lowercase()
             .strip_prefix("pooled:")
@@ -321,6 +352,7 @@ impl ParallelGates {
             island_bodies: scale(self.island_bodies),
             island_constraints: scale(self.island_constraints),
             sleep_pellets: self.sleep_pellets,
+            settle_rotation: self.settle_rotation,
             grid_bodies: self.grid_bodies,
             start_level: self.start_level,
         }
@@ -398,6 +430,7 @@ impl ParallelGates {
                 pool_bibites: self.pool_bibites,
                 pool_bodies: self.pool_bodies,
                 sleep_pellets: self.sleep_pellets,
+                settle_rotation: self.settle_rotation,
                 grid_bodies: self.grid_bodies,
                 start_level: self.start_level,
                 ..Self::EAGER
@@ -1933,6 +1966,32 @@ mod tests {
             ParallelGates::from_mode("nosleep"),
             Some(ParallelGates::SCALED.without_sleep())
         );
+        // `sleep:<pellets>` moves the layer's start and nothing else.
+        assert_eq!(
+            ParallelGates::from_mode("Sleep:1"),
+            Some(ParallelGates {
+                sleep_pellets: 1,
+                ..ParallelGates::SCALED
+            })
+        );
+        assert_eq!(
+            ParallelGates::from_mode("sleep:500").map(|gates| gates.sleep_pellets),
+            Some(500)
+        );
+        assert_eq!(
+            ParallelGates::from_mode("exact"),
+            Some(ParallelGates {
+                settle_rotation: false,
+                ..ParallelGates::SCALED
+            })
+        );
+        // Every gate of the pool has the same layer, so that a world's result does not depend on how its ticks run.
+        for gates in [ParallelGates::SCALED, ParallelGates::FIXED, ParallelGates::ALWAYS, ParallelGates::EAGER] {
+            assert!(gates.settle_rotation);
+            assert!(gates.pooled_level(1).settle_rotation && gates.pooled_level(3).settle_rotation);
+        }
+        assert_eq!(ParallelGates::from_mode("sleep:"), None);
+        assert_eq!(ParallelGates::from_mode("sleep:x"), None);
         // `scaled:<percent>` scales the sizes, never to 0, and leaves the resting-pellet layer alone.
         assert_eq!(
             ParallelGates::from_mode("scaled:100"),

@@ -1461,6 +1461,10 @@ impl PelletStore {
             return DecayReport::default();
         }
         self.pending_removals.clear();
+        if self.decaying.ones() == 0 {
+            // Nothing decays (the Decay switch of both materials is off, as in most scenarios): the scan over every pellet would find nothing.
+            return DecayReport::default();
+        }
         let workers = crate::sim::ParallelGates::workers_for(
             self.generations.len(),
             from,
@@ -1469,31 +1473,76 @@ impl PelletStore {
         if workers > 1 {
             self.scan_decay_pooled(dt_decay, workers, from);
         } else {
-            for i in 0..self.dense.len() {
-                let slot = self.dense[i] as usize;
-                if !self.decaying.get(slot) {
-                    continue;
-                }
-                self.fresh_remaining[slot] -= dt_decay;
-                if self.fresh_remaining[slot] <= 0.0 {
-                    let rate = self.materials.get(self.material[slot]).decay_rate;
-                    self.decay_amount[slot] += dt_decay * rate;
-                }
-                let amount = self.amount[slot];
-                let rot = self.decay_amount[slot];
-                let remove = if amount > 0.0 {
-                    rot / amount > DECAY_REMOVE_THRESHOLD
-                } else {
-                    true
-                };
-                if remove {
-                    let to_remove = rot.min(amount + DECAY_REMOVE_EPSILON);
-                    self.decay_amount[slot] = 0.0;
-                    self.pending_removals.push((slot as u32, to_remove));
-                }
+            self.scan_decay_slots(dt_decay);
+        }
+        self.apply_decay_removals()
+    }
+
+    /// The first half of [`Self::process_decay_with`] on one thread: the freshness, the rot and the chop test of every decaying pellet, walking the slot columns in order
+    /// (the way the pool's stretches do, over the whole store: the columns are read one after the other instead of through the dense list, a cache miss a pellet
+    /// when the store is big) and putting the chops in dense order, the order the walk over the dense list finds them in.
+    fn scan_decay_slots(&mut self, dt_decay: f32) {
+        let removals = decay_stretch(
+            0,
+            &mut self.fresh_remaining,
+            &mut self.decay_amount,
+            &self.amount,
+            &self.material,
+            &self.decaying,
+            &self.alive,
+            &self.materials,
+            dt_decay,
+        );
+        self.pending_removals.extend(removals);
+        if self.pending_removals.len() > 1 {
+            let dense_pos = &self.dense_pos;
+            self.pending_removals
+                .sort_unstable_by_key(|(slot, _)| dense_pos[*slot as usize]);
+        }
+    }
+
+    /// The first half of [`Self::process_decay_with`] as it was before the walk over the slot columns: along the dense list (the oracle of the tests).
+    #[cfg(test)]
+    fn scan_decay_dense_reference(&mut self, dt_decay: f32) {
+        for i in 0..self.dense.len() {
+            let slot = self.dense[i] as usize;
+            if !self.decaying.get(slot) {
+                continue;
+            }
+            self.fresh_remaining[slot] -= dt_decay;
+            if self.fresh_remaining[slot] <= 0.0 {
+                let rate = self.materials.get(self.material[slot]).decay_rate;
+                self.decay_amount[slot] += dt_decay * rate;
+            }
+            let amount = self.amount[slot];
+            let rot = self.decay_amount[slot];
+            let remove = if amount > 0.0 {
+                rot / amount > DECAY_REMOVE_THRESHOLD
+            } else {
+                true
+            };
+            if remove {
+                let to_remove = rot.min(amount + DECAY_REMOVE_EPSILON);
+                self.decay_amount[slot] = 0.0;
+                self.pending_removals.push((slot as u32, to_remove));
             }
         }
+    }
 
+    /// [`Self::process_decay`] with the dense-order scan (the oracle of the tests).
+    #[cfg(test)]
+    fn process_decay_dense_reference(&mut self, dt_decay: f32) -> DecayReport {
+        if !dt_decay.is_finite() || dt_decay <= 0.0 {
+            return DecayReport::default();
+        }
+        self.pending_removals.clear();
+        self.scan_decay_dense_reference(dt_decay);
+        self.apply_decay_removals()
+    }
+
+    /// The second half of [`Self::process_decay_with`]: the chops found by the scan, in dense order, one thread (the order the pellets are removed in decides which
+    /// slots the next spawns get, and so every id of the world after it).
+    fn apply_decay_removals(&mut self) -> DecayReport {
         let mut report = DecayReport::default();
         for i in 0..self.pending_removals.len() {
             let (slot, to_remove) = self.pending_removals[i];
@@ -1533,32 +1582,17 @@ impl PelletStore {
             .zip(self.material.par_chunks(chunk))
             .enumerate()
             .map(|(index, (((fresh, rotten), amounts), kinds))| {
-                let base = index * chunk;
-                let mut removals: Vec<(u32, f32)> = Vec::new();
-                for offset in 0..fresh.len() {
-                    let slot = base + offset;
-                    if !decaying.get(slot) || !alive.get(slot) {
-                        continue;
-                    }
-                    fresh[offset] -= dt_decay;
-                    if fresh[offset] <= 0.0 {
-                        let rate = materials.get(kinds[offset]).decay_rate;
-                        rotten[offset] += dt_decay * rate;
-                    }
-                    let amount = amounts[offset];
-                    let rot = rotten[offset];
-                    let remove = if amount > 0.0 {
-                        rot / amount > DECAY_REMOVE_THRESHOLD
-                    } else {
-                        true
-                    };
-                    if remove {
-                        let to_remove = rot.min(amount + DECAY_REMOVE_EPSILON);
-                        rotten[offset] = 0.0;
-                        removals.push((slot as u32, to_remove));
-                    }
-                }
-                removals
+                decay_stretch(
+                    index * chunk,
+                    fresh,
+                    rotten,
+                    amounts,
+                    kinds,
+                    decaying,
+                    alive,
+                    materials,
+                    dt_decay,
+                )
             })
             .collect();
         for part in parts {
@@ -1925,6 +1959,47 @@ impl PelletStore {
             .then(|| self.dense_pos.get(slot).copied())
             .flatten()
     }
+}
+
+/// The decay of the pellets in the slots `base..base + fresh.len()`: the freshness, the rot and the chop test of every live pellet that is registered with the
+/// processor; returns the chops (slot, amount to take off) in slot order. Every pellet reads and writes its own slot only.
+#[allow(clippy::too_many_arguments)] // the columns of the store, a stretch of them at a time
+fn decay_stretch(
+    base: usize,
+    fresh: &mut [f32],
+    rotten: &mut [f32],
+    amounts: &[f32],
+    kinds: &[MaterialKind],
+    decaying: &BitSet,
+    alive: &BitSet,
+    materials: &MaterialTable,
+    dt_decay: f32,
+) -> Vec<(u32, f32)> {
+    let mut removals: Vec<(u32, f32)> = Vec::new();
+    for offset in 0..fresh.len() {
+        let slot = base + offset;
+        if !decaying.get(slot) || !alive.get(slot) {
+            continue;
+        }
+        fresh[offset] -= dt_decay;
+        if fresh[offset] <= 0.0 {
+            let rate = materials.get(kinds[offset]).decay_rate;
+            rotten[offset] += dt_decay * rate;
+        }
+        let amount = amounts[offset];
+        let rot = rotten[offset];
+        let remove = if amount > 0.0 {
+            rot / amount > DECAY_REMOVE_THRESHOLD
+        } else {
+            true
+        };
+        if remove {
+            let to_remove = rot.min(amount + DECAY_REMOVE_EPSILON);
+            rotten[offset] = 0.0;
+            removals.push((slot as u32, to_remove));
+        }
+    }
+    removals
 }
 
 impl Default for PelletStore {
@@ -2661,6 +2736,37 @@ mod tests {
         assert!(almost(store.counts().meat_biomass as f32, 0.0));
     }
 
+    /// The decay pass looks at every pellet only when some pellet decays: the store counts the pellets that are registered with the processor
+    /// (a plant pellet is not, with the default materials), through spawns, removals, registrations and a restore.
+    #[test]
+    fn the_decay_pass_is_skipped_while_no_pellet_decays() {
+        let mut store = PelletStore::new();
+        let plants: Vec<PelletId> = (0..50)
+            .map(|index| store.spawn(PelletSpawn::new(MaterialKind::Plant, 20.0, Vec2::new(index as f32 * 10.0, 0.0))))
+            .collect();
+        assert_eq!(store.decaying.ones(), 0, "plants do not decay with the default materials");
+        assert_eq!(store.process_decay(1000.0), DecayReport::default());
+        // One rotting pellet is enough for the pass to run, and it is counted once however it comes and goes.
+        let meat = store.spawn(PelletSpawn::new(MaterialKind::Meat, 1000.0, Vec2::ZERO));
+        assert_eq!(store.decaying.ones(), 1);
+        assert!(store.register_decay(plants[3]) && store.register_decay(plants[3]));
+        assert_eq!(store.decaying.ones(), 2);
+        store.process_decay(3000.0);
+        assert!(store.amount(meat).unwrap() < 1000.0, "the pass ran: 3000 s past the 2000 s of freshness chops 60 u2 (6 %) off the meat");
+        assert!(store.unregister_decay(plants[3]));
+        assert!(store.unregister_decay(plants[3]));
+        assert_eq!(store.decaying.ones(), 1);
+        store.remove(meat);
+        assert_eq!(store.decaying.ones(), 0);
+        // A restore starts from the saved flags.
+        store.register_decay(plants[7]);
+        let bytes = store.capture_checkpoint();
+        let mut other = PelletStore::new();
+        other.restore_checkpoint(&bytes).expect("restore");
+        assert_eq!(other.decaying.ones(), 1);
+        assert_eq!(other.process_decay(1000.0), DecayReport::default());
+    }
+
     #[test]
     fn decay_below_threshold_accumulates_without_chopping() {
         let mut store = PelletStore::new();
@@ -2706,6 +2812,36 @@ mod tests {
             }
         }
         store
+    }
+
+    /// The serial decay pass walks the slot columns; it is the pass that walked the dense list: the whole store byte for byte after every pass, in a store with holes
+    /// among the slots and a dense order that is not the slot order, with new pellets taking the slots the chops freed in between.
+    #[test]
+    fn the_serial_decay_walk_over_the_slots_is_the_walk_over_the_dense_list() {
+        let mut walked = churned_store(3_000, 17);
+        let mut reference = churned_store(3_000, 17);
+        for store in [&mut walked, &mut reference] {
+            store.materials_mut().plant.decay_rate = 0.01;
+        }
+        let mut destroyed = 0;
+        let mut chopped = 0;
+        for round in 0..60 {
+            let dt = 120.0 + 7.0 * round as f32;
+            let a = walked.process_decay(dt);
+            let b = reference.process_decay_dense_reference(dt);
+            assert_eq!(a, b, "round {round}");
+            destroyed += a.removed_pellets;
+            chopped += u32::from(a.plant_amount > 0.0 || a.meat_amount > 0.0);
+            assert_eq!(walked.capture_checkpoint(), reference.capture_checkpoint(), "round {round}");
+            for store in [&mut walked, &mut reference] {
+                store.spawn(PelletSpawn::new(
+                    MaterialKind::Meat,
+                    30.0 + round as f32,
+                    Vec2::new(round as f32 * 3.0, 5.0),
+                ));
+            }
+        }
+        assert!(destroyed > 20 && chopped > 20, "the test chopped and destroyed pellets ({chopped} passes with chops, {destroyed} destroyed)");
     }
 
     /// The decay pass on the worker pool is the serial one: the whole store byte for byte after every pass, with new pellets taking
