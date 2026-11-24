@@ -3588,25 +3588,31 @@ impl World {
     }
 
     fn template_for_path(&self, path: &str) -> Option<&TemplateSource> {
+        self.templates
+            .iter()
+            .find(|template| Self::template_name_matches(path, &template.name))
+    }
+
+    /// Whether a template named `name` (a file name, with or without its extension) is what a spawn row with `path` resolves to: the first template for which
+    /// this holds is the row's. The row's path is a bundled file name or an absolute path of the game's own machine, so it may carry either separator; an empty
+    /// path names nothing. A caller that loads templates from a folder can leave out the ones that no row's path matches: they can never be found.
+    #[must_use]
+    pub fn template_name_matches(path: &str, name: &str) -> bool {
         if path.is_empty() {
-            return None;
+            return false;
         }
-        // The row's path is a bundled file name or an absolute path of the game's own machine, so it may carry either separator.
         let stem = path
             .rsplit(['/', '\\'])
             .next()
             .unwrap_or(path)
             .trim_end_matches(".bb8template")
             .trim_end_matches(".bb8");
-        self.templates.iter().find(|template| {
-            template.name == path
-                || template.name == stem
-                || template
-                    .name
-                    .trim_end_matches(".bb8template")
-                    .trim_end_matches(".bb8")
-                    == stem
-        })
+        name == path
+            || name == stem
+            || name
+                .trim_end_matches(".bb8template")
+                .trim_end_matches(".bb8")
+                == stem
     }
 
     /// Spawns one bibite from a template at `pos` (virgin-spawn path, spec
@@ -8207,12 +8213,23 @@ fn full_pellet_hash_sync(hash: &mut SpatialHash, pellets: &PelletStore) {
 #[derive(Clone, Debug, Default)]
 pub(crate) struct BitSet {
     words: Vec<u64>,
+    /// How many bits are set (kept by [`Self::set`] and [`Self::clear`]).
+    ones: usize,
 }
 
 impl BitSet {
     /// Creates an empty bitset.
     pub(crate) const fn new() -> Self {
-        Self { words: Vec::new() }
+        Self {
+            words: Vec::new(),
+            ones: 0,
+        }
+    }
+
+    /// How many bits are set.
+    #[inline]
+    pub(crate) const fn ones(&self) -> usize {
+        self.ones
     }
 
     /// Ensures at least `bits` bits exist (extra bits are zeroed on growth).
@@ -8239,11 +8256,13 @@ impl BitSet {
         self.ensure(bit + 1);
         let word = &mut self.words[bit / 64];
         let mask = 1u64 << (bit % 64);
+        let had = *word & mask != 0;
         if value {
             *word |= mask;
         } else {
             *word &= !mask;
         }
+        self.ones = self.ones + usize::from(value) - usize::from(had);
     }
 
     /// Clears all bits while retaining capacity.
@@ -8253,6 +8272,7 @@ impl BitSet {
     #[allow(dead_code)]
     pub(crate) fn clear(&mut self) {
         self.words.fill(0);
+        self.ones = 0;
     }
 }
 
@@ -11340,6 +11360,14 @@ mod tests {
             restored.bibites.capture_checkpoint(),
             source.bibites.capture_checkpoint()
         );
+        // (A restored world starts with every pellet awake: the pellets of the source that rest have stopped turning by rounding noise, the restored
+        // ones turn by it until they rest too, so their rotations are put back to zero.)
+        for world in [&mut source, &mut restored] {
+            let ids: Vec<PelletId> = world.pellets.ids().collect();
+            for id in ids {
+                world.pellets.set_rotation(id, 0.0);
+            }
+        }
         assert_eq!(
             restored.pellets.capture_checkpoint(),
             source.pellets.capture_checkpoint()
@@ -14410,7 +14438,11 @@ mod tests {
             world.set_threads(threads);
             world
         };
-        let eager = crate::sim::ParallelGates::EAGER;
+        // (The exact layer: the relaxed one is checked by `relaxed_resting_pellets_change_nothing_but_the_rotation_of_the_pellets`.)
+        let eager = crate::sim::ParallelGates {
+            settle_rotation: false,
+            ..crate::sim::ParallelGates::EAGER
+        };
         let worlds = run_same_checkpoints(
             vec![
                 ("no sleeping".to_owned(), build(1, eager.without_sleep())),
@@ -14485,7 +14517,10 @@ mod tests {
             }
             world
         };
-        let eager = crate::sim::ParallelGates::EAGER;
+        let eager = crate::sim::ParallelGates {
+            settle_rotation: false,
+            ..crate::sim::ParallelGates::EAGER
+        };
         let worlds = run_same_checkpoints(
             vec![
                 ("no sleeping".to_owned(), build(1, eager.without_sleep())),
@@ -14503,6 +14538,184 @@ mod tests {
                 "{name}: the layer hardly did anything: {stats:?}"
             );
         }
+    }
+
+    /// The relaxed layer (resting pellets whose rotation only drifts by rounding noise rest, and resting pellets that touch rest together, all of them
+    /// in the step whole when one of them is touched) changes nothing but the stored rotation of those pellets: with every pellet's rotation put back
+    /// to zero after each round, the worlds are the same byte for byte as the world that lets no pellet sleep. Twins are put on top of every fifth
+    /// pellet so that there are touching ones that settle into the noise, and bibites wander through them.
+    #[test]
+    fn relaxed_resting_pellets_change_nothing_but_the_rotation_of_the_pellets() {
+        let build = |threads: usize, gates: crate::sim::ParallelGates| {
+            let mut settings = default_settings();
+            settings.independents.biomass_density *= 10.0;
+            let mut world = audit_world_with(150, settings);
+            world.set_parallel_gates(gates);
+            world.set_threads(threads);
+            world
+        };
+        let eager = crate::sim::ParallelGates::EAGER;
+        let relaxed = crate::sim::ParallelGates {
+            settle_rotation: true,
+            ..eager
+        };
+        assert_eq!(relaxed, eager, "the gates of the pool all have the relaxed layer");
+        let mut worlds = vec![
+            ("no sleeping".to_owned(), build(1, eager.without_sleep())),
+            ("relaxed".to_owned(), build(1, relaxed)),
+            ("relaxed, 8 threads".to_owned(), build(8, relaxed)),
+        ];
+        let encode = |world: &World| {
+            world
+                .capture_checkpoint_state()
+                .expect("checkpoint")
+                .encode()
+                .expect("encoded checkpoint")
+        };
+        for round in 1..=12 {
+            for (_, world) in &mut worlds {
+                let ids: Vec<PelletId> = world.pellets.ids().collect();
+                if round == 1 {
+                    for (index, id) in ids.iter().enumerate() {
+                        if index % 5 == 0
+                            && let Some(pos) = world.pellets.pos(*id)
+                        {
+                            world.pellets.spawn(crate::pellet::PelletSpawn::new(
+                                crate::pellet::MaterialKind::Plant,
+                                20.0,
+                                pos + Vec2::new(3.0, 0.5),
+                            ));
+                        }
+                    }
+                }
+                if round == 6 {
+                    // Writes from outside to pellets that mostly rest: a kick, a resize, a nudge, a removal.
+                    for (index, id) in ids.into_iter().enumerate() {
+                        match index % 40 {
+                            0 => {
+                                world.pellets.set_velocity(id, Vec2::new(40.0, -25.0));
+                            }
+                            7 => {
+                                world.pellets.add_amount(id, 5.0);
+                            }
+                            14 => {
+                                if let Some(pos) = world.pellets.pos(id) {
+                                    world.pellets.set_pos(id, pos + Vec2::new(3.0, 1.0));
+                                }
+                            }
+                            28 => world.despawn_pellet(id),
+                            _ => {}
+                        }
+                    }
+                }
+                world.run(12);
+                // (Nothing reads a pellet's rotation: every one goes back to zero, here and in the reference.)
+                let ids: Vec<PelletId> = world.pellets.ids().collect();
+                for id in ids {
+                    world.pellets.set_rotation(id, 0.0);
+                }
+            }
+            let expected = encode(&worlds[0].1);
+            for (name, world) in &worlds[1..] {
+                let actual = encode(world);
+                assert!(
+                    actual == expected,
+                    "{name} differs from {} after round {round}: {}",
+                    worlds[0].0,
+                    first_difference(&expected, &actual)
+                );
+            }
+        }
+        for (name, world) in &worlds[1..] {
+            let stats = world.pellet_sleep_stats();
+            assert!(
+                stats.slept > 200 && stats.promoted > 0 && stats.woken > 0 && stats.overlapped > 5,
+                "{name}: the layer hardly did anything: {stats:?}"
+            );
+        }
+    }
+
+    /// A world of a hundred pellets or so and a few bibites rests its pellets with the default gates (the layer starts at 64 pellets; it was 2,048 until
+    /// 2026-11-23, and the scenarios with a few hundred to two thousand pellets spent most of a tick on pellets that did not move) and comes out as it
+    /// would without the layer, but for the rotation of the pellets (the default layer is the relaxed one: they are put back to zero every round).
+    #[test]
+    fn a_small_pellet_world_rests_its_pellets_by_default() {
+        let build = |gates: crate::sim::ParallelGates| {
+            let mut settings = default_settings();
+            settings.independents.biomass_density *= 4.0;
+            let mut world = audit_world_with(24, settings);
+            world.set_parallel_gates(gates);
+            world.set_threads(1);
+            world
+        };
+        let fixed = crate::sim::ParallelGates::FIXED;
+        assert_eq!(fixed.sleep_pellets, 64, "the layer's default start");
+        assert!(fixed.settle_rotation, "the default layer is the relaxed one");
+        let mut worlds = vec![
+            ("no sleeping".to_owned(), build(fixed.without_sleep())),
+            ("default gates".to_owned(), build(fixed)),
+        ];
+        for round in 1..=6 {
+            for (_, world) in &mut worlds {
+                world.run(15);
+                let ids: Vec<PelletId> = world.pellets.ids().collect();
+                for id in ids {
+                    world.pellets.set_rotation(id, 0.0);
+                }
+            }
+            let encode = |world: &World| {
+                world
+                    .capture_checkpoint_state()
+                    .expect("checkpoint")
+                    .encode()
+                    .expect("encoded checkpoint")
+            };
+            let expected = encode(&worlds[0].1);
+            let actual = encode(&worlds[1].1);
+            assert!(
+                actual == expected,
+                "default gates differ from no sleeping after round {round}: {}",
+                first_difference(&expected, &actual)
+            );
+        }
+        let pellets = worlds[1].1.pellets.len();
+        assert!(pellets >= 64, "{pellets} pellets: the world is too small to start the layer");
+        assert_eq!(
+            worlds[0].1.pellet_sleep_stats(),
+            crate::pellet_sleep::SleepStats::default()
+        );
+        let stats = worlds[1].1.pellet_sleep_stats();
+        assert!(
+            stats.asleep > 20 && stats.slept > 20,
+            "the layer hardly did anything: {stats:?}"
+        );
+    }
+
+    #[test]
+    fn a_spawn_rows_path_matches_the_templates_it_can_resolve() {
+        for (path, name, matches) in [
+            ("Basic bibite.bb8template", "Basic bibite.bb8template", true),
+            ("Basic bibite", "Basic bibite.bb8template", true),
+            ("C:\\Users\\x\\Templates\\Basic bibite.bb8template", "Basic bibite.bb8template", true),
+            ("/home/x/Basic bibite.bb8", "Basic bibite.bb8template", true),
+            ("Basic bibite.bb8template", "Basic bibite 2.bb8template", false),
+            ("Basic", "Basic bibite.bb8template", false),
+            ("", "Basic bibite.bb8template", false),
+            ("", "", false),
+        ] {
+            assert_eq!(World::template_name_matches(path, name), matches, "{path:?} / {name:?}");
+        }
+        // The world's lookup is the same rule, first match in list order.
+        let mut world = World::new(default_settings(), ScenarioData::default(), 5).expect("world");
+        let template = |name: &str| {
+            use crate::brain::Brain;
+            use crate::genome::{Genome, GenomeMeta};
+            TemplateSource::new(name, Genome::starter(), GenomeMeta::default(), Brain::starter())
+        };
+        world.set_templates(vec![template("A.bb8template"), template("B.bb8template"), template("B.bb8")]);
+        assert_eq!(world.template_for_path("B").map(|found| found.name.as_str()), Some("B.bb8template"));
+        assert_eq!(world.template_for_path("C:/x/B.bb8").map(|found| found.name.as_str()), Some("B.bb8template"));
+        assert!(world.template_for_path("").is_none() && world.template_for_path("Z").is_none());
     }
 
     #[test]

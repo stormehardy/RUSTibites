@@ -17,6 +17,18 @@
 //! step in the place the dense order gives them. Sleepers never overlap each other (a pellet only falls asleep where no sleeper's
 //! box overlaps its own), so one round of promotion finds every pair there is. The step then sees the same bodies in the same
 //! order, apart from the sleepers that nobody touches, which would not have taken part in anything.
+//!
+//! **Relaxed mode** (`ParallelGates::settle_rotation`, on by default since 2026-11-23, the owner's decision): two pellets that touch
+//! each other settle into a state where the position solver's last correction (below the rounding of a position of a thousand
+//! units) cannot move either of them, but still turns each by a few 1e-10 radians a tick (the rounding of the contact's lever
+//! arm). Their position, velocity and angular velocity are the same every tick and only the rotation drifts, which nothing in the
+//! step reads (a pellet is a circle, the step only looks at differences of rotation within a step), so a drifting pellet is not
+//! kept awake: a rotation that moved by less than [`REST_ROTATION_NOISE`] in a step counts as not moved. Such pellets overlap, so in
+//! this mode a sleeper may overlap up to [`MAX_OVERLAPS`] other sleepers (each of them with room for one more), and promotion is
+//! transitive: the sleepers that overlap a promoted sleeper are promoted with it (the contacts of a pile hold each other), so a
+//! touched pile of resting pellets is in the step whole, exactly as it would be if nothing slept. What differs from the exact layer
+//! is the stored rotation of the pellets that rest (it stops drifting; the largest drift ever seen is 1e-9 radians a tick) and
+//! nothing else.
 
 use crate::pellet::PelletStore;
 use crate::physics::Aabb;
@@ -32,6 +44,12 @@ const MIN_CELL: f32 = 64.0;
 const MAX_SLEEPER_CELLS: i32 = 16;
 /// A query box is widened by this much, so that rounding can never hide an overlap the broadphase would find.
 const QUERY_MARGIN: f32 = 1e-3;
+/// Relaxed mode: a pellet whose rotation moved by less than this many radians in a step (and whose position, velocity and angular
+/// velocity did not change at all) did not move. The drift of a pair at rest is a few 1e-10 radians a tick.
+pub(crate) const REST_ROTATION_NOISE: f32 = 1e-6;
+/// Relaxed mode: how many other sleepers a sleeper's box may overlap, and how many a sleeper may be overlapped by (a pile of pellets
+/// that all touch each other stays awake: a pile wakes as one, and one that holds hundreds would be in every step it was touched in).
+const MAX_OVERLAPS: usize = 3;
 
 /// What the sleeping layer did, for the bench table.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
@@ -48,6 +66,8 @@ pub struct SleepStats {
     pub slept: u64,
     /// Sleepers that woke up (sum over ticks).
     pub woken: u64,
+    /// Pellets that fell asleep with their box over the box of another sleeper (relaxed mode; sum over ticks).
+    pub overlapped: u64,
 }
 
 #[derive(Clone, Copy, Debug)]
@@ -74,6 +94,10 @@ pub(crate) struct PelletSleep {
     occupied: Vec<u64>,
     /// By pellet slot.
     sleepers: Vec<Option<Sleeper>>,
+    /// Relaxed mode (see the module docs): rotation noise does not keep a pellet awake, and sleepers may overlap a few others.
+    relaxed: bool,
+    /// By pellet slot: how many other sleepers the sleeper's box overlaps (relaxed mode; 0 for an awake pellet).
+    degree: Vec<u8>,
     sleeper_count: usize,
     /// Slots of the live pellets that are not asleep (each once; checked against the store at the start of a tick).
     awake: Vec<u32>,
@@ -92,6 +116,15 @@ impl PelletSleep {
     /// Whether the layer is in use (the world has enough pellets).
     pub(crate) fn enabled(&self) -> bool {
         self.enabled
+    }
+
+    /// Chooses the mode (see the module docs) for the ticks that follow; call it before [`Self::begin_tick`]. A change forgets what
+    /// the layer knows (the sleepers of one mode are not the sleepers of the other).
+    pub(crate) fn set_relaxed(&mut self, relaxed: bool) {
+        if self.relaxed != relaxed {
+            self.disable();
+            self.relaxed = relaxed;
+        }
     }
 
     /// Forgets everything; the next [`Self::begin_tick`] starts afresh with every pellet awake.
@@ -116,6 +149,7 @@ impl PelletSleep {
     fn ensure_slot(&mut self, slot: usize) {
         if self.sleepers.len() <= slot {
             self.sleepers.resize(slot + 1, None);
+            self.degree.resize(slot + 1, 0);
             self.awake_listed.resize(slot + 1, false);
             self.promoted_mark.resize(slot + 1, false);
         }
@@ -133,9 +167,10 @@ impl PelletSleep {
         self.stats.ticks += 1;
         let stale = !self.enabled || self.epoch != pellets.epoch() || self.stamp != stamp;
         if stale {
-            let stats = self.stats;
+            let (stats, relaxed) = (self.stats, self.relaxed);
             *self = Self::default();
             self.stats = stats;
+            self.relaxed = relaxed;
             self.enabled = true;
             self.epoch = pellets.epoch();
             self.stamp = stamp;
@@ -340,7 +375,9 @@ impl PelletSleep {
         if (x1 - x0 + 1) * (y1 - y0 + 1) > MAX_SLEEPER_CELLS {
             return;
         }
-        // Sleepers never overlap each other.
+        // Sleepers never overlap each other; in relaxed mode a few may, and each of them has room for one more.
+        let mut overlapped = [0u32; MAX_OVERLAPS];
+        let mut overlapped_count = 0;
         for cy in y0..=y1 {
             for cx in x0..=x1 {
                 let cell = (cy * self.side + cx) as usize;
@@ -348,7 +385,20 @@ impl PelletSleep {
                     if let Some(sleeper) = &self.sleepers[other as usize]
                         && overlaps(&sleeper.aabb, &aabb)
                     {
-                        return;
+                        if !self.relaxed {
+                            return;
+                        }
+                        // (A sleeper over several cells is met in each of them.)
+                        if overlapped[..overlapped_count].contains(&other) {
+                            continue;
+                        }
+                        if overlapped_count == MAX_OVERLAPS
+                            || self.degree[other as usize] as usize >= MAX_OVERLAPS
+                        {
+                            return;
+                        }
+                        overlapped[overlapped_count] = other;
+                        overlapped_count += 1;
                     }
                 }
             }
@@ -367,14 +417,61 @@ impl PelletSleep {
             x1,
             y1,
         });
+        self.degree[slot] = overlapped_count as u8;
+        for &other in &overlapped[..overlapped_count] {
+            self.degree[other as usize] += 1;
+        }
+        if overlapped_count > 0 {
+            self.stats.overlapped += 1;
+        }
         self.sleeper_count += 1;
         self.stats.slept += 1;
+    }
+
+    /// Relaxed mode: promotes, with every sleeper that is marked, the sleepers whose boxes overlap its box, and so on (a pile of
+    /// resting pellets that touch each other is in the step whole when one of them is). Call it after the marks of the bodies of the
+    /// step and before the promoted sleepers are built. Does nothing in the exact mode, where sleepers do not overlap.
+    pub(crate) fn close_promoted(&mut self) {
+        if !self.relaxed {
+            return;
+        }
+        let mut index = 0;
+        while index < self.promoted.len() {
+            let slot = self.promoted[index] as usize;
+            index += 1;
+            if let Some(aabb) = self.sleepers[slot].map(|sleeper| sleeper.aabb) {
+                self.promote_overlapping(&aabb);
+            }
+        }
     }
 
     fn remove_sleeper(&mut self, slot: usize) {
         let Some(sleeper) = self.sleepers[slot].take() else {
             return;
         };
+        if self.degree[slot] > 0 {
+            // The sleepers that overlapped this one have one overlap fewer (each counted once, whatever number of cells they share).
+            let mut seen = [0u32; MAX_OVERLAPS];
+            let mut seen_count = 0;
+            for cy in sleeper.y0..=sleeper.y1 {
+                for cx in sleeper.x0..=sleeper.x1 {
+                    let index = (cy * self.side + cx) as usize;
+                    for &other in &self.cells[index] {
+                        if other as usize != slot
+                            && seen_count < MAX_OVERLAPS
+                            && !seen[..seen_count].contains(&other)
+                            && let Some(neighbour) = &self.sleepers[other as usize]
+                            && overlaps(&neighbour.aabb, &sleeper.aabb)
+                        {
+                            seen[seen_count] = other;
+                            seen_count += 1;
+                            self.degree[other as usize] = self.degree[other as usize].saturating_sub(1);
+                        }
+                    }
+                }
+            }
+            self.degree[slot] = 0;
+        }
         for cy in sleeper.y0..=sleeper.y1 {
             for cx in sleeper.x0..=sleeper.x1 {
                 let index = (cy * self.side + cx) as usize;
@@ -599,6 +696,83 @@ mod tests {
                 "stretches of {stretch}"
             );
         }
+    }
+
+    #[test]
+    fn relaxed_sleepers_may_overlap_a_few_others_and_are_promoted_together() {
+        let mut store = store_with(5);
+        let mut sleep = PelletSleep::default();
+        sleep.set_relaxed(true);
+        sleep.begin_tick(&mut store, [1000.0f32.to_bits()], 1000.0);
+        // A chain: 0 overlaps 1 and 1 overlaps 2 (boxes 5 wide, 4 apart); 3 is far away.
+        sleep.settle(0, true, Some(boxed(0.0, 0.0, 2.5)));
+        sleep.settle(1, true, Some(boxed(4.0, 0.0, 2.5)));
+        sleep.settle(2, true, Some(boxed(8.0, 0.0, 2.5)));
+        sleep.settle(3, true, Some(boxed(300.0, 0.0, 2.5)));
+        let stats = sleep.stats();
+        assert_eq!((stats.asleep, stats.overlapped), (4, 2));
+        // A box over the first only: the chain comes with it, the far one does not.
+        sleep.promote_overlapping(&boxed(-3.0, 0.0, 1.0));
+        assert_eq!(sleep.promoted(), &[0]);
+        sleep.close_promoted();
+        let mut promoted = sleep.promoted().to_vec();
+        promoted.sort_unstable();
+        assert_eq!(promoted, vec![0, 1, 2]);
+        sleep.clear_promoted();
+        // The exact layer lets no sleeper overlap another and closes nothing.
+        let mut exact = PelletSleep::default();
+        exact.begin_tick(&mut store, [1000.0f32.to_bits()], 1000.0);
+        exact.settle(0, true, Some(boxed(0.0, 0.0, 2.5)));
+        exact.settle(1, true, Some(boxed(4.0, 0.0, 2.5)));
+        assert_eq!(exact.stats().asleep, 1);
+        exact.promote_overlapping(&boxed(-3.0, 0.0, 1.0));
+        exact.close_promoted();
+        assert_eq!(exact.promoted(), &[0]);
+    }
+
+    #[test]
+    fn relaxed_mode_keeps_a_crowd_awake_and_counts_overlaps_back_when_a_sleeper_wakes() {
+        let mut store = store_with(6);
+        let mut sleep = PelletSleep::default();
+        sleep.set_relaxed(true);
+        sleep.begin_tick(&mut store, [1000.0f32.to_bits()], 1000.0);
+        // Five boxes that all overlap each other: the fifth would overlap four sleepers.
+        for slot in 0..5 {
+            sleep.settle(slot, true, Some(boxed(slot as f32 * 0.5, 0.0, 2.5)));
+        }
+        assert_eq!(sleep.stats().asleep, 4, "four overlap each other, the fifth stays awake");
+        // Waking the first one takes it off the others' counts: the fifth can rest now.
+        let id = store.live_id(0).expect("live");
+        store.set_velocity(id, Vec2::new(1.0, 0.0));
+        sleep.begin_tick(&mut store, [1000.0f32.to_bits()], 1000.0);
+        assert_eq!(sleep.stats().asleep, 3);
+        sleep.settle(4, true, Some(boxed(2.0, 0.0, 2.5)));
+        assert_eq!(sleep.stats().asleep, 4);
+        // A change of mode forgets the sleepers (the exact layer would not hold overlapping ones).
+        sleep.set_relaxed(false);
+        sleep.begin_tick(&mut store, [1000.0f32.to_bits()], 1000.0);
+        assert_eq!(sleep.stats().asleep, 0);
+    }
+
+    #[test]
+    fn a_relaxed_sleeper_over_two_cells_is_counted_once() {
+        let mut store = store_with(2);
+        let mut sleep = PelletSleep::default();
+        sleep.set_relaxed(true);
+        sleep.begin_tick(&mut store, [1000.0f32.to_bits()], 1000.0);
+        // (The grid's cells are 64 wide from -1256: there is a cell edge at x = 24.) Both boxes straddle it, so each sleeper is in two cells.
+        sleep.settle(0, true, Some(boxed(24.0, 0.0, 2.5)));
+        sleep.settle(1, true, Some(boxed(26.0, 0.0, 2.5)));
+        let (first, second) = (sleep.sleepers[0].expect("asleep"), sleep.sleepers[1].expect("asleep"));
+        assert_ne!(first.x0, first.x1, "the box covers two cells");
+        assert_ne!(second.x0, second.x1, "the box covers two cells");
+        assert_eq!(sleep.stats().asleep, 2);
+        assert_eq!((sleep.degree[0], sleep.degree[1]), (1, 1), "each overlaps the other once");
+        // Waking one takes one overlap off the other, not two.
+        let id = store.live_id(0).expect("live");
+        store.set_velocity(id, Vec2::new(1.0, 0.0));
+        sleep.begin_tick(&mut store, [1000.0f32.to_bits()], 1000.0);
+        assert_eq!((sleep.degree[0], sleep.degree[1]), (0, 0));
     }
 
     #[test]

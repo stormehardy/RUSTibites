@@ -33,7 +33,7 @@ use crate::organs::{
     try_swallow_pellet, void_avoidance_weight, world_wrap_position,
 };
 use crate::pellet::{MaterialKind, PelletPose, PelletStore};
-use crate::pellet_sleep::{PelletSleep, STAMP_LEN};
+use crate::pellet_sleep::{PelletSleep, REST_ROTATION_NOISE, STAMP_LEN};
 use crate::pheromone::{PheromoneStore, bibite_emission_sum, bibite_emission_triggers};
 use crate::physics as phys;
 use rayon::prelude::*;
@@ -8345,6 +8345,8 @@ impl BibiteStore {
         if !sleep_wanted {
             sleep.disable();
         }
+        let relaxed = self.gates.settle_rotation;
+        sleep.set_relaxed(relaxed);
         let pellet_workers = crate::sim::ParallelGates::workers_for(
             pellets.len(),
             self.gates.bodies,
@@ -8510,6 +8512,8 @@ impl BibiteStore {
                     }
                 }
             }
+            // Relaxed mode: the sleepers that overlap a promoted sleeper come with it (a pile of resting pellets is in the step whole).
+            sleep.close_promoted();
             if !sleep.promoted().is_empty() {
                 // The promoted sleepers take their places among the awake pellets' bodies, in dense order. The awake bodies are
                 // in that order already and only a few sleepers are promoted (a hundred in fifty thousand pellets), so the few are
@@ -8875,7 +8879,10 @@ impl BibiteStore {
                             && before.pos.y.to_bits() == pose.pos.y.to_bits()
                             && before.velocity.x.to_bits() == pose.velocity.x.to_bits()
                             && before.velocity.y.to_bits() == pose.velocity.y.to_bits()
-                            && before.rotation.to_bits() == pose.rotation.to_bits()
+                            // (Relaxed mode: a rotation that moved by rounding noise did not move.)
+                            && (before.rotation.to_bits() == pose.rotation.to_bits()
+                                || (relaxed
+                                    && (before.rotation - pose.rotation).abs() < REST_ROTATION_NOISE))
                             && before.angular_velocity.to_bits() == pose.angular_velocity.to_bits()
                     });
                 let _ = pellets.set_pose_from_physics(*id, pose);

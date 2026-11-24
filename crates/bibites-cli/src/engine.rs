@@ -189,7 +189,7 @@ pub fn bench(args: &BenchArgs) -> Result<(), String> {
             match bibites_core::sim::ParallelGates::from_mode(&mode) {
                 Some(gates) => world.set_parallel_gates(gates),
                 None => eprintln!(
-                    "warning: RUSTIBITES_GATES={mode} is not scaled, scaled:<percent>, fixed, pooled:<level>, always, eager or nosleep: ignored"
+                    "warning: RUSTIBITES_GATES={mode} is not scaled, scaled:<percent>, fixed, pooled:<level>, always, eager, nosleep, exact or sleep:<pellets>: ignored"
                 ),
             }
         }
@@ -327,7 +327,8 @@ fn prepare_save(
         .map(std::path::Path::to_path_buf)
         .or_else(default_templates_dir)
     {
-        let templates = load_template_dir(&dir)?;
+        let rows: Vec<String> = world.bibite_spawns.iter().map(|row| row.path.clone()).collect();
+        let templates = load_template_dir(&dir, &rows)?;
         if !templates.is_empty() {
             eprintln!(
                 "loaded {} template(s) from {}",
@@ -380,7 +381,8 @@ fn prepare_scenario(
         .map(std::path::Path::to_path_buf)
         .or_else(default_templates_dir);
     if let Some(dir) = &external_templates_dir {
-        let external = load_template_dir(dir)?;
+        let rows: Vec<String> = bundle.scenario.bibite_spawns.iter().map(|row| row.path.clone()).collect();
+        let external = load_template_dir(dir, &rows)?;
         if !external.is_empty() {
             eprintln!(
                 "loaded {} template(s) from {}",
@@ -432,10 +434,28 @@ fn default_templates_dir() -> Option<std::path::PathBuf> {
     dir.is_dir().then_some(dir)
 }
 
-/// Loads every `.bb8template` in a directory (sorted by file name) so scenario
-/// spawn rows can resolve templates the scenario does not bundle.
+/// Which of the template files `paths` can a spawn row with one of the paths `rows` resolve to (`World::template_name_matches`)? The others are never looked
+/// at by the world, so they are not read: a folder of 224 templates (10 MB) cost 0.2 s before every run, twenty times the run of a small pellet scenario.
+fn wanted_template_files(
+    paths: Vec<std::path::PathBuf>,
+    rows: &[String],
+) -> Vec<std::path::PathBuf> {
+    paths
+        .into_iter()
+        .filter(|path| {
+            path.file_name().is_some_and(|name| {
+                let name = name.to_string_lossy();
+                rows.iter().any(|row| World::template_name_matches(row, &name))
+            })
+        })
+        .collect()
+}
+
+/// Loads the `.bb8template` files of a directory (sorted by file name) that a spawn row can resolve to, so scenario spawn rows can resolve templates the
+/// scenario does not bundle (`rows` are the rows' paths).
 fn load_template_dir(
     dir: &std::path::Path,
+    rows: &[String],
 ) -> Result<Vec<(String, bibites_io::LoadedGenome)>, String> {
     let mut paths: Vec<std::path::PathBuf> = std::fs::read_dir(dir)
         .map_err(|error| {
@@ -452,6 +472,7 @@ fn load_template_dir(
         })
         .collect();
     paths.sort();
+    let paths = wanted_template_files(paths, rows);
     let mut templates = Vec::with_capacity(paths.len());
     for path in paths {
         match bibites_io::load_template(&path) {
@@ -881,11 +902,12 @@ fn print_phase_table(world: &World) {
     let sleep = world.pellet_sleep_stats();
     if sleep.ticks > 0 {
         println!(
-            "resting pellets: {} asleep, {} awake; per tick {:.1} promoted into the step, {:.1} fell asleep, {:.1} woke",
+            "resting pellets: {} asleep, {} awake; per tick {:.1} promoted into the step, {:.1} fell asleep ({:.1} of them over another sleeper), {:.1} woke",
             sleep.asleep,
             sleep.awake,
             sleep.promoted as f64 / sleep.ticks as f64,
             sleep.slept as f64 / sleep.ticks as f64,
+            sleep.overlapped as f64 / sleep.ticks as f64,
             sleep.woken as f64 / sleep.ticks as f64
         );
     }
@@ -943,6 +965,28 @@ pub fn braincheck(fixture: &std::path::Path, out: Option<&std::path::Path>) -> R
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn only_the_template_files_a_spawn_row_can_name_are_loaded() {
+        use std::path::PathBuf;
+        let files: Vec<PathBuf> = ["A.bb8template", "Basic bibite.bb8template", "Basic bibite 2.bb8template", "Z.bb8template"]
+            .iter()
+            .map(|name| PathBuf::from("T").join(name))
+            .collect();
+        let names = |wanted: Vec<PathBuf>| -> Vec<String> {
+            wanted.iter().map(|path| path.file_name().unwrap().to_string_lossy().into_owned()).collect()
+        };
+        assert_eq!(names(super::wanted_template_files(files.clone(), &[])), Vec::<String>::new());
+        assert_eq!(names(super::wanted_template_files(files.clone(), &[String::new()])), Vec::<String>::new());
+        assert_eq!(
+            names(super::wanted_template_files(files.clone(), &["Basic bibite".to_owned()])),
+            vec!["Basic bibite.bb8template"]
+        );
+        assert_eq!(
+            names(super::wanted_template_files(files, &["C:\\x\\Z.bb8template".to_owned(), "A".to_owned(), "Q".to_owned()])),
+            vec!["A.bb8template", "Z.bb8template"]
+        );
+    }
+
     use super::*;
 
     /// A save+sidecar resume must produce exactly the same world as one long run.
