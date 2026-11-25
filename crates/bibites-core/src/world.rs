@@ -2810,7 +2810,8 @@ pub struct World {
     threads: usize,
     /// Persistent sensing pool (`None` while serial, and during the ticks of a world too small for the pool: with no handle to it
     /// no stage can hand work over, so every stage runs inline).
-    sensing_pool: Option<ThreadPool>,
+    /// (Crate-visible: `fields.rs` builds a pool executor from it without borrowing the rest of the world.)
+    pub(crate) sensing_pool: Option<ThreadPool>,
     /// Whether the pool may be used: [`World::tick`] sets it from the way the tick runs (inline or on the pool, see `pool_tuner`);
     /// true until the first tick, for the stages the tests call by themselves.
     pool_wanted: bool,
@@ -2858,6 +2859,8 @@ pub struct World {
     producer_progress: Vec<(BibiteId, f32)>,
     ids_scratch: Vec<BibiteId>,
     pellet_ids_scratch: Vec<PelletId>,
+    /// RUSTibites Improved: what the stepping of the streams and the towers keeps from one tick to the next (`fields.rs`).
+    pub(crate) field_scratch: crate::fields::FieldScratch,
     /// The pellet slots one hash sync visits (reused).
     pellet_dirty_scratch: Vec<u32>,
     animator_progress: f32,
@@ -2945,6 +2948,7 @@ impl World {
             producer_progress: Vec::new(),
             ids_scratch: Vec::new(),
             pellet_ids_scratch: Vec::new(),
+            field_scratch: crate::fields::FieldScratch::default(),
             pellet_dirty_scratch: Vec::new(),
             animator_progress: 0.0,
             animator_started: Vec::new(),
@@ -4460,9 +4464,7 @@ impl World {
         let start = Instant::now();
         self.step_pellet_producers(dt); // phase 12
         self.step_vents(dt); // RUSTibites Improved, beside the pellet producers
-        self.step_force_towers(dt); // RUSTibites Improved, before the bodies move
-        self.step_whirlpools(dt); // RUSTibites Improved, before the bodies move
-        self.step_streams(dt); // RUSTibites Improved, before the bodies move
+        self.step_fields(dt, crate::fields::Covered::ALL); // RUSTibites Improved, before the bodies move: the force towers, the whirlpool towers, the streams
         self.mark_phase(Phase::Producers, start);
         let start = Instant::now();
         self.step_death_resolution(); // world-inflicted kills become corpses/events
@@ -4809,6 +4811,12 @@ impl World {
     #[inline]
     pub fn executor(&self) -> crate::sim::ParallelExecutor<'_> {
         crate::sim::ParallelExecutor::new(self.sensing_pool.as_ref())
+    }
+
+    /// The size from which the scans over a store (the pellets' columns, the decay, the zones' recount) go to the pool in this tick ([`crate::sim::ParallelGates::scans`]).
+    #[inline]
+    pub(crate) fn scan_gate(&self) -> usize {
+        self.active_gates.scans
     }
 
     /// Advances `ticks` ticks.
@@ -6055,6 +6063,13 @@ impl World {
     /// the pellets that no mouth holds; the eggs) in the direction from its start to its finish; the physics step then moves them. It draws nothing from the world's
     /// random numbers, so a world without a stream is untouched.
     pub fn step_streams(&mut self, dt: f32) {
+        self.step_fields(dt, crate::fields::Covered::STREAMS);
+    }
+
+    /// The step as it was before `fields.rs` did it in one pass over the world: one walk over every bibite, pellet and egg per stream. Kept for the tests, which check that
+    /// the new one leaves every bit as this leaves it.
+    #[cfg(test)]
+    fn reference_step_streams(&mut self, dt: f32) {
         if !self.improved.is_on(crate::improved::Feature::Streams) || !self.streams.iter().any(crate::stream::Stream::is_active) {
             return;
         }
@@ -6126,6 +6141,12 @@ impl World {
     /// it acts on that is inside its range (the bibites, the dead ones too; the pellets that no mouth holds; the eggs); the physics step then moves them. It draws
     /// nothing from the world's random numbers, so a world without a tower is untouched.
     pub fn step_force_towers(&mut self, dt: f32) {
+        self.step_fields(dt, crate::fields::Covered::FORCES);
+    }
+
+    /// The step as it was before `fields.rs` (see [`Self::reference_step_streams`]).
+    #[cfg(test)]
+    fn reference_step_force_towers(&mut self, dt: f32) {
         use crate::tools::Tool;
         if !self.improved.is_on(crate::improved::Feature::ForceTower) || !self.tools.tools().iter().any(|tool| matches!(tool, Tool::Force(_))) {
             return;
@@ -6149,6 +6170,7 @@ impl World {
     /// `kick(its position, its velocity)` (a zero or a value that is not a number leaves it alone) and says how many it moved. The bibites are the dead ones too; the pellets are
     /// the ones no mouth holds (a pellet that is pushed wakes up); the eggs. It walks the stores themselves, not the spatial hash (whose query is capped at 128 hits),
     /// and draws nothing from the world's random numbers. What the force towers and the whirlpool towers share.
+    #[cfg(test)]
     fn kick_bodies(&mut self, centre: Vec2, range: f32, (bibites, pellets, eggs): (bool, bool, bool), kick: impl Fn(Vec2, Vec2) -> Vec2) -> u32 {
         let reach_sq = range * range;
         let near = |at: Vec2| (centre - at).length_sq() < reach_sq;
@@ -6221,6 +6243,12 @@ impl World {
     /// acts on that is inside its range, along the circle round the tower; the physics step then moves them. It draws nothing from the world's random numbers, so a world
     /// without a whirlpool is untouched.
     pub fn step_whirlpools(&mut self, dt: f32) {
+        self.step_fields(dt, crate::fields::Covered::WHIRLS);
+    }
+
+    /// The step as it was before `fields.rs` (see [`Self::reference_step_streams`]).
+    #[cfg(test)]
+    fn reference_step_whirlpools(&mut self, dt: f32) {
         use crate::tools::Tool;
         if !self.improved.is_on(crate::improved::Feature::Whirlpool) || !self.tools.tools().iter().any(|tool| matches!(tool, Tool::Whirl(_))) {
             return;
@@ -11196,6 +11224,238 @@ mod tests {
         let world = world_with_streams(true, vec![east_stream(100.0)]);
         let contents = world.to_contents();
         assert!(contents.rad_towers.is_empty() && contents.phero_towers.is_empty() && contents.color_killers.is_empty());
+    }
+
+    /// A deterministic scatter of numbers for the layouts of the field tests.
+    struct Scatter(u64);
+
+    impl Scatter {
+        fn next(&mut self) -> f32 {
+            self.0 = self.0.wrapping_mul(6_364_136_223_846_793_005).wrapping_add(1_442_695_040_888_963_407);
+            ((self.0 >> 40) as f32) / ((1_u64 << 24) as f32)
+        }
+
+        fn between(&mut self, low: f32, high: f32) -> f32 {
+            low + (high - low) * self.next()
+        }
+
+        fn point(&mut self, half: f32) -> Vec2 {
+            Vec2::new(self.between(-half, half), self.between(-half, half))
+        }
+    }
+
+    /// A world with `bibites` bibites (a seventh of them dead), `pellets` pellets (some in a mouth, some moving, ten on the edges of the range of a tower at the origin),
+    /// `eggs` eggs, and `forces`, `whirls` and `streams` fields laid out from `seed`: the same call makes the same world. The switches are off (a test turns them on).
+    fn field_test_world(seed: u64, (bibites, pellets, eggs): (usize, usize, usize), (forces, whirls, streams): (usize, usize, usize)) -> World {
+        use crate::force_tower::{ForceFalloff, ForceTower};
+        use crate::stream::Stream;
+        use crate::whirlpool::{Spin, WhirlpoolTower};
+        let mut rng = Scatter(0xF1E1D ^ seed.wrapping_mul(0x9E37_79B9));
+        let mut world = World::new(default_settings(), ScenarioData::default(), 1000 + seed).expect("world");
+        for _ in 0..pellets {
+            let pos = rng.point(1200.0);
+            let held = rng.next() < 0.05;
+            let energy = rng.between(20.0, 900.0);
+            let id = rest_pellet(&mut world, pos, energy, held);
+            if rng.next() < 0.4 {
+                let push = rng.point(30.0);
+                world.pellets.set_velocity(id, push);
+            }
+        }
+        // Some slots freed and filled again: the dense order of the pellets is then not the order of their slots (the order the fields mark them in follows the dense order).
+        let first: Vec<PelletId> = world.pellets.ids().collect();
+        for id in first.iter().step_by(6) {
+            world.despawn_pellet(*id);
+        }
+        for _ in 0..pellets / 6 {
+            let pos = rng.point(1200.0);
+            let _ = rest_pellet(&mut world, pos, 150.0, false);
+        }
+        // On the edges of a range of 100 round the origin (and a stream's box): in or out by the last bit.
+        for (x, y) in [(100.0, 0.0), (-100.0, 0.0), (0.0, 100.0), (0.0, -100.0), (60.0, 80.0), (99.99, 0.0), (100.01, 0.0), (-200.0, 0.0), (200.0, 0.0), (0.0, 0.0)] {
+            let _ = rest_pellet(&mut world, Vec2::new(x, y), 200.0, false);
+        }
+        for _ in 0..bibites {
+            let at = rng.point(1200.0);
+            let id = spawn_test_bibite(&mut world, at);
+            let push = rng.point(20.0);
+            if let Some(record) = world.bibites.get_mut(id) {
+                record.vel = push;
+            }
+        }
+        let dead: Vec<BibiteId> = world.bibites.ids().step_by(7).collect();
+        for id in &dead {
+            world.bibites.kill(*id, DeathCause::Hazard);
+        }
+        if !dead.is_empty() {
+            world.step_death_resolution();
+        }
+        for _ in 0..eggs {
+            let at = rng.point(1200.0);
+            let _ = rest_egg(&mut world, at);
+        }
+        let place = |rng: &mut Scatter, first: bool| if first { Vec2::ZERO } else { rng.point(1200.0) };
+        for index in 0..forces {
+            let mut tower = ForceTower::new(world.tools.next_save_id(), place(&mut rng, index == 0));
+            tower.set_range(if index == 0 { 100.0 } else { rng.between(10.0, 2500.0) });
+            tower.set_strength(rng.between(-500.0, 500.0));
+            tower.falloff = if rng.next() < 0.5 { ForceFalloff::Constant } else { ForceFalloff::Fading };
+            (tower.bibites, tower.pellets, tower.eggs) = (rng.next() < 0.8, rng.next() < 0.8, rng.next() < 0.8);
+            let _ = world.tools.add_force_tower(tower);
+        }
+        for index in 0..whirls {
+            let mut tower = WhirlpoolTower::new(world.tools.next_save_id(), place(&mut rng, index == 0));
+            tower.set_range(if index == 0 { 100.0 } else { rng.between(10.0, 2500.0) });
+            tower.set_speed(rng.between(0.0, 500.0));
+            tower.spin = if rng.next() < 0.5 { Spin::Clockwise } else { Spin::Counterclockwise };
+            tower.falloff = if rng.next() < 0.5 { ForceFalloff::Constant } else { ForceFalloff::Fading };
+            (tower.bibites, tower.pellets, tower.eggs) = (rng.next() < 0.8, rng.next() < 0.8, rng.next() < 0.8);
+            let _ = world.tools.add_whirlpool(tower);
+        }
+        for index in 0..streams {
+            let start = if index == 0 { Vec2::new(-200.0, 0.0) } else { rng.point(1200.0) };
+            // The first runs along x through the origin (its box has edges at -200 and 200); one in nine has no direction.
+            let end = if index == 0 { Vec2::new(200.0, 0.0) } else if index % 9 == 8 { start } else { start + rng.point(900.0) };
+            let mut stream = Stream::new(start, end);
+            stream.set_width(if index == 0 { 100.0 } else { rng.between(10.0, 3000.0) });
+            stream.set_strength(rng.between(0.0, 500.0));
+            world.streams.push(stream);
+        }
+        world
+    }
+
+    /// Everything the field steps can change, as bits, for comparing two worlds.
+    fn assert_field_state_equal(a: &World, b: &World, what: &str) {
+        use crate::tools::Tool;
+        let bits = |v: Vec2| (v.x.to_bits(), v.y.to_bits());
+        let pellets = |w: &World| {
+            w.pellets
+                .ids()
+                .filter_map(|id| w.pellets.pose(id))
+                .map(|pose| (bits(pose.pos), bits(pose.velocity), pose.rotation.to_bits(), pose.angular_velocity.to_bits()))
+                .collect::<Vec<_>>()
+        };
+        assert_eq!(pellets(a), pellets(b), "{what}: the pellets");
+        assert_eq!(a.pellets.phys_dirty_slots(), b.pellets.phys_dirty_slots(), "{what}: the order the pellets were marked for the physics step in");
+        let bibites = |w: &World| w.bibites.iter().map(|(id, record)| (id, bits(record.pos), bits(record.vel), record.rot.to_bits())).collect::<Vec<_>>();
+        assert_eq!(bibites(a), bibites(b), "{what}: the bibites");
+        let eggs = |w: &World| w.eggs.ids().filter_map(|id| w.eggs.get(id).map(|egg| (id, bits(egg.pos), bits(egg.vel)))).collect::<Vec<_>>();
+        assert_eq!(eggs(a), eggs(b), "{what}: the eggs");
+        let counts = |w: &World| {
+            w.tools
+                .tools()
+                .iter()
+                .filter_map(|tool| match tool {
+                    Tool::Force(tower) => Some(tower.affected),
+                    Tool::Whirl(tower) => Some(tower.affected),
+                    _ => None,
+                })
+                .collect::<Vec<_>>()
+        };
+        assert_eq!(counts(a), counts(b), "{what}: the towers' counts of the bodies they moved");
+        assert_eq!(crate::sim::state_fingerprint(a), crate::sim::state_fingerprint(b), "{what}: the fingerprint");
+        assert_eq!(a.rng.state(), b.rng.state(), "{what}: the random numbers");
+    }
+
+    #[test]
+    fn the_fields_step_leaves_every_bit_as_the_old_steps_left_it() {
+        use crate::fields::Covered;
+        use crate::improved::{Feature, ImprovedFeatures};
+        let on = ImprovedFeatures::FAITHFUL.with(Feature::ForceTower, true).with(Feature::Whirlpool, true).with(Feature::Streams, true);
+        // One field of each kind, a few, a dozen of each, forty of each (the grid has most cells then), and fields in a world with no bodies at all.
+        let cases = [
+            ((40, 300, 30), (1, 0, 0)),
+            ((40, 300, 30), (0, 1, 0)),
+            ((40, 300, 30), (0, 0, 1)),
+            ((60, 500, 40), (3, 2, 2)),
+            ((60, 500, 40), (12, 12, 12)),
+            ((30, 800, 20), (40, 40, 40)),
+            ((0, 0, 0), (2, 2, 2)),
+        ];
+        for (case, (bodies, fields)) in cases.into_iter().enumerate() {
+            let mut new = field_test_world(case as u64, bodies, fields);
+            let mut old = field_test_world(case as u64, bodies, fields);
+            assert_field_state_equal(&new, &old, &format!("case {case}: the worlds start alike"));
+            if case == 4 {
+                // The scan of the bibites on the pool.
+                new.set_threads(4);
+                new.set_parallel_gates(crate::sim::ParallelGates::EAGER);
+            }
+            for round in 0..10 {
+                // A couple of ticks with the switches off (the world moves on as it would), then the fields with the switches on: the new step on one world, the old on the other.
+                for world in [&mut new, &mut old] {
+                    world.improved = ImprovedFeatures::FAITHFUL;
+                    world.run(2);
+                    world.improved = on;
+                }
+                let dt = new.clock.dt();
+                if round % 2 == 0 {
+                    new.step_fields(dt, Covered::ALL);
+                } else {
+                    new.step_force_towers(dt);
+                    new.step_whirlpools(dt);
+                    new.step_streams(dt);
+                }
+                old.reference_step_force_towers(dt);
+                old.reference_step_whirlpools(dt);
+                old.reference_step_streams(dt);
+                assert_field_state_equal(&new, &old, &format!("case {case}, round {round}"));
+            }
+        }
+    }
+
+    #[test]
+    fn a_tick_with_fields_gives_the_same_bits_on_one_thread_and_on_the_pool() {
+        use crate::improved::{Feature, ImprovedFeatures};
+        // Whole ticks (the physics step wakes and moves the pellets the fields pushed): the same world on one thread and on the pool with every stage eager gives the same bits.
+        let on = ImprovedFeatures::FAITHFUL.with(Feature::ForceTower, true).with(Feature::Whirlpool, true).with(Feature::Streams, true);
+        let mut serial = field_test_world(21, (50, 400, 30), (6, 6, 6));
+        let mut pooled = field_test_world(21, (50, 400, 30), (6, 6, 6));
+        serial.improved = on;
+        pooled.improved = on;
+        pooled.set_threads(4);
+        pooled.set_parallel_gates(crate::sim::ParallelGates::EAGER);
+        serial.run(40);
+        pooled.run(40);
+        assert_field_state_equal(&serial, &pooled, "forty ticks, serial against pooled");
+    }
+
+    #[test]
+    fn a_field_that_cannot_act_leaves_the_world_and_the_towers_counts_as_the_old_steps_did() {
+        use crate::fields::Covered;
+        use crate::improved::{Feature, ImprovedFeatures};
+        // Switches: only the force towers are on, so the whirlpools and the streams must not act and their counts stay as they were; a tower that is switched off (strength 0)
+        // says 0 where it said something before.
+        let only_forces = ImprovedFeatures::FAITHFUL.with(Feature::ForceTower, true);
+        let mut new = field_test_world(5, (20, 100, 10), (3, 3, 3));
+        let mut old = field_test_world(5, (20, 100, 10), (3, 3, 3));
+        for world in [&mut new, &mut old] {
+            world.improved = only_forces;
+            for tool in world.tools.tools_mut() {
+                if let crate::tools::Tool::Force(tower) = tool {
+                    tower.affected = 77;
+                }
+                if let crate::tools::Tool::Whirl(tower) = tool {
+                    tower.affected = 55;
+                }
+            }
+        }
+        let dt = new.clock.dt();
+        new.step_fields(dt, Covered::ALL);
+        old.reference_step_force_towers(dt);
+        old.reference_step_whirlpools(dt);
+        old.reference_step_streams(dt);
+        assert_field_state_equal(&new, &old, "only the force towers on");
+        // A tower with nothing to do says 0.
+        if let Some(crate::tools::Tool::Force(tower)) = new.tools.tools_mut().iter_mut().find(|tool| matches!(tool, crate::tools::Tool::Force(_))) {
+            tower.set_strength(0.0);
+        }
+        if let Some(crate::tools::Tool::Force(tower)) = old.tools.tools_mut().iter_mut().find(|tool| matches!(tool, crate::tools::Tool::Force(_))) {
+            tower.set_strength(0.0);
+        }
+        new.step_fields(dt, Covered::ALL);
+        old.reference_step_force_towers(dt);
+        assert_field_state_equal(&new, &old, "a tower of strength 0");
     }
 
     #[test]

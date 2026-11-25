@@ -230,6 +230,7 @@ pub fn stomach_info_of(record: &bibites_core::body::BibiteRecord) -> StomachInfo
                 efficiency: content.last_conversion_efficiency,
             })
             .collect(),
+        dead: record.body.dead,
     }
 }
 
@@ -396,6 +397,8 @@ pub struct StomachInfo {
     pub portion: f32,
     /// The contents.
     pub items: Vec<StomachItem>,
+    /// `body.dead`: `AnimateStomach` returns before the pellets digest, and a dead bibite swallows and vomits nothing, so the picture keeps what it holds.
+    pub dead: bool,
 }
 
 impl StomachInfo {
@@ -983,6 +986,7 @@ mod tests {
                 digestion_rate: 1.0,
                 efficiency: 0.4,
             }],
+            dead: false,
         };
         let pellets = pellets(&info, &shape, 7);
         assert!(pellets.len() >= 10, "{}", pellets.len());

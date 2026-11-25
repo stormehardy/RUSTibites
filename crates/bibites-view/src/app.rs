@@ -12396,6 +12396,21 @@ mod sprite_renderer_tests {
     }
 
     #[test]
+    fn the_stomach_picture_is_told_when_the_selected_bibite_is_dead() {
+        // `AnimateStomach` returns when `body.dead`: the picture needs to know, because a dead stomach keeps its last `digestionRate`.
+        let mut app = App::new(synthetic(66, 6), Vec2::new(1920.0, 1080.0), None);
+        assert!(app.select_first());
+        let id = app.selected.expect("selected");
+        let record = app.world.bibites.get_mut(id).expect("the bibite");
+        record.body.dead = false;
+        assert!(!crate::internals::stomach_info_of(record).dead);
+        record.body.dead = true;
+        assert!(crate::internals::stomach_info_of(record).dead);
+        let panel = crate::app::SelectionPanel::collect(&app.world, id).expect("the selection panel");
+        assert!(panel.dead && panel.stomach_info.as_ref().is_some_and(|info| info.dead));
+    }
+
+    #[test]
     fn the_organ_pop_ups_read_the_bibite_the_way_the_panel_does() {
         let mut app = App::new(synthetic(66, 6), Vec2::new(1920.0, 1080.0), None);
         assert!(app.select_first());

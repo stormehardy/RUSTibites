@@ -1931,6 +1931,67 @@ impl PelletStore {
         &self.dense
     }
 
+    /// RUSTibites Improved (the fields, `fields.rs`): appends to `out`, in dense order, `(slot, position)` of every live pellet that no mouth holds and whose position `keep`
+    /// accepts. It walks the position column slot by slot, the columns one after the other and not through the dense list (a cache miss a pellet when the store is big), a
+    /// stretch of slots to a worker when there is a pool and the store has at least `from` of them, and then puts the few it found in dense order (the order the old steps
+    /// walked the pellets in, which decides the order they are marked for the physics step in).
+    pub(crate) fn free_where_into(&self, executor: crate::sim::ParallelExecutor<'_>, from: usize, out: &mut Vec<(u32, Vec2)>, keep: impl Fn(Vec2) -> bool + Sync) {
+        use rayon::prelude::*;
+        let start = out.len();
+        let slots = self.pos.len();
+        let (alive, held) = (&self.alive, &self.held);
+        let scan = |first: usize, positions: &[Vec2], found: &mut Vec<(u32, Vec2)>| {
+            for (offset, &pos) in positions.iter().enumerate() {
+                if keep(pos) {
+                    let slot = first + offset;
+                    if alive.get(slot) && !held.get(slot) {
+                        found.push((slot as u32, pos));
+                    }
+                }
+            }
+        };
+        let workers = crate::sim::ParallelGates::workers_for(slots, from, executor.threads());
+        if workers > 1 {
+            let chunk = crate::sim::ParallelGates::chunk_len(slots, from, workers, 4);
+            let parts: Vec<Vec<(u32, Vec2)>> = self
+                .pos
+                .par_chunks(chunk)
+                .enumerate()
+                .map(|(index, positions)| {
+                    let mut part = Vec::new();
+                    scan(index * chunk, positions, &mut part);
+                    part
+                })
+                .collect();
+            for part in parts {
+                out.extend(part);
+            }
+        } else {
+            scan(0, &self.pos, out);
+        }
+        let dense_pos = &self.dense_pos;
+        out[start..].sort_unstable_by_key(|(slot, _)| dense_pos[*slot as usize]);
+    }
+
+    /// The velocity of the live pellet in `slot` (what [`Self::velocity`] gives for its id).
+    #[inline]
+    pub(crate) fn velocity_of_slot(&self, slot: u32) -> Vec2 {
+        self.velocity[slot as usize]
+    }
+
+    /// Adds to the velocity of the live pellet in `slot`: [`Self::add_velocity`] for a slot that is known to be live (it wakes the pellet in the same way).
+    #[inline]
+    pub(crate) fn add_velocity_to_slot(&mut self, slot: u32, delta: Vec2) {
+        self.velocity[slot as usize] += delta;
+        self.mark_phys_dirty(slot as usize);
+    }
+
+    /// The slots written since the physics step last took them, in the order they were written (for the tests that compare two ways of writing).
+    #[cfg(test)]
+    pub(crate) fn phys_dirty_slots(&self) -> Vec<u32> {
+        self.phys_dirty.clone()
+    }
+
     /// The id of the live pellet in `slot`.
     pub(crate) fn live_id(&self, slot: usize) -> Option<PelletId> {
         self.alive.get(slot).then(|| self.id_at_slot(slot))

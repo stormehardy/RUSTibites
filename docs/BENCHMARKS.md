@@ -1708,3 +1708,46 @@ second is 3,000 ticks) needs 50 ticks a frame in a world whose ticks cost 10 mic
 What is left in a tick of those worlds is the bibites' own work (sensing, bodies) and the zones, 5 - 15 microseconds each; the bibite-heavy worlds (Big Pellet, Butterfly) are limited by the bibites, not the
 pellets. Traps met: a survey over a folder of scenarios must run each scenario for thousands of ticks (the first 600 show the pellets' settling, not the steady state); the state fingerprint does not see pellet
 rotation or velocity (compare saved worlds); `Start-Process -File` takes an array parameter as one comma-joined string.
+
+## Streams, force towers and whirlpool towers (2026-11-25, Improved)
+
+The request: "optimize streams, force towers and whirlpool towers in Improved". Measured first with `crates/bibites-cli/examples/field_probe.rs` (a synthetic world or a scenario, S streams, F force towers and W whirlpool
+towers laid over it from a seed, a stretch of ticks timed without and then with them, each of the three steps timed on its own, and a hash of every pellet, bibite and egg: position, velocity, rotation, so that two builds
+can be compared bit for bit). Each tower and each stream walked EVERY bibite, pellet and egg of the world once a tick, looking each one up by its id (a view of a pellet, a 2 KB record for a bibite), so the cost was
+fields x bodies whatever the fields reached. In Big Pellet (55,294 pellets, all of them asleep: 0.011 ms a tick without fields) twelve fields cost 4.7 ms a tick and thirty 12.7 ms, nine tenths of it in the three steps; in a
+world of 20,000 bibites thirty fields added 4 - 6 ms to a 25 ms tick.
+
+**What changed** (`crates/bibites-core/src/fields.rs`, `World::step_fields`; the results are the same bit for bit):
+1. **One pass for all three kinds.** A body gets the push of every field that reaches it one after the other, in the order the old steps took them (the force towers in tool order, the whirlpool towers, the streams), each worked out
+   from the velocity the body has by then (a whirlpool's hold reads it), and the pellets are marked for the physics step in the order the old steps marked them (that order decides the order of the bodies of the step).
+2. **A grid over the fields' boxes** (cells as small as a budget of 20,000 cell places for all fields together allows, a bitmap of the cells that have a field in front of it) tells, for the cell a body is in, which fields can reach it,
+   in order. The field's own test (the old one, to the last bit: a circle `length_sq < range^2`, a stream's box) still says whether it does. The first version of the grid, with cells a sixth to a twelfth of the world wide, made nearly every pellet a candidate
+   (thirty fields: 1.6 ms a tick against 1.25 ms now): the cells follow the size of the fields.
+3. **The pellets' position column is walked slot by slot** (sequential memory, on the pool from `scans x 8` slots) instead of through the dense list, and the few hits are put back in dense order.
+4. **A push of a bibite's velocity does not clear its physics cache** (`BibiteStore::push_velocity`; `get_mut` clears it, so each pushed bibite had its rigid body recomputed by the body build every tick). The cache holds mass,
+   inertia, damping and geometry, none of which depends on the velocity, and the build reads the velocity from the record; the test builds assert that a stamped cache equals the recomputed one.
+5. **A stream's direction, length and push are worked out once a tick** (`Stream::prepare`), not once a body.
+
+**Results** (perf profile, the probe of the old and the new build run alternately, best of two, the player at the machine; the hash of the state is equal in every row):
+
+| World | Tick before | Tick after |
+|---|---|---|
+| Big Pellet, 3 fields (1 + 1 + 1), 1 thread | 1.12 - 1.17 ms | 0.67 - 0.73 ms |
+| Big Pellet, 12 fields (4 + 4 + 4), 1 thread | 4.65 - 4.97 ms | 0.86 - 0.93 ms |
+| Big Pellet, 30 fields (10 + 10 + 10), 1 thread | 12.6 - 12.9 ms | 1.25 ms |
+| Big Pellet, 30 fields, 6 threads | 12.8 - 14.0 ms | 1.3 - 1.5 ms |
+| 20,000 synthetic bibites, 30 fields, 1 thread (a tick without fields: 22 - 25 ms) | + 5.6 / + 5.9 ms | + 2.5 / + 3.0 ms |
+| 20,000 synthetic bibites, 30 fields, 6 threads (a tick without fields: 8.1 - 8.7 ms) | + 4.5 ms | + 0.7 / + 1.0 ms |
+| 5,000 synthetic bibites, 12 fields, 1 thread (a tick without fields: 5 - 5.8 ms) | + 0.45 / + 0.61 ms | + 0.37 / + 0.55 ms |
+
+(The two probes are two binaries, so a tick without fields differs by a few percent between them: the bibite rows are compared by what the fields add.) A step on its own, in Big Pellet with thirty fields: the force towers 3.7 ms
+to 0.57 ms, the whirlpool towers 3.7 to 0.57, the streams 4.3 to 0.69 (6 threads: 0.15, 0.15, 0.29); in the 20,000-bibite world with 6 threads 1.0 / 1.0 / 1.7 ms to 0.25 / 0.24 / 0.27. What is left in Big Pellet is the physics step
+of the pellets the fields woke (about a microsecond each, the same work as before) and one look at each of the 55,000 pellets (about 4 ns); in a bibite world it is one cache line of each 2 KB record.
+
+**Exactness.** The old steps are kept in the tests (`World::reference_step_*`, `kick_bodies`) as the reference. `the_fields_step_leaves_every_bit_as_the_old_steps_left_it` builds the same random world twice (bibites, a seventh of
+them dead, pellets some of them held and some moving with their slots freed and refilled so that the dense order is not the slot order, eggs, ten pellets exactly on the edges of a range and of a band, fields of every kind from one
+to forty of each, some with a switch off) and checks pellets (with the order they are marked in), bibites, eggs, the towers' counts of bodies moved, the fingerprint and the random numbers after each of ten rounds, once with the scan
+of the bibites on the pool; `a_tick_with_fields_gives_the_same_bits_on_one_thread_and_on_the_pool`, `a_prepared_stream_kicks_exactly_as_the_stream_does` and the grid tests (every field that contains a point is listed for it, in
+order) complete it. The whole core suite passes (810 tests, the pinned runs among them) and the probe's hash of the state after the run is equal for the old and the new build in nine scenarios of the owner's folder at two seeds,
+in Big Pellet at 1 and 6 threads and in the synthetic worlds. Nine mutants of the new code (the edge of a circle, the order of the fields, the sort of the hits, held pellets, eggs, the count of bodies moved, the end of a band, the
+last column of a field, a whirlpool without the velocity) are all caught.

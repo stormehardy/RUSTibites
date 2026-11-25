@@ -242,7 +242,8 @@ the tower to open its panel:
   pulled pellets costs more than a heap at rest); with no tower there is no cost.
 * Not done: another shape of falloff (inverse square), forces on pheromone spots (they are not bodies), a tower that moves, towers acting on each other.
 * The code: `crates/bibites-core/src/force_tower.rs` (the tower, its falloff and kick), its `Tool::Force` variant in `tools.rs`, `World::step_force_towers` (after the pellet
-  producers and the vents, before the bodies move), checkpoint tag 5, `tower_panel.rs` (the panel), `improved_toolbar.rs` (the placer button), `app/force_tower_actions.rs`
+  producers and the vents, before the bodies move; since 2026-11-25 the tick steps the force towers, the whirlpool towers and the streams in one pass, `fields.rs`, and this
+  is that pass for the force towers alone), checkpoint tag 5, `tower_panel.rs` (the panel), `improved_toolbar.rs` (the placer button), `app/force_tower_actions.rs`
   (the files), `improved_settings.rs` (the Towers page), `render.rs` (the tower and its range drawn).
 
 ### Whirlpool tower
@@ -273,10 +274,12 @@ tower to open its panel:
   to make room for the fifth switch.
 * Not in a save: the towers are kept in `whirlpool_towers/<save name>.json` of the state folder the way the other towers are (their settings, position and the zone by its name; not
   what they are doing now).
-* Costs: each tower visits every body of the kinds it acts on once a tick and moves those inside its range (a pellet that is turned no longer sleeps); with no tower there is no cost.
-  The force towers share the loop that does this (`World::kick_bodies`); they behave as they did.
+* Costs: the towers and the streams are stepped together, in one pass over the world (`fields.rs`, 2026-11-25): a grid over the fields' boxes tells, for each body, the few
+  fields that can reach it, so a tick costs one look at each body plus the work for the bodies a field reaches (a pellet that is turned no longer sleeps), not a walk over the
+  whole world for each field. With no field there is no cost. The results are, bit for bit, those of the separate steps they replace (`docs/BENCHMARKS.md`, "Streams, force towers
+  and whirlpool towers": twelve fields over the 55,000 pellets of Big Pellet went from 4.7 to 0.9 ms a tick, thirty from 12.7 to 1.3).
 * Drawn as the tower's base disc with a teal ring and two arrowheads on it that point the way it turns.
-* The code: `bibites-core/src/whirlpool.rs` (the tower, the push and the hold), `world.rs` (`step_whirlpools`, `kick_bodies`), `tower_panel.rs` (`Kind::Whirl`), `app/whirlpool_actions.rs`,
+* The code: `bibites-core/src/whirlpool.rs` (the tower, the push and the hold), `world.rs` (`step_whirlpools`), `fields.rs` (the pass all fields share; `kick_bodies` stays in the tests as the old reference), `tower_panel.rs` (`Kind::Whirl`), `app/whirlpool_actions.rs`,
   `improved_toolbar.rs` (the button), `render.rs` (the tower and its range). For pictures: `--whirlpool X,Y[,SPEED[,RANGE]][,clockwise|counterclockwise|cw|ccw][,constant|fading][,bibites|pellets|eggs ...]`.
 * Not done: a pull or a push added to the turn (a force tower on the same spot does it), a whirlpool that moves, one that spirals in or out by itself, a speed that changes with time.
 
@@ -306,7 +309,7 @@ border (and a small arrowhead at the finish, so the way it runs can be seen).
 * Not in a save: the streams are kept in `streams/<save name>.json` of the state folder (the way the towers and the zone colours are), written when the world is saved and
   beside each autosave, read when a save is loaded. The title menu's scenario editor has no Streams section (a scenario is a game file).
 * They are drawn with the zones: the View panel's zones switch hides them too.
-* The code: `bibites-core/src/stream.rs` (the band, the push), `world.rs` (`step_streams`), `dyn_panel/stream_cards_ui.rs` (the cards), `app/stream_actions.rs` (adding,
+* The code: `bibites-core/src/stream.rs` (the band, the push), `world.rs` (`step_streams`), `fields.rs` (the pass all fields share), `dyn_panel/stream_cards_ui.rs` (the cards), `app/stream_actions.rs` (adding,
   editing, deleting, keeping), `zone_editor.rs` (the sliders' ranges), `render.rs` (`Primitive::Quad`, `push_streams`). For pictures: `--stream X1,Y1,X2,Y2[,WIDTH[,STRENGTH]]`
   (repeatable; the cards open) with `--dyn-tab 1`.
 * Not done: a curved stream, a strength that fades along the band or across it, dragging the two ends in the world with the mouse, streams in the scenario editor.

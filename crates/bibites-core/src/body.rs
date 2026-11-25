@@ -2979,6 +2979,30 @@ impl BibiteStore {
         Some(record)
     }
 
+    /// The velocity of the live bibite `id`.
+    #[inline]
+    pub(crate) fn velocity_of(&self, id: BibiteId) -> Option<Vec2> {
+        self.get(id).map(|record| record.vel)
+    }
+
+    /// RUSTibites Improved (the fields, `fields.rs`): adds `delta` to the velocity of the live bibite `id`, unless that velocity is not a number; says whether it did. Unlike
+    /// [`Self::get_mut`] it leaves the record's physics cache (mass, inertia, damping, geometry: none of them depends on the velocity, and the physics step reads the
+    /// velocity from the record itself) and its summary (dead, ready, radioactive, species, pheromone sensing: no velocity in it either) as they are, which saves
+    /// the body build the recomputation of the rigid body of every bibite that was pushed; the tests assert that a stamped cache equals the recomputed one.
+    pub(crate) fn push_velocity(&mut self, id: BibiteId, delta: Vec2) -> bool {
+        let Some(slot) = self.slot_of(id) else {
+            return false;
+        };
+        let Some(record) = self.records[slot].as_mut() else {
+            return false;
+        };
+        if !record.vel.is_finite() {
+            return false;
+        }
+        record.vel += delta;
+        true
+    }
+
     /// Dense iteration over live ids.
     pub fn ids(&self) -> impl Iterator<Item = BibiteId> + '_ {
         self.dense

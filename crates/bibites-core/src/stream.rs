@@ -127,6 +127,44 @@ impl Stream {
     pub fn is_active(&self) -> bool {
         self.strength > 0.0 && self.direction().is_some()
     }
+
+    /// The stream with what the test of a body needs worked out once for the tick of `dt` seconds (the direction, the length, the push), for a pass that asks it of
+    /// many bodies; `None` when the stream pushes nothing in that tick ([`Stream::kick`] is zero everywhere then).
+    #[must_use]
+    pub fn prepare(&self, dt: f32) -> Option<StreamKick> {
+        if !(dt > 0.0 && dt.is_finite() && self.strength > 0.0) {
+            return None;
+        }
+        let direction = self.direction()?;
+        Some(StreamKick { start: self.start, direction, length: self.length(), half_width: self.width * 0.5, push: direction * (self.strength * dt) })
+    }
+}
+
+/// A stream prepared for one tick (see [`Stream::prepare`]): [`StreamKick::kick`] gives exactly, bit for bit, what [`Stream::kick`] gives for that tick, without working out
+/// the direction and the length again for every body.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct StreamKick {
+    start: Vec2,
+    direction: Vec2,
+    length: f32,
+    half_width: f32,
+    push: Vec2,
+}
+
+impl StreamKick {
+    /// The change of velocity a body at `at` gets: the push when it is in the band, nothing otherwise.
+    #[inline]
+    #[must_use]
+    pub fn kick(&self, at: Vec2) -> Vec2 {
+        let from_start = at - self.start;
+        let along = from_start.dot(self.direction);
+        let across = self.direction.cross(from_start);
+        if along.is_finite() && across.is_finite() && along >= 0.0 && along <= self.length && across.abs() <= self.half_width {
+            self.push
+        } else {
+            Vec2::ZERO
+        }
+    }
 }
 
 #[cfg(test)]
@@ -136,6 +174,47 @@ mod tests {
     fn stream() -> Stream {
         // From (-100, 50) to (300, 50): 400 long, 100 wide, strength 100.
         Stream::new(Vec2::new(-100.0, 50.0), Vec2::new(300.0, 50.0))
+    }
+
+    #[test]
+    fn a_prepared_stream_kicks_exactly_as_the_stream_does() {
+        // Slanted, long, short, wide, narrow, weak, strong, one without a direction: over a grid of points that crosses every edge of every band, and for the steps that count.
+        let streams = [
+            stream(),
+            Stream::new(Vec2::new(-300.0, -120.0), Vec2::new(410.0, 333.0)),
+            Stream::new(Vec2::new(5.0, 5.0), Vec2::new(6.0, 5.5)),
+            Stream::new(Vec2::new(1000.0, -2000.0), Vec2::new(-999.0, 2001.0)),
+            Stream::new(Vec2::new(0.0, 0.0), Vec2::new(0.0, 0.0)),
+        ];
+        for (index, mut stream) in streams.into_iter().enumerate() {
+            stream.set_width([100.0, 10.0, 3000.0, 777.7, 50.0][index]);
+            stream.set_strength([100.0, 3.3, 500.0, 0.0, 250.0][index]);
+            // The edges of the band: its start and finish, its corners and the middle of its sides, where a `<=` against a `<` would show.
+            let mut edge_points = vec![stream.start, stream.end];
+            if let Some(corners) = stream.corners() {
+                edge_points.extend(corners);
+                edge_points.extend((0..4).map(|i| (corners[i] + corners[(i + 1) % 4]) * 0.5));
+            }
+            for dt in [0.025_f32, 1.0 / 30.0, 0.0, -1.0, f32::NAN, f32::INFINITY] {
+                let prepared = stream.prepare(dt);
+                for at in &edge_points {
+                    let (expected, got) = (stream.kick(*at, dt), prepared.map_or(Vec2::ZERO, |kick| kick.kick(*at)));
+                    assert_eq!((expected.x.to_bits(), expected.y.to_bits()), (got.x.to_bits(), got.y.to_bits()), "stream {index}, dt {dt}, at the edge point {at:?}");
+                }
+                for ix in -60..=60 {
+                    for iy in -60..=60 {
+                        let at = Vec2::new(ix as f32 * 41.3 + 0.17, iy as f32 * 39.9 - 0.31);
+                        let expected = stream.kick(at, dt);
+                        let got = prepared.map_or(Vec2::ZERO, |kick| kick.kick(at));
+                        assert_eq!((expected.x.to_bits(), expected.y.to_bits()), (got.x.to_bits(), got.y.to_bits()), "stream {index}, dt {dt}, at {at:?}");
+                    }
+                }
+            }
+        }
+        // A point that is not a number is in no band, prepared or not.
+        let prepared = stream().prepare(0.025).expect("it pushes");
+        assert_eq!(prepared.kick(Vec2::new(f32::NAN, 0.0)), Vec2::ZERO);
+        assert_eq!(stream().kick(Vec2::new(f32::NAN, 0.0), 0.025), Vec2::ZERO);
     }
 
     #[test]

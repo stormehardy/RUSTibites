@@ -79,6 +79,8 @@ pub mod species_log;
 /// RUSTibites Improved: the player's own words for naming species.
 pub mod species_names;
 pub mod stream;
+/// RUSTibites Improved: the streams, the force towers and the whirlpool towers stepped together in one pass over the world.
+mod fields;
 /// The framing of a save's `data.bin` (the species block). Owner: brain-dev.
 pub mod data_bin;
 
