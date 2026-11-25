@@ -816,6 +816,40 @@ mod tests {
         let _ = std::fs::remove_dir_all(dir);
     }
 
+    /// An animator made in the editor travels with the scenario: Start (and Save) write the draft as a bundle, and the world that is made from that
+    /// bundle holds the animator with its settings, as the scenario editor's list shows it.
+    #[test]
+    fn an_animator_made_in_the_editor_goes_into_the_scenario_that_starts() {
+        use crate::ui::{ControlCommand, DropdownTarget};
+        let dir = std::env::temp_dir().join(format!("rustibites-anim-start-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&dir);
+        std::fs::create_dir_all(&dir).expect("temp dir");
+        let Some((mut menu, _)) = editor_menu(&dir) else {
+            return;
+        };
+        assert!(menu.editor_action(UiAction::DynTab(crate::scenario_editor::TAB_ANIMS)));
+        // The `+`, a Sine preset, OK, then a setting for the animator to take over.
+        assert!(menu.editor_action(UiAction::Invoke(ControlCommand::OpenAnimatorCreator)));
+        menu.editor_creator_preset_for_capture(1);
+        assert!(menu.editor_action(UiAction::Invoke(ControlCommand::SubmitAnimatorCreator)));
+        assert!(menu.editor.as_deref_mut().unwrap().animator_pick(DropdownTarget::AnimatorBase(0), 1));
+        let drafted = menu.editor().unwrap().changers().to_vec();
+        assert_eq!(drafted.len(), 1);
+        assert_eq!(drafted[0].settings_bases.len(), 1, "the animator holds a setting");
+        // The bundle Start writes, read back the way the new world reads it.
+        let path = dir.join("draft.zip");
+        write_editor_bundle(menu.editor().unwrap(), &path, Some(("Pulses", ""))).expect("the draft is written");
+        let bundle = bibites_io::load_scenario_bundle(&path).expect("the bundle reads back");
+        assert_eq!(bundle.scenario.settings_changers.len(), 1);
+        assert_eq!(bundle.scenario.settings_changers[0].name, drafted[0].name);
+        assert_eq!(bundle.scenario.settings_changers[0].settings_bases, drafted[0].settings_bases);
+        assert_eq!(bundle.scenario.settings_changers[0].points.len(), drafted[0].points.len());
+        let contents = bibites_io::world::scenario_world_contents(&bundle);
+        assert_eq!(contents.settings_changers.len(), 1, "the world is made with the animator");
+        assert_eq!(contents.settings_changers[0].settings_bases, drafted[0].settings_bases);
+        let _ = std::fs::remove_dir_all(dir);
+    }
+
     #[test]
     fn the_items_edit_their_spawn_settings_through_the_editor_actions() {
         let dir = std::env::temp_dir().join(format!("rustibites-defbib2-{}", std::process::id()));

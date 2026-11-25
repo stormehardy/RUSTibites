@@ -3670,7 +3670,7 @@ pub fn build_with_extras(
     // The animator creator (`SettingsChangerCreator`) hangs over the tab, outside the scroll view.
     if input.state.tab == 4
         && let Some(lists) = input.lists.as_ref()
-        && let Some((nodes, popup_hits, popup_tips)) = animator_cards_ui::creator_panel(lists, input.edit)
+        && let Some((nodes, popup_hits, popup_tips)) = animator_cards_ui::creator_panel(lists, input.edit, animator_cards_ui::WORLD_CREATOR)
     {
         for mut node in nodes {
             node.sibling_index = root.children.len() as i32;
@@ -3680,5 +3680,12 @@ pub fn build_with_extras(
         tips.extend(popup_tips);
     }
     Some(DynBuild { root, hits, tips })
+}
+
+/// The animator creator of the scenario editor's Animation tab (`SettingsChangerCreator`, hanging from the tab's header): its nodes, click regions
+/// and tooltips, when it is open. The editor adds them last, so that they are on top of the tab.
+#[must_use]
+pub fn editor_creator_panel(lists: &ListsInput<'_>, edit: Option<&ValueEdit>) -> Option<(Vec<Node>, Vec<DynHit>, Vec<DynTip>)> {
+    animator_cards_ui::creator_panel(lists, edit, animator_cards_ui::EDITOR_CREATOR)
 }
 

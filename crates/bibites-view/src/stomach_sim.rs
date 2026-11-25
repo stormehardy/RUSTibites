@@ -93,6 +93,12 @@ impl Sim {
 
     /// `BiologyPanel.OnMatterSwallow` / `OnMatterVomit` / `AnimateStomach`, from what the stomach holds now.
     fn reconcile(&mut self, info: &StomachInfo, dt: f32) {
+        // `AnimateStomach` returns before the pellets digest when `body.dead`, and a dead bibite raises no swallow or vomit event. Its stomach is not
+        // updated any more, so each slot's `digestionRate` stays at the last value it had: digesting from that would shrink the pellets of a stomach
+        // whose amounts do not move, and the gap would bring a new pellet in from the right every few seconds.
+        if info.dead {
+            return;
+        }
         let (cx, r, _, _) = self.shape.pixels();
         let d = 5.0 * (self.shape.w - 2.0 * self.shape.r);
         for item in &info.items {
@@ -312,6 +318,7 @@ mod tests {
             effectiveness: 1.0,
             portion: 0.2,
             items,
+            dead: false,
         }
     }
 
@@ -371,6 +378,28 @@ mod tests {
             all.iter().sum::<f32>() / all.len() as f32
         };
         assert!(mean(StomachMaterial::Plant) < mean(StomachMaterial::Meat), "plant is above the meat");
+    }
+
+    #[test]
+    fn a_dead_bibites_stomach_picture_neither_digests_nor_swallows() {
+        // A dead stomach is not updated: its amounts stay put while `digestion_rate` keeps the last value it had (0.5 here).
+        let mut stomach = info(20.0, 10.0);
+        stomach.dead = true;
+        let mut sim = Sim::new(4, &stomach, &shape());
+        let held = |sim: &Sim| sim.bodies.iter().map(|b| (b.amount, b.scale)).collect::<Vec<_>>();
+        let start = held(&sim);
+        for _ in 0..300 {
+            sim.reconcile(&stomach, 0.1);
+        }
+        assert_eq!(held(&sim), start, "the pellets keep their sizes and none comes in");
+        assert!(sim.bodies.iter().all(|b| b.vel[0] == 0.0), "nothing entered from the right");
+        // The same numbers in a living bibite do digest, and the gap brings pellets in (a living stomach would have lost the amount too).
+        stomach.dead = false;
+        for _ in 0..300 {
+            sim.reconcile(&stomach, 0.1);
+        }
+        assert_ne!(held(&sim), start, "a living stomach's picture digests");
+        assert!(sim.bodies.iter().any(|b| b.vel[0] < 0.0), "and takes in what the digestion left missing");
     }
 
     #[test]

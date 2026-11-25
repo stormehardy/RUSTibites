@@ -513,19 +513,41 @@ fn paint_point_editor(
     }
 }
 
+/// Where an animator creator hangs and what its scene objects are called. The world's settings panel and the scenario editor's Animation tab each
+/// hold a copy of the prefab under their `Animator Header/Panel Holder`; the copy hangs from the header's left edge, 3 in and one half header down
+/// (the world's, read from the live game: header at (951, 225), creator at (954, 248)).
+#[derive(Clone, Copy, Debug)]
+pub struct CreatorPlace {
+    /// The top left corner of the panel (reference px).
+    pub origin: [f32; 2],
+    /// The scene path of its `AnimatorPresetPanel` (the Image multipliers of the panel and its buttons, 8, are keyed by it).
+    pub base: &'static str,
+}
+
+/// The creator of the world's settings panel.
+pub const WORLD_CREATOR: CreatorPlace = CreatorPlace {
+    origin: [954.0, 248.0],
+    base: "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/AnimationsPanel/Scroll View/Viewport/Content/Animator Header/Panel Holder/AnimatorPresetPanel",
+};
+
+/// The creator of the scenario editor's Animation tab (its header is the tab's first row: left edge 41, top 125, 46.88 high).
+pub const EDITOR_CREATOR: CreatorPlace = CreatorPlace {
+    origin: [44.0, 148.0],
+    base: "UI/ScenarioEditor/Settings Tuner/Holder/Panels/AnimationsPanel/Scroll View/Viewport/Content/Animator Header/Panel Holder/AnimatorPresetPanel",
+};
+
 /// The creator panel (`SettingsChangerCreator`): a 605 wide panel with the preset dropdown, the sliders of the preset and the Cancel and OK
 /// buttons, drawn over the tab at the left of its panel. Returns its nodes and click regions.
-pub(super) fn creator_panel(lists: &ListsInput<'_>, edit: Option<&crate::value_edit::ValueEdit>) -> Option<(Vec<Node>, Vec<DynHit>, Vec<DynTip>)> {
+pub(super) fn creator_panel(lists: &ListsInput<'_>, edit: Option<&crate::value_edit::ValueEdit>, place: CreatorPlace) -> Option<(Vec<Node>, Vec<DynHit>, Vec<DynTip>)> {
     let creator = lists.creator?;
     if !creator.open {
         return None;
     }
     let fields = animators::creator_fields(creator.preset);
-    let (x0, y0) = (954.0, 248.0);
+    let [x0, y0] = place.origin;
     let width = 605.0;
     let height = 115.0 + fields.len() as f32 * 40.5 + 61.0;
-    // (The scene object's own path: the Image multipliers of the panel and its buttons, 8, are keyed by it.)
-    let base = "UICanvas/MainUI/Layer1/Panels/Right Panels/DynamicSettingsPanel/AnimationsPanel/Scroll View/Viewport/Content/Animator Header/Panel Holder/AnimatorPresetPanel";
+    let base = place.base;
     let mut hits = Vec::new();
     let mut tips = Vec::new();
     let mut root = sprite_node(base, "Button_UI", [x0, y0, x0 + width, y0 + height], [1.0; 4]);

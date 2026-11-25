@@ -1577,6 +1577,14 @@ impl RuntimeUi {
                     hit.action,
                 );
             }
+            // The animator creator's rows show the settings' help texts.
+            for tip in &build.tips {
+                frame.tips.push(crate::tooltip::TipRect {
+                    pos: Vec2::new(tip.rect[0] * scale, tip.rect[1] * scale),
+                    size: Vec2::new(tip.rect[2] * scale, tip.rect[3] * scale),
+                    tip: tip.tip,
+                });
+            }
             if let Ok(mut cache) = self.dyn_cache.lock() {
                 *cache = Some((key, frame.clone()));
             }
@@ -8046,6 +8054,113 @@ mod tests {
         );
         let frame = runtime.build_frame(&app, &atlas, 1920.0, 1080.0);
         assert!(has(&frame, UiAction::Invoke(ControlCommand::AddZoneGroup)));
+    }
+
+    /// "Make settings animators work on the scenario creation page": the `+` of the editor's Animation tab opened a creator that was never drawn and had
+    /// no click areas (the world's panel adds it to its build, the editor's build did not), so no animator could be made there. The creator hangs from the
+    /// tab's header on the left of the editor, its preset list, sliders, Cancel and OK are on top of the tab and answer a click the way the window routes
+    /// it, OK puts the animator into the draft, and another tab closes the creator (`SettingsChangersEditor.FillPanel`).
+    #[test]
+    fn the_scenario_editors_animation_tab_draws_the_creator_and_its_buttons_work() {
+        use crate::zone_editor as ze;
+        let native = workspace_path("assets/game/ui_runtime_native.json.gz");
+        let default = workspace_path("testdata/real/Default.zip");
+        if !native.is_file() || !default.is_file() {
+            eprintln!("skipping: the native runtime dump or the Default scenario is absent");
+            return;
+        }
+        let Ok(runtime) = RuntimeUi::load_native(&native) else {
+            eprintln!("skipping: the native runtime dump could not be loaded");
+            return;
+        };
+        let Ok(Some(atlas)) = UiAssets::discover() else {
+            eprintln!("skipping: UI atlas absent");
+            return;
+        };
+        let dir = std::env::temp_dir().join(format!("rustibites-editor-creator-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&dir);
+        std::fs::create_dir_all(&dir).expect("temp dir");
+        let mut menu = crate::menu::MenuState::new(Some(default), &dir);
+        menu.reload_scenarios();
+        menu.open_editor_for_capture();
+        assert!(menu.editor_action(UiAction::DynTab(crate::scenario_editor::TAB_ANIMS)));
+        let (width, height) = (1920.0, 1080.0);
+        let build = |menu: &crate::menu::MenuState| runtime.build_menu_view_frame(menu, &atlas, width, height, None).expect("the editor's frame");
+        let has = |frame: &UiFrame, wanted: UiAction| frame.actions.iter().any(|(_, action)| *action == wanted);
+        let rect_of = |frame: &UiFrame, wanted: UiAction| -> (Vec2, Vec2) {
+            let (id, _) = frame.actions.iter().find(|(_, action)| *action == wanted).unwrap_or_else(|| panic!("{wanted:?} is not in the frame"));
+            let (_, pos, size) = frame.hits.iter().find(|hit| hit.0 == *id).expect("its rectangle");
+            (*pos, *size)
+        };
+        // One click on the centre of a control, the way the window routes it: what is on top there must be the control, and the editor takes the action.
+        let click_on = |menu: &mut crate::menu::MenuState, wanted: UiAction| {
+            let frame = build(menu);
+            let (pos, size) = rect_of(&frame, wanted);
+            let at = pos + size * 0.5;
+            assert_eq!(frame.action_at(at), Some(wanted), "{wanted:?} is covered at {at:?}");
+            let actions = frame.interact(at, true, true, &mut crate::ui::UiInteraction::default());
+            assert!(actions.contains(&wanted), "the click did not fire {wanted:?}: {actions:?}");
+            // The editor's `+` is a menu command, the rest are the editor's own actions (`MenuState::click_native`).
+            let taken = match wanted {
+                UiAction::Menu(command) => {
+                    let _ = menu.menu_command(command);
+                    true
+                }
+                _ => menu.editor_action(wanted),
+            };
+            assert!(taken, "the editor did not take {wanted:?}");
+        };
+        let (open, submit, cancel) = (
+            UiAction::Menu(crate::ui::MenuCommand::EditorAdd(3)),
+            UiAction::Invoke(ControlCommand::SubmitAnimatorCreator),
+            UiAction::Invoke(ControlCommand::CloseAnimatorCreator),
+        );
+        // Closed, the tab offers the `+` and nothing of the creator.
+        let frame = build(&menu);
+        assert!(has(&frame, open), "the + is there");
+        assert!(!has(&frame, submit) && !has(&frame, cancel), "no creator while it is closed");
+        // The `+` opens it: the panel is drawn, hangs from the header on the left of the editor, and its controls are all there on top.
+        click_on(&mut menu, open);
+        assert!(menu.editor().expect("the editor").animator.creator.open, "the + opens the creator");
+        let frame = build(&menu);
+        let preset = UiAction::DropdownOpen(crate::ui::DropdownTarget::AnimatorPreset);
+        assert!(has(&frame, preset) && has(&frame, submit) && has(&frame, cancel));
+        for field in crate::animators::creator_fields(crate::animators::Preset::Linear) {
+            assert!(
+                frame.actions.iter().any(|(_, action)| matches!(action, UiAction::ZoneSlide(ze::CREATOR_REF, f, ..) if f == field)),
+                "creator slider {field}"
+            );
+        }
+        let (ok_pos, ok_size) = rect_of(&frame, submit);
+        let scale = frame.scale;
+        assert!(ok_pos.x >= 44.0 * scale && ok_pos.x + ok_size.x <= 650.0 * scale, "OK hangs inside the creator, at the left of the editor: {ok_pos:?}");
+        assert!(ok_pos.y > 148.0 * scale, "below the header: {ok_pos:?}");
+        // The panel swallows a click on its body, so the list under it is not clicked.
+        let (cancel_pos, _) = rect_of(&frame, cancel);
+        assert_eq!(frame.action_at(Vec2::new(cancel_pos.x + 120.0 * scale, cancel_pos.y)), Some(UiAction::Consume));
+        // Its tooltips are the rows'.
+        assert!(!frame.tips.is_empty(), "the creator's rows have tooltips");
+        // The preset list and a typed slider reach the creator; Cancel closes it.
+        menu.editor_creator_preset_for_capture(1);
+        assert_eq!(menu.editor().expect("the editor").animator.creator.preset, crate::animators::Preset::ALL[1]);
+        click_on(&mut menu, cancel);
+        assert!(!menu.editor().expect("the editor").animator.creator.open, "Cancel closes the creator");
+        assert!(menu.editor().expect("the editor").changers().is_empty());
+        assert!(!has(&build(&menu), submit));
+        // OK makes the animator and its card opens, over the same draft that Start and Save take.
+        click_on(&mut menu, open);
+        click_on(&mut menu, submit);
+        let editor = menu.editor().expect("the editor");
+        assert!(!editor.animator.creator.open, "OK closes the creator");
+        assert_eq!(editor.changers().len(), 1, "OK makes the animator");
+        assert!(editor.open_items.contains(&(3, 0)));
+        assert!(has(&build(&menu), UiAction::Invoke(ControlCommand::DeleteAnimator(0))), "its card is in the list");
+        // Another tab closes an open creator.
+        click_on(&mut menu, open);
+        assert!(menu.editor().expect("the editor").animator.creator.open);
+        assert!(menu.editor_action(UiAction::DynTab(crate::scenario_editor::TAB_SIM)));
+        assert!(!menu.editor().expect("the editor").animator.creator.open, "a tab switch closes the creator");
+        let _ = std::fs::remove_dir_all(dir);
     }
 
     #[test]

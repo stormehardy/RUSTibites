@@ -14,7 +14,7 @@ use bibites_core::settings::{ChallengeParameters, SimSettings};
 use bibites_core::world::ScenarioData;
 use bibites_core::zone::{ZoneConfig, ZoneGlobals, ZoneGroupConfig};
 
-use crate::dyn_panel::{self, DynHit, DynInput, DynState, ListGeometry, Row, TabGroup};
+use crate::dyn_panel::{self, DynHit, DynInput, DynState, DynTip, ListGeometry, Row, TabGroup};
 use crate::ui::{MenuCommand, UiAction};
 use crate::ui_runtime::Node;
 
@@ -203,6 +203,10 @@ impl EditorState {
     /// Switches tab (`ScenariosEditor.SwitchToPanel`); every tab keeps its own scroll position.
     pub fn select_tab(&mut self, tab: u8) {
         let tab = tab.min(TAB_COUNT as u8 - 1);
+        // `SettingsChangersEditor.FillPanel` closes the creator each time the panel is shown.
+        if tab != self.tab {
+            self.animator.creator.open = false;
+        }
         self.scrolls[usize::from(self.tab)] = self.dyn_state.scroll;
         self.tab = tab;
         self.dyn_state.tab = tab;
@@ -1139,6 +1143,8 @@ pub struct EditorBuild {
     pub root: Node,
     /// Click regions.
     pub hits: Vec<DynHit>,
+    /// Tooltips of the generated controls (the animator creator's rows).
+    pub tips: Vec<DynTip>,
 }
 
 /// A hash of everything the editor shows, so an unchanged editor can reuse its last frame.
@@ -1192,6 +1198,8 @@ pub fn build(captured: &Node, input: &EditorInput<'_>) -> Option<EditorBuild> {
     }
 
     let mut hits: Vec<DynHit> = Vec::new();
+    // The animator creator (`SettingsChangerCreator`) hangs over the Animation tab, outside its scroll view, and is on top of everything else.
+    let mut creator = None;
     let groups = if tab == TAB_CHALLENGE {
         challenge_groups(state.challenge.is_some())
     } else {
@@ -1275,6 +1283,11 @@ pub fn build(captured: &Node, input: &EditorInput<'_>) -> Option<EditorBuild> {
             dyn_panel::replace_content(panel, list.nodes);
         }
         hits.extend(list.hits);
+        if tab == TAB_ANIMS
+            && let Some(lists) = dyn_input.lists.as_ref()
+        {
+            creator = dyn_panel::editor_creator_panel(lists, dyn_input.edit);
+        }
     }
 
     // Header buttons.
@@ -1332,5 +1345,14 @@ pub fn build(captured: &Node, input: &EditorInput<'_>) -> Option<EditorBuild> {
             dyn_panel::set_rect(label, x0, y0, left, y1);
         }
     }
-    Some(EditorBuild { root, hits })
+    let mut tips = Vec::new();
+    if let Some((nodes, popup_hits, popup_tips)) = creator {
+        for mut node in nodes {
+            node.sibling_index = root.children.len() as i32;
+            root.children.push(node);
+        }
+        hits.extend(popup_hits);
+        tips.extend(popup_tips);
+    }
+    Some(EditorBuild { root, hits, tips })
 }
