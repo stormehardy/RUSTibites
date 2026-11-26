@@ -3719,7 +3719,10 @@ pub fn step(
                 grabs.push(GrabPair { holder: weld.holder, target: weld.held, sensor: sensor as u8, welded: true });
             }
         }
-        for pair in &scratch.pairs {
+        #[cfg(test)]
+        let scan_start = grabs.len();
+        let (solver, collider_aabbs) = (&scratch.solver, &scratch.collider_aabbs);
+        let grabs_of = |pair: &BodyPair, out: &mut Vec<GrabPair>| {
             for (holder, target) in [(pair.body_a, pair.body_b), (pair.body_b, pair.body_a)] {
                 let (holder_body, target_body) = (&bodies[holder as usize], &bodies[target as usize]);
                 if holder_body.grab_slots == 0 || !target_body.grabbable || holder_body.tag == target_body.tag || !collision_allowed(holder_body.layer, target_body.layer) {
@@ -3731,14 +3734,50 @@ pub fn step(
                 let Some(sensor) = sensor_of(holder_body) else {
                     continue;
                 };
-                let speed = (scratch.solver[target as usize].vel - scratch.solver[holder as usize].vel).length();
+                let speed = (solver[target as usize].vel - solver[holder as usize].vel).length();
                 let margin = (speed * dt).min(12.0) + config.contact_offset + config.speculative_distance;
-                let mouth = scratch.collider_aabbs[holder as usize * MAX_COLLIDERS + sensor];
+                let mouth = collider_aabbs[holder as usize * MAX_COLLIDERS + sensor];
                 let reach = Aabb { min: mouth.min - Vec2::splat(margin), max: mouth.max + Vec2::splat(margin) };
-                if (0..target_body.colliders().len()).any(|collider| reach.overlaps(&scratch.collider_aabbs[target as usize * MAX_COLLIDERS + collider])) {
-                    grabs.push(GrabPair { holder, target, sensor: sensor as u8, welded: false });
+                if (0..target_body.colliders().len()).any(|collider| reach.overlaps(&collider_aabbs[target as usize * MAX_COLLIDERS + collider])) {
+                    out.push(GrabPair { holder, target, sensor: sensor as u8, welded: false });
                 }
             }
+        };
+        // Every candidate pair is looked at (two bodies each, read from all over the array): with many pairs the pool takes runs of them,
+        // and the grabs come back in the pairs' order.
+        if threads > 1 && !trace && scratch.pairs.len() >= scratch.min_broadphase.saturating_mul(GRAB_SCAN_PER_BROADPHASE).max(1) {
+            let run = scratch.pairs.len().div_ceil(threads * 4);
+            let parts: Vec<Vec<GrabPair>> = scratch
+                .pairs
+                .par_chunks(run)
+                .map(|chunk| {
+                    let mut out = Vec::new();
+                    for pair in chunk {
+                        grabs_of(pair, &mut out);
+                    }
+                    out
+                })
+                .collect();
+            for part in parts {
+                grabs.extend(part);
+            }
+        } else {
+            for pair in &scratch.pairs {
+                grabs_of(pair, &mut grabs);
+            }
+        }
+        #[cfg(test)]
+        {
+            let mut plain = Vec::new();
+            for pair in &scratch.pairs {
+                grabs_of(pair, &mut plain);
+            }
+            let key = |grab: &GrabPair| (grab.holder, grab.target, grab.sensor, grab.welded);
+            assert_eq!(
+                grabs[scan_start..].iter().map(key).collect::<Vec<_>>(),
+                plain.iter().map(key).collect::<Vec<_>>(),
+                "the grab pairs found on the pool differ from the ones the plain loop finds"
+            );
         }
     }
     // 5. The bodies no contact holds move in closed form (the ten slices of damping and motion of a free body, see `sliced_damping`); the ones a contact
@@ -3875,6 +3914,10 @@ pub fn step(
     scratch.clock.lap(Stage::PhysWriteBack, &mut lap);
 }
 
+/// The search for the pairs a mouth may grab runs on the pool from this many times `min_broadphase` candidate pairs (4,096 with the default
+/// sizes: a pair costs a few loads when neither body has a mouth that wants to grab).
+const GRAB_SCAN_PER_BROADPHASE: usize = 8;
+
 /// Islands in a chunk of the pool's work on the islands of a step (an island is a few bodies: a chunk of fewer costs more to hand over
 /// than to solve). With fewer than twice this many islands the step solves them on the calling thread.
 const ISLANDS_PER_CHUNK: usize = 8;
@@ -4010,25 +4053,49 @@ fn fine_steps(bodies: &[PhysicsBody], scratch: &mut PhysicsScratch, config: &Phy
         local_bodies.push(bodies[held[p as usize] as usize]);
         global_of_local.push(held[p as usize]);
     }
-    // The candidate pairs of each island, with the bodies' places inside it (the constraints of a pair follow each other).
-    let mut island_pairs: Vec<Vec<BodyPair>> = vec![Vec::new(); island_count];
+    // The candidate pairs of each island, with the bodies' places inside it (the constraints of a pair follow each other): the contacts' pairs
+    // first, in the constraints' order, then the pairs the welds and the grabs add. They end up in one array, island by island (a list per island
+    // was 7,000 allocations a tick in a world of 30,000 bibites, made and freed on one thread).
+    let mut last_pair: Vec<(u32, u32)> = vec![(u32::MAX, u32::MAX); island_count];
+    let mut contact_pairs: Vec<(u32, BodyPair)> = Vec::new();
     for constraint in constraints.iter().filter(|constraint| holds(constraint)) {
         let pa = place[constraint.body_a as usize] as usize;
         let pb = place[constraint.body_b as usize] as usize;
         let island = island_of_place[pa] as usize;
         let base = body_start[island];
         let (la, lb) = (new_place[pa] - base, new_place[pb] - base);
-        let pairs = &mut island_pairs[island];
-        if pairs.last().is_some_and(|last| last.body_a == la && last.body_b == lb) {
+        if last_pair[island] == (la, lb) {
             continue;
         }
-        pairs.push(BodyPair {
-            body_a: la,
-            body_b: lb,
-            tag_a: local_bodies[new_place[pa] as usize].tag,
-            tag_b: local_bodies[new_place[pb] as usize].tag,
-        });
+        last_pair[island] = (la, lb);
+        contact_pairs.push((
+            island as u32,
+            BodyPair {
+                body_a: la,
+                body_b: lb,
+                tag_a: local_bodies[new_place[pa] as usize].tag,
+                tag_b: local_bodies[new_place[pb] as usize].tag,
+            },
+        ));
     }
+    // By island, each island's in the order they came (a counting sort).
+    let mut contact_start = vec![0u32; island_count + 1];
+    for (island, _) in &contact_pairs {
+        contact_start[*island as usize + 1] += 1;
+    }
+    for island in 0..island_count {
+        contact_start[island + 1] += contact_start[island];
+    }
+    let mut island_contact_pairs = vec![BodyPair::default(); contact_pairs.len()];
+    {
+        let mut next = contact_start.clone();
+        for (island, pair) in &contact_pairs {
+            island_contact_pairs[next[*island as usize] as usize] = *pair;
+            next[*island as usize] += 1;
+        }
+    }
+    // The pairs the welds and the grabs add (one the island has already is not added again), each island's a list threaded through one array.
+    let mut extras = ExtraPairs { pairs: Vec::new(), next: Vec::new(), head: vec![u32::MAX; island_count], tail: vec![u32::MAX; island_count] };
     // The welds: their pair collides too (the game's joints are made with `enableCollision`), and what they carried from the last step.
     let mut island_welds: Vec<Vec<WeldState>> = vec![Vec::new(); island_count];
     for weld in welds {
@@ -4036,10 +4103,11 @@ fn fine_steps(bodies: &[PhysicsBody], scratch: &mut PhysicsScratch, config: &Phy
         let island = island_of_place[pa] as usize;
         let base = body_start[island];
         let (la, lb) = (new_place[pa] - base, new_place[pb] - base);
-        let pairs = &mut island_pairs[island];
-        if !pairs.iter().any(|pair| (pair.body_a == la && pair.body_b == lb) || (pair.body_a == lb && pair.body_b == la)) {
-            pairs.push(BodyPair { body_a: la, body_b: lb, tag_a: local_bodies[new_place[pa] as usize].tag, tag_b: local_bodies[new_place[pb] as usize].tag });
-        }
+        extras.add(
+            island,
+            BodyPair { body_a: la, body_b: lb, tag_a: local_bodies[new_place[pa] as usize].tag, tag_b: local_bodies[new_place[pb] as usize].tag },
+            &island_contact_pairs[contact_start[island] as usize..contact_start[island + 1] as usize],
+        );
         let tag = local_bodies[new_place[pb] as usize].tag;
         let holder_tag = local_bodies[new_place[pa] as usize].tag;
         let (mut linear, mut angular) = (Vec2::ZERO, 0.0);
@@ -4061,48 +4129,130 @@ fn fine_steps(bodies: &[PhysicsBody], scratch: &mut PhysicsScratch, config: &Phy
         });
     }
     // The grabs: a pair that may be grabbed collides too, and its mouth's trigger is tested at every step.
-    let mut island_grabs: Vec<Vec<LocalGrab>> = vec![Vec::new(); island_count];
+    let mut grab_items: Vec<(u32, LocalGrab)> = Vec::with_capacity(grabs.len());
     for grab in grabs {
         let (pa, pb) = (place[grab.holder as usize] as usize, place[grab.target as usize] as usize);
         let island = island_of_place[pa] as usize;
         let base = body_start[island];
         let (la, lb) = (new_place[pa] - base, new_place[pb] - base);
-        let pairs = &mut island_pairs[island];
-        if !pairs.iter().any(|pair| (pair.body_a == la && pair.body_b == lb) || (pair.body_a == lb && pair.body_b == la)) {
+        extras.add(
+            island,
+            BodyPair { body_a: la, body_b: lb, tag_a: local_bodies[new_place[pa] as usize].tag, tag_b: local_bodies[new_place[pb] as usize].tag },
+            &island_contact_pairs[contact_start[island] as usize..contact_start[island + 1] as usize],
+        );
+        grab_items.push((island as u32, LocalGrab { holder: la, target: lb, sensor: grab.sensor, welded: grab.welded, inside: false }));
+    }
+    // Island `i`'s pairs are `all_pairs[pair_start[i]..pair_start[i + 1]]`: its contacts' pairs, then the ones the welds and the grabs added.
+    let mut pair_start = vec![0u32; island_count + 1];
+    let mut all_pairs: Vec<BodyPair> = Vec::with_capacity(island_contact_pairs.len() + extras.pairs.len());
+    for island in 0..island_count {
+        all_pairs.extend_from_slice(&island_contact_pairs[contact_start[island] as usize..contact_start[island + 1] as usize]);
+        let mut at = extras.head[island];
+        while at != u32::MAX {
+            all_pairs.push(extras.pairs[at as usize]);
+            at = extras.next[at as usize];
+        }
+        pair_start[island + 1] = all_pairs.len() as u32;
+    }
+    // Island `i`'s grabs are `island_grabs[grab_start[i]..grab_start[i + 1]]`, in the order they came (a stable sort by island).
+    grab_items.sort_by_key(|(island, _)| *island);
+    let mut grab_start = vec![0u32; island_count + 1];
+    for (island, _) in &grab_items {
+        grab_start[*island as usize + 1] += 1;
+    }
+    for island in 0..island_count {
+        grab_start[island + 1] += grab_start[island];
+    }
+    let mut island_grabs: Vec<LocalGrab> = grab_items.into_iter().map(|(_, grab)| grab).collect();
+    #[cfg(test)]
+    {
+        // The lists a list per island gave (the code these arrays replaced): the same pairs in the same order, the same grabs.
+        let mut old_pairs: Vec<Vec<BodyPair>> = vec![Vec::new(); island_count];
+        for constraint in constraints.iter().filter(|constraint| holds(constraint)) {
+            let pa = place[constraint.body_a as usize] as usize;
+            let pb = place[constraint.body_b as usize] as usize;
+            let island = island_of_place[pa] as usize;
+            let base = body_start[island];
+            let (la, lb) = (new_place[pa] - base, new_place[pb] - base);
+            let pairs = &mut old_pairs[island];
+            if pairs.last().is_some_and(|last| last.body_a == la && last.body_b == lb) {
+                continue;
+            }
             pairs.push(BodyPair { body_a: la, body_b: lb, tag_a: local_bodies[new_place[pa] as usize].tag, tag_b: local_bodies[new_place[pb] as usize].tag });
         }
-        island_grabs[island].push(LocalGrab { holder: la, target: lb, sensor: grab.sensor, welded: grab.welded, inside: false });
+        let mut old_grabs: Vec<Vec<(u32, u32, u8, bool)>> = vec![Vec::new(); island_count];
+        let joined = welds.iter().map(|weld| (weld.holder, weld.held, None)).chain(grabs.iter().map(|grab| (grab.holder, grab.target, Some(*grab))));
+        for (holder, other, grab) in joined {
+            let (pa, pb) = (place[holder as usize] as usize, place[other as usize] as usize);
+            let island = island_of_place[pa] as usize;
+            let base = body_start[island];
+            let (la, lb) = (new_place[pa] - base, new_place[pb] - base);
+            let pairs = &mut old_pairs[island];
+            if !pairs.iter().any(|pair| (pair.body_a == la && pair.body_b == lb) || (pair.body_a == lb && pair.body_b == la)) {
+                pairs.push(BodyPair { body_a: la, body_b: lb, tag_a: local_bodies[new_place[pa] as usize].tag, tag_b: local_bodies[new_place[pb] as usize].tag });
+            }
+            if let Some(grab) = grab {
+                old_grabs[island].push((la, lb, grab.sensor, grab.welded));
+            }
+        }
+        for island in 0..island_count {
+            assert_eq!(
+                &all_pairs[pair_start[island] as usize..pair_start[island + 1] as usize],
+                &old_pairs[island][..],
+                "island {island}: the candidate pairs differ from the ones a list per island gave"
+            );
+            let flat: Vec<(u32, u32, u8, bool)> =
+                island_grabs[grab_start[island] as usize..grab_start[island + 1] as usize].iter().map(|grab| (grab.holder, grab.target, grab.sensor, grab.welded)).collect();
+            assert_eq!(flat, old_grabs[island], "island {island}: the grabs differ from the ones a list per island gave");
+        }
     }
     let carried_global = std::mem::take(&mut scratch.carried);
     let mut outputs: Vec<IslandOutput> = Vec::new();
     {
-        let mut pieces: Vec<(&mut [SolverBody], &[PhysicsBody], &[BodyPair], &[u32], &mut Vec<WeldState>, &mut Vec<LocalGrab>)> = Vec::with_capacity(island_count);
-        let (mut solver_rest, mut bodies_rest, mut index_rest) = (&mut local[..], &local_bodies[..], &global_of_local[..]);
-        for (island, (island_weld_list, island_grab_list)) in island_welds.iter_mut().zip(island_grabs.iter_mut()).enumerate() {
+        let mut pieces: Vec<IslandPiece<'_>> = Vec::with_capacity(island_count);
+        let (mut solver_rest, mut bodies_rest, mut index_rest, mut grabs_rest) = (&mut local[..], &local_bodies[..], &global_of_local[..], &mut island_grabs[..]);
+        for (island, island_weld_list) in island_welds.iter_mut().enumerate() {
             let count = island_bodies[island] as usize;
             let (solver_part, rest_s) = solver_rest.split_at_mut(count);
             let (bodies_part, rest_b) = bodies_rest.split_at(count);
             let (index_part, rest_i) = index_rest.split_at(count);
+            let (grab_part, rest_g) = grabs_rest.split_at_mut((grab_start[island + 1] - grab_start[island]) as usize);
             solver_rest = rest_s;
             bodies_rest = rest_b;
             index_rest = rest_i;
-            pieces.push((solver_part, bodies_part, &island_pairs[island][..], index_part, island_weld_list, island_grab_list));
+            grabs_rest = rest_g;
+            pieces.push(IslandPiece {
+                solver: solver_part,
+                bodies: bodies_part,
+                pairs: &all_pairs[pair_start[island] as usize..pair_start[island + 1] as usize],
+                indices: index_part,
+                welds: island_weld_list,
+                grabs: grab_part,
+            });
         }
         let carried = &carried_global[..];
         if threads > 1 && island_count >= 2 * ISLANDS_PER_CHUNK && held.len() >= min_island_bodies {
             use rayon::prelude::*;
+            // Runs of islands, a few a worker, each with one output for all its islands in their order; the outputs come back in the order of
+            // the runs, which is the islands' order.
+            let run = island_count.div_ceil(threads * 8).max(ISLANDS_PER_CHUNK);
             outputs = pieces
-                .into_par_iter()
-                .with_min_len(ISLANDS_PER_CHUNK)
-                .map_init(IslandScratch::default, |work, (solver, island_bodies, pairs, indices, island_weld_list, island_grab_list)| {
-                    run_island(work, solver, island_bodies, pairs, carried, indices, island_weld_list, island_grab_list, config, &params, steps)
+                .par_chunks_mut(run)
+                .map_init(IslandScratch::default, |work, run| {
+                    let mut output = IslandOutput::default();
+                    for piece in run.iter_mut() {
+                        run_island(work, piece, carried, config, &params, steps, &mut output);
+                    }
+                    output
                 })
                 .collect();
         } else {
             let mut work = IslandScratch::default();
-            for (solver, island_bodies, pairs, indices, island_weld_list, island_grab_list) in pieces {
-                outputs.push(run_island(&mut work, solver, island_bodies, pairs, carried, indices, island_weld_list, island_grab_list, config, &params, steps));
+            let mut output = IslandOutput::default();
+            for piece in pieces.iter_mut() {
+                run_island(&mut work, piece, carried, config, &params, steps, &mut output);
             }
+            outputs.push(output);
         }
     }
     for p in 0..held.len() {
@@ -4175,9 +4325,64 @@ struct IslandScratch {
     aabbs: Vec<Aabb>,
     narrow: NarrowOutput,
     carried: Vec<CarriedImpulse>,
+    /// Every step's contact events, with their key and step (one event per contact is made of them at the end).
+    seen: Vec<(ContactEventKey, u32, ContactEvent)>,
+    /// The links each mouth has left.
+    slots_left: Vec<u8>,
+    /// The grabs whose trigger shows the target, nearest first per holder.
+    ready: Vec<(u32, f32, u64, usize)>,
 }
 
-/// What an island's fine steps leave behind: the last step's impulses by contact and its contact events.
+/// One island's share of the fine steps' arrays: its bodies (solver state and physics bodies, by place in the island), its candidate pairs, the
+/// bodies' global indices, its welds (the steps add the grabs they make) and its grabs.
+struct IslandPiece<'a> {
+    solver: &'a mut [SolverBody],
+    bodies: &'a [PhysicsBody],
+    pairs: &'a [BodyPair],
+    indices: &'a [u32],
+    welds: &'a mut Vec<WeldState>,
+    grabs: &'a mut [LocalGrab],
+}
+
+/// The pairs the welds and the grabs of the fine steps add to the islands: a list per island threaded through one array (`head`/`tail` per
+/// island, `next` per pair), in the order they were added.
+struct ExtraPairs {
+    pairs: Vec<BodyPair>,
+    next: Vec<u32>,
+    head: Vec<u32>,
+    tail: Vec<u32>,
+}
+
+impl ExtraPairs {
+    /// Adds `pair` to `island`'s list unless the island has it already, either way round: among its contacts' pairs (`contacts`) or the ones added.
+    fn add(&mut self, island: usize, pair: BodyPair, contacts: &[BodyPair]) {
+        let same = |other: &BodyPair| {
+            (other.body_a == pair.body_a && other.body_b == pair.body_b) || (other.body_a == pair.body_b && other.body_b == pair.body_a)
+        };
+        if contacts.iter().any(same) {
+            return;
+        }
+        let mut at = self.head[island];
+        while at != u32::MAX {
+            if same(&self.pairs[at as usize]) {
+                return;
+            }
+            at = self.next[at as usize];
+        }
+        let index = self.pairs.len() as u32;
+        self.pairs.push(pair);
+        self.next.push(u32::MAX);
+        match self.tail[island] {
+            u32::MAX => self.head[island] = index,
+            tail => self.next[tail as usize] = index,
+        }
+        self.tail[island] = index;
+    }
+}
+
+/// What the fine steps of islands leave behind (a run of islands writes one, island after island): the last step's impulses by contact and its
+/// contact events.
+#[derive(Default)]
 struct IslandOutput {
     carried: Vec<CarriedImpulse>,
     /// The island's contact events: each contact as it was when the step that first reported it began (its relative velocity is what the collision
@@ -4207,27 +4412,28 @@ fn own_position(body: &SolverBody) -> Vec2 {
 /// One island's fine steps (see `fine_steps`): `solver` and `bodies` are the island's bodies, `pairs` its candidate pairs by their places in it.
 fn run_island(
     work: &mut IslandScratch,
-    solver: &mut [SolverBody],
-    bodies: &[PhysicsBody],
-    pairs: &[BodyPair],
+    piece: &mut IslandPiece<'_>,
     carried_global: &[CarriedImpulse],
-    global_index: &[u32],
-    welds: &mut Vec<WeldState>,
-    grabs: &mut [LocalGrab],
     config: &PhysicsConfig,
     params: &IslandParams,
     steps: u32,
-) -> IslandOutput {
+    output: &mut IslandOutput,
+) {
+    let IslandPiece { solver, bodies, pairs, indices: global_index, welds, grabs } = piece;
+    let (solver, bodies, pairs, global_index): (&mut [SolverBody], &[PhysicsBody], &[BodyPair], &[u32]) = (solver, bodies, pairs, global_index);
+    let (welds, grabs): (&mut Vec<WeldState>, &mut [LocalGrab]) = (welds, grabs);
     let slots = bodies.len() * MAX_COLLIDERS;
-    let IslandScratch { poses, aabbs, narrow, carried } = work;
+    let IslandScratch { poses, aabbs, narrow, carried, seen, slots_left, ready } = work;
     poses.clear();
     poses.resize(slots, Pose::new(Vec2::ZERO, 0.0));
     aabbs.clear();
     aabbs.resize(slots, Aabb::default());
     carried.clear();
-    let mut seen: Vec<(ContactEventKey, u32, ContactEvent)> = Vec::new();
-    let mut new_welds: Vec<NewWeld> = Vec::new();
-    let mut slots_left: Vec<u8> = if grabs.is_empty() { Vec::new() } else { bodies.iter().map(|body| body.grab_slots).collect() };
+    seen.clear();
+    slots_left.clear();
+    if !grabs.is_empty() {
+        slots_left.extend(bodies.iter().map(|body| body.grab_slots));
+    }
     for step in 0..steps {
         for (index, (body, source)) in solver.iter_mut().zip(bodies).enumerate() {
             body.pos0 = body.pos;
@@ -4251,7 +4457,7 @@ fn run_island(
             // The mouths grab what their triggers met at an earlier step (the game's `UpdateOrgan` runs before each physics step and the trigger events of
             // the step before it have arrived): the nearest first, while the mouth has links left; the pose at this moment is the one the joint freezes.
             if step > 0 || steps == 1 {
-                let mut ready: Vec<(u32, f32, u64, usize)> = Vec::new();
+                ready.clear();
                 for (at, grab) in grabs.iter().enumerate() {
                     if grab.welded || !grab.inside || slots_left[grab.holder as usize] == 0 {
                         continue;
@@ -4260,7 +4466,7 @@ fn run_island(
                     ready.push((grab.holder, (own_position(&solver[grab.target as usize]) - mouth).length_sq(), bodies[grab.target as usize].tag, at));
                 }
                 ready.sort_unstable_by(|a, b| a.0.cmp(&b.0).then(a.1.total_cmp(&b.1)).then(a.2.cmp(&b.2)));
-                for (holder, _, _, at) in ready {
+                for &(holder, _, _, at) in ready.iter() {
                     if slots_left[holder as usize] == 0 {
                         continue;
                     }
@@ -4283,7 +4489,7 @@ fn run_island(
                         tag: bodies[target as usize].tag,
                         holder_tag: bodies[holder as usize].tag,
                     });
-                    new_welds.push(NewWeld { holder: global_index[holder as usize], held: global_index[target as usize], anchor, angle });
+                    output.new_welds.push(NewWeld { holder: global_index[holder as usize], held: global_index[target as usize], anchor, angle });
                     if config.held_drag_off && bodies[target as usize].layer == LAYER_PELLETS {
                         solver[target as usize].linear_damping = 0.0;
                     }
@@ -4356,11 +4562,11 @@ fn run_island(
     }
     // One event per contact: as the first step to report it saw it, the impulses of the steps added up (a contact keeps the orientation of its first report).
     seen.sort_unstable_by(|a, b| a.0.cmp(&b.0).then(a.1.cmp(&b.1)));
-    let mut events: Vec<ContactEvent> = Vec::with_capacity(seen.len().min(16));
     let mut last_key: Option<ContactEventKey> = None;
-    for (key, _, event) in seen {
+    for &(key, _, event) in seen.iter() {
         if last_key == Some(key) {
-            let first = events.last_mut().expect("a first report");
+            // (The last event of the output is this island's: `last_key` is set once the island has pushed one.)
+            let first = output.events.last_mut().expect("a first report");
             let same_way = first.tag_a == event.tag_a;
             first.normal_impulse += event.normal_impulse;
             first.tangent_impulse += if same_way { event.tangent_impulse } else { -event.tangent_impulse };
@@ -4368,12 +4574,12 @@ fn run_island(
             let mut event = event;
             event.body_a = global_index[event.body_a] as usize;
             event.body_b = global_index[event.body_b] as usize;
-            events.push(event);
+            output.events.push(event);
             last_key = Some(key);
         }
     }
-    let overlaps = grabs.iter().map(|grab| (global_index[grab.holder as usize], global_index[grab.target as usize], grab.inside)).collect();
-    IslandOutput { carried: carried.clone(), events, new_welds, overlaps }
+    output.overlaps.extend(grabs.iter().map(|grab| (global_index[grab.holder as usize], global_index[grab.target as usize], grab.inside)));
+    output.carried.extend_from_slice(carried);
 }
 
 /// What names a contact event: the two bodies' tags, smaller first, and the colliders' indices in that order.

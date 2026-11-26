@@ -2649,6 +2649,9 @@ impl ChallengeSession {
 /// Hatches kept for [`World::take_hatched_children`] when nothing takes them.
 const HATCH_LOG_CAP: usize = 1024;
 
+/// Chunks of the sensing jobs per worker of the pool (see [`World::step_sensing`]).
+const SENSING_CHUNKS_PER_WORKER: usize = 4;
+
 /// The canonical world container.
 ///
 /// Holds every store the simulation phases touch; [`World::tick`] is being
@@ -2744,6 +2747,8 @@ pub struct World {
     sensing_due_ids: Vec<BibiteId>,
     /// Reused list of the bibites the store removed since the last hash sync.
     bibite_removed_scratch: Vec<BibiteId>,
+    /// Reused list of every bibite's place and radius for [`World::refresh_bibite_hash`].
+    bibite_place_scratch: Vec<(BibiteId, Vec2, f32)>,
     /// `true` once any live/spawned bibite has `meta.is_source`; lets the
     /// pellet-producer phase skip its full population scan in source-free
     /// worlds (the synthetic benchmarks).
@@ -2837,6 +2842,7 @@ impl World {
             sensing_chunks: Vec::new(),
             sensing_due_ids: Vec::new(),
             bibite_removed_scratch: Vec::new(),
+            bibite_place_scratch: Vec::new(),
             has_sources: false,
             sensing_result_tx,
             sensing_result_rx,
@@ -5380,7 +5386,10 @@ impl World {
             let data_arc = Arc::new(data);
             let ids_arc = Arc::new(ids);
             let len = ids_arc.len();
-            let chunk_count = sensing_workers;
+            // A few chunks a worker, taken by whichever worker is free: the bibites of a crowded stretch cost more to sense, and with one chunk a
+            // worker the others waited for the slowest at the end (12 chunks of 14,700 due bibites in the Ringworld save: the slowest took 17 %
+            // longer than the mean). Each bibite's senses are its own and the chunks are applied in their order, so the cut changes nothing.
+            let chunk_count = (sensing_workers * SENSING_CHUNKS_PER_WORKER).min(len).max(1);
             let result_tx = self.sensing_result_tx.clone();
             let mut jobs: Vec<PoolJob> = Vec::with_capacity(chunk_count);
             // The jobs' result buffers are kept from tick to tick (empty, with their capacity): a fresh buffer every tick was
@@ -7520,12 +7529,18 @@ impl World {
 
     /// Moves every bibite's spatial-hash entry to where the bibite is now (its pose changes every physics step).
     pub fn refresh_bibite_hash(&mut self) {
+        // Where each bibite is and how big (`BibiteView::side_radius`), read from the records on the pool in dense order (a cache miss on each
+        // 2 KB record: 2 ms a tick on one thread for the 32,765 of the Ringworld save), then put into the hash in that order here, as before.
+        let mut places = std::mem::take(&mut self.bibite_place_scratch);
+        places.clear();
+        self.bibites.filter_map_dense_into(self.executor(), &mut places, |id, record| {
+            Some((id, record.pos, 4.5 * record.derived.d1_size))
+        });
         let hash = &mut self.hash;
-        for (id, _) in self.bibites.iter() {
-            if let Some(view) = self.bibites.view(id) {
-                hash.update(id.handle(), SpatialClass::Bibite, view.pos, view.side_radius());
-            }
+        for &(id, pos, radius) in &places {
+            hash.update(id.handle(), SpatialClass::Bibite, pos, radius);
         }
+        self.bibite_place_scratch = places;
     }
 
     /// Removes spatial-hash bibite entries whose bibites are no longer live.
@@ -12818,6 +12833,106 @@ mod tests {
                 "{name}: no heavy turn was cut in parts: {lanes:?}"
             );
             assert!(!world.eggs.is_empty(), "{name}: no egg was ever laid");
+        }
+    }
+
+    /// A corpse's decay runs in the body sweep on the pool (its own record only); a corpse that bursts (meat pile, spilled stomach,
+    /// removal) and a body that lays the eggs of its womb as it dies keep that part in dense order. Corpses that burst at different
+    /// ticks, bodies dying with eggs, and live bibites biting, eating and grabbing corpses before and after them in dense order must
+    /// leave the serial world's results, and every biter must see its targets as the serial tick shows them.
+    #[test]
+    fn corpses_decaying_in_the_sweep_leave_the_serial_worlds_results() {
+        let build = |threads: usize| {
+            let mut settings = default_settings();
+            // The brains never step, so the outputs set by hand stay as they are.
+            settings.brain_tps = 1_000_000;
+            settings.independents.limit_bibite_birth = false;
+            let mut world = packed_world_with(240, 300.0, settings);
+            world.set_parallel_gates(crate::sim::ParallelGates::EAGER);
+            world.set_threads(threads);
+            // Let the bodies touch first, so that mouths have targets.
+            world.run(2);
+            let ids: Vec<BibiteId> = world.bibites.ids().collect();
+            for (index, id) in ids.into_iter().enumerate() {
+                if index % 3 != 0 {
+                    continue;
+                }
+                if index % 9 == 0 {
+                    // Eggs in the womb: the body lays them as it dies, in dense order.
+                    let record = world.bibites.get_mut(id).expect("record");
+                    record.egg_layer.is_mature = true;
+                    record.egg_layer.capacity = record.egg_layer.capacity.max(2);
+                    record.egg_layer.progress = record.egg_layer.progress.max(2.0);
+                }
+                assert!(world.kill_bibite(id));
+            }
+            // The kills become corpses at the next tick (the ones with eggs lay them at their turn).
+            world.run(1);
+            let ids: Vec<BibiteId> = world.bibites.ids().collect();
+            for (index, id) in ids.into_iter().enumerate() {
+                let record = world.bibites.get_mut(id).expect("record");
+                if record.body.dead && index % 4 == 3 {
+                    // A corpse whose health is below zero bursts at its first decay, with the energy it has left (what the decay spent shows in
+                    // the meat pile).
+                    record.body.energy.amount = record.body.energy.amount.max(1.0);
+                    record.body.health.amount = -0.01 * record.body.health.max_amount;
+                } else if record.body.dead && index % 2 == 1 {
+                    // Corpses with little left: their decay bursts them within the first ticks, a few at a time.
+                    record.body.energy.amount = 0.0;
+                    record.body.health.amount = record.body.health.max_amount * 0.002 * (index % 5) as f32;
+                }
+            }
+            world
+        };
+        let mut worlds = vec![
+            ("serial".to_owned(), build(1)),
+            ("4 threads".to_owned(), build(4)),
+            ("8 threads".to_owned(), build(8)),
+        ];
+        let corpses_at_start = worlds[0].1.bibites.iter().filter(|(_, record)| record.body.dead).count();
+        let encode = |world: &World| {
+            world
+                .capture_checkpoint_state()
+                .expect("checkpoint")
+                .encode()
+                .expect("encoded checkpoint")
+        };
+        for round in 1..=8usize {
+            for (_, world) in &mut worlds {
+                force_pass_b_profiles(world, round);
+                world.run(4);
+            }
+            let expected = encode(&worlds[0].1);
+            for (name, world) in &worlds[1..] {
+                let actual = encode(world);
+                assert!(
+                    actual == expected,
+                    "{name} differs from serial after round {round}: {}",
+                    first_difference(&expected, &actual)
+                );
+            }
+            let seen = std::mem::take(&mut worlds[0].1.bibite_scratch.snapshot_log);
+            for (name, world) in &mut worlds[1..] {
+                let theirs = std::mem::take(&mut world.bibite_scratch.snapshot_log);
+                assert!(
+                    theirs == seen,
+                    "{name}: a target looked different to a biter than in the serial tick (round {round}, {} entries against {}, first difference at entry {:?})",
+                    theirs.len(),
+                    seen.len(),
+                    theirs.iter().zip(&seen).position(|(a, b)| a != b)
+                );
+            }
+        }
+        // Corpses burst (they are gone) and the dying bodies laid eggs.
+        let corpses_now = worlds[0].1.bibites.iter().filter(|(_, record)| record.body.dead).count();
+        assert!(corpses_at_start >= 60 && corpses_now + 10 < corpses_at_start, "corpses {corpses_at_start} -> {corpses_now}: too few burst");
+        assert!(!worlds[0].1.eggs.is_empty(), "no body laid its eggs as it died");
+        for (name, world) in &worlds[1..] {
+            let lanes = world.pass_b_lanes();
+            assert!(
+                lanes.corpses_in_sweep > 1_000 && lanes.dead > 10 && lanes.mouth > 0,
+                "{name}: the corpses' decay did not run in the sweep, or no corpse burst or laid eggs in dense order: {lanes:?}"
+            );
         }
     }
 

@@ -231,6 +231,7 @@ pub fn stomach_info_of(record: &bibites_core::body::BibiteRecord) -> StomachInfo
             })
             .collect(),
         dead: record.body.dead,
+        sim_time: 0.0,
     }
 }
 
@@ -399,6 +400,9 @@ pub struct StomachInfo {
     pub items: Vec<StomachItem>,
     /// `body.dead`: `AnimateStomach` returns before the pellets digest, and a dead bibite swallows and vomits nothing, so the picture keeps what it holds.
     pub dead: bool,
+    /// The world's simulated time (seconds) when this was read: the picture digests by the simulated time that passed (`Time.deltaTime`, the game's
+    /// time), not by the time on the wall. [`stomach_info_of`] leaves it at 0; the selection panel, which has the world, sets it.
+    pub sim_time: f64,
 }
 
 impl StomachInfo {
@@ -987,6 +991,7 @@ mod tests {
                 efficiency: 0.4,
             }],
             dead: false,
+            sim_time: 0.0,
         };
         let pellets = pellets(&info, &shape, 7);
         assert!(pellets.len() >= 10, "{}", pellets.len());
