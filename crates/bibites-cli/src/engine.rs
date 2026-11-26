@@ -926,6 +926,12 @@ fn print_phase_table(world: &World) {
             lanes.emit as f64 / turns * 100.0,
             lanes.dead as f64 / turns * 100.0
         );
+        if lanes.corpses_in_sweep > 0 {
+            println!(
+                "corpses: {:.1}% of the turns were a corpse's decay taken on the pool",
+                lanes.corpses_in_sweep as f64 / turns * 100.0
+            );
+        }
         // The dense-order turns that were cut in parts: what of them the pool took.
         let heavy = lanes.heavy.max(1) as f64;
         println!(

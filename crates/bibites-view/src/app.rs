@@ -822,7 +822,8 @@ impl SelectionPanel {
             damage_received: record.body.total_damage_suffered,
             biology: biology_rows(record),
             internals: Some(crate::internals::params_of(record)),
-            stomach_info: Some(crate::internals::stomach_info_of(record)),
+            // With the world's clock: the picture digests by the simulated time that passed, as the game's does.
+            stomach_info: Some(crate::internals::StomachInfo { sim_time: world.clock.time_secs(), ..crate::internals::stomach_info_of(record) }),
             organs: Some(crate::biology_popups::organ_info_of(record, &world.settings)),
             energy_flow: record.energy_flow_rate(),
             dead: record.body.dead,
@@ -12393,6 +12394,18 @@ mod sprite_renderer_tests {
         // A corpse only pays the fat upkeep and its metabolism.
         record.body.dead = true;
         assert!((record.energy_flow_rate() - (-(0.25 + 0.4) / efficiency)).abs() < 1e-5);
+    }
+
+    #[test]
+    fn the_stomach_picture_reads_the_worlds_simulated_time() {
+        let mut app = App::new(synthetic(67, 6), Vec2::new(1920.0, 1080.0), None);
+        assert!(app.select_first());
+        let id = app.selected.expect("selected");
+        app.world.run(7);
+        let panel = crate::app::SelectionPanel::collect(&app.world, id).expect("the selection panel");
+        let info = panel.stomach_info.expect("a stomach");
+        assert_eq!(info.sim_time, app.world.clock.time_secs());
+        assert!(info.sim_time > 0.0);
     }
 
     #[test]

@@ -6,8 +6,11 @@
 //! digestion makes the pellets smaller (`ChangeAmount`: the scale follows the square root of the amount, a pellet that is used up goes).
 //!
 //! The engine here is small: circles against each other and against the stomach's capsule, impulses with the restitution and Coulomb friction, which
-//! also spins the pellets (a disc: inertia `m r^2 / 2`). It runs on the real
-//! time that passes between two drawn frames, and stands still while the game is paused. In the tests nothing moves.
+//! also spins the pellets (a disc: inertia `m r^2 / 2`). The pellets MOVE on the real time that passes between two drawn frames (the game scales their speed
+//! back by the time scale, `StomachContentPellet.ScaleSpeed`), but they DIGEST by the simulated time that passed (`AnimateStomach` uses `Time.deltaTime`, the
+//! game's own time): a world that runs slower than real time digests slowly in the picture too. Digesting by the wall clock emptied the picture faster than
+//! the stomach emptied, and the gap brought a pellet in from the right every few seconds, as if the bibite ate with nothing in its mouth (the report of
+//! 2026-11-25, a world of 32,765 bibites). The picture stands still while the game is paused. In the tests nothing moves by itself.
 
 use std::cell::RefCell;
 use std::time::Instant;
@@ -32,6 +35,9 @@ const ANGULAR_DAMPING: f32 = 0.05;
 const PICTURE_WIDTH: f32 = 305.0;
 /// The middle row of the picture.
 const MIDDLE: f32 = 97.5;
+/// The most simulated seconds one drawn frame digests (a longer jump, a world that was just loaded or sped through, digests nothing: the picture then
+/// matches the stomach's amounts the way it does after a vomit).
+const MAX_DIGEST_JUMP: f64 = 60.0;
 
 #[derive(Clone, Copy, Debug)]
 struct Body {
@@ -52,6 +58,8 @@ struct Sim {
     last: Instant,
     /// Time not yet run (the fixed steps).
     owed: f32,
+    /// The world's simulated time at the last drawn frame (the picture digests by what passed since).
+    last_sim_time: Option<f64>,
     rng: u64,
 }
 
@@ -79,6 +87,7 @@ impl Sim {
             bodies,
             last: Instant::now(),
             owed: 0.0,
+            last_sim_time: None,
             rng: owner ^ 0x9E37_79B9_7F4A_7C15,
         }
     }
@@ -91,7 +100,35 @@ impl Sim {
         ((self.rng.wrapping_mul(0x2545_F491_4F6C_DD1D) >> 40) as f32) / (1u64 << 24) as f32
     }
 
-    /// `BiologyPanel.OnMatterSwallow` / `OnMatterVomit` / `AnimateStomach`, from what the stomach holds now.
+    /// One drawn frame: the pellets digest by the simulated seconds since the last frame and move by the `wall` seconds of real time (at most five fixed
+    /// steps); nothing happens while the game is paused (`running` false).
+    fn advance(&mut self, info: &StomachInfo, wall: f32, running: bool) {
+        let digest = self.digest_seconds(info.sim_time);
+        if !running {
+            return;
+        }
+        self.reconcile(info, digest);
+        self.owed += wall;
+        let mut steps = 0;
+        while self.owed >= STEP && steps < 5 {
+            self.step(info.acid);
+            self.owed -= STEP;
+            steps += 1;
+        }
+        self.owed = self.owed.min(STEP);
+    }
+
+    /// The simulated seconds that passed since the last frame (`Time.deltaTime` in the game is the game's time): a world that runs at a fifth of real time
+    /// digests a fifth as fast in the picture, a paused one not at all. The first frame, a clock that went back (another world) and a jump of more than
+    /// [`MAX_DIGEST_JUMP`] digest nothing.
+    fn digest_seconds(&mut self, sim_time: f64) -> f32 {
+        match self.last_sim_time.replace(sim_time) {
+            Some(last) if sim_time >= last && sim_time - last <= MAX_DIGEST_JUMP => (sim_time - last) as f32,
+            _ => 0.0,
+        }
+    }
+
+    /// `BiologyPanel.OnMatterSwallow` / `OnMatterVomit` / `AnimateStomach`, from what the stomach holds now (`dt`: the simulated seconds to digest).
     fn reconcile(&mut self, info: &StomachInfo, dt: f32) {
         // `AnimateStomach` returns before the pellets digest when `body.dead`, and a dead bibite raises no swallow or vomit event. Its stomach is not
         // updated any more, so each slot's `digestionRate` stays at the last value it had: digesting from that would shrink the pellets of a stomach
@@ -268,16 +305,8 @@ pub fn pellets_now(owner: u64, info: &StomachInfo, shape: &StomachShape, running
         let now = Instant::now();
         let elapsed = now.duration_since(sim.last).as_secs_f32().min(0.1);
         sim.last = now;
-        if running && !cfg!(test) {
-            sim.reconcile(info, elapsed);
-            sim.owed += elapsed;
-            let mut steps = 0;
-            while sim.owed >= STEP && steps < 5 {
-                sim.step(info.acid);
-                sim.owed -= STEP;
-                steps += 1;
-            }
-            sim.owed = sim.owed.min(STEP);
+        if !cfg!(test) {
+            sim.advance(info, elapsed, running);
         }
         sim.bodies
             .iter()
@@ -319,6 +348,7 @@ mod tests {
             portion: 0.2,
             items,
             dead: false,
+            sim_time: 0.0,
         }
     }
 
@@ -378,6 +408,55 @@ mod tests {
             all.iter().sum::<f32>() / all.len() as f32
         };
         assert!(mean(StomachMaterial::Plant) < mean(StomachMaterial::Meat), "plant is above the meat");
+    }
+
+    #[test]
+    fn the_picture_digests_by_the_simulated_time_so_a_world_slower_than_real_time_brings_no_pellet_in() {
+        // A world that runs at a fifth of real time: each drawn frame (1/60 s on the wall) its clock moves 1/300 s and the stomach digests that much.
+        let shape = shape();
+        let mut stomach = info(20.0, 0.0);
+        let mut sim = Sim::new(4, &stomach, &shape);
+        let pellets = sim.bodies.len();
+        stomach.sim_time = 500.0;
+        for _ in 0..600 {
+            stomach.sim_time += 1.0 / 300.0;
+            stomach.items[0].amount -= 0.5 / 300.0;
+            stomach.total = stomach.items[0].amount;
+            sim.advance(&stomach, 1.0 / 60.0, true);
+            assert!(sim.bodies.len() <= pellets, "a pellet came in although nothing was eaten");
+        }
+        let held: f32 = sim.bodies.iter().map(|b| b.amount).sum();
+        assert!((held - stomach.items[0].amount).abs() < 0.01, "the picture holds what the stomach holds: {held} against {}", stomach.items[0].amount);
+        // Digesting by the time on the wall (what the picture did) empties it five times as fast and brings pellets in to make up for it.
+        let mut stomach = info(20.0, 0.0);
+        let mut wall = Sim::new(4, &stomach, &shape);
+        let mut came_in = false;
+        for _ in 0..600 {
+            stomach.items[0].amount -= 0.5 / 300.0;
+            stomach.total = stomach.items[0].amount;
+            let before = wall.bodies.len();
+            wall.reconcile(&stomach, 1.0 / 60.0);
+            came_in |= wall.bodies.len() > before;
+        }
+        assert!(came_in, "by the wall clock a pellet comes in");
+    }
+
+    #[test]
+    fn a_paused_world_or_a_new_clock_digests_nothing_and_a_fast_world_digests_fast() {
+        let shape = shape();
+        let mut stomach = info(20.0, 0.0);
+        let mut sim = Sim::new(4, &stomach, &shape);
+        let held = |sim: &Sim| sim.bodies.iter().map(|b| b.amount).sum::<f32>();
+        stomach.sim_time = 100.0;
+        assert_eq!(sim.digest_seconds(stomach.sim_time), 0.0, "the first frame digests nothing");
+        let before = held(&sim);
+        for _ in 0..60 {
+            sim.advance(&stomach, 1.0 / 60.0, false);
+        }
+        assert_eq!(held(&sim), before, "a paused world digests nothing");
+        assert_eq!(sim.digest_seconds(10.0), 0.0, "a clock that went back (another world)");
+        assert_eq!(sim.digest_seconds(10.0 + 61.0), 0.0, "a jump of more than a minute");
+        assert_eq!(sim.digest_seconds(73.0), 2.0, "a fast world: two simulated seconds in one frame");
     }
 
     #[test]

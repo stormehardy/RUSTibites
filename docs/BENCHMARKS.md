@@ -1751,3 +1751,52 @@ of the bibites on the pool; `a_tick_with_fields_gives_the_same_bits_on_one_threa
 order) complete it. The whole core suite passes (810 tests, the pinned runs among them) and the probe's hash of the state after the run is equal for the old and the new build in nine scenarios of the owner's folder at two seeds,
 in Big Pellet at 1 and 6 threads and in the synthetic worlds. Nine mutants of the new code (the edge of a circle, the order of the fields, the sort of the hits, held pellets, eggs, the count of bodies moved, the end of a band, the
 last column of a field, a whirlpool without the velocity) are all caught.
+
+## The threads of a big old world (2026-11-26)
+
+The request: "max out cpu usage per thread to get the maximum performance". Measured first, on the owner's Ringworld save (32,765 bibites of which about 18,000 are corpses, 45,000 pellets, 8,300 eggs;
+`rustibites bench --scenario Ringworld.zip --threads 12`, the perf CLI): 57-60 ms a tick, and while it ticked the process kept 3.9 of the machine's 12 threads busy on average (Task Manager shows 30-45 %).
+Temporary timers inside the stages (an instrumented build, not kept) showed what the other threads waited for: stretches that ran on one thread, each a few milliseconds.
+
+**What runs on the pool now** (the results are exactly the old ones, see below):
+
+1. **A corpse's decay is taken in the body sweep** (`BodyState::corpse_tick`, `turn::CORPSE_DONE`). It touches nothing but the corpse's record; the 18,000 corpses were 18,000 turns in dense order on one
+   thread every tick (pass B 6.8 ms). A corpse whose decay bursts it leaves the burst (meat pile, spilled stomach, removal: the pellets, the random numbers, the store) to its place in the dense order
+   (`BibiteStore::burst_corpse`), and a body that died this tick with eggs in its womb keeps its whole turn there. What other turns see of a corpse is unchanged: a mouth before it in dense order reads the
+   snapshot the sweep took before the decay, one after it reads the record, decayed (or gone); bites and swallows are applied after every turn. `RUSTIBITES_NOSPLIT` puts the whole turn back in dense order.
+   `PassBLanes::corpses_in_sweep` counts them (the bench prints "corpses: x % of the turns were a corpse's decay taken on the pool").
+2. **The fine steps' islands without a list each** (`fine_steps`, `IslandPiece`, `ExtraPairs`): the candidate pairs and the grabs of all islands are in one array each, island by island, and a run of islands
+   writes one output; a list per island was about 7,000 allocations made on one thread and 28,000 freed there every tick (4.6 ms before the islands and 3.5 after them). A test-only reference builds the old
+   lists beside them and compares every island's pairs and grabs.
+3. **The holders' welds** are worked out on the pool in runs of holders and put in place in the holders' order, and the joints let go of this tick look their frame up by binary search (the frames are
+   sorted before the look-ups instead of after: a scan of every frame for each let-go joint before).
+4. **The promoted sleepers' bodies** are made on the pool and merged in place from the back (each body moves once; splitting the list off and pushing it back copied every pellet's and egg's body twice).
+5. **The search for the pairs a mouth may grab** runs on the pool in runs of candidate pairs (a test-only reference compares it with the plain loop).
+6. **The bibite hash's refresh before sensing** reads the places on the pool in dense order and puts them into the hash in that order (`World::refresh_bibite_hash`; 2.1 ms on one thread: a cache miss on each
+   2 KB record).
+7. **The sensing jobs** are cut in four chunks a worker instead of one (the slowest of 12 chunks took 17 % longer than the mean, and the others waited for it).
+
+The sizes from which 3-5 use the pool follow `ParallelGates` (a quarter of `records` holders, `records` sleepers, eight times `broadphase` pairs: 64 / 256 / 4,096 with the default sizes), so the eager gates of
+the exactness tests put them on the pool in small worlds too.
+
+**Speed** (perf CLI, 12 threads, the build of the last commit against this one, alternating, best of three; ms a tick):
+
+| world | before | after | |
+|---|---:|---:|---:|
+| Ringworld (save, 32,765 bibites, 18,000 corpses) | 57.4 - 58.0 | 45.6 - 47.1 | 1.22 - 1.27x |
+| Big Pellet | 1.579 | 1.488 | 1.06x |
+| synthetic 500 / 2,000 / 10,000 / 30,000 | 0.567 / 2.008 / 6.050 / 15.17 | 0.533 / 2.068 / 5.958 / 15.26 | within the noise (+-4 %) |
+| Butterfly 6 | 0.470 | 0.475 | within the noise |
+
+In Ringworld the threads busy while ticking went from 3.9 - 4.4 to 4.8 - 5.3 of 12. The synthetic worlds have no corpses, few holders and no resting pellets, so nothing of this is theirs.
+
+**Exactness.** The state fingerprint after 120 - 600 ticks is equal for the old and the new build, and for 1 and 12 threads, in eight worlds: Ringworld, Default, NestEgg, RadTower and Ring (`testdata/real`), Big
+Pellet, Butterfly 6 and a synthetic world of 5,000 bibites (both editions). The whole core suite passes (the pinned runs among them); the new test `corpses_decaying_in_the_sweep_leave_the_serial_worlds_results`
+(corpses that burst at different ticks, some with energy left; bodies dying with eggs; live bibites biting, eating and grabbing corpses before and after them in dense order) compares whole checkpoints and
+what every biter saw with the serial world. Ten mutants of the new code are all caught (a body dying with eggs decayed in the sweep, a burst forgotten, the decay run twice, the holders' or the grab pairs'
+runs put back in the wrong order, the promoted merge the wrong way round, an island's added pairs before its contacts', a pair added twice, a worker's contact reports not cleared between islands).
+
+**Why the threads are still not all busy.** What is left on one thread in Ringworld: the turns of the 6,000 bibites with something in their mouth (they bite and eat from the world's stores in dense order,
+4.1 ms), the writing of the pellets' and eggs' poses after the physics step (2.3 ms), the x-order (1.4 ms) and smaller pieces of the physics build and of the fine steps. The stretches on the pool are mostly
+memory-bound (the sweep reads and writes several cache lines of every 2 KB record; this machine moves about 31 GB/s, and two threads already fill it), and 12 threads here are 6 cores with two threads each.
+Making idle workers spin would show 100 % in Task Manager without making a tick shorter.

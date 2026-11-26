@@ -4929,8 +4929,10 @@ pub struct PassBLanes {
     pub light: u64,
     /// Turns that ran in dense order on the calling thread (a bibite with several reasons is counted once here).
     pub heavy: u64,
-    /// Heavy turns of dead bodies (corpse decay, bursting, eggs laid at death).
+    /// Heavy turns of dead bodies (a corpse that bursts, or lays the eggs of its womb as it dies).
     pub dead: u64,
+    /// Corpses whose decay the sweep took on the pool (the ones that did not burst are among the `light` turns too).
+    pub corpses_in_sweep: u64,
     /// Heavy turns of bibites with something in the mouth.
     pub mouth: u64,
     /// Heavy turns of bibites holding a pellet.
@@ -4985,6 +4987,7 @@ impl PassBLanes {
         self.light += other.light;
         self.heavy += other.heavy;
         self.dead += other.dead;
+        self.corpses_in_sweep += other.corpses_in_sweep;
         self.mouth += other.mouth;
         self.held += other.held;
         self.vomit += other.vomit;
@@ -5457,9 +5460,29 @@ impl BibiteStore {
                             }
                         }
                         if record.body.dead {
-                            part.heavy.push((slot, 0));
-                            part.lanes.dead += 1;
-                            part.lanes.heavy += 1;
+                            // A corpse's turn is its decay, which touches nothing but its own record (`corpse_tick`), unless the body died
+                            // this tick with eggs in its womb (`OnDeathStatusChange` lays them into the world's egg store: that turn stays
+                            // whole in dense order). A corpse the decay bursts leaves the meat pile, the spilled stomach and its removal to
+                            // its place in the dense order (they reach the pellets, the random numbers and the store). What the others see
+                            // of it is as before: a mouth before it in dense order reads the snapshot taken above, before the decay; one
+                            // after it reads the record, decayed, or finds it gone; bites and swallows are applied after every turn.
+                            // (Most bodies of an old world are corpses: 18,000 of Ringworld's 32,765, every one of them a turn in a row on
+                            // one thread before this.)
+                            let lays_eggs = record.body.dying && record.born && record.egg_layer.n_eggs() > 0;
+                            if !split_turns || lays_eggs {
+                                part.heavy.push((slot, 0));
+                                part.lanes.dead += 1;
+                                part.lanes.heavy += 1;
+                                continue;
+                            }
+                            part.lanes.corpses_in_sweep += 1;
+                            if record.body.corpse_tick(env.dt, env.bs).exploded {
+                                part.heavy.push((slot, turn::CORPSE_DONE));
+                                part.lanes.dead += 1;
+                                part.lanes.heavy += 1;
+                            } else {
+                                part.lanes.light += 1;
+                            }
                             continue;
                         }
                         if !record.born || !record.is_ready {
@@ -5582,7 +5605,9 @@ impl BibiteStore {
             else {
                 continue;
             };
-            if done & turn::HEAD_DONE != 0 {
+            if done & turn::CORPSE_DONE != 0 {
+                self.burst_corpse(id, ctx);
+            } else if done & turn::HEAD_DONE != 0 {
                 let leave = leave_to_pool
                     && done & turn::EMITS == 0
                     && !ctx
@@ -5903,19 +5928,7 @@ impl BibiteStore {
                 }
                 let tick = record.body.corpse_tick(dt, bs);
                 if tick.exploded {
-                    let extra = record.egg_layer.progress * record.egg_layer.egg_energy
-                        + record.fat.amount * ctx.settings.materials.fat.energy_density;
-                    let energy = record.body.corpse_meat_energy(extra);
-                    let pos = record.pos;
-                    let radius = record.body.geometry.body_length / 2.0;
-                    let min_size = ctx.settings.scenario.min_pellet_size;
-                    let _ = ctx
-                        .pellets
-                        .spawn_meat_pile_with_radius(pos, energy, radius, ctx.rng, min_size);
-                    spill_stomach(record, ctx.pellets, ctx.settings);
-                    let count = (record.body.geometry.base_body_area as i32) / 20;
-                    self.log_blood(BloodBurst { pos, radius, count });
-                    self.remove(id);
+                    self.burst_corpse(id, ctx);
                 }
                 return;
             }
@@ -5951,6 +5964,28 @@ impl BibiteStore {
                 swallowed: false,
             });
         }
+    }
+
+    /// The burst of a corpse whose decay ([`BodyState::corpse_tick`]) took its health below zero this tick: the meat pile, the spilled
+    /// stomach, the blood and the removal. They reach the pellets, the random numbers and the store, so they come at the corpse's place
+    /// in the dense order (the decay itself may have run in the sweep, see [`turn::CORPSE_DONE`]).
+    fn burst_corpse(&mut self, id: BibiteId, ctx: &mut BibiteTickCtx<'_>) {
+        let Some(record) = self.get_mut(id) else {
+            return;
+        };
+        let extra = record.egg_layer.progress * record.egg_layer.egg_energy
+            + record.fat.amount * ctx.settings.materials.fat.energy_density;
+        let energy = record.body.corpse_meat_energy(extra);
+        let pos = record.pos;
+        let radius = record.body.geometry.body_length / 2.0;
+        let min_size = ctx.settings.scenario.min_pellet_size;
+        let _ = ctx
+            .pellets
+            .spawn_meat_pile_with_radius(pos, energy, radius, ctx.rng, min_size);
+        spill_stomach(record, ctx.pellets, ctx.settings);
+        let count = (record.body.geometry.base_body_area as i32) / 20;
+        self.log_blood(BloodBurst { pos, radius, count });
+        self.remove(id);
     }
 
     /// What the bibite `id` sees of each of its mouth targets at its turn, nearest first, and how many there are.
@@ -6504,6 +6539,9 @@ mod turn {
     pub const HEAD_DONE: u8 = 1;
     /// A pheromone puff is due this tick: the rest of the turn reaches the pheromone store, so it stays in dense order to the end.
     pub const EMITS: u8 = 2;
+    /// A corpse's decay ([`super::BodyState::corpse_tick`]) was taken in the sweep and took its health below zero: the dense-order stretch
+    /// bursts it ([`super::BibiteStore::burst_corpse`]) at its place in that order.
+    pub const CORPSE_DONE: u8 = 4;
 }
 
 /// Whether a bibite's heavy turn is cut in parts ([`pass_b_head`], [`organs_hooks`], [`pass_b_post`]) so that the pool takes the parts
@@ -7911,6 +7949,18 @@ fn write_back_bibite_pose(
 /// the list from the front, found by halving it, since a holder asks for each pellet it holds and a world with thousands of grabbers and
 /// tens of thousands of awake pellets made those searches the most expensive thing the bridge did. A stale id (its slot holds a newer
 /// pellet) is not in the list, as before.
+/// One weld of the physics build: the frame the weld keeps (`(held tag, holder tag, anchor, angle)`), the weld for the step, and
+/// `(held body, holder, held tag)` for the sweep after it.
+#[derive(Clone, Copy)]
+struct HeldWeld {
+    frame: (u64, u64, Vec2, f32),
+    weld: phys::WeldDef,
+    info: (u32, BibiteId, u64),
+}
+
+// (The physics build works the welds out on the pool from a quarter of `ParallelGates::records` holders (64 with the default sizes), and makes
+// the promoted sleepers' bodies there from `records` of them (256).)
+
 fn pellet_offset(pellets: &PelletStore, ids: &[PelletId], id: PelletId) -> Option<usize> {
     let found = pellets
         .dense_position(id.handle().slot() as usize)
@@ -8543,42 +8593,50 @@ impl BibiteStore {
                 // in that order already and only a few sleepers are promoted (a hundred in fifty thousand pellets), so the few are
                 // sorted and merged in, and every awake body is moved once: (sorting all of them, each 224 bytes with its key,
                 // and moving them in and out of the sort's buffer cost as much as building the bodies of the awake pellets.)
+                // (Two thousand a tick in the Ringworld save: their bodies are made on the pool when there are many, in the order of the list.)
+                let promoted_body = |slot: &u32| -> Option<(u32, PelletId, phys::PhysicsBody)> {
+                    let id = pellets.live_id(*slot as usize)?;
+                    let body = build_pellet_physics_body(pellets, id, settings)?;
+                    Some((pellets.dense_position(*slot as usize).unwrap_or(u32::MAX), id, body))
+                };
                 let mut promoted: Vec<(u32, PelletId, phys::PhysicsBody)> =
-                    Vec::with_capacity(sleep.promoted().len());
-                for &slot in sleep.promoted() {
-                    let Some(id) = pellets.live_id(slot as usize) else {
-                        continue;
+                    if promotion_workers > 1 && sleep.promoted().len() >= self.gates.records.max(1) {
+                        sleep.promoted().par_iter().with_min_len(64).filter_map(promoted_body).collect()
+                    } else {
+                        sleep.promoted().iter().filter_map(promoted_body).collect()
                     };
-                    let Some(body) = build_pellet_physics_body(pellets, id, settings) else {
-                        continue;
-                    };
-                    let dense = pellets.dense_position(slot as usize).unwrap_or(u32::MAX);
-                    promoted.push((dense, id, body));
-                }
                 promoted.sort_unstable_by_key(|entry| entry.0);
-                let mut awake_bodies = bodies.split_off(pellet_start);
-                let eggs_tail = awake_bodies.split_off(pellet_ids.len());
-                let awake_ids = std::mem::take(&mut pellet_ids);
-                pellet_ids.reserve(awake_ids.len() + promoted.len());
-                let mut promoted = promoted.into_iter().peekable();
-                for (id, body) in awake_ids.into_iter().zip(awake_bodies) {
-                    let dense = pellets
-                        .dense_position(id.handle().slot() as usize)
-                        .unwrap_or(u32::MAX);
-                    while promoted.peek().is_some_and(|entry| entry.0 < dense) {
-                        if let Some((_, promoted_id, promoted_body)) = promoted.next() {
-                            pellet_ids.push(promoted_id);
-                            bodies.push(promoted_body);
+                // Merged in place from the back: the bodies after the awake pellets' (the eggs') move up by the number promoted, then each
+                // place from the end takes the awake pellet or the promoted one that comes last in dense order (an awake pellet before a
+                // promoted one of the same place, as the merge from the front had it). Each body moves once; splitting the list off and
+                // pushing it back copied every pellet's and egg's body twice.
+                let added = promoted.len();
+                if added > 0 {
+                    let awake = pellet_ids.len();
+                    let tail_start = pellet_start + awake;
+                    let old_len = bodies.len();
+                    bodies.resize(old_len + added, promoted[0].2);
+                    bodies.copy_within(tail_start..old_len, tail_start + added);
+                    pellet_ids.resize(awake + added, promoted[0].1);
+                    let (mut i, mut j, mut w) = (awake, added, awake + added);
+                    while j > 0 {
+                        w -= 1;
+                        let awake_first = i > 0
+                            && pellets
+                                .dense_position(pellet_ids[i - 1].handle().slot() as usize)
+                                .unwrap_or(u32::MAX)
+                                > promoted[j - 1].0;
+                        if awake_first {
+                            bodies[pellet_start + w] = bodies[pellet_start + i - 1];
+                            pellet_ids[w] = pellet_ids[i - 1];
+                            i -= 1;
+                        } else {
+                            bodies[pellet_start + w] = promoted[j - 1].2;
+                            pellet_ids[w] = promoted[j - 1].1;
+                            j -= 1;
                         }
                     }
-                    pellet_ids.push(id);
-                    bodies.push(body);
                 }
-                for (_, promoted_id, promoted_body) in promoted {
-                    pellet_ids.push(promoted_id);
-                    bodies.push(promoted_body);
-                }
-                bodies.extend(eggs_tail);
                 #[cfg(test)]
                 assert!(
                     pellet_ids.windows(2).all(|pair| {
@@ -8592,13 +8650,16 @@ impl BibiteStore {
         }
         let mut weld_info: Vec<(u32, BibiteId, u64)> = Vec::new();
         let mut frames_now: Vec<(u64, u64, Vec2, f32)> = Vec::new();
-        for id in holders_now {
+        // The welds of each holder: what it holds, where, and the frame the weld keeps. A holder's record and its look-ups are cache misses, so
+        // with many holders the pool works them out in runs of holders; they are put in place below in the holders' order, the plain loop's.
+        let weld_frames: &[(u64, u64, Vec2, f32)] = &scratch.weld_frames;
+        let welds_of = |id: BibiteId, out: &mut Vec<HeldWeld>| {
             let Some(record) = self.get(id) else {
-                continue;
+                return;
             };
             let holder_at = self.dense_pos.get(id.handle().slot() as usize).copied().unwrap_or(u32::MAX) as usize;
             if holder_at >= bodies.len() {
-                continue;
+                return;
             }
             let holder_tag = bibite_tag(id);
             // The joint's `breakForce` (and `breakTorque`) is what `BibiteMouth.FixedUpdate` sets on every link each tick while the grab output is up:
@@ -8629,23 +8690,54 @@ impl BibiteStore {
                 if held_at >= bodies.len() || held_at == holder_at {
                     continue;
                 }
-                let known = scratch.weld_frames.binary_search_by_key(&(tag, holder_tag), |frame| (frame.0, frame.1)).ok();
+                let known = weld_frames.binary_search_by_key(&(tag, holder_tag), |frame| (frame.0, frame.1)).ok();
                 let (anchor, angle) = match known {
-                    Some(at) => (scratch.weld_frames[at].2, scratch.weld_frames[at].3),
+                    Some(at) => (weld_frames[at].2, weld_frames[at].3),
                     None => {
                         let (holder, held) = (&bodies[holder_at], &bodies[held_at]);
                         ((held.pos - holder.pos).rotate(-holder.rot), held.rot - holder.rot)
                     }
                 };
-                frames_now.push((tag, holder_tag, anchor, angle));
-                scratch.physics.add_weld(phys::WeldDef { held: held_at as u32, holder: holder_at as u32, anchor, angle, break_force });
-                weld_info.push((held_at as u32, id, tag));
+                out.push(HeldWeld {
+                    frame: (tag, holder_tag, anchor, angle),
+                    weld: phys::WeldDef { held: held_at as u32, holder: holder_at as u32, anchor, angle, break_force },
+                    info: (held_at as u32, id, tag),
+                });
+            }
+        };
+        let weld_workers = executor.map_or(1, |executor| executor.threads());
+        let mut held_welds: Vec<HeldWeld> = Vec::new();
+        if weld_workers > 1 && holders_now.len() >= (self.gates.records / 4).max(1) {
+            let run = holders_now.len().div_ceil(weld_workers * 4).max(16);
+            let parts: Vec<Vec<HeldWeld>> = holders_now
+                .par_chunks(run)
+                .map(|chunk| {
+                    let mut out = Vec::new();
+                    for &id in chunk {
+                        welds_of(id, &mut out);
+                    }
+                    out
+                })
+                .collect();
+            for part in parts {
+                held_welds.extend(part);
+            }
+        } else {
+            for &id in &holders_now {
+                welds_of(id, &mut held_welds);
             }
         }
+        for held in held_welds {
+            frames_now.push(held.frame);
+            scratch.physics.add_weld(held.weld);
+            weld_info.push(held.info);
+        }
+        // In order of (held tag, holder tag): looked up below, and kept so for the next tick's look-ups.
+        frames_now.sort_unstable_by_key(|frame| (frame.0, frame.1));
         // The joints of the grabs let go of this tick are still there (the game destroys them at the end of the frame): welded for this tick's steps, forgotten after.
         for index in 0..scratch.pending_releases.len() {
             let (holder_tag, tag) = scratch.pending_releases[index];
-            if frames_now.iter().any(|frame| frame.0 == tag && frame.1 == holder_tag) {
+            if frames_now.binary_search_by_key(&(tag, holder_tag), |frame| (frame.0, frame.1)).is_ok() {
                 continue;
             }
             let Some(holder_id) = bibite_id_from_tag(holder_tag) else {
@@ -8677,7 +8769,6 @@ impl BibiteStore {
             scratch.physics.add_weld(phys::WeldDef { held: held_at as u32, holder: holder_at as u32, anchor, angle, break_force: 0.0 });
         }
         scratch.pending_releases.clear();
-        frames_now.sort_unstable_by_key(|frame| (frame.0, frame.1));
         scratch.weld_frames = frames_now;
         scratch
             .clock
